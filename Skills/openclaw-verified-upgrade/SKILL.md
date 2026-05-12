@@ -9,7 +9,7 @@ description: Use when upgrading OpenClaw, changing OpenClaw versions, selecting 
 
 Upgrade OpenClaw as a verified state transition, not as a command. The job is complete only when the selected version is installed, the running gateway uses it, and the user's critical OpenClaw paths still work.
 
-Default UX: **ordinary-user wizard, expert-grade guardrails**. Keep prompts simple; do the operational analysis internally.
+Default UX: **set-and-forget user experience, expert-grade guardrails**. Keep prompts simple; do the operational analysis internally.
 
 ## Non-Negotiable Rules
 

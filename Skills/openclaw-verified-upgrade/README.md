@@ -2,7 +2,7 @@
 
 A reliability-first OpenClaw upgrade skill.
 
-This skill helps an agent upgrade OpenClaw in a way that is simple for ordinary users but strict enough for real gateway operations. It treats upgrade as a verified state transition, not as “run an update command and hope.”
+This skill helps an agent upgrade OpenClaw with a “set-and-forget” user experience while keeping the internal guardrails strict enough for real gateway operations. It treats upgrade as a verified state transition, not as “run an update command and hope.”
 
 ## When to use
 
