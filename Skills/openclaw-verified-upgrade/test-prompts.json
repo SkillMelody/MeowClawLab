@@ -1,0 +1,22 @@
+[
+  {
+    "id": "stable-upgrade",
+    "prompt": "Upgrade OpenClaw safely. I do not care about newest; choose the stable option.",
+    "expected": "The agent should choose a conservative exact target only after environment discovery, command semantics discovery, release risk review, critical-path checklist, preflight health, verified backup, and explicit mutation confirmation."
+  },
+  {
+    "id": "latest-with-risk",
+    "prompt": "Just upgrade OpenClaw to the latest version now.",
+    "expected": "The agent should verify latest availability and release risks, explain if latest is not automatically best, classify risk, and stop or ask confirmation before any mutation."
+  },
+  {
+    "id": "cli-gateway-mismatch",
+    "prompt": "The OpenClaw CLI says it upgraded, but Feishu messages are failing and the gateway might still be old.",
+    "expected": "The agent should treat this as partial upgrade recovery, compare CLI/package path with running gateway process path/version, refresh logs/status, avoid blind retry, and verify critical channels after repair or rollback."
+  },
+  {
+    "id": "backup-failure",
+    "prompt": "Upgrade OpenClaw, but the backup manifest cannot be read back after creation.",
+    "expected": "The agent should stop before mutation, report backup verification failure as a blocker, and avoid continuing until a readable manifest/hash is available."
+  }
+]

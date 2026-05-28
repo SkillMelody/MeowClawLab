@@ -1,6 +1,6 @@
 ---
 name: openclaw-verified-upgrade
-description: Use when upgrading OpenClaw, changing OpenClaw versions, selecting latest vs stable OpenClaw releases, or recovering from partial OpenClaw upgrades where gateway, config, plugins, channels, agents, or runtime availability must remain reliable.
+description: Use when upgrading OpenClaw, running an OpenClaw upgrade, changing OpenClaw versions, selecting latest vs stable OpenClaw releases, or recovering from partial OpenClaw upgrades where gateway, config, plugins, channels, agents, or runtime availability must remain reliable.
 ---
 
 # OpenClaw Verified Upgrade
@@ -9,7 +9,7 @@ description: Use when upgrading OpenClaw, changing OpenClaw versions, selecting 
 
 Upgrade OpenClaw as a verified state transition, not as a command. The job is complete only when the selected version is installed, the running gateway uses it, and the user's critical OpenClaw paths still work.
 
-Default UX: **set-and-forget user experience, expert-grade guardrails**. Keep prompts simple; do the operational analysis internally.
+Default UX: **ordinary-user wizard, expert-grade guardrails**. Keep prompts simple; do the operational analysis internally.
 
 ## Non-Negotiable Rules
 
@@ -23,6 +23,19 @@ Default UX: **set-and-forget user experience, expert-grade guardrails**. Keep pr
 8. **Gateway alive ≠ user workflow available.** Verify configured critical paths.
 9. **No blind retry.** Classify failure, refresh state, then retry only capped recoverable steps.
 10. **No completion claim without evidence.** Report exact checks and outcomes.
+
+## Dangerous Actions Blacklist
+
+These actions are never covered by generic upgrade approval. Ask for explicit authorization and preserve evidence first:
+
+- Deleting OpenClaw state, sessions, caches, plugins, skills, or config directories.
+- Running `rm -rf`, destructive cleanup, reinstall, downgrade, or force overwrite as a recovery shortcut.
+- Overwriting or restoring config without showing what will change and why.
+- Editing LaunchAgent, systemd, daemon, shell profile, or package-manager state.
+- Using `sudo` or changing file ownership/permissions.
+- Stopping the gateway with stop+start when restart/reload is supported and sufficient.
+- Rolling back version or config after state/data migration risk is detected.
+- Publishing logs, configs, tokens, session data, or backup contents outside the local machine.
 
 ## Wizard Entry
 
@@ -172,7 +185,7 @@ Do not default to copying all `~/.openclaw`; it may contain secrets, logs, cache
 
 ### 8. User Confirmation
 
-Before mutation, present a concise plan:
+🔴 CHECKPOINT: Before mutation, present a concise plan and wait for explicit approval:
 
 ```text
 Current: ...
@@ -264,6 +277,59 @@ Retries: ...
 Logs checked: ...
 Remaining risks: ...
 ```
+
+## Evidence Table Template
+
+Track phase evidence as the upgrade progresses. Every required phase should have a row before moving on:
+
+```markdown
+| Phase | Evidence source / command | Result | Blocker? | Next action |
+|---|---|---|---|---|
+| discover environment | <source> | <fact> | no | continue |
+| command semantics | <help/doc/output> | <supported command + meaning> | no | continue |
+| release risk review | <release notes/issues> | <risk level + reason> | no/yes | continue/stop |
+| verified backup | <manifest/hash/read-back> | <verified path> | no | ask confirmation |
+| post-upgrade verification | <status/log/check> | <pass/fail> | no/yes | report/repair/rollback |
+```
+
+If a row cannot be filled, stop and report the missing evidence instead of inferring success.
+
+## Pressure Scenario Examples
+
+### Scenario: latest requested but release risk is unclear
+
+User says: "Upgrade OpenClaw to latest."
+
+Expected behavior:
+
+1. Discover current install, gateway manager, config path, and critical channels.
+2. Verify the latest exact version and release notes.
+3. If release evidence is missing or high-impact changes are unclear, recommend a stable target or stop with `unknown risk is not low risk`.
+4. Ask for confirmation before mutation.
+
+### Scenario: CLI upgraded but gateway still runs the old binary
+
+Evidence:
+
+- CLI/package version equals target.
+- Running process command path still points to the old install.
+- Gateway reports old runtime evidence or does not expose target evidence.
+
+Expected behavior:
+
+1. Do not claim success.
+2. Record path mismatch in the evidence table.
+3. Restart/reload the correct service manager only if authorized and supported.
+4. Recheck process path, gateway connectivity, and critical routes.
+
+### Scenario: upgrade succeeds but gateway is unhealthy
+
+Expected behavior:
+
+1. Collect fresh logs and status.
+2. Classify failure before retry.
+3. Repair-forward or rollback only within prior authorization.
+4. If rollback occurs, run the same verification checklist after rollback.
 
 ## Common Failure Modes This Skill Prevents
 

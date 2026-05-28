@@ -2,7 +2,7 @@
 
 A reliability-first OpenClaw upgrade skill.
 
-This skill helps an agent upgrade OpenClaw with a “set-and-forget” user experience while keeping the internal guardrails strict enough for real gateway operations. It treats upgrade as a verified state transition, not as “run an update command and hope.”
+This skill helps an agent upgrade OpenClaw through an ordinary-user wizard while keeping the internal guardrails strict enough for real gateway operations. It treats upgrade as a verified state transition, not as “run an update command and hope.”
 
 ## When to use
 
@@ -66,6 +66,7 @@ The agent then handles the operational detail internally:
 - Retry logic must be failure-classified and capped.
 - Rollback requires prior explicit authorization unless already granted.
 - Success requires evidence, not just exit code 0.
+- Destructive cleanup, config overwrite, daemon edits, reinstall, downgrade, `sudo`, and stop+start each require separate explicit approval.
 
 ## Backup requirements
 
@@ -109,6 +110,7 @@ If something fails, the skill requires the agent to:
 ## Files
 
 - [`SKILL.md`](./SKILL.md) — the actual OpenClaw skill document.
+- [`test-prompts.json`](./test-prompts.json) — pressure prompts for dry-run or full-test evaluation.
 
 ## Publishing note
 

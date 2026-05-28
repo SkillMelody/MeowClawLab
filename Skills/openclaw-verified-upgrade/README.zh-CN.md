@@ -2,7 +2,7 @@
 
 一个可靠性优先的 OpenClaw 安全升级技能。
 
-这个技能的目标是：让普通用户可以用“闭眼入”的轻松体验升级 OpenClaw，同时让 agent 在内部执行足够严格的运维级护栏。它把升级视为“经过验证的状态迁移”，而不是“跑一个 update 命令”。
+这个技能的目标是：让普通用户通过向导式体验升级 OpenClaw，同时让 agent 在内部执行足够严格的运维级护栏。它把升级视为“经过验证的状态迁移”，而不是“跑一个 update 命令”。
 
 ## 什么时候使用
 
@@ -66,6 +66,7 @@
 - 重试必须基于失败分类，并且有次数上限。
 - 除非提前授权，否则回滚前必须再次确认。
 - 成功必须基于证据，而不是 exit code 0。
+- 破坏性清理、覆盖配置、修改 daemon、重装、降级、`sudo`、stop+start 都需要单独明确授权。
 
 ## 备份要求
 
@@ -111,6 +112,7 @@
 - [`SKILL.md`](./SKILL.md) — 实际 OpenClaw skill 文档。
 - [`README.md`](./README.md) — 英文说明。
 - [`README.zh-CN.md`](./README.zh-CN.md) — 中文说明。
+- [`test-prompts.json`](./test-prompts.json) — dry-run 或 full-test 评估用的压力测试提示词。
 
 ## 发布提示
 
