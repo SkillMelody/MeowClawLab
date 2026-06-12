@@ -7,7 +7,9 @@ description: Use when upgrading OpenClaw, running an OpenClaw upgrade, changing 
 
 ## Overview
 
-Upgrade OpenClaw as a verified state transition, not as a command. The job is complete only when the selected version is installed, the running gateway uses it, and the user's critical OpenClaw paths still work.
+Upgrade OpenClaw as a verified state transition, not as a command. The job is complete only when the selected version is installed, the running gateway uses it, **externally-installed plugins (especially `@openclaw/*` official plugins) are compatible with that version**, and the user's critical OpenClaw paths still work.
+
+Convergence is multi-axis: the **host axis** (CLI, service, running process, gateway runtime) and the **plugin axis** (`~/.openclaw/npm` plugins) drift independently. A host that reports the target version is not proof that plugins agree with it.
 
 Default UX: **ordinary-user wizard, expert-grade guardrails**. Keep prompts simple; do the operational analysis internally.
 
@@ -21,8 +23,9 @@ Default UX: **ordinary-user wizard, expert-grade guardrails**. Keep prompts simp
 6. **One approval does not authorize everything.** Upgrade, restart, config repair, rollback, cache cleanup, daemon edits, and reinstall are separate risk levels.
 7. **CLI version ≠ running gateway version.** Verify both.
 8. **Gateway alive ≠ user workflow available.** Verify configured critical paths.
-9. **No blind retry.** Classify failure, refresh state, then retry only capped recoverable steps.
-10. **No completion claim without evidence.** Report exact checks and outcomes.
+9. **Host version ≠ plugin version.** Externally-installed plugins, especially `@openclaw/*`, drift independently of the pinned host. A plugin **newer** than the host can import host SDK entry points that do not exist yet and hard-crash at load time; converge plugins **down** to the host, not the host up to a drifted plugin.
+10. **No blind retry.** Classify failure, refresh state, then retry only capped recoverable steps.
+11. **No completion claim without evidence.** Report exact checks and outcomes.
 
 ## Dangerous Actions Blacklist
 
@@ -88,7 +91,7 @@ Collect facts before changing anything:
 - Running process command line and binary path when available.
 - Config path used by CLI and service.
 - Node/npm/brew versions only if relevant to the detected install method.
-- Enabled plugins/channels and key agents/bindings.
+- Enabled plugins/channels and key agents/bindings. For each plugin record: id, enabled state, install source, **installed version**, install spec, whether it is **pinned**, whether it is an `@openclaw/*` official external plugin, and whether it sits on a critical path. Host-bound official plugins (e.g. Codex) are the ones most likely to break on version skew.
 - Active sessions/background jobs if restart may interrupt work.
 - Existing health: gateway status, config validity, channel/agent state.
 
@@ -128,6 +131,7 @@ Before upgrade, summarize target-version changes and map them to this environmen
 - Gateway/daemon/LaunchAgent/systemd changes.
 - Config schema/default behavior changes.
 - Plugin/channel changes, especially currently enabled ones.
+- **Plugin–host version skew.** Compare the target host version against each installed `@openclaw/*` plugin version. Pinning the host without pinning official plugins is a known drift risk: a plugin can auto-update ahead of the host.
 - Model/provider/auth/token changes.
 - Node/runtime/package-manager requirements.
 - State/data migrations and rollback implications.
@@ -141,6 +145,8 @@ Risk levels:
 - **BLOCKER:** target unavailable, environment requirement unmet, known bug affects critical path, or rollback cannot be made safe.
 
 HIGH requires explicit explanation and confirmation. BLOCKER stops unless the user explicitly accepts risk and rollback limits.
+
+**Plugin skew is directional.** A host-bound official plugin **newer** than the host is HIGH or BLOCKER: it forward-references SDK paths the older host lacks and will hard-crash at load. A plugin **older** than the host usually degrades or warns rather than crashing. Converged end-state: official plugins at the host version, pinned with an exact-version install.
 
 ### 5. Build Critical Path Checklist
 
@@ -176,6 +182,7 @@ Minimum backup manifest:
 - Service command/path and running process command line when available.
 - Config validation result.
 - Install/package metadata for the detected package manager.
+- Installed versions of critical/official plugins, recorded alongside the host version so skew is visible.
 - Critical path baseline results.
 - Target version and risk review summary.
 
@@ -225,7 +232,8 @@ Required checks:
 - Gateway status/connectivity healthy.
 - Config validation/doctor equivalent passes.
 - Logs have no fresh fatal startup errors.
-- Critical plugins/channels/agents/routes from the checklist are available.
+- Critical plugins/channels/agents/routes from the checklist are available. For each `@openclaw/*` plugin, confirm its installed version matches the host; a plugin version **higher** than the host is a blocker, not a warning.
+- For critical plugins (e.g. Codex), a runtime-level load probe is **required**, not optional: `plugins list` proves only cold-state discovery, not that the plugin loads at runtime. Use a real message-path or runtime-load probe whose command and meaning are confirmed against the current install's help/docs — do not hardcode a remembered plugin-inspect command.
 - A minimal end-to-end check passes when safe and supported.
 
 If rollback happens, run the same verification checklist after rollback.
@@ -241,6 +249,7 @@ Before any retry, refresh current state: CLI version/path, service status, confi
 | gateway starting / restart scheduled | 3-5 probes | Wait and recheck; do not claim restart complete early |
 | gateway blocks update | once | Switch to safe upgrade path after state snapshot |
 | CLI upgraded, gateway old | once | Restart/reload correct service manager, then double-check versions |
+| plugin load / import / runtime failure | no | Suspect host↔plugin version skew first, then auth, then hook timeout; converge plugin to host. Do not blame Node/cache/OAuth before checking versions |
 | config validation failed | no | Stop; restore config only with authorization or propose fix plan |
 | permission denied / sudo needed | no | Stop and ask; do not escalate silently |
 | auth/token/provider failure | no | Stop and ask user to refresh credentials |
@@ -248,6 +257,8 @@ Before any retry, refresh current state: CLI version/path, service status, confi
 | post-upgrade unhealthy | limited | Collect logs; repair-forward or rollback only within prior authorization |
 
 Never rerun the entire upgrade loop blindly. Never use destructive cleanup, reinstall, config overwrite, or version downgrade without explicit authorization.
+
+Triage rule for plugin errors: **suspect version skew before Node, cache, or OAuth.** A plugin that fails to load is far more often newer than the host than it is missing a dependency.
 
 ## Final Report Format
 
@@ -331,6 +342,21 @@ Expected behavior:
 3. Repair-forward or rollback only within prior authorization.
 4. If rollback occurs, run the same verification checklist after rollback.
 
+### Scenario: host pinned to an older stable version, but an official plugin auto-updated ahead
+
+Evidence:
+
+- Host (CLI/package) is at the user-chosen stable version.
+- An `@openclaw/*` plugin under `~/.openclaw/npm` is at a higher version than the host.
+- A message fails with a plugin load error referencing a host SDK module path the older host does not provide.
+
+Expected behavior:
+
+1. In Discover Environment, record each official plugin's version and flag any plugin newer than the host.
+2. Classify plugin-newer-than-host as HIGH or BLOCKER, not a warning.
+3. Converge **toward the pinned target**: bring the plugin down to the host version with an exact-version install, rather than letting an auto-updated plugin pull the host up. This is `latest is not automatically best` applied to the plugin axis.
+4. Re-run post-upgrade verification, including a runtime load probe for the affected plugin.
+
 ## Common Failure Modes This Skill Prevents
 
 - Upgrading `which openclaw` while LaunchAgent keeps running a different binary.
@@ -343,6 +369,7 @@ Expected behavior:
 - Retrying a partial upgrade until the original state is lost.
 - Rolling back config/version without approval.
 - Calling gateway healthy while Feishu, agent routes, models, memory, or plugins are broken.
+- Treating the host version as proof of completion while an official plugin has drifted to a newer, incompatible version.
 
 ## GitHub Publishing Checklist
 
