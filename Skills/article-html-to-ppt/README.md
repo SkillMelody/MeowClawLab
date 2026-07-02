@@ -15,6 +15,8 @@ Use this skill when you need to:
 - Create or upload a Feishu Slides deck for online collaboration and sharing.
 - Preserve source-rights boundaries and attribution.
 - Keep a deck professional, readable, and brand-consistent.
+- Lock slide content before visual production.
+- Maintain slide manifests and lightweight QA gates for non-trivial decks.
 - Distinguish generated, rendered, read-back, and final delivery states.
 
 ## How To Use
@@ -119,8 +121,12 @@ Typical HTML outputs:
 
 - Source rights are classified before export.
 - External articles and reconstructed visuals are not presented as owned evidence.
+- Important claims, numbers, examples, diagrams, and recommendations are traceable to source material or labeled as reconstruction/assumption.
+- Slide-visible facts are frozen in a content lock before visual previews or PPTX export.
 - Visual design is derived from article content, but constrained by the brand system.
 - Formal brand consistency is the default for publishable or client-facing decks.
+- Core text should remain editable where the export format supports it.
+- Visual structure should not be downgraded into a flat screenshot unless the user explicitly accepts that tradeoff.
 - Platform capability gaps are reported instead of hidden.
 - Dynamic PPT requests are answered with native PPTX progressive-build decks unless the user explicitly asks for web-only output.
 - A handoff must separate `Created`, `Rendered`, `Read back`, and `Final`.
@@ -133,6 +139,13 @@ Typical HTML outputs:
 - [`references/visual-design-archetypes.md`](./references/visual-design-archetypes.md) - visual direction archetypes.
 - [`references/visual-systems.md`](./references/visual-systems.md) - reusable visual system constraints.
 - [`templates/storyboard-template.md`](./templates/storyboard-template.md) - storyboard and verification template.
+- [`templates/content-lock-template.md`](./templates/content-lock-template.md) - content lock template.
+- [`templates/slide-manifest-template.json`](./templates/slide-manifest-template.json) - slide manifest template.
+- [`templates/visual-qa-gate-template.json`](./templates/visual-qa-gate-template.json) - visual QA gate template.
+
+## Version
+
+1.0.3
 
 ## Publishing Note
 

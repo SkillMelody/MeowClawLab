@@ -33,6 +33,9 @@ Mitigation: The skill defaults to formal brand-consistent design and uses motifs
 - [Visual Systems Reference](references/visual-systems.md) <br>
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
+- [Content Lock Template](templates/content-lock-template.md) <br>
+- [Slide Manifest Template](templates/slide-manifest-template.json) <br>
+- [Visual QA Gate Template](templates/visual-qa-gate-template.json) <br>
 
 ## Skill Output: <br>
 **Output Type(s):** [Storyboard, HTML preview, static PPTX, native dynamic PPTX, Feishu Slides, Verification report] <br>
@@ -49,7 +52,7 @@ Mitigation: The skill defaults to formal brand-consistent design and uses motifs
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-1.0.2 <br>
+1.0.3 <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>
