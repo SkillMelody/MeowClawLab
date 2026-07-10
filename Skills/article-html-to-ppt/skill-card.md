@@ -1,5 +1,5 @@
 ## Description: <br>
-Convert articles, Markdown drafts, HTML pages, WeChat drafts, and review-approved manuscripts into formal, brand-consistent slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
+Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -10,7 +10,7 @@ SkillMelody <br>
 MIT-0 <br>
 
 ## Use Case: <br>
-Editors, operators, educators, and content teams who need to turn long-form written material into structured presentation decks without losing source boundaries, brand consistency, or verification discipline. <br>
+Product owners, product reporters, Agent engineers, automation developers, self-media authors, knowledge bloggers, editors, educators, and content teams who need to turn source material into structured presentation decks without losing source boundaries, audience fit, editability, or verification discipline. <br>
 
 ### Deployment Geography for Use: <br>
 Global <br>
@@ -28,6 +28,9 @@ Mitigation: The skill now defaults dynamic PPT requests to native PPTX progressi
 Risk: Article-specific visual metaphors can fragment a deck and weaken brand trust. <br>
 Mitigation: The skill defaults to formal brand-consistent design and uses motifs only inside a stable visual system. <br>
 
+Risk: A single consulting-style template may not fit product reporting, technical architecture, and knowledge creator decks equally well. <br>
+Mitigation: The skill now selects persona-specific deck defaults for product owners/reporters, Agent engineers/automation developers, and self-media authors/knowledge bloggers. <br>
+
 ## Reference(s): <br>
 - [Visual Design Archetypes](references/visual-design-archetypes.md) <br>
 - [Visual Systems Reference](references/visual-systems.md) <br>
@@ -40,19 +43,20 @@ Mitigation: The skill defaults to formal brand-consistent design and uses motifs
 ## Skill Output: <br>
 **Output Type(s):** [Storyboard, HTML preview, static PPTX, native dynamic PPTX, Feishu Slides, Verification report] <br>
 **Output Format:** [Markdown plans, HTML previews, .pptx files, Feishu Slides links, structured handoff] <br>
-**Output Parameters:** [source rights, export target, dynamic mode, audience, brand system, verification state] <br>
-**Other Properties Related to Output:** [Supports formal-light and hybrid-formal deck modes, direct PPTX export, and progressive-build dynamic PPTX for MeowClawLab-style work] <br>
+**Output Parameters:** [source rights, export target, dynamic mode, audience/persona, brand system, verification state] <br>
+**Other Properties Related to Output:** [Supports low-rework persona-fit decks, consulting-style baselines, technical blueprint decks, editorial knowledge decks, SVG/HTML preview policy, direct PPTX export, and progressive-build dynamic PPTX for MeowClawLab-style work] <br>
 
 ## Evaluation Metrics Used: <br>
 - Security: Checks that private paths, account names, tokens, and raw review trails are not included in public decks. <br>
 - Rights discipline: Checks whether external sources and reconstructed visuals are labeled correctly. <br>
 - Brand consistency: Checks whether the deck feels like one professional product from one owner. <br>
+- Persona fit: Checks whether product/reporting, technical/automation, or knowledge-creator decks use the right structure, proof style, and visual language. <br>
 - Readability: Checks title hierarchy, slide density, and text overflow risks. <br>
 - Dynamic PPT behavior: Checks logical slide count, build-step slide count, transitions, and rendered preview when possible. <br>
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-1.0.3 <br>
+1.0.4 <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>

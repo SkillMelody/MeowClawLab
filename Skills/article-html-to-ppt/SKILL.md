@@ -1,376 +1,409 @@
 ---
 name: "article-html-to-ppt"
-description: "Convert articles into verified PPTX, dynamic PPTX, HTML previews, or Feishu Slides."
+description: "PPT skill for low-rework persona-fit decks"
 ---
 
-# Article HTML To PPT
+# Proposal: Upgrade `article-html-to-ppt` For Low-Rework Persona-Fit PPTs
 
-## Core Principle
+## Target Skill
 
-Convert articles into speakable, professionally designed slide decks. The workflow is: normalize source, build evidence-backed storyboard, lock slide content, define a formal brand-consistent visual direction, produce reviewable preview artifacts, export to the requested deck format, then verify honestly.
+`article-html-to-ppt`
 
-This skill treats **direct PPTX generation** as a first-class export path. When the environment has PptxGenJS or an equivalent local helper, generate a real `.pptx` file instead of stopping at guidance.
+## Product Goal
 
-When the user asks for **dynamic PPT**, **dynamic presentation**, **animated PPT**, or says the exported PPT should dynamically display during presentation, default to a **native PPTX progressive-build deck**: duplicate each logical slide into multiple build steps so each click reveals more content in PowerPoint/Keynote presentation mode. Add native slide transitions when possible. HTML dynamic decks are optional companion artifacts, not the default answer for “dynamic PPT”.
+The skill should help users produce PPT decks that require as little second-pass editing as practical. The default standard is not flashy presentation art. The default standard is:
 
-Object-level PowerPoint animations inside a single slide remain experimental because they require fragile OOXML timing/animation structures or target-player automation. Do not promise object-level animation unless a prototype is verified in PowerPoint/Keynote.
+- logically clear
+- simple but not empty
+- appropriate to the user's role and delivery context
+- editable where practical
+- visually calm and consistent
+- verified before handoff
 
-A deck is not final merely because files were created. If the export cannot be rendered, opened, read back, or visually checked, say so and deliver the best verified artifact with clear limits.
+The skill should support consulting-style decks, but it should not force every user into the same McKinsey template. It should identify the likely audience and produce decks whose structure, density, visual language, and proof style fit that audience.
 
-## Quality Contract
+Primary audiences:
 
-Borrow the useful parts of CyberPPT without copying its heavy workflow:
+1. Product owners / product reporters.
+2. Agent engineers / automation developers.
+3. Self-media authors / knowledge bloggers.
 
-- **Evidence first:** important claims, numbers, examples, diagrams, and recommendations must trace back to source material or be labeled as reconstruction/assumption.
-- **Storyline before slides:** create a real narrative path before producing layouts. For high-value decks, compare 2-3 possible storylines and choose one.
-- **Content lock before visual generation:** freeze each slide's title, key message, evidence, chart/table inputs, captions, source labels, and sensitivity notes before generating visual previews or PPTX.
-- **Manifest while building:** write or maintain a `slide_manifest.json` for non-trivial decks so the deliverable can be audited later.
-- **Dual hard gates:** core text must remain editable where the export format supports it, and visual structure must not be downgraded into a flat screenshot unless the user explicitly accepts that tradeoff.
-- **Lightweight QA, not ceremony:** use practical checks suited to the target export. Do not require full bbox reverse engineering or Windows PowerPoint COM unless the task truly needs consulting-grade QA and the environment supports it.
+## Why Update
 
-## When To Use
+Recent PPT skill research showed that our current skill already has a good foundation: direct PPTX generation, content lock, manifests, and honest verification. The missing upgrade is to make the decision framework explicit and to bias every route toward low-rework, editable, verified decks.
 
-Use this skill when the user asks to:
+Useful influences:
 
-- turn an article, Markdown draft, HTML article, WeChat draft, report, or review-approved manuscript into slides
-- create PPT/PPTX/PowerPoint/Feishu Slides from article content
-- directly generate a `.pptx` file from article or HTML content
-- create a dynamic PPT/PPTX that reveals content during presentation
-- create native PowerPoint/Keynote-compatible step-by-step presentation behavior
-- make an HTML slide preview before exporting slides
-- create an optional reveal.js or web presentation companion
-- adapt MeowClawLab / 夜猫子弦月 content into a presentation
-- preserve image prompts, captions, figure notes, visual identity, source rights, or desensitization constraints in the deck
+- EditableImage2PPTSkill: reference images and screenshots should be rebuilt as editable text/shapes/charts where practical, not dumped as full-page screenshots.
+- PPT Master: use an intermediate visual blueprint/spec layer, such as SVG, JSON, HTML, or manifest, so a deck can be previewed, debugged, and converted into PPTX objects.
+- OfficeCLI / QuickLook style validation: generated files are not finished until rendered/read back or otherwise verified.
+- CyberPPT: high-value decks need quality gates around evidence, story, density, editability, overflow, and final handoff.
+- Design spec POC: model-generated images do not reliably return real layer sidecars; the stable path is `design_spec.json -> PPTX/PNG render -> visual QA -> spec correction -> export`.
 
-Do not use this for ordinary document editing, raw article writing, or a one-off visual image request.
+## Proposed Additions To `SKILL.md`
 
-## Inputs To Collect Or Infer
+Add the following sections after the current `Quality Contract` or before `Workflow`.
 
-Required:
+---
 
-- Source content: Markdown, HTML, Docx text, article path, pasted text, or URL content already retrieved by a suitable skill.
-- Export target: `pptx`, `native-dynamic-pptx`, `html-preview`, `dynamic-html`, `feishu-slides`, `object-animation-pptx-experimental`, or `multi`.
-- Usage boundary: private draft, internal review, public sharing, client delivery, training, or publication.
+## Low-Rework PPT Contract
 
-Optional:
+Optimize for decks that users can present or lightly edit, not decks that only look good in a screenshot.
 
-- Audience and scenario.
-- Duration or slide count.
-- Visual system id and overrides.
-- Assets: cover image, logo, screenshots, diagrams, existing PPT template.
-- Dynamic behavior: step-by-step reveals, section transitions, speaker notes, auto-slide timing, embedded media, or object-level animation.
-- QA level: `light`, `standard`, or `consulting-grade`.
+Default priorities:
 
-## P0 Preflight And Checkpoints
+1. Clear story and slide intent.
+2. Persona-fit structure and style.
+3. Editable core text, shapes, tables, and simple charts.
+4. Consistent layout grid, spacing, typography, footer, section labels, and page rhythm.
+5. Conservative visual system with one accent color, neutral support colors, and no visual noise.
+6. Render/readback verification before claiming final status.
+7. Honest limitations when some elements remain raster images.
 
-### CHECKPOINT 1: Source Rights And Use Boundary
+A deck does not need to be highly ornate. It must feel deliberate, legible, and structurally polished.
 
-Before generating an export intended for sharing, classify the source:
+## Persona Selection
 
-- `owned`: written by the user or their team.
-- `licensed`: user provided permission, template, or explicit reuse rights.
-- `external-reference`: public article or third-party source used for analysis or private transformation.
-- `unknown`: rights are unclear.
+Before choosing a route or visual style, identify the primary user persona and presentation context.
 
-Rules:
+If the user states a persona, use it. If not, infer from source material and goal:
 
-- For `owned` or `licensed`, continue normally.
-- For `external-reference`, produce a private/internal working deck unless the user confirms public redistribution is allowed.
-- For `unknown`, ask for confirmation before uploading a public or broadly shared deck.
-- Always preserve source attribution when the deck depends on a public article.
-- Do not download, rehost, or imply ownership of third-party images unless rights are clear.
-
-### CHECKPOINT 2: Export Capability Matrix
-
-Before export, state what the current environment can actually do.
-
-| Capability | Stable Route | Check | If Missing |
+| Persona | Common Inputs | Typical Goal | Default Style |
 | --- | --- | --- | --- |
-| Direct PPTX | PptxGenJS or equivalent helper | `node -e "require.resolve('pptxgenjs')"` or helper exists | Install only with user approval, or deliver HTML/Feishu route |
-| Native dynamic PPTX | Progressive-build slides + optional native transitions | PPTX builder can duplicate slide states | Deliver static PPTX; explain limit |
-| PPTX render check | LibreOffice/PowerPoint/Keynote/QuickLook/screenshot route | Can open/export/screenshot generated PPTX | Mark PPTX as created but not visually verified |
-| Feishu Slides create/write | Lark/Feishu slides skill or lark-cli route | Scopes available | Ask for auth or deliver local PPTX/preview |
-| Dynamic HTML companion | reveal.js/plain HTML runtime | Can generate local HTML and open/render it | Omit companion |
-| Object-level animated PPTX | OOXML/PowerPoint automation support | Prototype renders in target player | Treat as experimental; do not promise |
-| Image upload/use | Asset rights and upload scope available | Upload/use allowed | Use placeholders/prompts with captions |
+| `product-owner` | PRD, roadmap, feature analysis, metrics, business review, stakeholder update | align decisions, secure resources, report progress | business-consulting, structured, metric-aware |
+| `agent-engineer` | architecture notes, automation workflow, tool chain, runbook, technical proposal | explain system design, implementation path, reliability, ROI | technical blueprint, flow-first, precise |
+| `knowledge-creator` | article, newsletter, course notes, research synthesis, IP content | explain ideas, teach, publish, attract audience | editorial knowledge deck, visually memorable but clean |
+| `consulting-general` | strategy, market, operations, analysis, client-facing deck | persuade with structured reasoning | restrained McKinsey-like deck |
 
-The final handoff must distinguish:
+If multiple personas apply, choose the persona whose audience will judge the deck. Example: an Agent engineering automation proposal for executives should use `product-owner` story framing plus selected `agent-engineer` architecture slides.
 
-- `Created`: artifact was generated or uploaded.
-- `Rendered`: artifact was opened or rendered locally.
-- `Read back`: exported platform content was inspected after creation.
-- `Final`: all required checks passed, or remaining limits were accepted by the user.
+## Persona-Specific Deck Defaults
 
-### CHECKPOINT 3: Evidence And Content Lock Gate
+### Product Owners / Product Reporters
 
-Run this before visual preview or export for every non-trivial deck.
+Use when the deck is for product负责人、产品汇报、业务复盘、路线图、版本规划、增长/留存/转化分析、资源申请、项目阶段汇报。
 
-Create a `content_lock.md` or equivalent section inside `storyboard.md` that freezes:
+What this audience needs:
 
-- deck thesis and intended audience
-- selected storyline and rejected alternatives if compared
-- each slide's title, one-message takeaway, speaker point, visual job, and priority
-- source sections, citations, quoted facts, and file paths/URLs when useful
-- chart/table inputs and whether they are sourced, calculated, estimated, or reconstructed
-- image prompts, screenshot requirements, figure labels, source/rights labels, and reconstruction labels
-- sensitivity notes, redactions, and items that must not appear in slide-visible text
-- allowed simplifications and explicit assumptions
+- Fast executive understanding: what changed, why it matters, what decision is needed.
+- Clear product logic: user problem -> opportunity -> solution -> impact -> next step.
+- Evidence from metrics, user feedback, market signals, milestones, and risks.
+- A deck that can be reused in meetings with leaders, cross-functional teams, and stakeholders.
 
-Rules:
+Recommended structure:
 
-- After content lock, do not let visual generation or PPTX layout rewrite facts, metrics, names, or recommendations.
-- If a slide needs content changes after visual work begins, update the content lock and note the reason.
-- If source evidence is insufficient, label the claim as assumption/reconstruction or ask for the missing source when the risk is high.
-- For quick drafts, a compact content lock table is enough; do not inflate small tasks with unnecessary paperwork.
+1. Executive summary: one-slide answer and decision request.
+2. Context and problem: user/business pain, current baseline.
+3. Insight: key finding or opportunity.
+4. Proposal: product direction, feature package, or roadmap.
+5. Impact model: metrics, funnel, adoption, revenue, efficiency, or qualitative value.
+6. Execution plan: milestones, owners, dependencies.
+7. Risks and tradeoffs: what could fail and mitigation.
+8. Ask / decision: required resources, approval, or next step.
 
-### CHECKPOINT 4: Formal Brand Consistency Gate
+Visual style:
 
-Before batch-generating all slides, validate representative pages whenever practical:
+- Consulting-style white/light background, dark text, one confident accent color.
+- Strong title hierarchy and executive takeaway titles.
+- Use roadmaps, funnels, metric cards, 2x2 prioritization, before/after flows, simple dashboards, risk matrices.
+- Keep slides dense enough for business review, but not wall-of-text.
+- Make charts and tables editable whenever practical.
 
-- Cover or opening slide.
-- Evidence or example slide.
-- Framework / process / checklist slide.
-- Closing slide if the deck is public or client-facing.
+Quality gates:
 
-Each gate page must pass one clear message, stable grid, consistent typography, consistent footer/source/brand marker, visible fact/reconstruction labels, and no obvious text overflow.
+- Every major claim should connect to a metric, user signal, source, or clearly labeled assumption.
+- The deck must make the decision/ask obvious.
+- Roadmap and plan slides must be scannable within 20 seconds.
+- Avoid vague product language such as “提升体验” without mechanism or measure.
 
-### CHECKPOINT 5: Native Dynamic PPT Gate
+### Agent Engineers / Automation Developers
 
-Use this checkpoint when the user requests dynamic PPT or exported PPT presentation motion.
+Use when the deck is for Agent工程师、自动化开发者、OpenClaw/Codex/工作流开发、系统设计、工具链说明、部署方案、技术评审、自动化 ROI 说明。
 
-Classify the dynamic request:
+What this audience needs:
 
-- `native-dynamic-pptx`: stable default. Generate a PPTX where each logical slide is expanded into multiple build steps. Each click reveals more content by advancing to the next visually similar slide. Add slide transitions when supported.
-- `pptx-with-notes`: stable. Static PPTX with speaker notes and presenter-friendly structure.
-- `dynamic-html-companion`: optional companion for web-native motion, not a substitute when the user asked for PPTX.
-- `object-animation-pptx-experimental`: object-level animation inside one slide. Experimental only.
+- System clarity: components, inputs, outputs, tools, triggers, states, failure modes.
+- Implementation credibility: what runs where, what is automated, what is manual, what is risky.
+- Operational view: observability, retries, permissions, data flow, handoff, rollback.
+- A bridge between technical details and business value.
 
-Rules:
+Recommended structure:
 
-- If the user says “dynamic PPT”, do not answer with only HTML.
-- Prefer native progressive-build PPTX because it works across PowerPoint/Keynote without fragile object animation XML.
-- Keep build-step slides visually identical except for newly revealed content.
-- Add slide transitions such as fade when possible and verify transition XML exists.
-- Report logical slide count and build-step slide count separately.
-- If object-level animation is required, prototype 1-2 slides first and verify in the target player.
+1. Problem / automation target: current workflow pain and desired outcome.
+2. System overview: agents, tools, data sources, execution environment.
+3. Workflow diagram: trigger -> planning -> execution -> verification -> handoff.
+4. Architecture / integration: APIs, local files, queues, cron, sessions, storage, permissions.
+5. Reliability model: failure modes, retries, logs, alerts, human approval points.
+6. Implementation plan: phases, milestones, test plan.
+7. ROI / impact: time saved, quality gain, risk reduction, cost implications.
+8. Appendix: technical details, schemas, prompts, runbooks.
 
-## Workflow
+Visual style:
 
-### 1. Normalize Source
+- Technical blueprint style: clean grid, neutral background, monospace labels only where useful.
+- Use system diagrams, swimlanes, state machines, sequence flows, dependency maps, API callouts, config tables.
+- SVG is especially useful for flow diagrams, architecture maps, icons, connector lines, and state machines.
+- HTML/CSS preview is useful for dense technical dashboards, workflow boards, or runbook-style pages before PPT export.
+- Avoid marketing-like hero slides; precision beats decoration.
 
-Extract title, thesis, section headings, claims, evidence, examples, frameworks, image suggestions, caveats, and sensitivity notes. Preserve citations or file paths when useful. Do not invent screenshots, metrics, quotes, or examples.
+Quality gates:
 
-For public or third-party sources, keep a concise evidence map that links each major slide to the source section or URL. For owned drafts, preserve internal source paths only in non-public reports; do not expose private local paths inside slide-visible text.
+- Diagram labels must be readable and not overlap.
+- Every automation step should identify owner: agent, script, API, human, cron, or external service.
+- Security/privacy/permission boundaries must be visible when relevant.
+- Do not hide uncertainty: mark assumptions, manual steps, and unimplemented pieces.
 
-### 2. Build And Choose Storyline
+### Self-Media Authors / Knowledge Bloggers
 
-Create a storyboard before making slides. For high-value or client-facing decks, sketch 2-3 candidate storylines first, then choose the strongest one based on audience, evidence strength, and presentation goal.
+Use when the deck is for 自媒体作者、知识博主、课程内容、公众号/知乎/小红书内容、选题拆解、知识卡片、内容产品、IP 风格展示。
 
-Each frame should include:
+What this audience needs:
 
-- slide title
-- speaker point
-- visual job
-- body bullets or diagram elements
-- source section and evidence status
-- caption / footnote requirement
-- brand consistency notes
-- export notes: PPTX layout mapping and dynamic build steps
+- A memorable teaching arc: hook -> concept -> example -> takeaway -> shareable conclusion.
+- Strong information design, but lighter than business consulting decks.
+- Visual identity and content rhythm that can become article images, video frames, course slides, or social cards.
+- Clear enough for readers who are not in a meeting and may skim quickly.
 
-### 3. Create Content Lock
+Recommended structure:
 
-Use `templates/content-lock-template.md` when useful. The content lock is the source of truth for slide facts and structure.
+1. Hook / core question: why this topic matters now.
+2. Big idea: one clean thesis.
+3. Framework: 3-5 part mental model.
+4. Examples / cases: concrete before/after, screenshots, workflows, or comparisons.
+5. Practical steps: checklist, method, prompt, workflow, or template.
+6. Common mistakes: what not to do.
+7. Summary: memorable sentence and next action.
+8. Optional social snippets: slide/card variants for publishing.
 
-Minimum content lock fields for each slide:
+Visual style:
 
-- `slide_id`
-- `locked_title`
-- `one_message`
-- `source_evidence`
-- `must_keep_editable_text`
-- `visual_job`
-- `asset_or_prompt`
-- `caption_or_evidence_label`
-- `sensitivity_or_redaction_notes`
-- `allowed_assumptions`
+- Editorial knowledge style: clean, warm, branded, more expressive than product decks but still controlled.
+- Use title cards, framework diagrams, quote/callout blocks, step cards, comparison grids, annotated screenshots, knowledge cards.
+- Allow tasteful brand/IP accents: small character mark, column color, signature footer, recurring motif.
+- Avoid over-designed poster pages that make text hard to edit or reuse.
+- SVG can provide simple motifs, icons, dividers, badges, and framework diagrams.
+- HTML preview can help produce article-like longform slides or social-card variants, but final PPT should preserve editable text when practical.
 
-For decks with charts, tables, reconstructions, or public sharing, include chart data lineage and source/rights labels.
+Quality gates:
 
-### 4. Derive Formal Content-Fit Visual Direction
+- Each slide should teach one idea or support one content beat.
+- The deck should be easy to repurpose into article images or short video frames.
+- Avoid generic AI buzzword slides; include examples, workflows, or original framing.
+- Maintain brand consistency without burying the knowledge content.
 
-Write a short `visual_design_brief` with article type, formality target, brand posture, metaphor, emotional temperature, visual density, evidence mode, audience posture, and rejected directions. Then select a visual archetype from `references/visual-design-archetypes.md` or define one.
+## Consulting-Style Visual Baseline
 
-Prefer a small set of reusable, ownable visual systems and sample pages. Do not copy CyberPPT's consulting style library wholesale; adapt the idea of real style samples to MeowClawLab / user-specific visual identities.
+Use this baseline for McKinsey-style, strategy, business, report, or client-facing decks.
 
-### 5. Apply Brand System As Primary Design Frame
+- Slide title states the takeaway, not just the topic.
+- One primary message per slide.
+- Use restrained color: dark text, light background, one accent, occasional muted support colors.
+- Use a strong grid: title band, body grid, optional footer/source line.
+- Prefer tables, issue trees, 2x2 matrices, process flows, waterfalls, bar/line charts, and comparison cards over decorative graphics.
+- Use whitespace intentionally; dense does not mean cramped.
+- Avoid gradients, glows, excessive shadows, stock-photo hero pages, and decorative icons unless they carry meaning.
+- Use small, consistent labels and source notes.
+- Keep text within boxes; no clipped text, tiny labels, or overlapping legends.
 
-Select a brand/column visual system from `references/visual-systems.md` if present. Use it for palette, typography, title rhythm, footer/source pattern, shape language, captions, and grid.
+## Route Selection
 
-Keep a single deck to one dominant visual system. Use contrast modes sparingly and only for deliberate section shifts, not random decoration.
+Classify the user's request into one primary route:
 
-### 6. Design Slide-Specific Visual Jobs
+| Route | Use When | Primary Output | Key Risk |
+| --- | --- | --- | --- |
+| `article-to-deck` | Source is an article, Markdown draft, report, WeChat post, or structured text | Storyboard + editable PPTX / dynamic PPTX / Feishu Slides | weak storyline or unverifiable claims |
+| `design-spec-to-deck` | User provides a visual spec, brand spec, layout schema, or asks for a template/system | `design_spec.json` / `theme.json` + PPTX + render report | text overlap, unstable bbox, over-designed template |
+| `image-to-editable-rebuild` | User provides slide screenshots, design images, image-only PPT pages, or PDF page images and wants editable PPT | editable PPTX rebuilt from text/shapes/charts/images | flattening into screenshots or overclaiming editability |
+| `deck-qa-repair` | User has an existing PPTX that needs verification, repair, visual QA, readback, or polish | repair report + patched PPTX | missing render/readback or hidden overflow |
+| `consulting-grade-deck` | Client-facing, strategy, McKinsey-style, high-stakes, paid, or public deck | gated PPTX + manifest + verification | skipping evidence/story/density gates |
 
-Assign every slide a visual job: hook, contrast, explain, evidence, framework, process, boundary, or close.
+If multiple routes apply, choose the route that controls the hardest failure mode. Example: a screenshot of a consulting-style deck that must become editable should use `image-to-editable-rebuild` plus selected `consulting-grade-deck` gates.
 
-When using generated visuals or reconstructed diagrams, label them honestly. Never represent a reconstruction, synthetic UI, or inferred process as a historical screenshot.
+## Spec / SVG / HTML Rendering Policy
 
-### 7. Generate Preview Or Direct PPTX
+When a deck is based on a desired look, a visual reference, or a generated UI/slide image, prefer an explicit intermediate spec over relying on a raster image.
 
-For non-trivial decks, create an HTML preview before final export unless the user asks for direct PPTX only. If the user asks for direct or native-dynamic PPTX, still build a storyboard, content lock, manifest, and verification report.
+Stable path:
 
-### 8. Export
+```text
+intent / source -> persona + visual_design_brief -> design_spec.json or slide_manifest.json -> PPTX/PNG render -> visual QA -> spec correction -> final PPTX
+```
 
-#### 8.1 Direct PPTX Export
+Use the simplest code-backed visual route that produces reliable output:
 
-Use PptxGenJS or an existing local helper as the preferred direct `.pptx` route.
+- Use native PPT objects for standard text, shapes, tables, diagrams, and simple charts.
+- Use SVG as a blueprint or asset when the effect is simple, geometric, and scalable: issue trees, icons, line diagrams, badges, dividers, simple decorative marks.
+- Use HTML/CSS as a preview or rendering surface when it helps test layout, typography, tables, dashboards, longform editorial pages, or dense technical diagrams before rebuilding/exporting to PPTX.
+- Do not use HTML screenshots as the final deck unless the user accepts low editability.
+- If HTML/SVG is used for style exploration, keep the authoritative deck model in `design_spec.json`, `slide_manifest.json`, or PPTX object generation code.
+- If a generated visual is needed, treat it as a reference image, not as the authoritative layer model.
 
-Minimum requirements:
+Do not assume image generation can return true PPT layers, bbox, z-index, font, or asset sidecars.
 
-- 16:9 wide layout unless user asks otherwise
-- theme fonts and colors
-- shared layout helpers or slide masters
-- PowerPoint-safe text, shapes, tables, charts, images, and SVGs
-- speaker notes when useful
-- captions and source/rights labels
-- no private paths in slide-visible text
-- `deck.pptx` plus `pptx-build-report.json`, `slide_manifest.json`, and/or `verification-report.md`
+## Image-To-Editable Rebuild Contract
 
-#### 8.2 Native Dynamic PPTX Export
+Use when the user asks to turn slide images, design screenshots, image-only PDFs, or flattened PPT pages into editable PowerPoint.
 
-Use this when the user wants exported PPT to dynamically display during presentation.
+Default strategy:
 
-Implementation pattern:
+- Do not use a full-page screenshot background unless the user explicitly accepts a low-editability deck.
+- Rebuild core text as editable text boxes.
+- Rebuild simple cards, tables, diagrams, process flows, callouts, dividers, and chart shapes as native PPT objects.
+- Keep complex illustrations, photos, watercolor figures, portraits, and hard-to-segment art as separate movable image layers.
+- For charts, rebuild simple bars/lines/labels as editable shapes when data can be inferred safely; label inferred data as reconstructed.
+- For consulting-style screenshots, rebuild layout grid, title hierarchy, section numbers, cards, tables, and axes natively.
+- Maintain a quality report with object counts, text counts, media counts, and failures.
 
-1. Start from the locked logical storyboard.
-2. For each logical slide, define reveal steps.
-3. Generate one PPTX slide per reveal step.
-4. Keep stable coordinates, typography, background, and footer across all steps in the same logical slide.
-5. Add only the newly revealed bullet, diagram part, or emphasis between steps.
-6. Add native slide transitions if supported.
-7. Embed speaker notes for each build step or logical slide.
-8. Write `deck-dynamic-native.pptx`.
-9. Report both counts: `logical slides` and `native build-step slides`.
+Honest reporting language:
 
-Verification:
+- `Editable rebuild`: core text/layout rebuilt as editable PPT objects; complex art remains image layers.
+- `Partially editable`: some visual elements remain images due to complexity or rights/segmentation limits.
+- `Screenshot deck`: full-slide images only; use only when requested or accepted.
 
-- inspect `.pptx` zip for expected slide count
-- confirm notes count when speaker notes are generated
-- confirm transition XML exists if transitions are added
-- render via QuickLook/PowerPoint/Keynote/LibreOffice/screenshot route when available
-- if only first-slide render is possible, say so
+## Asset Decomposition Optional Path
 
-#### 8.3 Feishu Slides Export
+For complex source images, especially polished slide designs with embedded assets, a future or advanced route may use asset decomposition before PPTX export.
 
-Use the Lark/Feishu slides skill or lark-cli route when available. Creation success is not final; readback/screenshot requires extra scopes.
+Suggested pipeline:
 
-For Feishu Slides, preserve the same content lock and manifest discipline even if the export API does not expose every visual property.
+```text
+source image -> model proposes layers -> user/model confirms regions -> segmentation / cutout -> assets.json + layout.json -> PPTX export -> render comparison -> repair loop
+```
 
-#### 8.4 Dynamic HTML Companion
+Use this only when the user specifically needs high-fidelity editable reconstruction and the environment has suitable segmentation/cutout tools. Otherwise, use a pragmatic editable rebuild with complex assets preserved as image layers.
 
-Use reveal.js or custom HTML only as an optional companion format or when the user explicitly asks for a web presentation. Do not substitute it for native dynamic PPTX when the user asked for PPT.
+## Office / Render QA Gate
 
-#### 8.5 Object-Level Animated PPTX Experimental
+A PPTX is not final just because it exists. Before final handoff, run the strongest available verification route:
 
-Only attempt PowerPoint-native object animation inside a single slide if a proven helper, OOXML patcher, or PowerPoint automation route exists.
+1. Inspect package structure: expected slide count, media files, notes, and transition XML if dynamic.
+2. Count editable text and media objects when possible.
+3. Render with QuickLook, LibreOffice, PowerPoint, Keynote, OfficeCLI, or another available route.
+4. Inspect at least representative screenshots: cover, dense content, diagram/table/chart slide, and closing slide.
+5. Check for blank slides, clipped text, overlapping labels, missing images, incorrect aspect ratio, and private local paths in visible text.
+6. Revise the spec or PPT generation code and re-render if issues are found.
+7. Write a verification report for non-trivial decks.
 
-Rules:
+Final status must distinguish:
 
-- prototype 1-2 slides first
-- render or manually inspect in the target player
-- if verification fails, deliver native dynamic PPTX instead
-- mark result as experimental
+- `Created`: PPTX/file was generated.
+- `Rendered`: visual render or screenshot was produced.
+- `Read back`: slide contents or platform contents were inspected after export.
+- `Final`: required checks passed or remaining limits were explicitly accepted.
 
-### 9. Write Slide Manifest
+## Consulting-Grade Quality Gates
 
-For standard or higher QA, write `slide_manifest.json` using `templates/slide-manifest-template.json` as the shape.
+Use these gates for high-value, strategy, McKinsey-style, client-facing, or paid deliverables.
 
-The manifest should record:
+- Evidence gate: every important claim traces to source, calculation, or clearly labeled reconstruction.
+- Story gate: the deck has a narrative arc, not a pile of slides.
+- Density gate: each slide carries one primary message and does not become a poster of tiny text.
+- Editability gate: core text, diagrams, tables, and simple charts are editable where practical.
+- Visual gate: grid, typography, spacing, footer, section labels, and captions are consistent.
+- Persona-fit gate: structure, proof style, and visual language match the primary user audience.
+- Overflow gate: rendered output shows no clipped text or incoherent overlap.
+- Handoff gate: exactly one main deliverable path/link is reported, with verification status and known limits.
 
-- deck metadata: source, rights boundary, export target, visual system, logical slide count, physical slide count
-- per-slide locked content pointer
-- generated objects: editable text, shapes, charts, tables, images, screenshots, icons, background assets
-- asset provenance and rights labels
-- dynamic build mapping: logical slide id to physical slide ids
-- verification status per slide when available
+Do not force full consulting-grade ceremony on quick drafts. Apply the gates proportionally to risk and user intent.
 
-Rules:
+## Route-Specific Deliverables
 
-- `must_keep_editable_text` should map to actual editable text objects for PPTX/Feishu outputs when possible.
-- If a slide intentionally uses a full-slide image or rasterized visual, mark why and what editing tradeoff was accepted.
-- Do not treat `pictures=0` as a success metric; diagrams, screenshots, and brand imagery can be legitimate. The point is preserving core text editability and semantic structure.
+For non-trivial PPT work, create a durable work directory. Recommended files by route:
 
-### 10. Verify Before Completion
-
-At minimum:
-
-- Check logical slide count and build-step slide count.
-- Check text overflow in preview and/or exported target.
-- Check whether visual design is professional and brand-consistent.
-- Check captions, figure labels, and desensitization notes.
-- Check that core text is editable where the export route supports editable objects.
-- Check that no private local paths, tokens, unpublished names, or raw review trails appear in slide-visible text.
-- For native dynamic PPTX, verify slide count, notes count, transition XML if added, and at least one render/screenshot when possible.
-- Do not call a deck `final` if only creation succeeded but rendering/readback failed or was unavailable.
-
-For standard/high-value decks, also write `visual_qa_gate.json` or `verification-report.md` with:
-
-- `nonblank_render`: pass/fail/unknown
-- `text_overflow`: pass/fail/unknown
-- `editable_core_text`: pass/fail/unknown
-- `visual_structure_preserved`: pass/fail/unknown
-- `source_labels_present`: pass/fail/unknown
-- `rasterization_tradeoffs`: none/list
-- `remaining_manual_checks`: list
-
-## Failure Modes And Required Responses
-
-| Failure Mode | Trigger | Required Response |
-| --- | --- | --- |
-| User wanted dynamic PPT but got HTML | User asks for PPT motion/presentation mode | Generate native dynamic PPTX; HTML only as companion |
-| Direct PPTX dependency missing | PptxGenJS/helper unavailable | Ask before installing; otherwise deliver preview/Feishu route |
-| PPTX creation succeeds but cannot render | No renderer/checker available | Mark as created but not visually verified |
-| Native build-step deck too long | Too many reveal steps | Group reveals, reduce bullets, or use section-level builds |
-| Object animation requested | User needs same-slide PowerPoint object animation | Prototype; mark experimental; do not promise |
-| Source rights unclear | External article or third-party images | Ask or mark as private/internal; preserve attribution |
-| Visual fragmentation | Backgrounds/layouts change too much | Reduce to one dominant background family and one contrast mode |
-| Fake evidence | Reconstructed UI or synthetic diagram | Label as reconstruction or assumption visibly |
-| Missing content lock | Visual/export work begins before slide facts are frozen | Pause, create compact content lock, then continue |
-| Manifest mismatch | Generated deck count/assets differ from manifest | Update manifest or fix deck before handoff |
-| Editable text lost | Core text only exists in a flattened image | Rebuild as editable text or clearly mark accepted tradeoff |
-| Privacy leak | Tokens, raw local paths, unpublished names | Redact before export and mention redaction class |
-
-## Red-Light Blacklist
-
-Never do these:
-
-- Never answer a request for dynamic PPT with only HTML.
-- Never claim object-level PowerPoint animations are supported unless a verified prototype worked in the target player.
-- Never call a generated PPTX final when it was only created but not rendered or inspected.
-- Never let visual generation or layout rewrite locked facts, metrics, names, or recommendations.
-- Never claim reconstructed UI, inferred process, or synthetic image is a historical screenshot.
-- Never upload a public deck from an external copyrighted article without confirming usage rights.
-- Never include private local paths, tokens, account names, unpublished leads, or raw review trails in public decks.
-
-## Output Package
-
-For a complete deck task, produce one primary deliverable plus a short handoff.
-
-Recommended files:
+`article-to-deck`:
 
 - `storyboard.md`
-- `content_lock.md` or content-lock section inside storyboard
-- `visual-design-brief.md` or `visual-system.json`
-- `slide_manifest.json` for standard/high-value decks
-- `slides-preview.html` when useful
-- `deck.pptx` for static PPTX
-- `deck-dynamic-native.pptx` for native dynamic PPTX
-- `dynamic-deck.html` only as companion or web export
-- Feishu Slides link when requested
-- `pptx-build-report.json` or `native-dynamic-pptx-report.json`
-- `visual_qa_gate.json` or `verification-report.md`
+- `content_lock.md`
+- `slide_manifest.json`
+- `deck.pptx`
+- `verification_report.json` or `verification-report.md`
 
-Handoff should include source rights, usage boundary, export target, logical slide count, build-step slide count if dynamic, chosen visual system, content lock status, manifest status, capability matrix, verification performed, and remaining manual checks.
+`design-spec-to-deck`:
 
-## Collaboration Rules
+- `visual_design_brief.md`
+- `theme.json`
+- `design_spec.json` or `slide_manifest.json`
+- `deck.pptx`
+- rendered preview image(s)
+- `verification_report.json`
 
-For one-shot conversions, prefer run/one-shot execution and write durable output files. Do not rely on long chat history as deck state. When delegating, pass the source path, rights boundary, capability matrix, storyboard requirements, content lock requirements, brand direction, export target, dynamic PPT requirements, manifest requirements, QA level, and expected final deliverable.
+`image-to-editable-rebuild`:
+
+- `source_manifest.json`
+- `assets.json` when assets are extracted
+- `layout.json` when layout is modeled
+- `deck-editable-rebuild.pptx`
+- `quality_report.json`
+- preview/contact sheet when useful
+
+`deck-qa-repair`:
+
+- `qa_report.md`
+- rendered screenshots
+- `deck-repaired.pptx` if changes are made
+
+`consulting-grade-deck`:
+
+- content lock
+- manifest
+- verification report
+- final handoff summary
+
+## Default Recommendation For Future PPT Work
+
+When the user asks for a new PPT from content, start with `article-to-deck` plus standard QA.
+
+When the user provides a visual design/spec/template, use `design-spec-to-deck`.
+
+When the user provides images and asks for editable PPT, use `image-to-editable-rebuild`.
+
+When the user asks for McKinsey-style or consulting-style PPT, use `consulting-grade-deck` gates proportionally, but keep the visual style restrained and editable.
+
+When the user is a product owner or product reporter, default to a business/product report deck with executive summary, decision ask, metrics, roadmap, risks, and next steps.
+
+When the user is an agent engineer or automation developer, default to a technical blueprint deck with workflow, architecture, failure modes, implementation plan, and ROI.
+
+When the user is a self-media author or knowledge blogger, default to an editorial knowledge deck with hook, framework, examples, practical steps, and reusable social/content cards.
+
+When the user asks “which PPT skill/tool should we use,” answer in terms of persona, delivery route, and failure mode, not a generic leaderboard.
+
+---
+
+## Optional Reference File To Add
+
+Create `references/ppt-skill-synthesis.md` for examples and deeper notes. Keep `SKILL.md` concise; load the reference only when the user asks for route selection, image-to-editable rebuilds, consulting-grade PPT QA, or persona-specific deck defaults.
+
+Suggested reference contents:
+
+- route examples from recent work
+- persona-specific slide templates
+- language for editability labels
+- sample `quality_report.json` fields
+- sample `design_spec.json` fields
+- quick comparison of EditableImage2PPTSkill, PPT Master, OfficeCLI, and CyberPPT as workflow influences
+- examples of when to use native PPT, SVG, HTML preview, or raster images
+
+## Acceptance Criteria
+
+The updated skill should enable a future agent to:
+
+1. Choose the correct PPT workflow route before implementation.
+2. Identify or infer the primary PPT user persona.
+3. Produce decks optimized for minimal user rework.
+4. Produce persona-fit decks for product owners/reporters, agent engineers/automation developers, and self-media authors/knowledge bloggers.
+5. Avoid flattening editable rebuilds into screenshots.
+6. Use design specs/manifests as the stable intermediate layer when appropriate.
+7. Use SVG/HTML/code-rendered previews pragmatically without sacrificing editability.
+8. Verify PPTX artifacts with render/readback checks before claiming final status.
+9. Apply consulting-grade gates proportionally for high-stakes decks.
+10. Report final deliverables with honest `Created / Rendered / Read back / Final` status.
+
+## Proposed Follow-Up Test Prompts
+
+After applying the proposal, test with:
+
+1. “我是产品负责人，把这个 PRD 和数据做成给老板汇报的 PPT。”
+2. “我是 Agent 工程师，把这个 OpenClaw 自动化方案做成技术评审 PPT。”
+3. “我是知识博主，把这篇公众号文章做成适合课程/小红书切片的 PPT。”
+4. “把这 10 张咨询风 PPT 设计图转成可编辑 PPT。”
+5. “做一套麦肯锡风格但不要过度设计的业务汇报 PPT。”

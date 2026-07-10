@@ -1,34 +1,84 @@
-# article-html-to-ppt
+# Article HTML To PPT
 
-Turn articles, Markdown drafts, HTML pages, WeChat drafts, and review-approved manuscripts into formal, brand-consistent slide decks.
+Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks.
 
-This skill is designed for article-to-presentation workflows where the output must be more than a quick template conversion. It helps an agent derive a storyboard, choose a content-fit but brand-consistent visual direction, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
+This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
+
+This skill supports:
+
+- direct PPTX export
+- native dynamic PPTX via progressive build slides
+- HTML preview or dynamic HTML companion decks
+- Feishu Slides routing
+- MeowClawLab visual systems
+- persona-fit deck defaults for product owners, agent engineers, and knowledge creators
+- consulting-style and editorial knowledge deck baselines
+- SVG/HTML preview policy for simple, polished, code-backed layouts
+- evidence-backed storyboards
+- content lock, slide manifest, and lightweight visual QA gates
+
+## Quality Contract
+
+- Important claims, numbers, examples, diagrams, and recommendations must trace back to source material or be labeled as reconstruction or assumption.
+- Storyline comes before slide production.
+- Persona and delivery context come before visual styling.
+- Slide content is locked before visual previews or PPTX export.
+- Non-trivial decks should maintain `slide_manifest.json`.
+- Core text should remain editable where the export format supports it.
+- Visual structure should not be downgraded into a flat screenshot unless the user explicitly accepts that tradeoff.
+- Platform capability gaps are reported instead of hidden.
+- Dynamic PPT requests are answered with native PPTX progressive-build decks unless the user explicitly asks for web-only output.
+- A handoff must separate `Created`, `Rendered`, `Read back`, and `Final`.
+
+## Persona Defaults
+
+- Product owners / product reporters: executive summary, decision ask, metrics, roadmap, risks, and next steps.
+- Agent engineers / automation developers: workflow, architecture, failure modes, implementation plan, permissions, and ROI.
+- Self-media authors / knowledge bloggers: hook, framework, examples, practical steps, reusable social/content cards, and brand rhythm.
 
 ## When To Use
 
 Use this skill when you need to:
 
 - Convert long-form writing into a slide deck.
-- Turn a WeChat article, Markdown draft, HTML article, or report into a presentation.
+- Turn a WeChat article, Markdown draft, HTML article, PRD, automation proposal, product report, knowledge post, or research synthesis into a presentation.
 - Generate a local `.pptx` file that can be opened in PowerPoint, Keynote, LibreOffice Impress, or imported into Google Slides.
 - Generate a dynamic PPTX that reveals content step by step during presentation.
 - Create or upload a Feishu Slides deck for online collaboration and sharing.
 - Preserve source-rights boundaries and attribution.
-- Keep a deck professional, readable, and brand-consistent.
-- Lock slide content before visual production.
+- Keep a deck professional, readable, persona-fit, and brand-consistent.
+- Use SVG or HTML/CSS as a preview/design aid while preserving editable PPT core objects where practical.
 - Maintain slide manifests and lightweight QA gates for non-trivial decks.
 - Distinguish generated, rendered, read-back, and final delivery states.
 
 ## How To Use
 
-Give the agent the source article and the desired export target:
+Give the agent the source material, audience/persona, and desired export target:
 
 ```text
-Use article-html-to-ppt to turn this article into an editable PPTX:
-https://example.com/article
-Audience: internal product review
-Style: formal, readable, MeowClawLab
+Use article-html-to-ppt to turn this PRD and metrics summary into an editable PPTX.
+Audience: product leadership
+Persona: product owner / product reporter
+Goal: secure roadmap approval
+Style: clean product review, consulting-style, low rework
 Slides: around 8-12
+```
+
+For Agent engineering or automation decks:
+
+```text
+Use article-html-to-ppt to create a technical review PPT.
+Persona: Agent engineer / automation developer
+Include: workflow diagram, architecture, failure modes, implementation plan, ROI.
+Use SVG for simple architecture or state-machine diagrams if helpful.
+```
+
+For knowledge creators:
+
+```text
+Use article-html-to-ppt to turn this article into a knowledge deck.
+Persona: self-media author / knowledge blogger
+Include: hook, framework, examples, practical steps, and reusable social-card slides.
 ```
 
 For native dynamic PPTX:
@@ -48,7 +98,7 @@ and send me the shareable Feishu Slides link.
 
 ## Export Behavior
 
-The skill chooses the export route from the user's wording and available capabilities.
+The skill chooses the export route from the user's wording, persona, delivery context, and available capabilities.
 
 ### Generates a PPTX file
 
@@ -67,6 +117,15 @@ Typical outputs:
 - `pptx-build-report.json` or `native-dynamic-pptx-report.json`
 - `verification-report.md`
 
+### Uses SVG or HTML/CSS when useful
+
+SVG and HTML/CSS are design aids, not excuses to flatten the whole deck:
+
+- Use native PPT objects for standard text, shapes, tables, diagrams, and simple charts.
+- Use SVG for simple, scalable effects: issue trees, icons, line diagrams, badges, dividers, simple architecture maps, and state machines.
+- Use HTML/CSS as a preview surface for layout, typography, tables, dashboards, longform editorial pages, or dense technical diagrams before rebuilding/exporting to PPTX.
+- Do not use HTML screenshots as the final deck unless the user accepts low editability.
+
 ### Generates a native dynamic PPTX
 
 When the user asks for dynamic PPT, the default is **native dynamic PPTX**, not HTML.
@@ -83,8 +142,6 @@ The handoff should report both:
 - logical slide count
 - native build-step slide count
 
-Example: a 10-slide logical deck may become a 30-slide dynamic PPTX if each logical slide has 3 reveal steps.
-
 ### Uploads or creates Feishu Slides
 
 The skill should create or upload to Feishu Slides when the user asks for:
@@ -97,55 +154,28 @@ The skill should create or upload to Feishu Slides when the user asks for:
 
 Feishu delivery depends on the current environment's Feishu/Lark authorization and API capability. Creation/upload is not the same as final verification: when possible, the agent should read back or screenshot the Feishu Slides result before calling it final.
 
-### Generates both PPTX and Feishu Slides
-
-The skill should deliver both when the user asks for both an editable file and Feishu upload, or when a local PPTX is needed as the source artifact before cloud delivery.
-
-In that case the handoff should include:
-
-- local PPTX path or attached file
-- Feishu Slides link
-- which artifact was rendered or read back
-- any remaining manual checks
-
-### Generates HTML
-
-HTML is useful for review previews and web-native presentations, but it is not a replacement for dynamic PPTX when the user asks for a PPT.
-
-Typical HTML outputs:
-
-- `slides-preview.html` for design/content review
-- `dynamic-deck.html` only when the user asks for a web presentation or when HTML is a companion artifact
-
-## Core Safeguards
-
-- Source rights are classified before export.
-- External articles and reconstructed visuals are not presented as owned evidence.
-- Important claims, numbers, examples, diagrams, and recommendations are traceable to source material or labeled as reconstruction/assumption.
-- Slide-visible facts are frozen in a content lock before visual previews or PPTX export.
-- Visual design is derived from article content, but constrained by the brand system.
-- Formal brand consistency is the default for publishable or client-facing decks.
-- Core text should remain editable where the export format supports it.
-- Visual structure should not be downgraded into a flat screenshot unless the user explicitly accepts that tradeoff.
-- Platform capability gaps are reported instead of hidden.
-- Dynamic PPT requests are answered with native PPTX progressive-build decks unless the user explicitly asks for web-only output.
-- A handoff must separate `Created`, `Rendered`, `Read back`, and `Final`.
-
 ## Files
 
-- [`SKILL.md`](./SKILL.md) - the actual OpenClaw skill document.
-- [`skill-card.md`](./skill-card.md) - public-facing skill card metadata.
-- [`references/export-pipelines.md`](./references/export-pipelines.md) - export routing for PPTX, dynamic PPTX, Feishu Slides, and HTML.
-- [`references/visual-design-archetypes.md`](./references/visual-design-archetypes.md) - visual direction archetypes.
-- [`references/visual-systems.md`](./references/visual-systems.md) - reusable visual system constraints.
-- [`templates/storyboard-template.md`](./templates/storyboard-template.md) - storyboard and verification template.
-- [`templates/content-lock-template.md`](./templates/content-lock-template.md) - content lock template.
-- [`templates/slide-manifest-template.json`](./templates/slide-manifest-template.json) - slide manifest template.
-- [`templates/visual-qa-gate-template.json`](./templates/visual-qa-gate-template.json) - visual QA gate template.
+- `SKILL.md` - the actual OpenClaw skill document.
+- `skill-card.md` - public-facing skill card metadata.
+- `references/export-pipelines.md` - export routing for PPTX, dynamic PPTX, Feishu Slides, and HTML.
+- `references/visual-design-archetypes.md` - visual direction archetypes.
+- `references/visual-systems.md` - reusable visual system constraints.
+- `templates/storyboard-template.md` - storyboard and verification template.
+- `templates/content-lock-template.md` - content lock template.
+- `templates/slide-manifest-template.json` - slide manifest template.
+- `templates/visual-qa-gate-template.json` - visual QA gate template.
+
+## Templates
+
+- `templates/storyboard-template.md`
+- `templates/content-lock-template.md`
+- `templates/slide-manifest-template.json`
+- `templates/visual-qa-gate-template.json`
 
 ## Version
 
-1.0.3
+1.0.4
 
 ## Publishing Note
 
