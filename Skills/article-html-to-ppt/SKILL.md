@@ -205,6 +205,19 @@ Use this baseline for McKinsey-style, strategy, business, report, or client-faci
 - Use small, consistent labels and source notes.
 - Keep text within boxes; no clipped text, tiny labels, or overlapping legends.
 
+## Privacy And Cloud Export Gate
+
+Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content.
+
+Feishu/Lark Slides export sends source content, generated slide text, and relevant metadata to the Feishu/Lark cloud environment. Only use Feishu/Lark upload or sharing when the user explicitly asks for cloud delivery and the content is appropriate for that service.
+
+Before any Feishu/Lark upload:
+
+1. Summarize what content and metadata will leave the local environment.
+2. Confirm the intended destination or sharing boundary.
+3. Prefer local PPTX output if the user has not clearly requested cloud delivery.
+4. Do not silently upload sensitive drafts, internal PRDs, metrics, automation designs, or unpublished content.
+
 ## Route Selection
 
 Classify the user's request into one primary route:

@@ -31,6 +31,9 @@ Mitigation: The skill defaults to formal brand-consistent design and uses motifs
 Risk: A single consulting-style template may not fit product reporting, technical architecture, and knowledge creator decks equally well. <br>
 Mitigation: The skill now selects persona-specific deck defaults for product owners/reporters, Agent engineers/automation developers, and self-media authors/knowledge bloggers. <br>
 
+Risk: Feishu/Lark Slides export sends source content, generated slide text, and related metadata to a cloud service. <br>
+Mitigation: The skill defaults sensitive work to local PPTX output and requires explicit user intent plus a pre-upload summary before Feishu/Lark cloud delivery. <br>
+
 ## Reference(s): <br>
 - [Visual Design Archetypes](references/visual-design-archetypes.md) <br>
 - [Visual Systems Reference](references/visual-systems.md) <br>
@@ -56,7 +59,7 @@ Mitigation: The skill now selects persona-specific deck defaults for product own
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-1.0.4 <br>
+1.0.5 <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>

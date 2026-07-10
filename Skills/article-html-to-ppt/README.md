@@ -51,6 +51,10 @@ Use this skill when you need to:
 - Maintain slide manifests and lightweight QA gates for non-trivial decks.
 - Distinguish generated, rendered, read-back, and final delivery states.
 
+## Privacy And Cloud Export Notice
+
+Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content. Feishu/Lark Slides export sends source content, generated slide text, and relevant metadata to the Feishu/Lark cloud environment. Only use Feishu/Lark upload or sharing when the user explicitly asks for cloud delivery and the content is appropriate for that service. Before uploading, summarize what will be transmitted and confirm the intended destination or sharing boundary.
+
 ## How To Use
 
 Give the agent the source material, audience/persona, and desired export target:
@@ -154,6 +158,8 @@ The skill should create or upload to Feishu Slides when the user asks for:
 
 Feishu delivery depends on the current environment's Feishu/Lark authorization and API capability. Creation/upload is not the same as final verification: when possible, the agent should read back or screenshot the Feishu Slides result before calling it final.
 
+Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not silently upload sensitive drafts, internal PRDs, metrics, automation designs, or unpublished content.
+
 ## Files
 
 - `SKILL.md` - the actual OpenClaw skill document.
@@ -175,7 +181,7 @@ Feishu delivery depends on the current environment's Feishu/Lark authorization a
 
 ## Version
 
-1.0.4
+1.0.5
 
 ## Publishing Note
 
