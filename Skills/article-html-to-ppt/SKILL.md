@@ -1,422 +1,456 @@
 ---
 name: "article-html-to-ppt"
-description: "PPT skill for low-rework persona-fit decks"
+description: "PPT skill for polished hybrid-editable decks"
 ---
 
-# Proposal: Upgrade `article-html-to-ppt` For Low-Rework Persona-Fit PPTs
+# Article HTML To PPT
 
-## Target Skill
+Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, design specs, and review-approved manuscripts into polished, low-rework, persona-fit slide decks.
 
-`article-html-to-ppt`
+## Core Standard
 
-## Product Goal
+Optimize in this order:
 
-The skill should help users produce PPT decks that require as little second-pass editing as practical. The default standard is not flashy presentation art. The default standard is:
+1. Content truth and source boundaries.
+2. Storyline and slide-level message clarity.
+3. Persona-fit structure and proof style.
+4. Design intent fidelity, not blind spec literalism.
+5. Master-level visual design language.
+6. Editability of core text, cards, diagrams, tables, and simple charts.
+7. Render/readback verification before final handoff.
+8. Honest reporting of rasterized layers and conversion limits.
 
-- logically clear
-- simple but not empty
-- appropriate to the user's role and delivery context
-- editable where practical
-- visually calm and consistent
-- verified before handoff
+Default delivery should be `Hybrid editable`: polished material/background layers may be raster or SVG, while message-bearing content remains editable PowerPoint objects. Avoid both extremes: screenshot-only decks that cannot be edited, and pure native-object decks that look like rough wireframes.
 
-The skill should support consulting-style decks, but it should not force every user into the same McKinsey template. It should identify the likely audience and produce decks whose structure, density, visual language, and proof style fit that audience.
+## Updated Standard PPT Production Chain
 
-Primary audiences:
+Use this as the default chain for serious decks:
 
-1. Product owners / product reporters.
-2. Agent engineers / automation developers.
-3. Self-media authors / knowledge bloggers.
+```text
+source/article/design brief
+-> content analysis and evidence inventory
+-> slide storyline and judgment titles
+-> slide_manifest.json
+-> style selection and page archetype mapping
+-> detailed design specification
+-> visual priority map + deletion/noise budget
+-> high-fidelity reference for key pages when polish matters
+-> editable/hybrid PPT implementation
+-> render/readback QA
+-> revision loop
+-> final PPTX + verification report
+```
 
-## Why Update
+The critical update is this:
 
-Recent PPT skill research showed that our current skill already has a good foundation: direct PPTX generation, content lock, manifests, and honest verification. The missing upgrade is to make the decision framework explicit and to bias every route toward low-rework, editable, verified decks.
+```text
+detailed design specification -> visual priority map + deletion/noise budget -> PPT implementation
+```
 
-Useful influences:
+Do not send a detailed design spec directly into PPT production unless the deck is low-risk and visually simple. A detailed spec can over-specify coordinates, placeholders, grids, connectors, and decorative marks. Before implementation, decide what matters, what should be weakened, what should be merged, and what should be deleted.
 
-- EditableImage2PPTSkill: reference images and screenshots should be rebuilt as editable text/shapes/charts where practical, not dumped as full-page screenshots.
-- PPT Master: use an intermediate visual blueprint/spec layer, such as SVG, JSON, HTML, or manifest, so a deck can be previewed, debugged, and converted into PPTX objects.
-- OfficeCLI / QuickLook style validation: generated files are not finished until rendered/read back or otherwise verified.
-- CyberPPT: high-value decks need quality gates around evidence, story, density, editability, overflow, and final handoff.
-- Design spec POC: model-generated images do not reliably return real layer sidecars; the stable path is `design_spec.json -> PPTX/PNG render -> visual QA -> spec correction -> export`.
+## Production Artifact Contract
 
-## Proposed Additions To `SKILL.md`
+For non-trivial decks, create these artifacts in the project directory:
 
-Add the following sections after the current `Quality Contract` or before `Workflow`.
+1. `content_analysis.md`: thesis, audience, evidence inventory, risks/caveats, reusable terms.
+2. `storyboard.md`: slide sequence, slide judgments, audience action, source coverage.
+3. `slide_manifest.json`: page archetypes, density, primary anchor, editable core, raster allowance.
+4. `style_contract.json`: style system, typography, color, layout primitives, forbidden drift.
+5. `detailed_design_spec.md` or `design_spec.json`: page-level implementation details.
+6. `spec_implementation_plan.json`: visual priority map, deletion rules, noise budget, object roles.
+7. `visual_reference/`: at least cover + one representative content page when polish matters.
+8. `deck.pptx`: final editable or hybrid-editable deck.
+9. `verification-report.md`: object counts, media count, render/readback route, known limits.
+10. `delivery-manifest.json`: canonical paths and final status.
 
----
+Do not treat the deck as final when only `deck.pptx` exists. The intermediate artifacts are how quality survives retries, interruptions, and later edits.
 
-## Low-Rework PPT Contract
+## Readiness Gates
 
-Optimize for decks that users can present or lightly edit, not decks that only look good in a screenshot.
+### Gate 1: Content Lock
 
-Default priorities:
+Pass only when:
 
-1. Clear story and slide intent.
-2. Persona-fit structure and style.
-3. Editable core text, shapes, tables, and simple charts.
-4. Consistent layout grid, spacing, typography, footer, section labels, and page rhythm.
-5. Conservative visual system with one accent color, neutral support colors, and no visual noise.
-6. Render/readback verification before claiming final status.
-7. Honest limitations when some elements remain raster images.
+- each slide has a judgment title, not a topic title
+- every major claim is sourced, inferred, or explicitly marked as an assumption
+- no important source section is silently dropped
+- dense paragraphs are transformed into structure, not copied as walls of text
 
-A deck does not need to be highly ornate. It must feel deliberate, legible, and structurally polished.
+Fail triggers:
 
-## Persona Selection
+- title could fit any generic deck
+- bullets are copied from source without prioritization
+- evidence and conclusion are disconnected
+- user-facing deck would misrepresent the source
 
-Before choosing a route or visual style, identify the primary user persona and presentation context.
+### Gate 2: Architecture Lock
 
-If the user states a persona, use it. If not, infer from source material and goal:
+Pass only when:
 
-| Persona | Common Inputs | Typical Goal | Default Style |
-| --- | --- | --- | --- |
-| `product-owner` | PRD, roadmap, feature analysis, metrics, business review, stakeholder update | align decisions, secure resources, report progress | business-consulting, structured, metric-aware |
-| `agent-engineer` | architecture notes, automation workflow, tool chain, runbook, technical proposal | explain system design, implementation path, reliability, ROI | technical blueprint, flow-first, precise |
-| `knowledge-creator` | article, newsletter, course notes, research synthesis, IP content | explain ideas, teach, publish, attract audience | editorial knowledge deck, visually memorable but clean |
-| `consulting-general` | strategy, market, operations, analysis, client-facing deck | persuade with structured reasoning | restrained McKinsey-like deck |
+- every slide has exactly one primary anchor
+- every slide has one page archetype
+- density label matches actual content
+- high-density pages have a structural reason to be dense
+- tables/dashboards are not used as dumping grounds
 
-If multiple personas apply, choose the persona whose audience will judge the deck. Example: an Agent engineering automation proposal for executives should use `product-owner` story framing plus selected `agent-engineer` architecture slides.
+Fail triggers:
 
-## Persona-Specific Deck Defaults
+- two diagrams compete on one slide
+- a page tries to explain workflow, metrics, and risks at once
+- a table is too dense for its intended audience
+- layout is chosen before message is clear
 
-### Product Owners / Product Reporters
+### Gate 3: Spec Priority Lock
 
-Use when the deck is for product负责人、产品汇报、业务复盘、路线图、版本规划、增长/留存/转化分析、资源申请、项目阶段汇报。
+Pass only when:
 
-What this audience needs:
+- every object has role and priority
+- low-priority objects are deleted, merged, weakened, or moved to notes
+- grid/connector/icon/table budgets are explicit
+- the implementation plan preserves design intent instead of raw object count
 
-- Fast executive understanding: what changed, why it matters, what decision is needed.
-- Clear product logic: user problem -> opportunity -> solution -> impact -> next step.
-- Evidence from metrics, user feedback, market signals, milestones, and risks.
-- A deck that can be reused in meetings with leaders, cross-functional teams, and stakeholders.
+Fail triggers:
 
-Recommended structure:
+- detailed coordinates are executed without hierarchy review
+- background or technical decoration competes with content
+- connector web appears
+- icon/label repetition creates noise
 
-1. Executive summary: one-slide answer and decision request.
-2. Context and problem: user/business pain, current baseline.
-3. Insight: key finding or opportunity.
-4. Proposal: product direction, feature package, or roadmap.
-5. Impact model: metrics, funnel, adoption, revenue, efficiency, or qualitative value.
-6. Execution plan: milestones, owners, dependencies.
-7. Risks and tradeoffs: what could fail and mitigation.
-8. Ask / decision: required resources, approval, or next step.
+### Gate 4: Visual Reference Lock
 
-Visual style:
+Use when the user expects polish, formal quality, style exploration, template creation, or public/client-facing delivery.
 
-- Consulting-style white/light background, dark text, one confident accent color.
-- Strong title hierarchy and executive takeaway titles.
-- Use roadmaps, funnels, metric cards, 2x2 prioritization, before/after flows, simple dashboards, risk matrices.
-- Keep slides dense enough for business review, but not wall-of-text.
-- Make charts and tables editable whenever practical.
+Pass only when:
 
-Quality gates:
+- at least cover + one representative content page are visually previewed
+- preview demonstrates typography, spacing, component style, and density
+- the user or agent can compare the direction before full PPT construction
+- screenshot/reference is clearly labeled as non-final if not editable
 
-- Every major claim should connect to a metric, user signal, source, or clearly labeled assumption.
-- The deck must make the decision/ask obvious.
-- Roadmap and plan slides must be scannable within 20 seconds.
-- Avoid vague product language such as “提升体验” without mechanism or measure.
+Fail triggers:
 
-### Agent Engineers / Automation Developers
+- final deck is built without seeing any visual direction
+- visual reference looks good but cannot be reconstructed editably
+- reference uses effects that cannot be transferred or approximated
 
-Use when the deck is for Agent工程师、自动化开发者、OpenClaw/Codex/工作流开发、系统设计、工具链说明、部署方案、技术评审、自动化 ROI 说明。
+### Gate 5: PPT Implementation Lock
 
-What this audience needs:
+Pass only when:
 
-- System clarity: components, inputs, outputs, tools, triggers, states, failure modes.
-- Implementation credibility: what runs where, what is automated, what is manual, what is risky.
-- Operational view: observability, retries, permissions, data flow, handoff, rollback.
-- A bridge between technical details and business value.
+- message-bearing content is editable
+- material/raster layers are allowed and disclosed
+- localized raster fallback is limited to intended complex components
+- all key text fits within boxes
+- representative slides render nonblank
+- package/object counts match expected structure
 
-Recommended structure:
+Fail triggers:
 
-1. Problem / automation target: current workflow pain and desired outcome.
-2. System overview: agents, tools, data sources, execution environment.
-3. Workflow diagram: trigger -> planning -> execution -> verification -> handoff.
-4. Architecture / integration: APIs, local files, queues, cron, sessions, storage, permissions.
-5. Reliability model: failure modes, retries, logs, alerts, human approval points.
-6. Implementation plan: phases, milestones, test plan.
-7. ROI / impact: time saved, quality gain, risk reduction, cost implications.
-8. Appendix: technical details, schemas, prompts, runbooks.
+- whole deck is screenshot-only without explicit user acceptance
+- text, table, or chart labels clip or overlap
+- file renders blank or missing images
+- final report overclaims editability
+- ordinary card grids, matrices, tables, or metric cards are rasterized without user approval
 
-Visual style:
+## Design Spec Execution Gate
 
-- Technical blueprint style: clean grid, neutral background, monospace labels only where useful.
-- Use system diagrams, swimlanes, state machines, sequence flows, dependency maps, API callouts, config tables.
-- SVG is especially useful for flow diagrams, architecture maps, icons, connector lines, and state machines.
-- HTML/CSS preview is useful for dense technical dashboards, workflow boards, or runbook-style pages before PPT export.
-- Avoid marketing-like hero slides; precision beats decoration.
+Use this gate whenever the user provides a detailed PPT design spec, coordinates, placeholder map, brand template, visual grammar, or page-by-page layout description.
 
-Quality gates:
+A design spec is not a command to draw every listed placeholder at full strength. Treat it as design intent plus a candidate object inventory.
 
-- Diagram labels must be readable and not overlap.
-- Every automation step should identify owner: agent, script, API, human, cron, or external service.
-- Security/privacy/permission boundaries must be visible when relevant.
-- Do not hide uncertainty: mark assumptions, manual steps, and unimplemented pieces.
+Before PPT implementation, create a `spec_implementation_plan`:
 
-### Self-Media Authors / Knowledge Bloggers
+1. Identify the intent of each slide.
+2. Assign one primary visual anchor.
+3. Assign visual priority to every requested object.
+4. Decide what to keep, merge, weaken, move to notes, or delete.
+5. Convert coordinates into a responsive grid only after hierarchy is clear.
+6. Set a noise budget for grid lines, connectors, labels, decorative marks, and icons.
+7. Define the editable core and material layer.
+8. Run a preflight composition score before generating the PPT.
 
-Use when the deck is for 自媒体作者、知识博主、课程内容、公众号/知乎/小红书内容、选题拆解、知识卡片、内容产品、IP 风格展示。
+### Visual Priority And Deletion Rules
 
-What this audience needs:
+Every object must have one role:
 
-- A memorable teaching arc: hook -> concept -> example -> takeaway -> shareable conclusion.
-- Strong information design, but lighter than business consulting decks.
-- Visual identity and content rhythm that can become article images, video frames, course slides, or social cards.
-- Clear enough for readers who are not in a meeting and may skim quickly.
+- `message`: states the slide's judgment
+- `proof`: supports the judgment
+- `structure`: organizes reading order
+- `navigation`: orientation, page number, section marker
+- `brand`: restrained identity cue
+- `material`: mood/background atmosphere
+- `decoration`: optional visual texture
 
-Recommended structure:
+Priority levels:
 
-1. Hook / core question: why this topic matters now.
-2. Big idea: one clean thesis.
-3. Framework: 3-5 part mental model.
-4. Examples / cases: concrete before/after, screenshots, workflows, or comparisons.
-5. Practical steps: checklist, method, prompt, workflow, or template.
-6. Common mistakes: what not to do.
-7. Summary: memorable sentence and next action.
-8. Optional social snippets: slide/card variants for publishing.
+| Priority | Meaning | Treatment |
+| --- | --- | --- |
+| `hero` | Main visual anchor | largest, clearest, never competes with another hero |
+| `primary` | Required for meaning | editable, high contrast, aligned to grid |
+| `secondary` | Supports reading | smaller, grouped, lower contrast |
+| `tertiary` | Context or atmosphere | low contrast, may be moved to notes/footer |
+| `delete` | Noise or duplication | remove before implementation |
 
-Visual style:
+Hard deletion triggers:
 
-- Editorial knowledge style: clean, warm, branded, more expressive than product decks but still controlled.
-- Use title cards, framework diagrams, quote/callout blocks, step cards, comparison grids, annotated screenshots, knowledge cards.
-- Allow tasteful brand/IP accents: small character mark, column color, signature footer, recurring motif.
-- Avoid over-designed poster pages that make text hard to edit or reuse.
-- SVG can provide simple motifs, icons, dividers, badges, and framework diagrams.
-- HTML preview can help produce article-like longform slides or social-card variants, but final PPT should preserve editable text when practical.
+- decorative grid competes with text or charts
+- connector line does not clarify flow or dependency
+- icon repeats the label without adding meaning
+- table cell forces body text below minimum size
+- more than two callout systems compete on one slide
+- multiple diagrams explain the same relationship
+- background motif occupies attention needed by the primary anchor
 
-Quality gates:
+## Technical Blueprint Refinement Gate
 
-- Each slide should teach one idea or support one content beat.
-- The deck should be easy to repurpose into article images or short video frames.
-- Avoid generic AI buzzword slides; include examples, workflows, or original framing.
-- Maintain brand consistency without burying the knowledge content.
+Use for Agent systems, automation workflows, architecture, toolchains, permissions, failure modes, observability, runbooks, OpenClaw/Codex workflows, or other engineering decks.
 
-## Consulting-Style Visual Baseline
+Technical blueprint style must not become a raw blueprint/wireframe. For client-facing or high-stakes technical decks, default to `consulting-blueprint-hybrid`:
 
-Use this baseline for McKinsey-style, strategy, business, report, or client-facing decks.
+- consulting-grade white space and answer-first titles
+- technical diagrams as the main proof layer
+- restrained blueprint/grid only as material layer
+- visible security/failure/observability boundaries when relevant
+- minimal but meaningful connectors
+- precise labels, not label noise
 
-- Slide title states the takeaway, not just the topic.
-- One primary message per slide.
-- Use restrained color: dark text, light background, one accent, occasional muted support colors.
-- Use a strong grid: title band, body grid, optional footer/source line.
-- Prefer tables, issue trees, 2x2 matrices, process flows, waterfalls, bar/line charts, and comparison cards over decorative graphics.
-- Use whitespace intentionally; dense does not mean cramped.
-- Avoid gradients, glows, excessive shadows, stock-photo hero pages, and decorative icons unless they carry meaning.
-- Use small, consistent labels and source notes.
-- Keep text within boxes; no clipped text, tiny labels, or overlapping legends.
+### Technical Blueprint Noise Budget
+
+Per slide defaults:
+
+- Background grid opacity: 4%-10% equivalent, or omit on dense pages.
+- Connector lines: 3-9 meaningful lines; more requires grouping or lane structure.
+- Decorative crosses/circles/technical marks: max 3 per slide, never near dense text.
+- Node labels: max 8 primary nodes; collapse the rest into grouped modules.
+- Dashboard cards: max 4 KPI cards + 3 charts for ordinary slides; 6 charts only for a true dashboard page.
+- Tables: max 5 rows x 6 columns unless the slide's single anchor is the table.
+
+If a technical slide exceeds the budget, revise by grouping, splitting, or moving details to appendix/speaker notes.
+
+### Technical Blueprint Component Polish
+
+Prefer:
+
+- swimlanes over tangled node maps
+- module groups over many isolated boxes
+- issue-tree or dependency tree over arbitrary spokes
+- colored state pills for success/risk/manual/automated
+- risk callouts with clear mitigation
+- source/assumption notes for technical uncertainty
+
+Avoid:
+
+- full-page grid at high contrast
+- unweighted connector webs
+- tiny mono labels everywhere
+- equal-size boxes for unequal concepts
+- dashboard panels that look like monitoring UI mockups unless the slide is explicitly an observability page
+
+## Consulting-Grade Adaptation Rule
+
+If the user says the deck should feel formal, McKinsey-like, professional, client-facing, report-like, executive-ready, or if a previous formal style outperformed the current spec, adapt toward `consulting-light` even when the subject is technical.
+
+Adaptation pattern:
+
+```text
+technical blueprint content -> consulting slide hierarchy -> blueprint accents only where they add meaning
+```
+
+For `McKinsey x Technical Blueprint` decks, the hierarchy should feel like consulting output first, engineering blueprint second.
+
+## Master Design Language Gate
+
+Before implementing a serious deck, load and apply:
+
+- `references/master-presentation-design-language.md`
+- `references/master-ppt-design-rubric.md`
+- `references/five-style-master-systems.md`
+- `references/premium-page-archetypes.md`
+- `references/component-craft-checklist.md`
+- `references/spec-to-deck-visual-priority-gate.md`
+- `references/production-readiness-gates.md`
+- `references/anti-regression-examples.md`
+- `references/component-raster-fallback.md`
+- `templates/design-language-schema.json`
+- `templates/spec-implementation-priority-schema.json`
+- `templates/ppt-production-artifact-checklist.md`
+
+The model must move in this order:
+
+1. Content semantics.
+2. Page architecture.
+3. Visual priority and deletion rules.
+4. Visual grammar.
+5. Delivery implementation.
+
+Do not choose a visual style before understanding what the page is supposed to make the audience think or do. Do not execute a detailed design spec literally when that would produce visual noise, cramped slides, weak hierarchy, or wireframe-like output.
+
+## Content Semantics Layer
+
+Classify source content into thesis, judgment, evidence, framework, process, contrast, risk, action, story, and definition before design.
+
+Required extraction before layout:
+
+- article thesis or deck purpose
+- target audience
+- audience action after viewing
+- 5-12 candidate slide judgments
+- evidence inventory
+- risk/caveat inventory
+- reusable terms/entities
+- sections that should not be over-compressed
+
+## Page Architecture Layer
+
+Each slide must have one page archetype, such as executive-cover, technical-cover, claim-evidence, metric-proof, framework-map, process-lane, system-architecture, decision-matrix, risk-register, observability-dashboard, closing-standard, or social-card.
+
+Each slide must define one_message_takeaway, audience_action, primary_anchor, supporting_units, density_label, visual_priority, editable_core, and raster_allowance.
+
+If a page has more than one primary anchor, split it or demote one anchor.
+
+## Style Systems
+
+Use style systems as complete design languages, not skins:
+
+1. `consulting-light`: boardroom, evidence-heavy, answer-first, decision-oriented.
+2. `product-report`: modern product strategy/report deck with metrics, roadmap, tradeoffs, and decision asks.
+3. `technical-blueprint`: precise executable engineering deck with lanes, nodes, boundaries, failure modes, and verification.
+4. `consulting-blueprint-hybrid`: formal consulting hierarchy with restrained technical blueprint accents for Agent/system architecture decks.
+5. `editorial-knowledge`: premium knowledge deck that turns longform writing into frameworks, contrasts, steps, mistakes, and examples.
+6. `meowclaw-ip`: mature personal-IP system with recognizable motifs but formal content pages.
+
+## Two-Lane Production Model
+
+### Lane A: High-Fidelity Visual Reference
+
+Use HTML/CSS or code-rendered visual references to calibrate typography, material/background systems, layout rhythm, visual hierarchy, screenshot/contact-sheet review, and user-facing design approval.
+
+This lane may use browser-level craft, but do not pretend the screenshot is editable PPT.
+
+### Lane B: Editable Delivery Reconstruction
+
+Build final PPTX from a structured manifest or generation code.
+
+Keep editable as native PPT objects:
+
+- slide titles, subtitles, body text
+- captions and source notes
+- cards and callout boxes
+- tables and simple charts
+- flow diagrams, issue trees, timelines, matrices, and simple architecture diagrams
+- meaningful connectors and labels
+
+Allow raster or SVG layers for paper/material background, glow, grain, complex texture, photo, screenshot, illustration, or IP character art.
+
+## Localized Component Raster Fallback
+
+Use localized raster or image generation only when a specific bounded component expresses relationship complexity, visual metaphor, or spatial structure that native PPT primitives are likely to make confusing, ugly, or fragile.
+
+This is a fallback for relationship complexity, not a generic fallback for style polish.
+
+Good candidates:
+
+- complex relationship maps with many cross-links
+- ecosystem maps or stakeholder networks
+- capability landscapes with nested regions and soft boundaries
+- conceptual metaphors or abstract spatial structures
+- dense architecture murals where visual comprehension matters more than direct editing
+- illustrated process scenes, IP illustrations, or editorial visual metaphors
+- complex textures, material backgrounds, photos, or atmospheric layers
+
+Poor candidates:
+
+- 2x2, 2x3, or 3x3 card grids
+- ordinary comparison matrices
+- tables and scorecards
+- metric cards
+- simple process lanes
+- clean issue trees or dependency trees
+- simple architecture diagrams with modest connector counts
+- already-stabilized layouts after reducing connectors, grouping, or switching to cards
+
+Before choosing raster fallback, answer:
+
+1. Is the component's value mainly the spatial relationship, visual metaphor, or complex visual texture?
+2. Would native PPT reconstruction require many fragile connectors, nested shapes, masks, or effects?
+3. Would a user reasonably accept that this component is less editable if the slide title, explanatory labels, source notes, and surrounding text remain editable?
+4. Have simpler editable alternatives been tried first, such as a card grid, lane diagram, grouped modules, issue tree, or split slide?
+
+Use localized raster fallback only when 1-3 are yes, and 4 has been attempted or rejected for a clear reason.
+
+When using it:
+
+- crop the image to the component region, not the full slide
+- keep slide title, short interpretation, source note, and page footer native/editable
+- preferably overlay key labels or section tags as editable PPT text if they may need later editing
+- store the prompt and image path in the project directory
+- disclose the rasterized component in `verification-report.md`
+- count media objects and confirm only intended components are rasterized
+
+Slide 08 lesson: the original tangled six-practice relationship diagram was a candidate for restructuring or localized image fallback; the revised 2x3 six-practice card arrangement is a poor candidate because it is stable, clear, and editable as PPT objects. Once a complex diagram has been simplified into a clean card or matrix layout, preserve editability unless the user explicitly asks for image styling.
+
+## Scoring And Revision Triggers
+
+A production slide must score at least 14/18 on the master rubric, with no zero in any dimension:
+
+1. Judgment quality.
+2. Content fidelity and evidence.
+3. Page composition.
+4. Component craft.
+5. Style system consistency.
+6. Editability and delivery hygiene.
+
+Revise before final handoff if any of these are true:
+
+- average score below 14
+- any slide has a zero
+- more than 20% of slides have topic titles instead of judgment titles
+- more than 15% of slides have clipped/overlapping text
+- any formal deck page looks like raw wireframe/spec coverage output
+- any key technical diagram has connector web or unclear ownership boundaries
+- any claimed editable core is actually rasterized
+- ordinary card/matrix/table content is rasterized without explicit user approval
+
+## Visual QA Gate
+
+Before final handoff:
+
+1. Inspect package structure.
+2. Count editable text and media objects when possible.
+3. Render with QuickLook, PowerPoint, Keynote, OfficeCLI, LibreOffice, or another available route.
+4. Inspect representative screenshots/contact sheets.
+5. Check for blank slides, clipped text, overlapping labels, missing images, incorrect aspect ratio, private local paths, excessive connector webs, high-contrast background grids, and cramped matrices.
+6. Check that any localized raster component is intentional, bounded, disclosed, and not replacing ordinary editable card/matrix/table content.
+7. Revise and re-render if issues are found.
+8. Write a verification report for non-trivial decks.
+
+Final status must distinguish `Created`, `Rendered`, `Read back`, and `Final`.
 
 ## Privacy And Cloud Export Gate
 
-Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content.
-
-Feishu/Lark Slides export sends source content, generated slide text, and relevant metadata to the Feishu/Lark cloud environment. Only use Feishu/Lark upload or sharing when the user explicitly asks for cloud delivery and the content is appropriate for that service.
-
-Before any Feishu/Lark upload:
-
-1. Summarize what content and metadata will leave the local environment.
-2. Confirm the intended destination or sharing boundary.
-3. Prefer local PPTX output if the user has not clearly requested cloud delivery.
-4. Do not silently upload sensitive drafts, internal PRDs, metrics, automation designs, or unpublished content.
-
-## Route Selection
-
-Classify the user's request into one primary route:
-
-| Route | Use When | Primary Output | Key Risk |
-| --- | --- | --- | --- |
-| `article-to-deck` | Source is an article, Markdown draft, report, WeChat post, or structured text | Storyboard + editable PPTX / dynamic PPTX / Feishu Slides | weak storyline or unverifiable claims |
-| `design-spec-to-deck` | User provides a visual spec, brand spec, layout schema, or asks for a template/system | `design_spec.json` / `theme.json` + PPTX + render report | text overlap, unstable bbox, over-designed template |
-| `image-to-editable-rebuild` | User provides slide screenshots, design images, image-only PPT pages, or PDF page images and wants editable PPT | editable PPTX rebuilt from text/shapes/charts/images | flattening into screenshots or overclaiming editability |
-| `deck-qa-repair` | User has an existing PPTX that needs verification, repair, visual QA, readback, or polish | repair report + patched PPTX | missing render/readback or hidden overflow |
-| `consulting-grade-deck` | Client-facing, strategy, McKinsey-style, high-stakes, paid, or public deck | gated PPTX + manifest + verification | skipping evidence/story/density gates |
-
-If multiple routes apply, choose the route that controls the hardest failure mode. Example: a screenshot of a consulting-style deck that must become editable should use `image-to-editable-rebuild` plus selected `consulting-grade-deck` gates.
-
-## Spec / SVG / HTML Rendering Policy
-
-When a deck is based on a desired look, a visual reference, or a generated UI/slide image, prefer an explicit intermediate spec over relying on a raster image.
-
-Stable path:
-
-```text
-intent / source -> persona + visual_design_brief -> design_spec.json or slide_manifest.json -> PPTX/PNG render -> visual QA -> spec correction -> final PPTX
-```
-
-Use the simplest code-backed visual route that produces reliable output:
-
-- Use native PPT objects for standard text, shapes, tables, diagrams, and simple charts.
-- Use SVG as a blueprint or asset when the effect is simple, geometric, and scalable: issue trees, icons, line diagrams, badges, dividers, simple decorative marks.
-- Use HTML/CSS as a preview or rendering surface when it helps test layout, typography, tables, dashboards, longform editorial pages, or dense technical diagrams before rebuilding/exporting to PPTX.
-- Do not use HTML screenshots as the final deck unless the user accepts low editability.
-- If HTML/SVG is used for style exploration, keep the authoritative deck model in `design_spec.json`, `slide_manifest.json`, or PPTX object generation code.
-- If a generated visual is needed, treat it as a reference image, not as the authoritative layer model.
-
-Do not assume image generation can return true PPT layers, bbox, z-index, font, or asset sidecars.
-
-## Image-To-Editable Rebuild Contract
-
-Use when the user asks to turn slide images, design screenshots, image-only PDFs, or flattened PPT pages into editable PowerPoint.
-
-Default strategy:
-
-- Do not use a full-page screenshot background unless the user explicitly accepts a low-editability deck.
-- Rebuild core text as editable text boxes.
-- Rebuild simple cards, tables, diagrams, process flows, callouts, dividers, and chart shapes as native PPT objects.
-- Keep complex illustrations, photos, watercolor figures, portraits, and hard-to-segment art as separate movable image layers.
-- For charts, rebuild simple bars/lines/labels as editable shapes when data can be inferred safely; label inferred data as reconstructed.
-- For consulting-style screenshots, rebuild layout grid, title hierarchy, section numbers, cards, tables, and axes natively.
-- Maintain a quality report with object counts, text counts, media counts, and failures.
-
-Honest reporting language:
-
-- `Editable rebuild`: core text/layout rebuilt as editable PPT objects; complex art remains image layers.
-- `Partially editable`: some visual elements remain images due to complexity or rights/segmentation limits.
-- `Screenshot deck`: full-slide images only; use only when requested or accepted.
-
-## Asset Decomposition Optional Path
-
-For complex source images, especially polished slide designs with embedded assets, a future or advanced route may use asset decomposition before PPTX export.
-
-Suggested pipeline:
-
-```text
-source image -> model proposes layers -> user/model confirms regions -> segmentation / cutout -> assets.json + layout.json -> PPTX export -> render comparison -> repair loop
-```
-
-Use this only when the user specifically needs high-fidelity editable reconstruction and the environment has suitable segmentation/cutout tools. Otherwise, use a pragmatic editable rebuild with complex assets preserved as image layers.
-
-## Office / Render QA Gate
-
-A PPTX is not final just because it exists. Before final handoff, run the strongest available verification route:
-
-1. Inspect package structure: expected slide count, media files, notes, and transition XML if dynamic.
-2. Count editable text and media objects when possible.
-3. Render with QuickLook, LibreOffice, PowerPoint, Keynote, OfficeCLI, or another available route.
-4. Inspect at least representative screenshots: cover, dense content, diagram/table/chart slide, and closing slide.
-5. Check for blank slides, clipped text, overlapping labels, missing images, incorrect aspect ratio, and private local paths in visible text.
-6. Revise the spec or PPT generation code and re-render if issues are found.
-7. Write a verification report for non-trivial decks.
-
-Final status must distinguish:
-
-- `Created`: PPTX/file was generated.
-- `Rendered`: visual render or screenshot was produced.
-- `Read back`: slide contents or platform contents were inspected after export.
-- `Final`: required checks passed or remaining limits were explicitly accepted.
-
-## Consulting-Grade Quality Gates
-
-Use these gates for high-value, strategy, McKinsey-style, client-facing, or paid deliverables.
-
-- Evidence gate: every important claim traces to source, calculation, or clearly labeled reconstruction.
-- Story gate: the deck has a narrative arc, not a pile of slides.
-- Density gate: each slide carries one primary message and does not become a poster of tiny text.
-- Editability gate: core text, diagrams, tables, and simple charts are editable where practical.
-- Visual gate: grid, typography, spacing, footer, section labels, and captions are consistent.
-- Persona-fit gate: structure, proof style, and visual language match the primary user audience.
-- Overflow gate: rendered output shows no clipped text or incoherent overlap.
-- Handoff gate: exactly one main deliverable path/link is reported, with verification status and known limits.
-
-Do not force full consulting-grade ceremony on quick drafts. Apply the gates proportionally to risk and user intent.
-
-## Route-Specific Deliverables
-
-For non-trivial PPT work, create a durable work directory. Recommended files by route:
-
-`article-to-deck`:
-
-- `storyboard.md`
-- `content_lock.md`
-- `slide_manifest.json`
-- `deck.pptx`
-- `verification_report.json` or `verification-report.md`
-
-`design-spec-to-deck`:
-
-- `visual_design_brief.md`
-- `theme.json`
-- `design_spec.json` or `slide_manifest.json`
-- `deck.pptx`
-- rendered preview image(s)
-- `verification_report.json`
-
-`image-to-editable-rebuild`:
-
-- `source_manifest.json`
-- `assets.json` when assets are extracted
-- `layout.json` when layout is modeled
-- `deck-editable-rebuild.pptx`
-- `quality_report.json`
-- preview/contact sheet when useful
-
-`deck-qa-repair`:
-
-- `qa_report.md`
-- rendered screenshots
-- `deck-repaired.pptx` if changes are made
-
-`consulting-grade-deck`:
-
-- content lock
-- manifest
-- verification report
-- final handoff summary
-
-## Default Recommendation For Future PPT Work
-
-When the user asks for a new PPT from content, start with `article-to-deck` plus standard QA.
-
-When the user provides a visual design/spec/template, use `design-spec-to-deck`.
-
-When the user provides images and asks for editable PPT, use `image-to-editable-rebuild`.
-
-When the user asks for McKinsey-style or consulting-style PPT, use `consulting-grade-deck` gates proportionally, but keep the visual style restrained and editable.
-
-When the user is a product owner or product reporter, default to a business/product report deck with executive summary, decision ask, metrics, roadmap, risks, and next steps.
-
-When the user is an agent engineer or automation developer, default to a technical blueprint deck with workflow, architecture, failure modes, implementation plan, and ROI.
-
-When the user is a self-media author or knowledge blogger, default to an editorial knowledge deck with hook, framework, examples, practical steps, and reusable social/content cards.
-
-When the user asks “which PPT skill/tool should we use,” answer in terms of persona, delivery route, and failure mode, not a generic leaderboard.
-
----
-
-## Optional Reference File To Add
-
-Create `references/ppt-skill-synthesis.md` for examples and deeper notes. Keep `SKILL.md` concise; load the reference only when the user asks for route selection, image-to-editable rebuilds, consulting-grade PPT QA, or persona-specific deck defaults.
-
-Suggested reference contents:
-
-- route examples from recent work
-- persona-specific slide templates
-- language for editability labels
-- sample `quality_report.json` fields
-- sample `design_spec.json` fields
-- quick comparison of EditableImage2PPTSkill, PPT Master, OfficeCLI, and CyberPPT as workflow influences
-- examples of when to use native PPT, SVG, HTML preview, or raster images
-
-## Acceptance Criteria
-
-The updated skill should enable a future agent to:
-
-1. Choose the correct PPT workflow route before implementation.
-2. Identify or infer the primary PPT user persona.
-3. Produce decks optimized for minimal user rework.
-4. Produce persona-fit decks for product owners/reporters, agent engineers/automation developers, and self-media authors/knowledge bloggers.
-5. Avoid flattening editable rebuilds into screenshots.
-6. Use design specs/manifests as the stable intermediate layer when appropriate.
-7. Use SVG/HTML/code-rendered previews pragmatically without sacrificing editability.
-8. Verify PPTX artifacts with render/readback checks before claiming final status.
-9. Apply consulting-grade gates proportionally for high-stakes decks.
-10. Report final deliverables with honest `Created / Rendered / Read back / Final` status.
-
-## Proposed Follow-Up Test Prompts
-
-After applying the proposal, test with:
-
-1. “我是产品负责人，把这个 PRD 和数据做成给老板汇报的 PPT。”
-2. “我是 Agent 工程师，把这个 OpenClaw 自动化方案做成技术评审 PPT。”
-3. “我是知识博主，把这篇公众号文章做成适合课程/小红书切片的 PPT。”
-4. “把这 10 张咨询风 PPT 设计图转成可编辑 PPT。”
-5. “做一套麦肯锡风格但不要过度设计的业务汇报 PPT。”
+Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content. Only upload/share to Feishu/Lark Slides when the user explicitly requests cloud delivery and the content is appropriate.
+
+## Default Workflow
+
+1. Read source and identify audience/persona.
+2. Extract semantic units and evidence inventory.
+3. Create storyline and lock slide-level judgments.
+4. Select production style system and page archetypes.
+5. Create `slide_manifest.json`.
+6. Create detailed design specification.
+7. Create visual priority map, deletion rules, and noise budget.
+8. Create high-fidelity visual reference for key pages when polish matters.
+9. Build final PPTX using hybrid editable reconstruction.
+10. Use localized component raster fallback only for bounded complex relationship/visual-metaphor components that fail editable construction.
+11. Apply component craft checklist and score with the master rubric.
+12. Verify object counts and representative render.
+13. Report editability honestly.
+
+## Lessons From Recent Trials
+
+- McKinsey-style specs work well when they encode hierarchy, restraint, and deletion-by-implication.
+- Technical blueprint specs can underperform when executed literally because grids, nodes, connectors, labels, and tables compound into visual noise.
+- Detailed coordinates are not enough. A production-grade spec must include visual priority, deletion rules, density budgets, and component craft expectations.
+- For Agent/system decks, the target should often be `consulting-blueprint-hybrid`: consulting structure with technical proof components, not raw blueprint drafting.
+- Localized image generation is useful for complex relationship diagrams, ecosystem maps, conceptual visuals, and material layers; it is usually wrong for already-clean card grids, matrices, tables, and metric cards because it destroys useful editability without solving a real structural problem.
