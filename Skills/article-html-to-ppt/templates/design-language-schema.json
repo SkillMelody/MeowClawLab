@@ -1,0 +1,28 @@
+{
+  "style_system": "consulting-light|product-report|technical-blueprint|consulting-blueprint-hybrid|editorial-knowledge|meowclaw-ip",
+  "audience": "",
+  "formality": "draft|internal|executive|client|public",
+  "typography": {
+    "title_role": "judgment title",
+    "body_role": "evidence or interpretation",
+    "minimum_body_size_pt": 10
+  },
+  "color": {
+    "base": [],
+    "accent": [],
+    "semantic": []
+  },
+  "layout": {
+    "grid": "",
+    "spacing_rules": [],
+    "density_limits": []
+  },
+  "components": {
+    "cards": "",
+    "tables": "",
+    "charts": "",
+    "relationship_diagrams": "",
+    "raster_layers": ""
+  },
+  "forbidden_drift": []
+}
