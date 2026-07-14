@@ -417,23 +417,24 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#051C2C` | deep navy titles, header bars, primary structural blocks |
-| accent | `#2251FF` | single-emphasis data highlights, key callouts |
-| background | `#FFFFFF` | page base |
-| neutral-900 (text) | `#1F2937` | body text, judgment titles |
-| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
+| primary | `#0A2233` | deep warm navy titles, header bars, primary structural blocks |
+| accent | `#2C4A6E` | restrained steel blue single-emphasis data highlights, key callouts |
+| background | `#FBFBF8` | micro-warm ivory page base |
+| secondary-surface | `#F1EFEA` | warm neutral panel / table-header fills |
+| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
+| neutral-500 (muted) | `#7C7669` | warm muted text, source notes, captions |
+| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
 
 ### `bcg`
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#004C2F` | deep green titles, header bars, primary structural blocks |
-| accent | `#00823B` | single-emphasis data highlights, key callouts |
-| background | `#F9F9F9` | page base |
-| neutral-900 (text) | `#1F2937` | body text, judgment titles |
-| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
+| primary | `#0E3D28` | deep ink green titles, header bars, primary structural blocks |
+| accent | `#3E7A55` | muted olive green single-emphasis data highlights, key callouts |
+| background | `#FAF9F5` | micro-warm page base |
+| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
+| neutral-500 (muted) | `#7C7669` | warm muted text, source notes, captions |
+| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
 
 ---
 
@@ -447,23 +448,24 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#1A1A2E` | near-black titles, header bars, primary structural blocks |
-| accent | `#7B68EE` | medium-violet single-emphasis data highlights, key callouts |
-| background | `#F7F7FB` | cool off-white page base |
-| neutral-900 (text) | `#1F2937` | body text, judgment titles |
-| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
+| primary | `#232030` | warm near-black titles, header bars, primary structural blocks |
+| accent | `#6B5B95` | muted lavender purple single-emphasis data highlights, key callouts |
+| background | `#F6F5F2` | warm off-white page base |
+| secondary-surface | `#EDEBE6` | warm neutral panel / table-header fills |
+| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
+| neutral-500 (muted) | `#7A746B` | warm muted text, source notes, captions |
+| neutral-200 (border/fill) | `#E3DFD6` | warm dividers, table strokes, subtle card fills |
 
 ### `stripe`
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#0F0F0F` | near-black titles, header bars, primary structural blocks |
-| accent | `#0055FF` | bright blue single-emphasis data highlights, key callouts |
-| background | `#FAFAFA` | page base |
-| neutral-900 (text) | `#1A1A1A` | body text, judgment titles |
-| neutral-500 (muted) | `#6B6E73` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E6E6E9` | dividers, table strokes, subtle card fills |
+| primary | `#14161A` | near-black titles, header bars, primary structural blocks |
+| accent | `#3A5A8C` | restrained steel blue single-emphasis data highlights, key callouts |
+| background | `#FAFAF7` | micro-warm page base |
+| neutral-900 (text) | `#242526` | body text, judgment titles |
+| neutral-500 (muted) | `#79746B` | warm muted text, source notes, captions |
+| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
 
 ---
 
@@ -477,15 +479,15 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#005A9E` | IBM blue titles, header bars, primary structural blocks, node outlines |
-| accent | `#005A9E` | single-emphasis highlights (same as primary; rely on weight and isolation rather than a second hue) |
-| background | `#FAFAFA` | page base |
-| secondary-surface | `#F0F4F8` | panel / code-block / table-header fills |
-| neutral-900 (text) | `#1F2937` | body text, judgment titles |
-| neutral-500 (muted) | `#4B5563` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#D1D5DB` | dividers, table strokes, subtle card fills |
+| primary | `#2A5578` | restrained engineering blue titles, header bars, primary structural blocks, node outlines |
+| accent | `#2A5578` | single-emphasis highlights (same as primary; rely on weight and isolation rather than a second hue) |
+| background | `#FAFAF7` | micro-warm page base |
+| secondary-surface | `#EFEDE7` | warm panel / code-block / table-header fills |
+| neutral-900 (text) | `#2A2E35` | body text, judgment titles |
+| neutral-500 (muted) | `#6E6A60` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#DAD5CB` | dividers, table strokes, subtle card fills |
 
-When accent and primary are identical, use neutral-700 `#374151` as the de-facto "second accent" for a second tier of emphasis (e.g. secondary nodes) so the deck does not collapse to monochrome.
+When accent and primary are identical, use neutral-700 `#3B3A34` as the de-facto "second accent" for a second tier of emphasis (e.g. secondary nodes) so the deck does not collapse to monochrome.
 
 ---
 
@@ -499,14 +501,14 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#1B2A4A` | deep navy titles, header bars, primary structural blocks |
-| accent | `#E8A838` | restrained amber-gold single-emphasis highlights, key callouts |
-| background | `#F9FAFB` | page base |
-| neutral-900 (text) | `#2D3748` | body text, judgment titles (slightly differentiated from primary navy) |
-| neutral-500 (muted) | `#4A5568` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E2E8F0` | dividers, table strokes, subtle card fills |
+| primary | `#1B2A42` | deep navy titles, header bars, primary structural blocks |
+| accent | `#C69749` | muted bronze-gold single-emphasis highlights, key callouts |
+| background | `#FAF9F5` | micro-warm page base |
+| neutral-900 (text) | `#2D3340` | body text, judgment titles (slightly differentiated from primary navy) |
+| neutral-500 (muted) | `#6E6A60` | warm secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
 
-Use accent `#E8A838` sparingly: it is a highlight, not a fill. A small accent block, an underline beneath a number, or a single labeled arrow is enough.
+Use accent `#C69749` sparingly: it is a highlight, not a fill. A small accent block, an underline beneath a number, or a single labeled arrow is enough.
 
 ---
 
@@ -520,12 +522,12 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#2D2926` | warm dark titles, header bars, primary structural blocks |
-| accent | `#E8633A` | warm orange-red single-emphasis highlights, key callouts |
-| background | `#FAF7F2` | warm paper page base |
-| neutral-900 (text) | `#4A4540` | body text, judgment titles (warm dark, harmonized with primary) |
-| neutral-500 (muted) | `#7A736D` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E5E0D8` | dividers, table strokes, subtle card fills (warm beige) |
+| primary | `#2B2621` | warm dark titles, header bars, primary structural blocks |
+| accent | `#C65D3B` | muted terracotta single-emphasis highlights, key callouts |
+| background | `#FBF8F1` | warm paper page base |
+| neutral-900 (text) | `#4A423A` | body text, judgment titles (warm dark, harmonized with primary) |
+| neutral-500 (muted) | `#857C70` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E4DDCF` | dividers, table strokes, subtle card fills (warm beige) |
 
 ---
 

@@ -1,5 +1,6 @@
 {
-  "style_system": "consulting-light|product-report|technical-blueprint|consulting-blueprint-hybrid|editorial-knowledge|meowclaw-ip",
+  "style_system": "consulting-light|product-report|technical-blueprint|consulting-blueprint-hybrid|editorial-knowledge",
+  "palette_name": "string (must match a named palette under the chosen style_system)",
   "audience": "",
   "formality": "draft|internal|executive|client|public",
   "typography": {
@@ -7,10 +8,14 @@
     "body_role": "evidence or interpretation",
     "minimum_body_size_pt": 10
   },
-  "color": {
-    "base": [],
-    "accent": [],
-    "semantic": []
+  "colors": {
+    "primary": "",
+    "accent": "",
+    "background": "",
+    "text": "",
+    "secondary": "",
+    "border": "",
+    "surface": ""
   },
   "layout": {
     "grid": "",
