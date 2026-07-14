@@ -13,9 +13,30 @@ This skill supports:
 - MeowClawLab visual systems
 - persona-fit deck defaults for product owners, agent engineers, and knowledge creators
 - consulting-style and editorial knowledge deck baselines
+- native editable diagram decks with curved arrows, dashed lines, elbow connectors, flywheels, feedback loops, layered architectures, and causal chains
+- fixed palette contracts for low-chroma, warm-tempered consulting/product/editorial styles
 - SVG/HTML preview policy for simple, polished, code-backed layouts
 - evidence-backed storyboards
 - content lock, slide manifest, and lightweight visual QA gates
+
+## Featured Upgrade: Native Diagram PPT Samples
+
+The latest upgrade focuses on diagram-heavy decks. A common failure mode in generated PPTs is that complex pages collapse into either flat screenshots or stiff straight-line diagrams. This skill now treats diagrams as first-class editable PPT objects.
+
+The stress test below uses the public McKinsey / QuantumBlack report *The State of AI in 2025*. The generated deck contains 14 slides, 0 raster screenshots as body pages, and 302 editable text runs. The visual system includes native PPT nodes, cards, tables, arrows, curved arrows, dashed feedback loops, elbow connectors, and multi-step relationship diagrams.
+
+![State of AI 2025 14-page editable PPT sample](../../Assets/article-html-to-ppt/stateofai-2025-final-contact-sheet.png)
+
+### What changed
+
+- **Diagram engine**: added native editable curves, dashed strokes, polylines, elbow connectors, arrowheads, and double arrows.
+- **Complex slide types**: supports flywheels, causal chains, funnel flows, heat matrices, layered architectures, and feedback loops without flattening the whole slide.
+- **Palette contracts**: replaced fluorescent default accents and dead-white backgrounds with restrained low-chroma palettes for five style systems.
+- **Editability hygiene**: generated samples keep core text and structure editable instead of hiding the output inside a single screenshot.
+
+![Palette upgrade overview](../../Assets/article-html-to-ppt/palette-upgrade-overview.png)
+
+![Native editable architecture diagram](../../Assets/article-html-to-ppt/native-architecture-diagram.png)
 
 ## Quality Contract
 
@@ -181,7 +202,7 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 
 ## Version
 
-1.0.5
+1.1.1
 
 ## Publishing Note
 
