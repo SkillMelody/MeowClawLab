@@ -1,0 +1,41 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "public-premium-fixture",
+    "title": "Public Premium Fixture",
+    "production_profile": "premium",
+    "logical_slide_count": 1,
+    "physical_slide_count": 1
+  },
+  "sources": [
+    {
+      "source_id": "src-001",
+      "type": "article",
+      "title": "Fixture source"
+    }
+  ],
+  "slides": [
+    {
+      "slide_id": "S01",
+      "slide_role": "body",
+      "title": "The public release needs a verified architecture story",
+      "title_role": "judgment",
+      "primary_expression": "relationship_visual",
+      "objects": [
+        {
+          "object_id": "architecture-01",
+          "component_type": "architecture_diagram",
+          "complexity": {
+            "node_count": 12,
+            "edge_count": 14
+          },
+          "source_refs": [
+            {
+              "source_id": "src-001"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

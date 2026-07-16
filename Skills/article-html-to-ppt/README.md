@@ -1,6 +1,8 @@
-# Article HTML To PPT
+# MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
 
 Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks.
+
+`MeowClaw 夜猫 PPT 工坊` is the public display name. `MeowClaw PPTSmith` is the English alias. `meowclaw-pptsmith` is the technical public slug. The installed OpenClaw route remains `article-html-to-ppt` for backward compatibility, with `meowclaw-decksmith` retained as an alternate legacy alias.
 
 This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
 
@@ -13,30 +15,12 @@ This skill supports:
 - MeowClawLab visual systems
 - persona-fit deck defaults for product owners, agent engineers, and knowledge creators
 - consulting-style and editorial knowledge deck baselines
-- native editable diagram decks with curved arrows, dashed lines, elbow connectors, flywheels, feedback loops, layered architectures, and causal chains
-- fixed palette contracts for low-chroma, warm-tempered consulting/product/editorial styles
 - SVG/HTML preview policy for simple, polished, code-backed layouts
 - evidence-backed storyboards
 - content lock, slide manifest, and lightweight visual QA gates
-
-## Featured Upgrade: Native Diagram PPT Samples
-
-The latest upgrade focuses on diagram-heavy decks. A common failure mode in generated PPTs is that complex pages collapse into either flat screenshots or stiff straight-line diagrams. This skill now treats diagrams as first-class editable PPT objects.
-
-The stress test below uses the public McKinsey / QuantumBlack report *The State of AI in 2025*. The generated deck contains 14 slides, 0 raster screenshots as body pages, and 302 editable text runs. The visual system includes native PPT nodes, cards, tables, arrows, curved arrows, dashed feedback loops, elbow connectors, and multi-step relationship diagrams.
-
-![State of AI 2025 14-page editable PPT sample](../../Assets/article-html-to-ppt/stateofai-2025-final-contact-sheet.png)
-
-### What changed
-
-- **Diagram engine**: added native editable curves, dashed strokes, polylines, elbow connectors, arrowheads, and double arrows.
-- **Complex slide types**: supports flywheels, causal chains, funnel flows, heat matrices, layered architectures, and feedback loops without flattening the whole slide.
-- **Palette contracts**: replaced fluorescent default accents and dead-white backgrounds with restrained low-chroma palettes for five style systems.
-- **Editability hygiene**: generated samples keep core text and structure editable instead of hiding the output inside a single screenshot.
-
-![Palette upgrade overview](../../Assets/article-html-to-ppt/palette-upgrade-overview.png)
-
-![Native editable architecture diagram](../../Assets/article-html-to-ppt/native-architecture-diagram.png)
+- production profiles (`fast`, `standard`, `premium`) with trusted status reporting
+- formal PPT IR, Style Contract v2, build, QA, and delivery contracts
+- a minimal `python_pptx` runtime builder for native text/table smoke builds
 
 ## Quality Contract
 
@@ -72,6 +56,37 @@ Use this skill when you need to:
 - Maintain slide manifests and lightweight QA gates for non-trivial decks.
 - Distinguish generated, rendered, read-back, and final delivery states.
 
+## Stage 6 Verification
+
+After building a deck, run the verifier:
+
+```bash
+python3 scripts/verify_deck.py deck.pptx \
+  --ppt-ir .ppt-work/contracts/ppt-ir.json \
+  --style .ppt-work/contracts/style-contract.json \
+  --delivery .ppt-work/contracts/delivery-plan.json \
+  --build .ppt-work/contracts/build-manifest.json \
+  --render \
+  --output .ppt-work/qa/qa-report.json
+```
+
+Exit codes are `0` pass, `1` verification failure, `2` renderer unavailable,
+`3` bad input, and `4` internal error. This repository does not fabricate render
+evidence: if PowerPoint/Keynote/LibreOffice is unavailable, the report records
+`RENDER_ENGINE_UNAVAILABLE` and caps the build status.
+
+For repair loops:
+
+```bash
+python3 scripts/repair_deck.py deck.pptx \
+  --qa-report .ppt-work/qa/qa-report.json \
+  --output-pptx .ppt-work/qa/repaired.pptx \
+  --output-report .ppt-work/qa/repair-report.json
+```
+
+Only registered safe deterministic repairs may run. Visual/render defects remain
+manual until a real renderer can recheck them.
+
 ## Privacy And Cloud Export Notice
 
 Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content. Feishu/Lark Slides export sends source content, generated slide text, and relevant metadata to the Feishu/Lark cloud environment. Only use Feishu/Lark upload or sharing when the user explicitly asks for cloud delivery and the content is appropriate for that service. Before uploading, summarize what will be transmitted and confirm the intended destination or sharing boundary.
@@ -81,7 +96,8 @@ Local PPTX export is the safer default for sensitive drafts, PRDs, internal metr
 Give the agent the source material, audience/persona, and desired export target:
 
 ```text
-Use article-html-to-ppt to turn this PRD and metrics summary into an editable PPTX.
+Use MeowClaw PPTSmith to turn this PRD and metrics summary into an editable PPTX.
+Compatible route: article-html-to-ppt.
 Audience: product leadership
 Persona: product owner / product reporter
 Goal: secure roadmap approval
@@ -92,7 +108,8 @@ Slides: around 8-12
 For Agent engineering or automation decks:
 
 ```text
-Use article-html-to-ppt to create a technical review PPT.
+Use MeowClaw PPTSmith to create a technical review PPT.
+Compatible route: article-html-to-ppt.
 Persona: Agent engineer / automation developer
 Include: workflow diagram, architecture, failure modes, implementation plan, ROI.
 Use SVG for simple architecture or state-machine diagrams if helpful.
@@ -101,7 +118,8 @@ Use SVG for simple architecture or state-machine diagrams if helpful.
 For knowledge creators:
 
 ```text
-Use article-html-to-ppt to turn this article into a knowledge deck.
+Use MeowClaw PPTSmith to turn this article into a knowledge deck.
+Compatible route: article-html-to-ppt.
 Persona: self-media author / knowledge blogger
 Include: hook, framework, examples, practical steps, and reusable social-card slides.
 ```
@@ -109,7 +127,8 @@ Include: hook, framework, examples, practical steps, and reusable social-card sl
 For native dynamic PPTX:
 
 ```text
-Use article-html-to-ppt to create a dynamic PPTX.
+Use MeowClaw PPTSmith to create a dynamic PPTX.
+Compatible route: article-html-to-ppt.
 The exported PPT should reveal bullets step by step during presentation.
 Also include speaker notes and a verification report.
 ```
@@ -117,7 +136,7 @@ Also include speaker notes and a verification report.
 For Feishu Slides:
 
 ```text
-Use article-html-to-ppt to turn this article into Feishu Slides
+Use MeowClaw PPTSmith to turn this article into Feishu Slides
 and send me the shareable Feishu Slides link.
 ```
 
@@ -185,6 +204,9 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 
 - `SKILL.md` - the actual OpenClaw skill document.
 - `skill-card.md` - public-facing skill card metadata.
+- `README.md` - public documentation entry for `MeowClaw 夜猫 PPT 工坊` / `MeowClaw PPTSmith`, while preserving the `article-html-to-ppt` compatibility route.
+- `docs/migration-v1.1-to-v1.2.md` - migration guide for older manifests and templates.
+- `docs/v1.5-v2.0-closeout-checklist.md` - honest closeout criteria for v1.5/v2.0.
 - `references/export-pipelines.md` - export routing for PPTX, dynamic PPTX, Feishu Slides, and HTML.
 - `references/visual-design-archetypes.md` - visual direction archetypes.
 - `references/visual-systems.md` - reusable visual system constraints.
@@ -202,7 +224,7 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 
 ## Version
 
-1.1.1
+1.2.0
 
 ## Publishing Note
 

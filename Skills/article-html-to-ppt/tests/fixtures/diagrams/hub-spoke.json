@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-hub-spoke",
+  "diagram_type": "hub_spoke",
+  "audience_question": "What sits at the center of the system?",
+  "message": "The workbench is the hub that connects content, assets, and publishing.",
+  "direction": "radial",
+  "nodes": [
+    {"id": "N1", "label": "Workbench", "role": "hub", "node_type": "system", "priority": "primary", "sequence": 1, "shape": "circle", "status": "highlighted", "emphasis": "hero"},
+    {"id": "N2", "label": "Article", "role": "spoke", "node_type": "artifact", "priority": "secondary", "sequence": 2, "shape": "document", "status": "normal"},
+    {"id": "N3", "label": "Assets", "role": "spoke", "node_type": "artifact", "priority": "secondary", "sequence": 3, "shape": "container", "status": "normal"},
+    {"id": "N4", "label": "Publish", "role": "spoke", "node_type": "service", "priority": "secondary", "sequence": 4, "shape": "cloud", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "contain", "priority": "primary", "direction": "forward", "style": "straight"},
+    {"id": "E2", "source": "N1", "target": "N3", "relation": "consume", "priority": "secondary", "direction": "forward", "style": "straight"},
+    {"id": "E3", "source": "N1", "target": "N4", "relation": "trigger", "priority": "secondary", "direction": "forward", "style": "straight"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Hub to article", "node_ids": ["N1", "N2"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "radial", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["hub_label", "spoke_labels"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

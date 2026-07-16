@@ -1,0 +1,30 @@
+{
+  "allowed_variations": {
+    "slide_count_delta": 1
+  },
+  "anti_patterns": "anti-patterns.json",
+  "baseline": {
+    "build_manifest": "baseline/build-manifest.json",
+    "deck": "baseline/deck.pptx",
+    "qa_report": "baseline/qa-report.json"
+  },
+  "builder": "auto",
+  "case_id": "design-spec-technical-blueprint",
+  "category": "design_spec",
+  "expected_content_lock": "expected-content-lock.md",
+  "expected_metrics": {
+    "primary_expression_missing_count": 0,
+    "source_coverage_ratio": 0.9
+  },
+  "expected_ppt_ir": "expected-ppt-ir.json",
+  "expected_style_contract": "expected-style-contract.json",
+  "profile": "premium",
+  "reference_rubric": "reference-rubric.json",
+  "renderer": "auto",
+  "requirements_file": "requirements.json",
+  "schema_version": "1.0",
+  "source_files": [
+    "source.md"
+  ],
+  "title": "Technical Blueprint Spec"
+}

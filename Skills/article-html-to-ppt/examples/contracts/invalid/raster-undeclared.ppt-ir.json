@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "deck": {"id": "deck-bad", "title": "Raster Bad", "source_type": "article", "audience": "leaders", "purpose": "decision", "language": "zh-CN", "aspect_ratio": "16:9", "production_profile": "standard", "logical_slide_count": 1},
+  "sources": [{"source_id": "src-001", "type": "article", "title": "Source"}],
+  "style_contract_ref": "style-contract.json",
+  "asset_manifest_ref": "asset-manifest.json",
+  "slides": [
+    {"id": "S01", "index": 1, "slide_role": "judgment", "title_role": "judgment", "title": "Raster needs declaration", "judgment": "Raster assets must be declared.", "message": "Message", "audience_question": "Q", "source_refs": [], "primary_expression": "conceptual_scene", "supporting_expressions": [], "primary_anchor": "hero", "objects": [{"id": "hero", "type": "image", "semantic_role": "hero", "source_refs": [], "asset_ref": "missing-asset", "editability": "raster_only", "priority": "primary"}], "delivery_contract": {"preferred_route": "native_ppt", "editable_core": ["title"], "raster_allowance": [], "forbidden_raster": ["title"]}}
+  ]
+}

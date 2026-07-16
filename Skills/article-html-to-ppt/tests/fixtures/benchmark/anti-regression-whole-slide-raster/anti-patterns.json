@@ -1,0 +1,6 @@
+{
+  "forbidden": [
+    "whole_slide_raster",
+    "rasterized_core_text"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-state-transition",
+  "diagram_type": "state_transition",
+  "audience_question": "How does task status change?",
+  "message": "A task moves from queued to running to verified, with a recoverable failed state.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Queued", "role": "state", "node_type": "state", "priority": "primary", "sequence": 1, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "Running", "role": "state", "node_type": "state", "priority": "primary", "sequence": 2, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "Verified", "role": "state", "node_type": "state", "priority": "primary", "sequence": 3, "shape": "rounded_rect", "status": "highlighted"},
+    {"id": "N4", "label": "Failed", "role": "state", "node_type": "state", "priority": "secondary", "sequence": 4, "shape": "rounded_rect", "status": "error"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "transition", "priority": "primary", "direction": "forward", "style": "straight"},
+    {"id": "E2", "source": "N2", "target": "N3", "relation": "validation", "priority": "primary", "direction": "forward", "style": "straight"},
+    {"id": "E3", "source": "N2", "target": "N4", "relation": "fallback", "priority": "secondary", "direction": "forward", "style": "curved", "line_semantics": "dashed"},
+    {"id": "E4", "source": "N4", "target": "N2", "relation": "fallback", "priority": "secondary", "direction": "forward", "style": "curved", "line_semantics": "dashed"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Success path", "node_ids": ["N1", "N2", "N3"], "priority": "primary"}],
+  "boundaries": [],
+  "annotations": [{"id": "A1", "annotation_type": "warning", "target_type": "node", "target_id": "N4", "label": "Recoverable", "priority": "medium", "editable": true}],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["state_labels", "transition_labels"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

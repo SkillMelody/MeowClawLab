@@ -1,6 +1,20 @@
 # Five Style Master Systems
 
-Use style systems as complete design languages, not skins. **Every style in this file is bound to one or more named palette contracts with exact hex values.** The build must read colors from `style_contract.json`; do not invent hex values at build time. If a style needs a new palette, add it to this file first, then update `style_contract.json` to reference it.
+Use style systems as complete design languages, not skins. **Every style in this file is bound to one or more named palette contracts with exact hex values.** The build must read the full `style-contract.json`; do not invent colors, font sizes, spacing, radius values, table styles, chart colors, connector widths, image crop rules, or footer styling at build time. If a style needs a new palette or token set, add it to this file first, then update the matching style contract fixture.
+
+Strict style fixtures live under `tests/fixtures/styles/`:
+
+- `consulting-light.json`
+- `product-report.json`
+- `technical-blueprint.json`
+- `consulting-blueprint-hybrid.json`
+- `editorial-knowledge.json`
+
+Each fixture must pass:
+
+```bash
+python3 scripts/validate_contracts.py --style tests/fixtures/styles/<style-id>.json --strict
+```
 
 Global color usage rules (apply to every palette):
 

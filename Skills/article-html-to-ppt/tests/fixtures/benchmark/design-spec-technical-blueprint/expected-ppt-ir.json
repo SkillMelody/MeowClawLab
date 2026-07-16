@@ -1,0 +1,77 @@
+{
+  "asset_manifest_ref": "asset-manifest.json",
+  "deck": {
+    "aspect_ratio": "16:9",
+    "audience": "internal",
+    "id": "design-spec-technical-blueprint",
+    "language": "en",
+    "logical_slide_count": 1,
+    "production_profile": "premium",
+    "purpose": "qa",
+    "source_type": "article",
+    "title": "Technical Blueprint Spec"
+  },
+  "schema_version": "2.0",
+  "slides": [
+    {
+      "audience_question": "Can this deck stay editable?",
+      "delivery_contract": {
+        "editable_core": [
+          "title",
+          "body"
+        ],
+        "forbidden_raster": [
+          "core_text"
+        ],
+        "preferred_route": "native_ppt",
+        "raster_allowance": []
+      },
+      "id": "S01",
+      "index": 1,
+      "judgment": "QA Slide 1 stays editable",
+      "message": "Native body text for slide 1",
+      "objects": [
+        {
+          "content": "Native body text for slide 1",
+          "editability": "native_required",
+          "id": "text-1",
+          "semantic_role": "body",
+          "source_refs": [
+            {
+              "claim_type": "direct",
+              "locator": "fixture",
+              "source_id": "src-1"
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "primary_anchor": "body",
+      "primary_expression": "relationship_visual",
+      "qa_expectations": [
+        "native_text"
+      ],
+      "slide_role": "judgment",
+      "source_refs": [
+        {
+          "claim_type": "direct",
+          "locator": "fixture",
+          "source_id": "src-1"
+        }
+      ],
+      "supporting_expressions": [
+        "source_note"
+      ],
+      "title": "QA Slide 1",
+      "title_role": "judgment"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "src-1",
+      "title": "Fixture Source",
+      "type": "fixture"
+    }
+  ],
+  "style_contract_ref": "style-contract.json"
+}

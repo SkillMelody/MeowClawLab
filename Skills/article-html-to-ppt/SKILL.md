@@ -1,11 +1,25 @@
 ---
 name: "article-html-to-ppt"
-description: "Use when converting articles/docs to polished hybrid-editable PPT decks"
+description: "MeowClaw PPTSmith: convert articles/docs to polished hybrid-editable PPT decks"
+metadata:
+  display_name: "MeowClaw 夜猫 PPT 工坊"
+  english_alias: "MeowClaw PPTSmith"
+  public_slug: "meowclaw-pptsmith"
+  compatibility_aliases: ["article-html-to-ppt", "meowclaw-decksmith"]
 ---
 
-# Article HTML To PPT
+# MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
 
 Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, design specs, and review-approved manuscripts into polished, low-rework, persona-fit slide decks.
+
+Public identity:
+
+- Display name: `MeowClaw 夜猫 PPT 工坊`
+- English alias: `MeowClaw PPTSmith`
+- Technical slug: `meowclaw-pptsmith`
+- Compatibility aliases: `article-html-to-ppt`, `meowclaw-decksmith`
+
+Keep the OpenClaw skill route and directory name as `article-html-to-ppt` until all installed clients, ClawHub versions, GitHub paths, and historical workflows have migrated. Treat `article-html-to-ppt` and `meowclaw-decksmith` as backward-compatible aliases, not as the primary public name.
 
 Default delivery is `hybrid editable`: polished material/background layers may be raster, SVG, or generated image components, while message-bearing content remains editable PowerPoint objects. Avoid both extremes: screenshot-only decks that cannot be edited, and pure native-object decks that look like rough wireframes.
 
@@ -21,8 +35,10 @@ Optimize in this order:
 6. Design intent fidelity, not blind spec literalism.
 7. Master-level visual design language and component craft.
 8. Editability of core text, cards, diagrams, tables, simple charts, and labels.
-9. Render/readback verification before final handoff.
-10. Honest reporting of rasterized layers and conversion limits.
+9. Production profile fit: `fast`, `standard`, or `premium`.
+10. Render/readback verification before final handoff.
+11. Benchmark-calibrated rubric scoring for serious changes.
+12. Honest reporting of rasterized layers, conversion limits, and trusted delivery status.
 
 ## Standard Production Chain
 
@@ -30,6 +46,7 @@ Use this chain for serious decks:
 
 ```text
 source/article/design brief
+-> resolve production profile
 -> content analysis and evidence inventory
 -> slide storyline and judgment titles
 -> expression mode gate
@@ -38,12 +55,15 @@ source/article/design brief
 -> STYLE & PALETTE CONFIRMATION GATE (confirm with user OR match reference)
 -> detailed design specification
 -> visual priority map + deletion/noise budget
--> delivery-route decision for complex visual components
+-> capability probe for builders/renderers/fonts
+-> component registry lookup + delivery-plan route resolution
+-> builder adapter selection with capability report
 -> high-fidelity reference for key pages when polish matters
 -> editable/hybrid PPT implementation
 -> render/readback QA
--> rubric scoring + revision loop
--> final PPTX + verification report
+-> rubric scoring + benchmark calibration where relevant
+-> revision loop
+-> package user-facing delivery + delivery-manifest.json
 ```
 
 The critical rules are:
@@ -52,51 +72,164 @@ The critical rules are:
 - Do not send a detailed design spec directly into PPT production unless the deck is low-risk and visually simple.
 - Do not treat image generation as only a late-stage rescue. For relationship-heavy or conceptual slides, bounded visual components can be the correct planned delivery route.
 - Do not treat the deck as final when only `deck.pptx` exists.
+- Do not scatter process files into the user's final directory. Internal artifacts belong under `.ppt-work/`.
+- Do not mark Premium `final` without real render evidence, readback, zero QA errors, and rubric pass.
 
-### Style & Palette Confirmation Gate
+### Production Profile Gate
 
-`style_system` alone is too abstract. The same style name produces visibly different decks across models because style descriptions only encode mood (e.g. "restrained color"). Every style in this skill is now bound to one or more **named palette contracts** with exact hex values (see `references/five-style-master-systems.md`). Before building, do one of:
+Resolve the profile before artifact planning:
 
-- **(a) Confirm with the user.** Present the candidate style(s) and the palette options under each style. Let the user pick `style_system` + `palette_name`. If the user does not pick, fall back to the default palette of the recommended style.
+```bash
+python3 scripts/resolve_production_profile.py \
+  --requirements requirements.json \
+  --ppt-ir .ppt-work/contracts/ppt-ir.json \
+  --output .ppt-work/contracts/production-profile.json
+```
+
+Use only the artifacts required by the selected profile:
+
+- `fast`: internal draft / content validation / simple article / explicit speed request.
+- `standard`: formal internal report or ordinary client/product/technical/business deck.
+- `premium`: public release, high-value client, template asset, strong brand requirement, complex diagrams, or explicit full validation request.
+
+User override wins. Record the override and reason codes. Keep all internal work under `.ppt-work/`; deliver only the user-facing package plus `delivery-manifest.json`. Preserve `.ppt-work/` on failure. Premium should preserve it by default.
+
+### Style Contract Gate
+
+`style_id` alone is too abstract. The same style name produces visibly different decks across models because style descriptions only encode mood (e.g. "restrained color"). Every serious deck must resolve a complete `style-contract.json` before build. The contract is the source of truth for color, typography, grid, spacing, shape, shadows, cards, tables, charts, diagrams, images, icons, footer, density limits, effects, and forbidden drift.
+
+Before building, do one of:
+
+- **(a) Confirm with the user.** Present the candidate style(s), legacy palette aliases, and resulting token contract. Let the user pick `style_id` or an alias. If the user does not pick, fall back to the default fixture for the recommended style.
 - **(b) Match a reference.** If the user supplied a reference image, brand deck, or explicit brand colors, extract the dominant primary / accent / background and pick the closest palette (or derive a new named palette and document it explicitly). Do not silently substitute.
 
-Record the chosen `style_system` + `palette_name` and the resolved hex values in `style_contract.json` before any visual implementation. The build must read colors from this contract; do not invent hex values at build time.
+Record the chosen `style_id`, compatibility alias or legacy palette source, and the resolved tokens in `style-contract.json` before any visual implementation. The build must read design parameters from this contract; do not invent hex values, font sizes, margins, radius values, table styles, chart colors, connector widths, crop modes, or footer styles at build time.
 
 The contract must contain:
 
 ```json
 {
-  "style_system": "consulting-light|product-report|technical-blueprint|consulting-blueprint-hybrid|editorial-knowledge",
-  "palette_name": "<one of the named palettes for that style>",
+  "schema_version": "2.0",
+  "style_id": "consulting-light|product-report|technical-blueprint|consulting-blueprint-hybrid|editorial-knowledge",
+  "display_name": "<human-readable name>",
   "colors": {
     "primary": "#RRGGBB",
     "accent": "#RRGGBB",
     "background": "#RRGGBB",
-    "neutrals": ["#RRGGBB", "#RRGGBB", "#RRGGBB"]
+    "surface_1": "#RRGGBB",
+    "surface_2": "#RRGGBB",
+    "text_primary": "#RRGGBB",
+    "text_secondary": "#RRGGBB",
+    "border": "#RRGGBB"
   },
-  "usage_rules": {
-    "primary": "title bars, main color blocks, key structural elements",
-    "accent": "data highlights, single-emphasis callouts, never as large fill",
-    "background": "page base",
-    "neutrals": "body text, dividers, secondary fills"
-  }
+  "typography": {},
+  "grid": {},
+  "spacing": {},
+  "card_tokens": {},
+  "table_tokens": {},
+  "chart_tokens": {},
+  "diagram_tokens": {},
+  "image_tokens": {},
+  "footer_tokens": {},
+  "density_limits": {}
 }
 ```
 
+Validate with:
+
+```bash
+python3 scripts/validate_contracts.py --style .ppt-work/contracts/style-contract.json --strict
+```
+
+### Component Delivery Route Gate
+
+Before build, run Capability Probe and Component Registry resolution. The probe answers what this machine can actually do; the registry answers what each component is, which routes are allowed, which Builder levels are acceptable, what must remain editable, whether raster/SVG/generated output is allowed, and which QA checks are required.
+
+Default registry:
+
+```text
+references/component-registry.json
+```
+
+Generate a capability report:
+
+```bash
+python3 scripts/capability_probe.py \
+  --style .ppt-work/contracts/style-contract.json \
+  --registry references/component-registry.json \
+  --output .ppt-work/capability-report.json \
+  --strict
+```
+
+Generate a delivery plan:
+
+```bash
+python3 scripts/resolve_component_delivery.py \
+  --ppt-ir .ppt-work/contracts/ppt-ir.json \
+  --style .ppt-work/contracts/style-contract.json \
+  --registry references/component-registry.json \
+  --capabilities .ppt-work/capability-report.json \
+  --profile premium \
+  --builder auto \
+  --output .ppt-work/contracts/delivery-plan.json \
+  --strict
+```
+
+Then validate:
+
+```bash
+python3 scripts/validate_contracts.py \
+  --ppt-ir .ppt-work/contracts/ppt-ir.json \
+  --style .ppt-work/contracts/style-contract.json \
+  --component-registry references/component-registry.json \
+  --delivery .ppt-work/contracts/delivery-plan.json \
+  --strict
+```
+
+Never choose component routes ad hoc during drawing. Ordinary text, cards, tables, matrices, metric cards, and simple charts must remain native/editable. Complex diagrams may fall back to `hybrid_overlay` or `svg_component`; conceptual scenes may use `generated_image` with native title/caption/source overlay. `native_required` objects must not silently downgrade to SVG or image.
+
+Before selecting a builder:
+
+1. Run Capability Probe.
+2. Match Component Registry against actual environment capabilities.
+3. Select the builder with the highest editable-core coverage.
+4. Do not use a visual-only adapter for native-required objects.
+5. Record the requested builder, selected builder, version, selection score/reasons, and capability report path in the Build Manifest.
+6. If no valid builder exists, stop at contracts and visual references.
+
+Forbidden:
+
+- assuming a Builder or Renderer exists because it is mentioned in the Skill
+- continuing Premium when support is `unknown`
+- using Visual Only output as if it were Native
+- claiming Final without a real renderer for Premium
+
 ## Production Artifact Contract
 
-For non-trivial decks, create these artifacts in the project directory:
+For non-trivial decks, create only the artifacts required by the resolved profile. Internal artifacts go under `.ppt-work/`; user-facing output goes into the delivery folder.
 
-1. `content_analysis.md`: thesis, audience, evidence inventory, risks/caveats, reusable terms.
-2. `storyboard.md`: slide sequence, judgment titles, audience action, source coverage.
-3. `slide_manifest.json`: page archetypes, density, primary anchor, expression mode, visual component plan, editable core, raster allowance.
-4. `style_contract.json`: style system, palette name, exact colors (primary/accent/background/neutrals), typography, layout primitives, usage rules, forbidden drift.
-5. `detailed_design_spec.md` or `design_spec.json`: page-level implementation details.
-6. `spec_implementation_plan.json`: visual priority map, deletion rules, noise budget, object roles, delivery route.
-7. `visual_reference/`: at least cover + one representative content page when polish matters.
-8. `deck.pptx`: final editable or hybrid-editable deck.
-9. `verification-report.md`: object counts, media count, render/readback route, known limits.
-10. `delivery-manifest.json`: canonical paths and final status.
+Profile matrix:
+
+| Artifact | Fast | Standard | Premium |
+|---|---:|---:|---:|
+| Content Lock | Required | Required | Required |
+| Storyboard | Optional | Required | Required |
+| PPT IR | Required | Required | Required |
+| Style Contract | Required | Required | Required |
+| Asset Manifest | If used | Required if used | Required |
+| Delivery Plan | Required | Required | Required |
+| Build Manifest | Required | Required | Required |
+| Full Render | Optional | Representative | Required |
+| QA Report | Basic | Required | Required |
+| Benchmark Score | No | Optional | Required |
+| Verification Report | No | Required | Required |
+| Delivery Manifest | Required | Required | Required |
+
+User-facing defaults:
+
+- Fast: `deck.pptx`, `delivery-manifest.json`.
+- Standard: `deck.pptx`, `deck-preview.pdf`, `verification-report.md`, `delivery-manifest.json`.
+- Premium: Standard package plus optional `assets/` and `source-package/` only when intended for the recipient.
 
 Use `templates/ppt-production-artifact-checklist.md` to confirm completeness.
 
@@ -110,21 +243,35 @@ Before implementing a serious deck, load the references that match the deck's ri
 - `references/five-style-master-systems.md`: mandatory when choosing a style system. **This file is now the source of truth for palette hex values; do not derive colors elsewhere.**
 - `references/spec-to-deck-visual-priority-gate.md`: mandatory when a detailed spec, coordinates, or placeholder map is provided.
 - `references/component-craft-checklist.md`: mandatory before scoring or handoff.
+- `references/component-registry.md`: mandatory before building; explains Component Registry and Delivery Plan routing.
+- `references/builder-adapters.md`: mandatory before selecting a builder; explains capability reports, support levels, and adapter contracts.
+- `references/diagram-ir-and-layout.md`: mandatory for `relationship_visual`; explains Diagram IR semantics, layout choice, complexity analysis, and delivery guidance.
+- `references/diagram-auto-repair.md`: read when Diagram IR validation reports broken paths, unknown nodes, connector web risk, or type mismatch.
 - `references/master-ppt-design-rubric.md`: mandatory for formal decks and final QA.
 - `references/component-raster-fallback.md`: mandatory when using raster/SVG/generated visual components.
+- `references/production-profiles.md`: mandatory before artifact planning or packaging.
 - `references/production-readiness-gates.md`: mandatory for non-trivial decks.
 - `references/anti-regression-examples.md`: read when quality regresses into bullets, connector webs, literal spec execution, or raster overuse.
+- `references/benchmark-methodology.md`: read when running formal rubric scoring, comparing tool/prompt changes, or adding regression fixtures.
 
 Templates:
 
 - `templates/slide-manifest-template.json`
-- `templates/design-language-schema.json`
+- `templates/style-contract-example.json`
+- `templates/component-registry-example.json`
+- `templates/capability-report-example.json`
+- `templates/delivery-plan-example.json`
+- `templates/delivery-manifest-example.json`
+- `templates/diagram-ir-example.json`
+- `templates/design-language-schema.json` (deprecated pointer only)
 - `templates/spec-implementation-priority-schema.json`
 - `templates/visual-qa-gate-template.json`
 - `templates/content-lock-template.md`
 - `templates/storyboard-template.md`
+- `templates/benchmark-case-example.json`
+- `templates/rubric-score-example.json`
 
-Move in this order: content semantics -> expression mode -> page architecture -> visual priority/deletion -> visual grammar -> delivery implementation -> verification and scoring.
+Move in this order: content semantics -> expression mode -> Diagram IR for relationship visuals -> page architecture -> visual priority/deletion -> visual grammar -> delivery implementation -> verification and scoring.
 
 ## Readiness Gates
 
@@ -219,13 +366,13 @@ Pass only when:
 - all key text fits within boxes
 - representative slides render nonblank
 - package/object counts match expected structure
-- colors used in implementation match `style_contract.json` exactly (no invented hex values)
+- visual parameters used in implementation match `style-contract.json` exactly (no invented hex, type sizes, spacing, radius, table, chart, diagram, image, or footer values)
 
 Fail if the deck is screenshot-only without explicit user acceptance, text clips, media is missing, or final report overclaims editability.
 
 ## Style Systems
 
-Use style systems as complete design languages, not skins. **Every style is now bound to one or more named palette contracts with exact hex values** — see `references/five-style-master-systems.md` for the palette table. The skill is no longer compatible with style descriptions that only encode mood; a model that invents its own colors will produce off-brand output and fail the Style & Palette Confirmation Gate.
+Use style systems as complete design languages, not skins. **Every style is now bound to a strict Style Contract fixture** — see `tests/fixtures/styles/` and `references/five-style-master-systems.md`. The skill is no longer compatible with style descriptions that only encode mood; a model that invents its own colors or component parameters will produce off-contract output and fail the Style Contract Gate.
 
 Default options (5 styles):
 
@@ -317,6 +464,29 @@ When using raster/SVG/generated components:
 - disclose the component in `verification-report.md`
 - count media objects and confirm only intended components are rasterized
 
+## Relationship Diagram Contract
+
+When `primary_expression=relationship_visual`:
+
+1. Do not draw directly from prose.
+2. Create or reference a valid Diagram IR.
+3. Identify nodes, groups, edges, boundaries, annotations, and main paths.
+4. Validate Diagram IR before selecting a delivery route.
+5. Use relationship semantics to choose line styles.
+6. Preserve one visually dominant main path or relationship structure.
+7. Use Component Registry and Delivery Resolver.
+8. Simplify, cluster, annotate, or split before falling back to raster.
+
+Do not:
+
+- convert relationship-heavy content into generic cards by default;
+- assign equal visual priority to every edge;
+- use curves merely for decoration;
+- draw connectors through nodes;
+- place large paragraphs inside nodes;
+- rasterize the entire relationship slide;
+- claim a diagram is editable when labels and nodes are embedded in one image.
+
 ## Scoring And Revision
 
 Use `references/master-ppt-design-rubric.md`. A production slide must score at least `14/18`, with no zero.
@@ -340,7 +510,7 @@ Revise before final handoff if any are true:
 - any key technical diagram has connector web or unclear boundaries
 - any claimed editable core is rasterized
 - ordinary card/matrix/table/metric content is rasterized without explicit user approval
-- implementation colors do not match `style_contract.json`
+- implementation visual parameters do not match `style-contract.json`
 
 ## Visual QA Gate
 
@@ -348,15 +518,18 @@ Before final handoff:
 
 1. Inspect package structure.
 2. Count editable text and media objects when possible.
-3. Render with QuickLook, PowerPoint, Keynote, OfficeCLI, LibreOffice, or another available route.
-4. Inspect representative screenshots/contact sheets.
-5. Check blank slides, clipped text, overlaps, missing images, aspect ratio, private local paths, connector webs, high-contrast grids, and cramped matrices.
-6. Confirm any raster/SVG/generated component is intentional, bounded, disclosed, and not replacing ordinary editable card/table/matrix content.
-7. **Confirm every fill, stroke, and text color in the build matches `style_contract.json` exactly.** Drift from the contract is a defect, not a creative choice.
-8. Revise and re-render if issues are found.
-9. Write `verification-report.md` for non-trivial decks.
+3. Run the Stage 6 verifier:
+   `python3 scripts/verify_deck.py deck.pptx --ppt-ir .ppt-work/contracts/ppt-ir.json --style .ppt-work/contracts/style-contract.json --delivery .ppt-work/contracts/delivery-plan.json --build .ppt-work/contracts/build-manifest.json --render --output .ppt-work/qa/qa-report.json`
+4. Render with PowerPoint, Keynote, LibreOffice, or another real available route. If no renderer is available, preserve `RENDER_ENGINE_UNAVAILABLE`, return/carry the unavailable status, and cap final status honestly. Do not create fake screenshots or claim visual QA passed.
+5. Inspect representative screenshots/contact sheets when they exist.
+6. Check blank slides, clipped text, overlaps, missing images, aspect ratio, private local paths, connector webs, high-contrast grids, and cramped matrices.
+7. Confirm any raster/SVG/generated component is intentional, bounded, disclosed, and not replacing ordinary editable card/table/matrix content.
+8. **Confirm every fill, stroke, text color, font size, spacing, radius, connector, table, chart, image, and footer value in the build matches `style-contract.json` exactly.** Drift from the contract is a defect, not a creative choice.
+9. For repair, use `python3 scripts/repair_deck.py deck.pptx --qa-report .ppt-work/qa/qa-report.json --output-pptx .ppt-work/qa/repaired.pptx --output-report .ppt-work/qa/repair-report.json`. Only safe deterministic repairs may be attempted; never mark visual/render issues repaired without a real render recheck.
+10. Revise and re-render if issues are found.
+11. Package the user-facing delivery with `scripts/package_delivery.py`; validate `delivery-manifest.json` and keep `.ppt-work/` if packaging fails.
 
-Final status must distinguish `Created`, `Rendered`, `Read back`, and `Final`.
+Final status must distinguish `planned`, `created`, `rendered`, `read_back`, `verified`, `final`, and `failed`. The status is calculated from Build Manifest, QA Report, and benchmark evidence. Builders and agents must not handwrite `final`; Premium without real render evidence is not final.
 
 ## Privacy And Cloud Export
 
@@ -364,20 +537,22 @@ Local PPTX export is the safer default for sensitive drafts, PRDs, internal metr
 
 ## Default Workflow
 
-1. Read source and identify audience/persona.
-2. Extract semantic units, evidence inventory, entities, and relationship clues.
-3. Create storyline and lock slide-level judgment titles.
-4. Run Expression Mode Gate for every slide.
-5. Create `slide_manifest.json` with expression mode and visual component plans.
-6. **Run Style & Palette Confirmation Gate**: confirm `style_system` + `palette_name` with the user (or match a reference), and write `style_contract.json` with exact hex values.
-7. Create detailed design specification (using contract colors only).
-8. Create visual priority map, deletion rules, and noise budget.
-9. Decide delivery route for complex visual components: `native_ppt`, `svg_html_render`, `generated_image`, or `hybrid_generated_component`.
-10. Create high-fidelity visual reference for cover + representative content page when polish matters.
-11. Build final PPTX using hybrid editable reconstruction, reading all colors from `style_contract.json`.
-12. Apply component craft checklist and score with the master rubric.
-13. Verify object counts, color compliance, and representative render/readback.
-14. Report editability and rasterization honestly.
+1. Resolve trigger and production profile.
+2. Analyze source and evidence.
+3. Create PPT IR.
+4. Validate title role and expression.
+5. Resolve Style Contract.
+6. Resolve component delivery routes.
+7. Build visual reference only when needed.
+8. Build PPTX through available adapter.
+9. Run verification harness.
+10. Repair and re-run when deterministic repairs are safe.
+11. Deliver trusted status and report.
+
+Keep this main workflow as routing only. Use references for detailed gates:
+`production-profiles.md`, `expression-mode-gate.md`, `design-token-contract.md`,
+`component-registry.md`, `diagram-ir-and-layout.md`, `builder-adapters.md`,
+`verification-harness.md`, and `production-readiness-gates.md`.
 
 ## Lessons From Recent Trials
 
@@ -386,8 +561,8 @@ Local PPTX export is the safer default for sensitive drafts, PRDs, internal metr
 - Detailed coordinates are not enough. A production-grade spec needs visual priority, deletion rules, density budgets, and component craft expectations.
 - For Agent/system decks, target `consulting-blueprint-hybrid`: consulting structure with technical proof components, not raw blueprint drafting.
 - Localized image generation is useful for complex relationship diagrams, ecosystem maps, conceptual visuals, and material layers; it is usually wrong for clean card grids, matrices, tables, and metric cards because it destroys useful editability without solving a structural problem.
-- Style descriptions that only encode mood ("restrained color") produce visibly different decks across models. Pin exact hex values into each style and confirm them with the user before building.
-- Do not introduce a style into the enumeration until its palette contract is written. Half-defined styles are a defect source.
+- Style descriptions that only encode mood ("restrained color") produce visibly different decks across models. Pin complete design tokens into each style contract and confirm them with the user before building.
+- Do not introduce a style into the enumeration until its strict style fixture validates. Half-defined styles are a defect source.
 
 ---
 
@@ -417,24 +592,23 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#0A2233` | deep warm navy titles, header bars, primary structural blocks |
-| accent | `#2C4A6E` | restrained steel blue single-emphasis data highlights, key callouts |
-| background | `#FBFBF8` | micro-warm ivory page base |
-| secondary-surface | `#F1EFEA` | warm neutral panel / table-header fills |
-| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
-| neutral-500 (muted) | `#7C7669` | warm muted text, source notes, captions |
-| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
+| primary | `#051C2C` | deep navy titles, header bars, primary structural blocks |
+| accent | `#2251FF` | single-emphasis data highlights, key callouts |
+| background | `#FFFFFF` | page base |
+| neutral-900 (text) | `#1F2937` | body text, judgment titles |
+| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
 
 ### `bcg`
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#0E3D28` | deep ink green titles, header bars, primary structural blocks |
-| accent | `#3E7A55` | muted olive green single-emphasis data highlights, key callouts |
-| background | `#FAF9F5` | micro-warm page base |
-| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
-| neutral-500 (muted) | `#7C7669` | warm muted text, source notes, captions |
-| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
+| primary | `#004C2F` | deep green titles, header bars, primary structural blocks |
+| accent | `#00823B` | single-emphasis data highlights, key callouts |
+| background | `#F9F9F9` | page base |
+| neutral-900 (text) | `#1F2937` | body text, judgment titles |
+| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
 
 ---
 
@@ -448,24 +622,23 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#232030` | warm near-black titles, header bars, primary structural blocks |
-| accent | `#6B5B95` | muted lavender purple single-emphasis data highlights, key callouts |
-| background | `#F6F5F2` | warm off-white page base |
-| secondary-surface | `#EDEBE6` | warm neutral panel / table-header fills |
-| neutral-900 (text) | `#2A2E35` | warm near-black body text, judgment titles |
-| neutral-500 (muted) | `#7A746B` | warm muted text, source notes, captions |
-| neutral-200 (border/fill) | `#E3DFD6` | warm dividers, table strokes, subtle card fills |
+| primary | `#1A1A2E` | near-black titles, header bars, primary structural blocks |
+| accent | `#7B68EE` | medium-violet single-emphasis data highlights, key callouts |
+| background | `#F7F7FB` | cool off-white page base |
+| neutral-900 (text) | `#1F2937` | body text, judgment titles |
+| neutral-500 (muted) | `#6B7280` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E5E7EB` | dividers, table strokes, subtle card fills |
 
 ### `stripe`
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#14161A` | near-black titles, header bars, primary structural blocks |
-| accent | `#3A5A8C` | restrained steel blue single-emphasis data highlights, key callouts |
-| background | `#FAFAF7` | micro-warm page base |
-| neutral-900 (text) | `#242526` | body text, judgment titles |
-| neutral-500 (muted) | `#79746B` | warm muted text, source notes, captions |
-| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
+| primary | `#0F0F0F` | near-black titles, header bars, primary structural blocks |
+| accent | `#0055FF` | bright blue single-emphasis data highlights, key callouts |
+| background | `#FAFAFA` | page base |
+| neutral-900 (text) | `#1A1A1A` | body text, judgment titles |
+| neutral-500 (muted) | `#6B6E73` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E6E6E9` | dividers, table strokes, subtle card fills |
 
 ---
 
@@ -479,15 +652,15 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#2A5578` | restrained engineering blue titles, header bars, primary structural blocks, node outlines |
-| accent | `#2A5578` | single-emphasis highlights (same as primary; rely on weight and isolation rather than a second hue) |
-| background | `#FAFAF7` | micro-warm page base |
-| secondary-surface | `#EFEDE7` | warm panel / code-block / table-header fills |
-| neutral-900 (text) | `#2A2E35` | body text, judgment titles |
-| neutral-500 (muted) | `#6E6A60` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#DAD5CB` | dividers, table strokes, subtle card fills |
+| primary | `#005A9E` | IBM blue titles, header bars, primary structural blocks, node outlines |
+| accent | `#005A9E` | single-emphasis highlights (same as primary; rely on weight and isolation rather than a second hue) |
+| background | `#FAFAFA` | page base |
+| secondary-surface | `#F0F4F8` | panel / code-block / table-header fills |
+| neutral-900 (text) | `#1F2937` | body text, judgment titles |
+| neutral-500 (muted) | `#4B5563` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#D1D5DB` | dividers, table strokes, subtle card fills |
 
-When accent and primary are identical, use neutral-700 `#3B3A34` as the de-facto "second accent" for a second tier of emphasis (e.g. secondary nodes) so the deck does not collapse to monochrome.
+When accent and primary are identical, use neutral-700 `#374151` as the de-facto "second accent" for a second tier of emphasis (e.g. secondary nodes) so the deck does not collapse to monochrome.
 
 ---
 
@@ -501,14 +674,14 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#1B2A42` | deep navy titles, header bars, primary structural blocks |
-| accent | `#C69749` | muted bronze-gold single-emphasis highlights, key callouts |
-| background | `#FAF9F5` | micro-warm page base |
-| neutral-900 (text) | `#2D3340` | body text, judgment titles (slightly differentiated from primary navy) |
-| neutral-500 (muted) | `#6E6A60` | warm secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E4E0D7` | warm dividers, table strokes, subtle card fills |
+| primary | `#1B2A4A` | deep navy titles, header bars, primary structural blocks |
+| accent | `#E8A838` | restrained amber-gold single-emphasis highlights, key callouts |
+| background | `#F9FAFB` | page base |
+| neutral-900 (text) | `#2D3748` | body text, judgment titles (slightly differentiated from primary navy) |
+| neutral-500 (muted) | `#4A5568` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E2E8F0` | dividers, table strokes, subtle card fills |
 
-Use accent `#C69749` sparingly: it is a highlight, not a fill. A small accent block, an underline beneath a number, or a single labeled arrow is enough.
+Use accent `#E8A838` sparingly: it is a highlight, not a fill. A small accent block, an underline beneath a number, or a single labeled arrow is enough.
 
 ---
 
@@ -522,12 +695,12 @@ Available palettes:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| primary | `#2B2621` | warm dark titles, header bars, primary structural blocks |
-| accent | `#C65D3B` | muted terracotta single-emphasis highlights, key callouts |
-| background | `#FBF8F1` | warm paper page base |
-| neutral-900 (text) | `#4A423A` | body text, judgment titles (warm dark, harmonized with primary) |
-| neutral-500 (muted) | `#857C70` | secondary text, source notes, captions |
-| neutral-200 (border/fill) | `#E4DDCF` | dividers, table strokes, subtle card fills (warm beige) |
+| primary | `#2D2926` | warm dark titles, header bars, primary structural blocks |
+| accent | `#E8633A` | warm orange-red single-emphasis highlights, key callouts |
+| background | `#FAF7F2` | warm paper page base |
+| neutral-900 (text) | `#4A4540` | body text, judgment titles (warm dark, harmonized with primary) |
+| neutral-500 (muted) | `#7A736D` | secondary text, source notes, captions |
+| neutral-200 (border/fill) | `#E5E0D8` | dividers, table strokes, subtle card fills (warm beige) |
 
 ---
 

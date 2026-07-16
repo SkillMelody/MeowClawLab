@@ -42,14 +42,32 @@ Before choosing raster/generated delivery, answer:
 
 Use localized image fallback only when 1-3 are yes, and 4 is documented.
 
+## Required Resolver Flow
+
+Raster fallback is an engineered route, not a visual shortcut. Before any bounded SVG/image/generated component is built, follow this flow:
+
+1. Query `references/component-registry.json` for the object's `component_type`.
+2. Check `native_capability`, `allowed_delivery_routes`, and `raster_policy`.
+3. Check the current Builder capability (`full`, `partial`, `visual_only`, `unsupported`, or `unknown`).
+4. Check object complexity against `complexity_limits.native`.
+5. Select the smallest local SVG/image region that preserves comprehension.
+6. Preserve the declared `editable_core` as native PPT overlay where the route requires it.
+7. Record the bounded component area ratio; never silently rasterize the whole slide.
+8. Write the selected route, fallback reason codes, editable core, raster/SVG parts, and QA checks to `delivery-plan.json`.
+9. Write actual route and any deviation to `build-manifest.json`.
+10. In QA, compare intended route against actual build output and disclose non-editable parts.
+
+普通组件不进入 Raster Fallback。`metric_card`、普通表格、矩阵、简单图表、标题、正文、来源说明、普通卡片必须优先保持原生可编辑；如果 Builder 做不到，Resolver 应返回 `unsupported` 或切换 Builder，而不是截图糊过去。
+
 ## Implementation Contract
 
 - crop the image to the component region, not the full slide
-- keep title, interpretation line, source note, and footer editable
+- keep title, interpretation line, key labels, source note, and footer editable
 - overlay key labels as editable PPT text when later editing is likely
 - store prompt and image path in the project directory
-- disclose the rasterized component in `verification-report.md`
+- disclose the rasterized component in `delivery-plan.json`, `build-manifest.json`, and `verification-report.md`
 - count media objects and confirm only intended components are rasterized
+- ensure the user can tell which parts are editable and which parts are not
 
 ## Native PPT Stop Conditions
 

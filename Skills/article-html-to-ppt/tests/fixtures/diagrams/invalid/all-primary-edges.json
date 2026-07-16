@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-invalid-all-primary",
+  "diagram_type": "process_flow",
+  "audience_question": "Are all lines equal?",
+  "message": "Every edge is primary, so the hierarchy is unclear.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "A", "role": "a", "node_type": "stage", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "B", "role": "b", "node_type": "stage", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "C", "role": "c", "node_type": "stage", "priority": "primary", "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E2", "source": "N2", "target": "N3", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E3", "source": "N1", "target": "N3", "relation": "influence", "priority": "primary", "direction": "forward", "style": "curved"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Main", "node_ids": ["N1", "N2", "N3"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay"], "editable_core": ["nodes"], "raster_policy": {"allowed": false, "whole_slide_forbidden": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

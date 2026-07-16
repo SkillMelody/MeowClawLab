@@ -1,0 +1,22 @@
+{
+  "schema_version": "2.0",
+  "deck_id": "deck-001",
+  "ppt_ir_ref": "ppt-ir.json",
+  "profile": "standard",
+  "status": "fail",
+  "issues": [
+    {
+      "issue_code": "TEXT_OVERFLOW",
+      "slide_id": "S99",
+      "object_id": "obj-404",
+      "severity": "fail",
+      "category": "layout",
+      "evidence": {"bbox": "outside"},
+      "message": "Referenced object does not exist.",
+      "repair_action": "Point QA issues to real PPT IR slide/object ids.",
+      "repair_status": "pending",
+      "recheck_status": "not_run"
+    }
+  ],
+  "metrics": {"qa_error_count": 1}
+}

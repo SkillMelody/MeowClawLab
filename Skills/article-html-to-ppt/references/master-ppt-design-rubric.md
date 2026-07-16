@@ -2,12 +2,32 @@
 
 Score each production slide 0-3 across six dimensions. Serious decks require at least 14/18 average, with no zero.
 
-## 1. Judgment Quality
+## 1. Title-Role And Message Quality
 
-- 0: Topic title or vague label; audience cannot tell the point.
-- 1: Title states a theme but not a decision, implication, or insight.
-- 2: Title gives a clear takeaway but could be sharper or more audience-specific.
-- 3: Title is answer-first, specific, and aligned to the audience action.
+3 points:
+
+For judgment slides:
+
+- the title states a clear, specific, evidence-supported conclusion;
+- the audience implication is immediately clear.
+
+For non-judgment slides:
+
+- the title performs its declared navigation, section, instruction, reference, or closing role precisely;
+- the slide purpose is immediately clear;
+- no artificial conclusion is invented.
+
+2 points:
+
+- The title is role-appropriate but generic, indirect, or slightly disconnected from the page message.
+
+1 point:
+
+- The title names the topic but does not communicate the intended role or message.
+
+0 points:
+
+- The title is misleading, unsupported, missing, or materially contradicts the page content.
 
 ## 2. Content Fidelity And Evidence
 
@@ -16,12 +36,31 @@ Score each production slide 0-3 across six dimensions. Serious decks require at 
 - 2: Faithful synthesis with visible evidence, minor caveats or lineage gaps.
 - 3: Claims, evidence, assumptions, and source boundaries are explicit and cleanly transformed.
 
-## 3. Expression Mode And Page Architecture
+## 3. Expression Architecture And Primary-Anchor Clarity
 
-- 0: Wrong expression mode; prose/cards/table hide a relationship, trend, or decision logic.
-- 1: Usable mode but weak primary anchor or multiple competing anchors.
-- 2: Correct mode and one primary anchor, with some density or grouping issues.
-- 3: Expression mode, archetype, primary anchor, and audience question fit naturally.
+3 points:
+
+- exactly one appropriate `primary_expression`;
+- `supporting_expressions` are necessary and subordinate;
+- page archetype reinforces the audience question;
+- primary anchor remains obvious;
+- relationship or data content uses a fitting visual language.
+
+2 points:
+
+- Correct `primary_expression` and one primary anchor, with minor density, grouping, or supporting-expression issues.
+
+1 point:
+
+- Usable primary expression, but weak primary anchor, unclear supporting hierarchy, or poorly matched archetype.
+
+0 points:
+
+- no identifiable primary expression;
+- multiple competing primary anchors;
+- `hybrid_panel` is used without identifying the true primary expression;
+- relationship content is reduced to generic cards with no simplification reason;
+- prose/cards/table hide a relationship, trend, or decision logic.
 
 ## 4. Page Composition
 
@@ -44,14 +83,42 @@ Score each production slide 0-3 across six dimensions. Serious decks require at 
 - 2: Core content editable, bounded raster disclosed, minor manual checks remain.
 - 3: Message-bearing content editable, raster/SVG use intentional and bounded, render/readback verified.
 
+## Budget Scoring
+
+Exceeding a default node, connector, card, or table budget does not automatically reduce the score.
+
+Score the consequence:
+
+- unclear hierarchy;
+- excessive crossings;
+- unreadable density;
+- competing anchors;
+- weak grouping;
+- poor presentation-distance legibility.
+
+A slide over a default budget may still score well when the structure is clear, the primary anchor is obvious, and the audience can read it at presentation distance.
+
 ## Revision Triggers
 
 Revise before handoff if any condition is true:
 
-- average score below 14/18
-- any dimension scores 0
-- more than 20% of slides use topic titles
-- more than 15% of slides have clipping or overlap
-- formal deck pages look like wireframes or spec coverage output
-- key technical diagrams have connector webs or unclear ownership boundaries
-- ordinary card, table, matrix, metric, or simple chart content is rasterized without explicit approval
+- average score below 14/18;
+- any dimension scores 0;
+- more than 20% of judgment-role slides use generic topic titles;
+- any section, navigation, reference, cover, or closing slide invents an unsupported judgment;
+- more than 15% of slides have clipping or overlap;
+- formal deck pages look like wireframes or spec coverage output;
+- key technical diagrams have connector webs or unclear ownership boundaries;
+- ordinary card, table, matrix, metric, or simple chart content is rasterized without explicit approval.
+
+## Benchmark Calibration
+
+Formal scoring should be calibrated against `tests/fixtures/benchmark/` and the contracts in:
+
+- `schemas/benchmark-case.schema.json`
+- `schemas/rubric-score.schema.json`
+- `schemas/benchmark-report.schema.json`
+
+The benchmark keeps QA hard gates and the 18-point rubric decoupled. A deck fails production readiness when QA has `fatal` or `error` issues even if the rubric total is at least 14. A deck also fails quality when the score is below 14 or any dimension is 0, even if QA has no hard error.
+
+Automatic metrics may inform a dimension, but they do not replace human or configured model judgment. If no scorer is available, the scorecard must say `manual_review_required` instead of inventing final dimension scores.

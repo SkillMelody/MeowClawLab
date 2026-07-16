@@ -1,0 +1,158 @@
+{
+  "allowed_effects": [],
+  "aspect_ratios": [
+    "16:9"
+  ],
+  "audience": [
+    "internal"
+  ],
+  "card_tokens": {
+    "comparison": {
+      "border_color": "border",
+      "fill": "surface_1",
+      "text_color": "text_primary"
+    },
+    "default": {
+      "border_color": "border",
+      "fill": "surface_1",
+      "text_color": "text_primary"
+    },
+    "highlight": {
+      "border_color": "accent",
+      "fill": "surface_2",
+      "text_color": "text_primary"
+    },
+    "metric": {
+      "fill": "surface_1",
+      "number_color": "primary",
+      "text_color": "text_primary"
+    },
+    "quote": {
+      "border_color": "border",
+      "fill": "surface_1",
+      "text_color": "text_secondary"
+    },
+    "risk": {
+      "border_color": "warning",
+      "fill": "surface_1",
+      "text_color": "text_primary"
+    },
+    "source": {
+      "border_color": "border",
+      "fill": "surface_1",
+      "text_color": "text_secondary"
+    }
+  },
+  "chart_tokens": {},
+  "colors": {
+    "accent": "#E85D3F",
+    "allowed_opacity": [
+      1.0,
+      0.8,
+      0.5
+    ],
+    "background": "#FFFFFF",
+    "border": "#C7D0DA",
+    "data_series": [
+      "#1F4E79",
+      "#E85D3F",
+      "#2E7D32"
+    ],
+    "negative": "#C62828",
+    "positive": "#2E7D32",
+    "primary": "#1F4E79",
+    "surface_1": "#F3F6FA",
+    "surface_2": "#E7EEF7",
+    "text_primary": "#1C1C1C",
+    "text_secondary": "#555555",
+    "warning": "#F9A825"
+  },
+  "compatibility_aliases": [],
+  "density_limits": {},
+  "diagram_tokens": {},
+  "display_name": "Benchmark Fixture Style",
+  "footer_tokens": {},
+  "forbidden_drift": [
+    "unregistered_hex"
+  ],
+  "formality": "professional",
+  "grid": {
+    "columns": 12,
+    "footer_zone_height_in": 0.2,
+    "gutter_horizontal_in": 0.1,
+    "gutter_vertical_in": 0.1,
+    "margin_bottom_in": 0.4,
+    "margin_left_in": 0.5,
+    "margin_right_in": 0.5,
+    "margin_top_in": 0.4,
+    "rows": 8,
+    "safe_zone_in": {
+      "bottom": 0.1,
+      "left": 0.1,
+      "right": 0.1,
+      "top": 0.1
+    },
+    "title_zone_height_in": 0.8
+  },
+  "icon_tokens": {},
+  "image_tokens": {},
+  "presentation_context": [
+    "review"
+  ],
+  "schema_version": "2.0",
+  "shadow_tokens": {},
+  "shape_tokens": {},
+  "spacing": {
+    "rules": {
+      "stack": "md"
+    },
+    "scale": {
+      "md": 0.2,
+      "sm": 0.1
+    },
+    "unit": "in"
+  },
+  "style_id": "product-report",
+  "table_tokens": {},
+  "typography": {
+    "body_sizes_pt": {
+      "body": 18,
+      "small": 12
+    },
+    "font_editorial": [
+      "Arial",
+      "serif"
+    ],
+    "font_mono": [
+      "Courier New",
+      "monospace"
+    ],
+    "font_primary": [
+      "Arial",
+      "Calibri",
+      "sans-serif"
+    ],
+    "letter_spacing_pt": {
+      "normal": 0
+    },
+    "line_height": {
+      "body": 1.2
+    },
+    "metric_sizes_pt": {
+      "large": 36
+    },
+    "minimum_body_size_pt": 10,
+    "minimum_footnote_size_pt": 8,
+    "paragraph_spacing_pt": {
+      "body": 6
+    },
+    "title_sizes_pt": {
+      "h1": 30,
+      "h2": 24
+    },
+    "weights": {
+      "bold": 700,
+      "regular": 400
+    }
+  }
+}

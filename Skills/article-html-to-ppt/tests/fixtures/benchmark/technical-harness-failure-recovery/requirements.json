@@ -1,0 +1,5 @@
+{
+  "expected_judgment_title": "Recovery depends on separating unavailable renderers from QA failures",
+  "expected_message": "Failure modes must not be collapsed into one status.",
+  "style_id": "technical-blueprint"
+}

@@ -1,0 +1,5 @@
+{
+  "expected_judgment_title": "Permission boundaries define the agent architecture",
+  "expected_message": "The architecture must show layers and trust boundaries.",
+  "style_id": "technical-blueprint"
+}

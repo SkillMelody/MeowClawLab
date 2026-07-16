@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "diag-bad",
+  "diagram_type": "process_flow",
+  "audience_question": "Does the edge target exist?",
+  "message": "This fixture intentionally references a missing target node.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "n1", "label": "Plan", "role": "start", "node_type": "stage", "priority": "primary", "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "e1", "source": "n1", "target": "n404", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal"}
+  ],
+  "main_paths": [{"id": "p1", "label": "Broken", "node_ids": ["n1", "n404"], "edge_ids": ["e1"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay"], "editable_core": ["nodes"], "raster_policy": {"allowed": false, "whole_slide_forbidden": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

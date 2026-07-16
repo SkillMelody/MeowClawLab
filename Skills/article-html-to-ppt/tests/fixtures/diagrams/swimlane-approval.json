@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-swimlane",
+  "diagram_type": "swimlane",
+  "audience_question": "Who approves each step?",
+  "message": "Creator, reviewer, and publisher each own a lane in the approval flow.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Create", "role": "creator", "node_type": "actor", "group_id": "G1", "priority": "primary", "sequence": 1, "shape": "pill", "status": "normal"},
+    {"id": "N2", "label": "Revise", "role": "creator", "node_type": "capability", "group_id": "G1", "priority": "secondary", "sequence": 2, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "Review", "role": "reviewer", "node_type": "control", "group_id": "G2", "priority": "primary", "sequence": 3, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N4", "label": "Approve", "role": "publisher", "node_type": "outcome", "group_id": "G3", "priority": "primary", "sequence": 4, "shape": "rounded_rect", "status": "highlighted"},
+    {"id": "N5", "label": "Publish", "role": "publisher", "node_type": "service", "group_id": "G3", "priority": "secondary", "sequence": 5, "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [
+    {"id": "G1", "label": "Creator", "group_type": "lane", "node_ids": ["N1", "N2"], "priority": "primary", "visual_role": "lane", "layout": "horizontal"},
+    {"id": "G2", "label": "Reviewer", "group_type": "lane", "node_ids": ["N3"], "priority": "primary", "visual_role": "lane", "layout": "horizontal"},
+    {"id": "G3", "label": "Publisher", "group_type": "lane", "node_ids": ["N4", "N5"], "priority": "primary", "visual_role": "lane", "layout": "horizontal"}
+  ],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N3", "relation": "handoff", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E2", "source": "N3", "target": "N4", "relation": "approval", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E3", "source": "N4", "target": "N5", "relation": "trigger", "priority": "secondary", "direction": "forward", "style": "orthogonal"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Approval path", "node_ids": ["N1", "N3", "N4"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "swimlane", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["lane_labels", "node_labels"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

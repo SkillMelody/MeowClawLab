@@ -1,0 +1,27 @@
+{
+  "schema_version": "2.0",
+  "build_id": "build-bad",
+  "deck_id": "deck-001",
+  "profile": "standard",
+  "builder": "python-pptx",
+  "builder_profile": "standard",
+  "status": "rendered",
+  "contract_refs": {
+    "ppt_ir": "ppt-ir.json",
+    "style_contract": "style-contract.json",
+    "asset_manifest": "asset-manifest.json",
+    "qa_report": "qa-report.json"
+  },
+  "stages": {
+    "built": true,
+    "rendered": false,
+    "read_back": false,
+    "qa_passed": false
+  },
+  "outputs": {
+    "deck": "missing-deck.pptx"
+  },
+  "metrics": {},
+  "warnings": [],
+  "errors": []
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meowclaw.local/article-html-to-ppt/benchmark-report.schema.json",
+  "title": "article-html-to-ppt Benchmark Report v1",
+  "type": "object",
+  "required": ["schema_version", "run_id", "summary", "results"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "generated_at": {"type": "string"},
+    "run_id": {"type": "string"},
+    "cases_dir": {"type": "string"},
+    "output_dir": {"type": "string"},
+    "repeat": {"type": "integer", "minimum": 1},
+    "renderer": {"type": "string"},
+    "summary": {
+      "type": "object",
+      "required": ["case_count", "result_count", "categories", "status_counts", "manual_review_required_count", "regression_count"],
+      "properties": {
+        "case_count": {"type": "integer", "minimum": 0},
+        "result_count": {"type": "integer", "minimum": 0},
+        "categories": {"type": "array", "items": {"type": "string"}},
+        "status_counts": {"type": "object"},
+        "manual_review_required_count": {"type": "integer", "minimum": 0},
+        "regression_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "case_id",
+          "category",
+          "iteration",
+          "baseline_available",
+          "verification_status",
+          "hard_gate_status",
+          "rubric_quality_status",
+          "overall_status",
+          "manual_review_required",
+          "total_score",
+          "validation_errors"
+        ],
+        "properties": {
+          "case_id": {"type": "string"},
+          "category": {"type": "string"},
+          "iteration": {"type": "integer", "minimum": 1},
+          "case_path": {"type": "string"},
+          "baseline_available": {"type": "boolean"},
+          "verification_status": {"type": "string"},
+          "verification_exit_code": {"type": ["integer", "null"]},
+          "qa_report": {"type": ["string", "null"]},
+          "rubric_score": {"type": "string"},
+          "hard_gate_status": {"enum": ["passed", "warning", "failed", "manual_review_required"]},
+          "rubric_quality_status": {"enum": ["passed", "failed", "manual_review_required"]},
+          "overall_status": {"enum": ["passed", "warning", "failed", "manual_review_required"]},
+          "manual_review_required": {"type": "boolean"},
+          "total_score": {"type": ["integer", "null"]},
+          "validation_errors": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

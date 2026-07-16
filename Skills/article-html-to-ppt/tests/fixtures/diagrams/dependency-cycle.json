@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-dependency-cycle",
+  "diagram_type": "dependency_graph",
+  "audience_question": "Which dependencies must be resolved?",
+  "message": "Contract, builder, and QA dependencies form a controlled cycle.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Schema", "role": "contract", "node_type": "artifact", "priority": "primary", "sequence": 1, "shape": "document", "status": "normal"},
+    {"id": "N2", "label": "Builder", "role": "implementation", "node_type": "service", "priority": "primary", "sequence": 2, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "QA", "role": "validation", "node_type": "control", "priority": "primary", "sequence": 3, "shape": "rounded_rect", "status": "highlighted"},
+    {"id": "N4", "label": "Report", "role": "output", "node_type": "artifact", "priority": "supporting", "sequence": 4, "shape": "document", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "dependency", "priority": "primary", "direction": "forward", "style": "orthogonal", "line_semantics": "dashed"},
+    {"id": "E2", "source": "N2", "target": "N3", "relation": "validation", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E3", "source": "N3", "target": "N1", "relation": "feedback", "priority": "secondary", "direction": "forward", "style": "curved", "feedback": true},
+    {"id": "E4", "source": "N3", "target": "N4", "relation": "produce", "priority": "secondary", "direction": "forward", "style": "orthogonal"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Dependency path", "node_ids": ["N1", "N2", "N3"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["node_labels", "legend"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

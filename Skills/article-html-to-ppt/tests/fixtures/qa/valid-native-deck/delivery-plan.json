@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "ppt_ir_ref": "ppt-ir.json",
+  "style_contract_ref": "style-contract.json",
+  "component_registry_ref": "component-registry.json",
+  "profile": "standard",
+  "builder": {
+    "requested": "fixture",
+    "selected": "fixture"
+  },
+  "slides": [
+    {
+      "slide_id": "S01",
+      "objects": [
+        {
+          "slide_id": "S01",
+          "object_id": "text-1",
+          "component_type": "bar_chart",
+          "preferred_route": "native_chart",
+          "selected_route": "native_chart",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "title",
+            "body"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "native_text"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_objects": 1,
+    "fallback_count": 0,
+    "unsupported_count": 0,
+    "risk_codes": []
+  }
+}

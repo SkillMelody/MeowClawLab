@@ -1,0 +1,62 @@
+{
+  "case_id": "anti-regression-whole-slide-raster",
+  "dimensions": [
+    {
+      "confidence": 0.85,
+      "dimension": "title_role_and_message_quality",
+      "evidence": [
+        "Fixture baseline evidence for title_role_and_message_quality."
+      ],
+      "score": 3
+    },
+    {
+      "confidence": 0.85,
+      "dimension": "content_fidelity",
+      "evidence": [
+        "Fixture baseline evidence for content_fidelity."
+      ],
+      "score": 3
+    },
+    {
+      "confidence": 0.85,
+      "dimension": "expression_architecture",
+      "evidence": [
+        "Fixture baseline evidence for expression_architecture."
+      ],
+      "score": 2
+    },
+    {
+      "confidence": 0.85,
+      "dimension": "page_composition",
+      "evidence": [
+        "Fixture baseline evidence for page_composition."
+      ],
+      "score": 2
+    },
+    {
+      "confidence": 0.85,
+      "dimension": "component_craft",
+      "evidence": [
+        "Fixture baseline evidence for component_craft."
+      ],
+      "score": 2
+    },
+    {
+      "confidence": 0.85,
+      "dimension": "editability_hygiene",
+      "evidence": [
+        "Fixture baseline evidence for editability_hygiene."
+      ],
+      "score": 2
+    }
+  ],
+  "notes": [
+    "Reference rubric is fixture-authored for deterministic benchmark tests."
+  ],
+  "schema_version": "1.0",
+  "scorer": {
+    "name": "benchmark-fixture",
+    "type": "human_reference",
+    "version": "1.0"
+  }
+}

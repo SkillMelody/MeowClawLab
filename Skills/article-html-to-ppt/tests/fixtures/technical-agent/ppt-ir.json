@@ -1,0 +1,52 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "technical-agent-test",
+    "title": "Technical Agent Diagram Test",
+    "source_type": "report",
+    "audience": "builders",
+    "purpose": "validate diagram references",
+    "language": "en",
+    "presentation_context": "internal",
+    "aspect_ratio": "16:9",
+    "production_profile": "premium",
+    "target_builder": "pptxgenjs",
+    "logical_slide_count": 1
+  },
+  "sources": [{"source_id": "src-001", "type": "fixture", "title": "Fixture Source"}],
+  "style_contract_ref": "../styles/technical-blueprint.json",
+  "asset_manifest_ref": "asset-manifest.json",
+  "slides": [
+    {
+      "id": "S01",
+      "index": 1,
+      "slide_role": "diagram",
+      "title_role": "judgment",
+      "title": "Agent execution depends on layered controls",
+      "judgment": "A stable agent flow needs planning, execution, and verification layers.",
+      "message": "Layering makes failures recoverable.",
+      "audience_question": "How does the agent stack execute safely?",
+      "source_refs": [{"source_id": "src-001", "locator": "fixture", "claim_type": "direct"}],
+      "primary_expression": "relationship_visual",
+      "primary_expression_reason": "The source describes layered execution responsibilities.",
+      "supporting_expressions": ["legend"],
+      "primary_anchor": "diagram-01",
+      "objects": [
+        {
+          "id": "diagram-01",
+          "type": "diagram",
+          "component_type": "layered_architecture",
+          "semantic_role": "primary_visual",
+          "source_refs": [{"source_id": "src-001", "locator": "fixture", "claim_type": "direct"}],
+          "style_ref": "diagram_tokens.node",
+          "diagram_ir_ref": "../diagrams/layered-agent-architecture.json",
+          "delivery_preferences": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"]},
+          "editability": "native_preferred",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {"preferred_route": "native_diagram", "editable_core": ["diagram-01"], "raster_allowance": [], "forbidden_raster": ["diagram-01"]},
+      "qa_expectations": ["DIAGRAM_MAIN_PATH"]
+    }
+  ]
+}

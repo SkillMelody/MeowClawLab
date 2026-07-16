@@ -1,5 +1,14 @@
+## Public Name: <br>
+MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith <br>
+
+## Technical Slug: <br>
+meowclaw-pptsmith <br>
+
+## Compatibility Alias(es): <br>
+article-html-to-ppt, meowclaw-decksmith <br>
+
 ## Description: <br>
-Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
+MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -31,6 +40,9 @@ Mitigation: The skill defaults to formal brand-consistent design and uses motifs
 Risk: A single consulting-style template may not fit product reporting, technical architecture, and knowledge creator decks equally well. <br>
 Mitigation: The skill now selects persona-specific deck defaults for product owners/reporters, Agent engineers/automation developers, and self-media authors/knowledge bloggers. <br>
 
+Risk: Premium profile can be overused for ordinary decks, increasing cost and blocking delivery on missing renderers. <br>
+Mitigation: The skill resolves fast/standard/premium from explicit request, audience risk, brand demand, delivery value, and diagram complexity; Premium is reserved for public, high-value, template, complex, or explicitly full-validation work. <br>
+
 Risk: Feishu/Lark Slides export sends source content, generated slide text, and related metadata to a cloud service. <br>
 Mitigation: The skill defaults sensitive work to local PPTX output and requires explicit user intent plus a pre-upload summary before Feishu/Lark cloud delivery. <br>
 
@@ -38,6 +50,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [Visual Design Archetypes](references/visual-design-archetypes.md) <br>
 - [Visual Systems Reference](references/visual-systems.md) <br>
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
+- [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
 - [Content Lock Template](templates/content-lock-template.md) <br>
 - [Slide Manifest Template](templates/slide-manifest-template.json) <br>
@@ -59,7 +72,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-1.0.5 <br>
+1.2.0 <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>

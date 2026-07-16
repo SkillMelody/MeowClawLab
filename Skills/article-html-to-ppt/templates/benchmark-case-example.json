@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "case_id": "technical-agent-architecture",
+  "title": "Agent System Architecture Presentation",
+  "category": "technical_agent",
+  "source_files": ["source.md"],
+  "requirements_file": "requirements.json",
+  "expected_content_lock": "expected-content-lock.md",
+  "expected_ppt_ir": "expected-ppt-ir.json",
+  "expected_style_contract": "expected-style-contract.json",
+  "reference_rubric": "reference-rubric.json",
+  "anti_patterns": "anti-patterns.json",
+  "expected_metrics": {
+    "source_coverage_ratio": 0.9,
+    "primary_expression_missing_count": 0
+  },
+  "allowed_variations": {
+    "slide_count_delta": 1
+  },
+  "profile": "premium",
+  "builder": "auto",
+  "renderer": "auto",
+  "baseline": {
+    "deck": "baseline/deck.pptx",
+    "qa_report": "baseline/qa-report.json",
+    "build_manifest": "baseline/build-manifest.json",
+    "rendered_dir": "baseline/rendered"
+  }
+}

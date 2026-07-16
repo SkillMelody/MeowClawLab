@@ -1,0 +1,7 @@
+{
+  "anti_patterns": [
+    "relationship_to_cards_regression"
+  ],
+  "expected_judgment_title": "Dependencies should not be flattened into equal cards",
+  "expected_message": "The benchmark should catch relationship-to-card regression."
+}

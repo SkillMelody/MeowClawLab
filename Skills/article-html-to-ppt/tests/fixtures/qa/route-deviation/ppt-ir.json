@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "qa-fixture",
+    "title": "QA Fixture",
+    "source_type": "article",
+    "audience": "internal",
+    "purpose": "qa",
+    "language": "en",
+    "aspect_ratio": "16:9",
+    "production_profile": "standard",
+    "logical_slide_count": 1
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "type": "fixture",
+      "title": "Fixture Source"
+    }
+  ],
+  "style_contract_ref": "style-contract.json",
+  "asset_manifest_ref": "asset-manifest.json",
+  "slides": [
+    {
+      "id": "S01",
+      "index": 1,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "QA Slide 1",
+      "judgment": "QA Slide 1 stays editable",
+      "message": "Native body text for slide 1",
+      "audience_question": "Can this deck stay editable?",
+      "source_refs": [
+        {
+          "source_id": "src-1",
+          "locator": "fixture",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "textual_argument",
+      "supporting_expressions": [
+        "source_note"
+      ],
+      "primary_anchor": "body",
+      "objects": [
+        {
+          "id": "image-1",
+          "type": "image",
+          "semantic_role": "visual",
+          "content": "Raster fixture image",
+          "source_refs": [
+            {
+              "source_id": "src-1",
+              "locator": "fixture",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "raster_allowed",
+          "component_type": "qa_raster_image"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_chart",
+        "editable_core": [
+          "title",
+          "body"
+        ],
+        "raster_allowance": [
+          "image-1"
+        ],
+        "forbidden_raster": [
+          "core_text"
+        ]
+      },
+      "qa_expectations": [
+        "native_text"
+      ]
+    }
+  ]
+}

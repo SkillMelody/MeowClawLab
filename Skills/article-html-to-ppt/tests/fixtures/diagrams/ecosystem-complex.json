@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-ecosystem",
+  "diagram_type": "zoned_ecosystem",
+  "audience_question": "Which parties interact around the product?",
+  "message": "Creators, AI tasks, assets, and publishing services form four related zones.",
+  "direction": "free",
+  "nodes": [
+    {"id": "N1", "label": "Creator", "role": "actor", "node_type": "actor", "group_id": "G1", "priority": "primary", "sequence": 1, "shape": "circle", "status": "normal"},
+    {"id": "N2", "label": "Editor", "role": "actor", "node_type": "actor", "group_id": "G1", "priority": "secondary", "sequence": 2, "shape": "circle", "status": "normal"},
+    {"id": "N3", "label": "Article", "role": "content", "node_type": "artifact", "group_id": "G2", "priority": "primary", "sequence": 3, "shape": "document", "status": "normal"},
+    {"id": "N4", "label": "Cover", "role": "asset", "node_type": "artifact", "group_id": "G2", "priority": "secondary", "sequence": 4, "shape": "document", "status": "normal"},
+    {"id": "N5", "label": "Rewrite", "role": "ai_task", "node_type": "service", "group_id": "G3", "priority": "primary", "sequence": 5, "shape": "rounded_rect", "status": "highlighted"},
+    {"id": "N6", "label": "Review", "role": "ai_task", "node_type": "control", "group_id": "G3", "priority": "secondary", "sequence": 6, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N7", "label": "Draft", "role": "publish", "node_type": "service", "group_id": "G4", "priority": "primary", "sequence": 7, "shape": "cloud", "status": "normal"},
+    {"id": "N8", "label": "Metrics", "role": "publish", "node_type": "data", "group_id": "G4", "priority": "supporting", "sequence": 8, "shape": "database", "status": "normal"},
+    {"id": "N9", "label": "Asset Library", "role": "asset", "node_type": "artifact", "group_id": "G2", "priority": "secondary", "sequence": 9, "shape": "document", "status": "normal"},
+    {"id": "N10", "label": "QA Task", "role": "ai_task", "node_type": "control", "group_id": "G3", "priority": "secondary", "sequence": 10, "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [
+    {"id": "G1", "label": "People", "group_type": "organization", "node_ids": ["N1", "N2"], "priority": "primary", "visual_role": "region", "layout": "vertical"},
+    {"id": "G2", "label": "Content", "group_type": "domain", "node_ids": ["N3", "N4", "N9"], "priority": "primary", "visual_role": "region", "layout": "vertical"},
+    {"id": "G3", "label": "AI Tasks", "group_type": "system", "node_ids": ["N5", "N6", "N10"], "priority": "primary", "visual_role": "region", "layout": "vertical"},
+    {"id": "G4", "label": "Publishing", "group_type": "external_zone", "node_ids": ["N7", "N8"], "priority": "secondary", "visual_role": "region", "layout": "vertical"}
+  ],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N3", "relation": "ownership", "priority": "primary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E2", "source": "N3", "target": "N5", "relation": "request", "priority": "primary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E3", "source": "N5", "target": "N7", "relation": "produce", "priority": "primary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E4", "source": "N4", "target": "N7", "relation": "consume", "priority": "secondary", "direction": "forward", "style": "dashed", "line_semantics": "dashed", "cross_boundary": true},
+    {"id": "E5", "source": "N9", "target": "N4", "relation": "dependency", "priority": "secondary", "direction": "forward", "style": "curved"},
+    {"id": "E6", "source": "N6", "target": "N10", "relation": "validation", "priority": "secondary", "direction": "forward", "style": "curved"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Publish path", "node_ids": ["N1", "N3", "N5", "N7"], "priority": "primary"}],
+  "boundaries": [{"id": "B1", "label": "External services", "boundary_type": "trust", "contains_group_ids": ["G4"], "contains_node_ids": [], "priority": "secondary", "style_role": "warning"}],
+  "annotations": [
+    {"id": "A1", "annotation_type": "risk", "target_type": "boundary", "target_id": "B1", "label": "Publishing APIs can fail", "priority": "medium", "editable": true},
+    {"id": "A2", "annotation_type": "metric", "target_type": "node", "target_id": "N8", "label": "Metrics inform review", "priority": "low", "editable": true}
+  ],
+  "layout_constraints": {"preferred_layout": "zoned_ecosystem", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18, "allow_split_slide": true},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["zone_labels", "node_labels", "legend"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

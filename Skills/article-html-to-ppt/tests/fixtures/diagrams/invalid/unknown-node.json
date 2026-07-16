@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-invalid-unknown-node",
+  "diagram_type": "process_flow",
+  "audience_question": "Bad edge reference?",
+  "message": "One edge points to a missing node.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Start", "role": "start", "node_type": "event", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "End", "role": "end", "node_type": "outcome", "priority": "primary", "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N404", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E2", "source": "N1", "target": "N2", "relation": "sequence", "priority": "secondary", "direction": "forward", "style": "orthogonal"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Broken", "node_ids": ["N1", "N2"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay"], "editable_core": ["nodes"], "raster_policy": {"allowed": false, "whole_slide_forbidden": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

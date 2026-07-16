@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-layered-agent",
+  "diagram_type": "layered_architecture",
+  "audience_question": "How does the agent stack execute safely?",
+  "message": "Execution flows through intent, planning, tools, verification, and handoff layers.",
+  "direction": "top_to_bottom",
+  "reading_order": "layer_then_left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Intent", "role": "input", "node_type": "event", "group_id": "G1", "priority": "primary", "sequence": 1, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "Policy", "role": "guardrail", "node_type": "control", "group_id": "G1", "priority": "secondary", "sequence": 2, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "Plan", "role": "planner", "node_type": "capability", "group_id": "G2", "priority": "primary", "sequence": 3, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N4", "label": "Tools", "role": "execution", "node_type": "service", "group_id": "G3", "priority": "primary", "sequence": 4, "shape": "rounded_rect", "status": "normal"},
+    {"id": "N5", "label": "Verify", "role": "qa", "node_type": "control", "group_id": "G4", "priority": "primary", "sequence": 5, "shape": "rounded_rect", "status": "highlighted"},
+    {"id": "N6", "label": "Handoff", "role": "output", "node_type": "artifact", "group_id": "G4", "priority": "secondary", "sequence": 6, "shape": "document", "status": "normal"}
+  ],
+  "groups": [
+    {"id": "G1", "label": "Input Layer", "group_type": "layer", "node_ids": ["N1", "N2"], "priority": "primary", "visual_role": "region", "layout": "horizontal"},
+    {"id": "G2", "label": "Planning Layer", "group_type": "layer", "node_ids": ["N3"], "priority": "primary", "visual_role": "container", "layout": "horizontal"},
+    {"id": "G3", "label": "Execution Layer", "group_type": "layer", "node_ids": ["N4"], "priority": "primary", "visual_role": "container", "layout": "horizontal"},
+    {"id": "G4", "label": "Verification Layer", "group_type": "layer", "node_ids": ["N5", "N6"], "priority": "primary", "visual_role": "region", "layout": "horizontal"}
+  ],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N3", "relation": "request", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E2", "source": "N3", "target": "N4", "relation": "trigger", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E3", "source": "N4", "target": "N5", "relation": "validation", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E4", "source": "N5", "target": "N6", "relation": "produce", "priority": "secondary", "direction": "forward", "style": "orthogonal"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Execution path", "node_ids": ["N1", "N3", "N4", "N5"], "edge_ids": ["E1", "E2", "E3"], "priority": "primary"}],
+  "boundaries": [{"id": "B1", "label": "Controlled execution", "boundary_type": "trust", "contains_group_ids": ["G3"], "contains_node_ids": [], "priority": "secondary", "style_role": "security"}],
+  "annotations": [{"id": "A1", "annotation_type": "risk", "target_type": "node", "target_id": "N4", "label": "Tool failures route back to planning", "priority": "medium", "editable": true}],
+  "layout_constraints": {"preferred_layout": "layered", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["layer_labels", "node_labels", "legend"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

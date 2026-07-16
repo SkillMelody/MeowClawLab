@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-flywheel",
+  "diagram_type": "flywheel",
+  "audience_question": "What reinforces the loop?",
+  "message": "Better output attracts more feedback, which improves the next output.",
+  "direction": "clockwise",
+  "nodes": [
+    {"id": "N1", "label": "Create", "role": "step", "node_type": "capability", "priority": "primary", "sequence": 1, "shape": "circle", "status": "normal"},
+    {"id": "N2", "label": "Publish", "role": "step", "node_type": "service", "priority": "primary", "sequence": 2, "shape": "circle", "status": "normal"},
+    {"id": "N3", "label": "Feedback", "role": "step", "node_type": "event", "priority": "primary", "sequence": 3, "shape": "circle", "status": "highlighted"},
+    {"id": "N4", "label": "Learn", "role": "step", "node_type": "capability", "priority": "secondary", "sequence": 4, "shape": "circle", "status": "normal"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "curved"},
+    {"id": "E2", "source": "N2", "target": "N3", "relation": "produce", "priority": "primary", "direction": "forward", "style": "curved"},
+    {"id": "E3", "source": "N3", "target": "N4", "relation": "feedback", "priority": "secondary", "direction": "forward", "style": "curved", "feedback": true},
+    {"id": "E4", "source": "N4", "target": "N1", "relation": "feedback", "priority": "secondary", "direction": "forward", "style": "curved", "feedback": true}
+  ],
+  "main_paths": [{"id": "P1", "label": "Improvement loop", "node_ids": ["N1", "N2", "N3", "N4", "N1"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "flywheel", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["node_labels", "loop_labels"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

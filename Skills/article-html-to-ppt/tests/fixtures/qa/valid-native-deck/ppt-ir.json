@@ -1,0 +1,77 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "qa-fixture",
+    "title": "QA Fixture",
+    "source_type": "article",
+    "audience": "internal",
+    "purpose": "qa",
+    "language": "en",
+    "aspect_ratio": "16:9",
+    "production_profile": "standard",
+    "logical_slide_count": 1
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "type": "fixture",
+      "title": "Fixture Source"
+    }
+  ],
+  "style_contract_ref": "style-contract.json",
+  "asset_manifest_ref": "asset-manifest.json",
+  "slides": [
+    {
+      "id": "S01",
+      "index": 1,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "QA Slide 1",
+      "judgment": "QA Slide 1 stays editable",
+      "message": "Native body text for slide 1",
+      "audience_question": "Can this deck stay editable?",
+      "source_refs": [
+        {
+          "source_id": "src-1",
+          "locator": "fixture",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "data_visual",
+      "supporting_expressions": [
+        "source_note"
+      ],
+      "primary_anchor": "body",
+      "objects": [
+        {
+          "id": "text-1",
+          "type": "text",
+          "semantic_role": "body",
+          "content": "Native body text for slide 1",
+          "source_refs": [
+            {
+              "source_id": "src-1",
+              "locator": "fixture",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "body"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "core_text"
+        ]
+      },
+      "qa_expectations": [
+        "native_text"
+      ]
+    }
+  ]
+}

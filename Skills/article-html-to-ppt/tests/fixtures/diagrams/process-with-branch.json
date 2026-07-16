@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-process-branch",
+  "diagram_type": "process_flow",
+  "audience_question": "Where can the process branch?",
+  "message": "A failed check routes work back for repair before final approval.",
+  "direction": "left_to_right",
+  "nodes": [
+    {"id": "N1", "label": "Draft", "role": "start", "node_type": "artifact", "priority": "primary", "sequence": 1, "shape": "document", "status": "normal"},
+    {"id": "N2", "label": "Check", "role": "gate", "node_type": "decision", "priority": "primary", "sequence": 2, "shape": "diamond", "status": "normal"},
+    {"id": "N3", "label": "Repair", "role": "fallback", "node_type": "capability", "priority": "secondary", "sequence": 3, "shape": "rounded_rect", "status": "warning"},
+    {"id": "N4", "label": "Approve", "role": "done", "node_type": "outcome", "priority": "primary", "sequence": 4, "shape": "rounded_rect", "status": "highlighted"}
+  ],
+  "groups": [],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N2", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E2", "source": "N2", "target": "N4", "relation": "approval", "priority": "primary", "direction": "forward", "style": "orthogonal"},
+    {"id": "E3", "source": "N2", "target": "N3", "relation": "fallback", "priority": "secondary", "direction": "forward", "style": "curved", "line_semantics": "dashed"},
+    {"id": "E4", "source": "N3", "target": "N4", "relation": "validation", "priority": "secondary", "direction": "forward", "style": "curved", "line_semantics": "dashed"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Approved path", "node_ids": ["N1", "N2", "N4"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "process", "allow_layout_change": true, "max_primary_nodes": 8, "max_total_nodes": 14, "max_primary_edges": 9, "max_total_edges": 18},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay", "svg_component"], "editable_core": ["nodes", "labels"], "raster_policy": {"allowed": false, "max_area_ratio": 0, "whole_slide_forbidden": true, "requires_disclosure": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

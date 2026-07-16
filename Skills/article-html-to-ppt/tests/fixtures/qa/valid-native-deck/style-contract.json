@@ -1,0 +1,158 @@
+{
+  "schema_version": "2.0",
+  "style_id": "qa-style",
+  "display_name": "QA Style",
+  "audience": [
+    "internal"
+  ],
+  "formality": "professional",
+  "presentation_context": [
+    "review"
+  ],
+  "aspect_ratios": [
+    "16:9"
+  ],
+  "colors": {
+    "primary": "#1F4E79",
+    "accent": "#E85D3F",
+    "background": "#FFFFFF",
+    "surface_1": "#F3F6FA",
+    "surface_2": "#E7EEF7",
+    "text_primary": "#1C1C1C",
+    "text_secondary": "#555555",
+    "border": "#C7D0DA",
+    "positive": "#2E7D32",
+    "warning": "#F9A825",
+    "negative": "#C62828",
+    "data_series": [
+      "#1F4E79",
+      "#E85D3F",
+      "#2E7D32"
+    ],
+    "allowed_opacity": [
+      1.0,
+      0.8,
+      0.5
+    ]
+  },
+  "typography": {
+    "font_primary": [
+      "Arial",
+      "Calibri",
+      "sans-serif"
+    ],
+    "font_editorial": [
+      "Arial",
+      "serif"
+    ],
+    "font_mono": [
+      "Courier New",
+      "monospace"
+    ],
+    "title_sizes_pt": {
+      "h1": 30,
+      "h2": 24
+    },
+    "body_sizes_pt": {
+      "body": 18,
+      "small": 12
+    },
+    "metric_sizes_pt": {
+      "large": 36
+    },
+    "minimum_body_size_pt": 10,
+    "minimum_footnote_size_pt": 8,
+    "line_height": {
+      "body": 1.2
+    },
+    "paragraph_spacing_pt": {
+      "body": 6
+    },
+    "letter_spacing_pt": {
+      "normal": 0
+    },
+    "weights": {
+      "regular": 400,
+      "bold": 700
+    }
+  },
+  "grid": {
+    "columns": 12,
+    "rows": 8,
+    "margin_left_in": 0.5,
+    "margin_right_in": 0.5,
+    "margin_top_in": 0.4,
+    "margin_bottom_in": 0.4,
+    "gutter_horizontal_in": 0.1,
+    "gutter_vertical_in": 0.1,
+    "title_zone_height_in": 0.8,
+    "footer_zone_height_in": 0.2,
+    "safe_zone_in": {
+      "left": 0.1,
+      "right": 0.1,
+      "top": 0.1,
+      "bottom": 0.1
+    }
+  },
+  "spacing": {
+    "unit": "in",
+    "scale": {
+      "sm": 0.1,
+      "md": 0.2
+    },
+    "rules": {
+      "stack": "md"
+    }
+  },
+  "shape_tokens": {},
+  "shadow_tokens": {},
+  "card_tokens": {
+    "default": {
+      "fill": "surface_1",
+      "text_color": "text_primary",
+      "border_color": "border"
+    },
+    "highlight": {
+      "fill": "surface_2",
+      "text_color": "text_primary",
+      "border_color": "accent"
+    },
+    "metric": {
+      "fill": "surface_1",
+      "text_color": "text_primary",
+      "number_color": "primary"
+    },
+    "risk": {
+      "fill": "surface_1",
+      "text_color": "text_primary",
+      "border_color": "warning"
+    },
+    "quote": {
+      "fill": "surface_1",
+      "text_color": "text_secondary",
+      "border_color": "border"
+    },
+    "comparison": {
+      "fill": "surface_1",
+      "text_color": "text_primary",
+      "border_color": "border"
+    },
+    "source": {
+      "fill": "surface_1",
+      "text_color": "text_secondary",
+      "border_color": "border"
+    }
+  },
+  "table_tokens": {},
+  "chart_tokens": {},
+  "diagram_tokens": {},
+  "image_tokens": {},
+  "icon_tokens": {},
+  "footer_tokens": {},
+  "density_limits": {},
+  "allowed_effects": [],
+  "forbidden_drift": [
+    "unregistered_hex"
+  ],
+  "compatibility_aliases": []
+}

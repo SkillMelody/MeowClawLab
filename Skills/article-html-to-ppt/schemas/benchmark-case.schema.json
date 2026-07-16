@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meowclaw.local/article-html-to-ppt/benchmark-case.schema.json",
+  "title": "article-html-to-ppt Benchmark Case v1",
+  "type": "object",
+  "required": ["schema_version", "case_id", "title", "category", "source_files", "requirements_file", "reference_rubric", "profile"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "title": {"type": "string", "minLength": 1},
+    "category": {
+      "enum": [
+        "editorial_article",
+        "product_report",
+        "technical_agent",
+        "design_spec",
+        "business_analysis",
+        "data_story",
+        "anti_regression"
+      ]
+    },
+    "source_files": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "requirements_file": {"type": "string"},
+    "expected_content_lock": {"type": "string"},
+    "expected_ppt_ir": {"type": "string"},
+    "expected_style_contract": {"type": "string"},
+    "reference_rubric": {"type": "string"},
+    "anti_patterns": {"type": "string"},
+    "expected_metrics": {"type": "object"},
+    "allowed_variations": {"type": "object"},
+    "profile": {"enum": ["fast", "standard", "premium"]},
+    "builder": {"type": "string"},
+    "renderer": {"type": "string"},
+    "baseline": {
+      "type": "object",
+      "properties": {
+        "deck": {"type": "string"},
+        "qa_report": {"type": "string"},
+        "build_manifest": {"type": "string"},
+        "rendered_dir": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -10,7 +10,7 @@ Use this as the shared design language for serious decks. It is a hierarchy syst
 4. Page archetype.
 5. Primary anchor.
 6. Visual priority and deletion.
-7. Style system.
+7. Style contract.
 8. Delivery route.
 
 ## Professional Slide Principles
@@ -21,6 +21,7 @@ Use this as the shared design language for serious decks. It is a hierarchy syst
 - Supporting units should explain, prove, or qualify the anchor.
 - Visual accents must lower cognitive load, not fill space.
 - Design systems are complete languages: typography, spacing, color, component grammar, proof style, and density rules.
+- Builders must read visual parameters from `style-contract.json`; they should not invent colors, type sizes, spacing, radius, table styling, chart colors, connector widths, image crop rules, or footer styling.
 
 ## Hierarchy Rules
 
@@ -42,6 +43,7 @@ Avoid:
 - connector webs
 - tables used as storage bins
 - full-slide screenshots unless explicitly approved
+- raw hex values, ad hoc font sizes, arbitrary spacing, or one-off component styling outside the style contract
 
 ## Hybrid Editable Delivery
 

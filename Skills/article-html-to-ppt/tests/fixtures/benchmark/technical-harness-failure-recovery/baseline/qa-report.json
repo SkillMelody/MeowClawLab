@@ -1,0 +1,434 @@
+{
+  "benchmark_case_id": "technical-harness-failure-recovery",
+  "build_ref": "tests/fixtures/benchmark/technical-harness-failure-recovery/baseline/build-manifest.json",
+  "build_status_cap": "created",
+  "compatibility": {
+    "legacy_severities": [
+      "review",
+      "fail",
+      "blocked"
+    ],
+    "severity_aliases": {
+      "error": "fail",
+      "fatal": "blocked",
+      "info": "review",
+      "warning": "review"
+    }
+  },
+  "deck_id": "technical-harness-failure-recovery",
+  "delivery_ref": null,
+  "evidence": {
+    "render_report": null,
+    "structural_inspection": {
+      "issues": [
+        {
+          "category": "editability",
+          "detector": "pptx-structural-inspector",
+          "evidence": {
+            "text_boxes_per_100_characters": 16.0
+          },
+          "issue_code": "PPTX_TEXT_FRAGMENTATION",
+          "issue_id": "QA-0001",
+          "message": "Text box fragmentation is high.",
+          "object_id": null,
+          "ppt_shape_id": null,
+          "repair_action": null,
+          "repair_status": "pending",
+          "severity": "warning",
+          "slide_id": "S01",
+          "verification": null
+        }
+      ],
+      "metrics": {
+        "average_object_count": 13.0,
+        "expected_text_character_count": 66,
+        "native_chart_count": 0,
+        "native_connector_count": 5,
+        "native_table_count": 0,
+        "native_text_character_count": 50,
+        "native_text_ratio": 0.7576,
+        "rasterized_area_ratio": 0.0,
+        "whole_slide_raster_count": 0
+      },
+      "pptx": "tests/fixtures/benchmark/technical-harness-failure-recovery/baseline/deck.pptx",
+      "schema_version": "1.0",
+      "slide_count": 1,
+      "slides": [
+        {
+          "issues": [
+            {
+              "category": "editability",
+              "detector": "pptx-structural-inspector",
+              "evidence": {
+                "text_boxes_per_100_characters": 16.0
+              },
+              "issue_code": "PPTX_TEXT_FRAGMENTATION",
+              "issue_id": "QA-0001",
+              "message": "Text box fragmentation is high.",
+              "object_id": null,
+              "ppt_shape_id": null,
+              "repair_action": null,
+              "repair_status": "pending",
+              "severity": "warning",
+              "slide_id": "S01",
+              "verification": null
+            }
+          ],
+          "metrics": {
+            "average_characters_per_text_box": 6.25,
+            "expected_text_character_count": 66,
+            "font_family_count": 1,
+            "font_size_count": 2,
+            "native_chart_count": 0,
+            "native_connector_count": 5,
+            "native_table_count": 0,
+            "native_text_character_count": 50,
+            "native_text_ratio": 0.7576,
+            "object_count": 13,
+            "rasterized_area_ratio": 0.0,
+            "small_text_box_count": 0,
+            "text_box_count": 8,
+            "text_boxes_per_100_characters": 16.0,
+            "tiny_object_count": 5
+          },
+          "objects": [
+            {
+              "area_ratio": 0.0319,
+              "fill_colors": [],
+              "font_families": [
+                "Arial"
+              ],
+              "font_sizes_pt": [
+                28.0
+              ],
+              "h_in": 0.55,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "TextBox 1",
+              "object_id": "ppt-object-1-1",
+              "shape_id": 2,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "QA Slide 1",
+              "w_in": 5.8,
+              "x_in": 0.6,
+              "y_in": 0.35
+            },
+            {
+              "area_ratio": 0.044,
+              "fill_colors": [],
+              "font_families": [
+                "Arial"
+              ],
+              "font_sizes_pt": [
+                18.0
+              ],
+              "h_in": 0.8,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "TextBox 2",
+              "object_id": "ppt-object-1-2",
+              "shape_id": 3,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "Native body text for slide 1",
+              "w_in": 5.5,
+              "x_in": 0.6,
+              "y_in": 1.05
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 3",
+              "object_id": "ppt-object-1-3",
+              "shape_id": 4,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N1",
+              "w_in": 1.0,
+              "x_in": 0.8,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 4",
+              "object_id": "ppt-object-1-4",
+              "shape_id": 5,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N2",
+              "w_in": 1.0,
+              "x_in": 2.2,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.0,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 0.0,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Connector 5",
+              "object_id": "ppt-object-1-5",
+              "shape_id": 6,
+              "shape_type": "connector",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 0.4,
+              "x_in": 1.8,
+              "y_in": 2.55
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 6",
+              "object_id": "ppt-object-1-6",
+              "shape_id": 7,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N3",
+              "w_in": 1.0,
+              "x_in": 3.6,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.0,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 0.0,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Connector 7",
+              "object_id": "ppt-object-1-7",
+              "shape_id": 8,
+              "shape_type": "connector",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 0.4,
+              "x_in": 3.2,
+              "y_in": 2.55
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 8",
+              "object_id": "ppt-object-1-8",
+              "shape_id": 9,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N4",
+              "w_in": 1.0,
+              "x_in": 5.0,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.0,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 0.0,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Connector 9",
+              "object_id": "ppt-object-1-9",
+              "shape_id": 10,
+              "shape_type": "connector",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 0.4,
+              "x_in": 4.6,
+              "y_in": 2.55
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 10",
+              "object_id": "ppt-object-1-10",
+              "shape_id": 11,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N5",
+              "w_in": 1.0,
+              "x_in": 6.4,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.0,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 0.0,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Connector 11",
+              "object_id": "ppt-object-1-11",
+              "shape_id": 12,
+              "shape_type": "connector",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 0.4,
+              "x_in": 6.0,
+              "y_in": 2.55
+            },
+            {
+              "area_ratio": 0.005,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [
+                null
+              ],
+              "h_in": 0.5,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Rectangle 12",
+              "object_id": "ppt-object-1-12",
+              "shape_id": 13,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "N6",
+              "w_in": 1.0,
+              "x_in": 7.8,
+              "y_in": 2.3
+            },
+            {
+              "area_ratio": 0.0,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 0.0,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Connector 13",
+              "object_id": "ppt-object-1-13",
+              "shape_id": 14,
+              "shape_type": "connector",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 0.4,
+              "x_in": 7.4,
+              "y_in": 2.55
+            }
+          ],
+          "slide_id": "S01",
+          "slide_index": 1
+        }
+      ],
+      "status": "passed"
+    }
+  },
+  "generated_at": "2026-07-16T14:18:18+08:00",
+  "inputs": {
+    "inspection_report": "embedded",
+    "render_report": null
+  },
+  "issues": [
+    {
+      "category": "editability",
+      "compatibility_severity": "review",
+      "detector": "pptx-structural-inspector",
+      "evidence": {
+        "text_boxes_per_100_characters": 16.0
+      },
+      "issue_code": "PPTX_TEXT_FRAGMENTATION",
+      "issue_id": "QA-0001",
+      "message": "Text box fragmentation is high.",
+      "object_id": null,
+      "ppt_shape_id": null,
+      "recheck_status": "not_run",
+      "repair_action": null,
+      "repair_status": "pending",
+      "severity": "warning",
+      "slide_id": "S01",
+      "source_report": "inspection"
+    }
+  ],
+  "metrics": {
+    "average_object_count": 13.0,
+    "editable_core_ratio": 0.7576,
+    "logical_slide_count": 1,
+    "media_count": 0,
+    "native_chart_count": 0,
+    "native_connector_count": 5,
+    "native_table_count": 0,
+    "native_text_ratio": 0.7576,
+    "physical_slide_count": 1,
+    "qa_error_count": 0,
+    "qa_fatal_count": 0,
+    "qa_info_count": 0,
+    "qa_warning_count": 1,
+    "rasterized_area_ratio": 0.0,
+    "render_success_ratio": null,
+    "whole_slide_raster_count": 0
+  },
+  "ppt_ir_ref": "tests/fixtures/benchmark/technical-harness-failure-recovery/expected-ppt-ir.json",
+  "pptx": "tests/fixtures/benchmark/technical-harness-failure-recovery/baseline/deck.pptx",
+  "profile": "premium",
+  "render_required": false,
+  "schema_version": "2.1",
+  "status": "warning",
+  "style_ref": "tests/fixtures/benchmark/technical-harness-failure-recovery/expected-style-contract.json"
+}

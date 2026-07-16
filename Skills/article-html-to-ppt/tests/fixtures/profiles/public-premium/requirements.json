@@ -1,0 +1,11 @@
+{
+  "user_request": "Create a premium public release deck with complete validation.",
+  "audience": "external customer",
+  "public_or_internal": "public",
+  "delivery_value": "high",
+  "editability_requirement": "high",
+  "source_complexity": "medium",
+  "diagram_complexity": "high",
+  "brand_requirement": "high",
+  "deadline_mode": "normal"
+}

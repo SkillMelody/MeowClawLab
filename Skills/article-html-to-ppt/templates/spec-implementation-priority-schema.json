@@ -33,7 +33,7 @@
       },
       "editable_core": [],
       "material_layers": [],
-      "delivery_route": "native_ppt|svg_html_render|generated_image|hybrid_generated_component",
+      "delivery_route": "native_ppt|native_chart|native_table|native_diagram|hybrid_overlay|svg_component|generated_image|background_image|unsupported",
       "preflight_score_estimate": "unknown"
     }
   ]

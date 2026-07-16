@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-invalid-empty-boundary",
+  "diagram_type": "layered_architecture",
+  "audience_question": "Does the boundary contain anything?",
+  "message": "An empty boundary is decorative, not semantic.",
+  "direction": "top_to_bottom",
+  "nodes": [
+    {"id": "N1", "label": "Input", "role": "input", "node_type": "event", "group_id": "G1", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "Policy", "role": "guard", "node_type": "control", "group_id": "G1", "priority": "secondary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "Output", "role": "output", "node_type": "outcome", "group_id": "G2", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N4", "label": "Report", "role": "artifact", "node_type": "artifact", "group_id": "G2", "priority": "secondary", "shape": "document", "status": "normal"}
+  ],
+  "groups": [
+    {"id": "G1", "label": "Layer 1", "group_type": "layer", "node_ids": ["N1", "N2"], "priority": "primary", "visual_role": "region", "layout": "horizontal"},
+    {"id": "G2", "label": "Layer 2", "group_type": "layer", "node_ids": ["N3", "N4"], "priority": "primary", "visual_role": "region", "layout": "horizontal"}
+  ],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N3", "relation": "sequence", "priority": "primary", "direction": "forward", "style": "orthogonal", "cross_boundary": true},
+    {"id": "E2", "source": "N2", "target": "N4", "relation": "monitoring", "priority": "supporting", "direction": "forward", "style": "dashed", "line_semantics": "dashed", "cross_boundary": true}
+  ],
+  "main_paths": [{"id": "P1", "label": "Main", "node_ids": ["N1", "N3"], "priority": "primary"}],
+  "boundaries": [{"id": "B1", "label": "Empty", "boundary_type": "trust", "contains_group_ids": [], "contains_node_ids": [], "priority": "secondary", "style_role": "warning"}],
+  "layout_constraints": {"preferred_layout": "layered", "allow_layout_change": true},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay"], "editable_core": ["nodes"], "raster_policy": {"allowed": false, "whole_slide_forbidden": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

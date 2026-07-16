@@ -1,0 +1,29 @@
+{
+  "benchmark_case_id": "technical-harness-failure-recovery",
+  "build_id": "technical-harness-failure-recovery-baseline-001",
+  "builder": "fixture",
+  "builder_profile": "deterministic-fixture",
+  "contract_refs": {
+    "asset_manifest": "asset-manifest.json",
+    "delivery_plan": null,
+    "ppt_ir": "../expected-ppt-ir.json",
+    "qa_report": "qa-report.json",
+    "style_contract": "../expected-style-contract.json"
+  },
+  "deck_id": "technical-harness-failure-recovery",
+  "errors": [],
+  "metrics": {},
+  "outputs": {
+    "deck": "deck.pptx",
+    "qa_report": "qa-report.json"
+  },
+  "profile": "premium",
+  "schema_version": "2.0",
+  "stages": {
+    "fixture": {
+      "status": "complete"
+    }
+  },
+  "status": "verified",
+  "warnings": []
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "diagram_id": "D-invalid-web",
+  "diagram_type": "zoned_ecosystem",
+  "audience_question": "Is this too connected?",
+  "message": "Too many cross links create a connector web risk.",
+  "direction": "free",
+  "nodes": [
+    {"id": "N1", "label": "A", "role": "a", "node_type": "system", "group_id": "G1", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N2", "label": "B", "role": "b", "node_type": "system", "group_id": "G1", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N3", "label": "C", "role": "c", "node_type": "system", "group_id": "G2", "priority": "primary", "shape": "rounded_rect", "status": "normal"},
+    {"id": "N4", "label": "D", "role": "d", "node_type": "system", "group_id": "G2", "priority": "primary", "shape": "rounded_rect", "status": "normal"}
+  ],
+  "groups": [
+    {"id": "G1", "label": "Zone 1", "group_type": "domain", "node_ids": ["N1", "N2"], "priority": "primary", "visual_role": "region", "layout": "vertical"},
+    {"id": "G2", "label": "Zone 2", "group_type": "domain", "node_ids": ["N3", "N4"], "priority": "primary", "visual_role": "region", "layout": "vertical"}
+  ],
+  "edges": [
+    {"id": "E1", "source": "N1", "target": "N3", "relation": "request", "priority": "primary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E2", "source": "N1", "target": "N4", "relation": "data_flow", "priority": "secondary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E3", "source": "N2", "target": "N3", "relation": "dependency", "priority": "secondary", "direction": "forward", "style": "dashed", "line_semantics": "dashed", "cross_boundary": true},
+    {"id": "E4", "source": "N2", "target": "N4", "relation": "influence", "priority": "secondary", "direction": "forward", "style": "curved", "cross_boundary": true},
+    {"id": "E5", "source": "N3", "target": "N1", "relation": "response", "priority": "secondary", "direction": "forward", "style": "dashed", "line_semantics": "dashed", "cross_boundary": true},
+    {"id": "E6", "source": "N4", "target": "N2", "relation": "feedback", "priority": "secondary", "direction": "forward", "style": "curved", "feedback": true, "cross_boundary": true},
+    {"id": "E7", "source": "N3", "target": "N4", "relation": "monitoring", "priority": "supporting", "direction": "forward", "style": "dashed", "line_semantics": "dashed"}
+  ],
+  "main_paths": [{"id": "P1", "label": "Main", "node_ids": ["N1", "N3"], "priority": "primary"}],
+  "boundaries": [],
+  "layout_constraints": {"preferred_layout": "zoned_ecosystem", "allow_layout_change": true, "max_total_nodes": 8, "max_total_edges": 8},
+  "delivery_contract": {"preferred_route": "native_diagram", "allowed_fallbacks": ["hybrid_overlay"], "editable_core": ["nodes"], "raster_policy": {"allowed": false, "whole_slide_forbidden": true, "requires_native_overlay": true}},
+  "metadata": {}
+}

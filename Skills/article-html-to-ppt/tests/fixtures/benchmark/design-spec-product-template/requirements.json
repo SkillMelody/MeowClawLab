@@ -1,0 +1,5 @@
+{
+  "expected_judgment_title": "Design specs should preserve priority, not literal coordinates",
+  "expected_message": "Visual priority and editable overlays must be explicit.",
+  "style_id": "consulting-light"
+}

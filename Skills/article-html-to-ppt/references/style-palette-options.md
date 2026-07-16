@@ -9,7 +9,7 @@ Token meaning:
 - `text`: primary body/text color on the background.
 - `secondary`: supporting/secondary accent (dividers, tags, muted labels, chart series 2).
 
-Write the chosen palette id and its exact hex tokens into `style_contract.json`.
+Write the chosen palette alias and complete design tokens into `.ppt-work/contracts/style-contract.json`.
 
 ---
 

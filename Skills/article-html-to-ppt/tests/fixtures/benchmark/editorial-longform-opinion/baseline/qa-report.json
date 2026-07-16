@@ -1,0 +1,186 @@
+{
+  "benchmark_case_id": "editorial-longform-opinion",
+  "build_ref": "tests/fixtures/benchmark/editorial-longform-opinion/baseline/build-manifest.json",
+  "build_status_cap": "read_back",
+  "compatibility": {
+    "legacy_severities": [
+      "review",
+      "fail",
+      "blocked"
+    ],
+    "severity_aliases": {
+      "error": "fail",
+      "fatal": "blocked",
+      "info": "review",
+      "warning": "review"
+    }
+  },
+  "deck_id": "editorial-longform-opinion",
+  "delivery_ref": null,
+  "evidence": {
+    "render_report": null,
+    "structural_inspection": {
+      "issues": [],
+      "metrics": {
+        "average_object_count": 4.0,
+        "expected_text_character_count": 66,
+        "native_chart_count": 1,
+        "native_connector_count": 0,
+        "native_table_count": 1,
+        "native_text_character_count": 38,
+        "native_text_ratio": 0.5758,
+        "rasterized_area_ratio": 0.0,
+        "whole_slide_raster_count": 0
+      },
+      "pptx": "tests/fixtures/benchmark/editorial-longform-opinion/baseline/deck.pptx",
+      "schema_version": "1.0",
+      "slide_count": 1,
+      "slides": [
+        {
+          "issues": [],
+          "metrics": {
+            "average_characters_per_text_box": 19.0,
+            "expected_text_character_count": 66,
+            "font_family_count": 1,
+            "font_size_count": 2,
+            "native_chart_count": 1,
+            "native_connector_count": 0,
+            "native_table_count": 1,
+            "native_text_character_count": 38,
+            "native_text_ratio": 0.5758,
+            "object_count": 4,
+            "rasterized_area_ratio": 0.0,
+            "small_text_box_count": 0,
+            "text_box_count": 2,
+            "text_boxes_per_100_characters": 5.2632,
+            "tiny_object_count": 0
+          },
+          "objects": [
+            {
+              "area_ratio": 0.0319,
+              "fill_colors": [],
+              "font_families": [
+                "Arial"
+              ],
+              "font_sizes_pt": [
+                28.0
+              ],
+              "h_in": 0.55,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "TextBox 1",
+              "object_id": "ppt-object-1-1",
+              "shape_id": 2,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "QA Slide 1",
+              "w_in": 5.8,
+              "x_in": 0.6,
+              "y_in": 0.35
+            },
+            {
+              "area_ratio": 0.044,
+              "fill_colors": [],
+              "font_families": [
+                "Arial"
+              ],
+              "font_sizes_pt": [
+                18.0
+              ],
+              "h_in": 0.8,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "TextBox 2",
+              "object_id": "ppt-object-1-2",
+              "shape_id": 3,
+              "shape_type": "text",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "Native body text for slide 1",
+              "w_in": 5.5,
+              "x_in": 0.6,
+              "y_in": 1.05
+            },
+            {
+              "area_ratio": 0.048,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 1.2,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Table 3",
+              "object_id": "ppt-object-1-3",
+              "shape_id": 4,
+              "shape_type": "table",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 4.0,
+              "x_in": 0.7,
+              "y_in": 2.2
+            },
+            {
+              "area_ratio": 0.096,
+              "fill_colors": [],
+              "font_families": [],
+              "font_sizes_pt": [],
+              "h_in": 2.4,
+              "image_ext": null,
+              "image_px": null,
+              "line_colors": [],
+              "name": "Chart 4",
+              "object_id": "ppt-object-1-4",
+              "shape_id": 5,
+              "shape_type": "chart",
+              "slide_id": "S01",
+              "source_relationship": null,
+              "text": "",
+              "w_in": 4.0,
+              "x_in": 5.4,
+              "y_in": 2.0
+            }
+          ],
+          "slide_id": "S01",
+          "slide_index": 1
+        }
+      ],
+      "status": "passed"
+    }
+  },
+  "generated_at": "2026-07-16T14:18:16+08:00",
+  "inputs": {
+    "inspection_report": "embedded",
+    "render_report": null
+  },
+  "issues": [],
+  "metrics": {
+    "average_object_count": 4.0,
+    "editable_core_ratio": 0.5758,
+    "logical_slide_count": 1,
+    "media_count": 0,
+    "native_chart_count": 1,
+    "native_connector_count": 0,
+    "native_table_count": 1,
+    "native_text_ratio": 0.5758,
+    "physical_slide_count": 1,
+    "qa_error_count": 0,
+    "qa_fatal_count": 0,
+    "qa_info_count": 0,
+    "qa_warning_count": 0,
+    "rasterized_area_ratio": 0.0,
+    "render_success_ratio": null,
+    "whole_slide_raster_count": 0
+  },
+  "ppt_ir_ref": "tests/fixtures/benchmark/editorial-longform-opinion/expected-ppt-ir.json",
+  "pptx": "tests/fixtures/benchmark/editorial-longform-opinion/baseline/deck.pptx",
+  "profile": "premium",
+  "render_required": false,
+  "schema_version": "2.1",
+  "status": "pass",
+  "style_ref": "tests/fixtures/benchmark/editorial-longform-opinion/expected-style-contract.json"
+}

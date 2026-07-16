@@ -1,0 +1,8 @@
+{
+  "anti_patterns": [
+    "whole_slide_raster",
+    "rasterized_core_text"
+  ],
+  "expected_judgment_title": "Whole-slide raster hides the editable message",
+  "expected_message": "The benchmark should require bounded raster disclosure."
+}
