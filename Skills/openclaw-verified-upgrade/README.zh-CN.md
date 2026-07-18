@@ -2,7 +2,15 @@
 
 一个可靠性优先的 OpenClaw 安全升级技能。
 
-这个技能的目标是：让普通用户通过向导式体验升级 OpenClaw，同时让 agent 在内部执行足够严格的运维级护栏。它把升级视为“经过验证的状态迁移”，而不是“跑一个 update 命令”。
+这个技能把升级视为一笔有证据的事务，而不是“跑一个 update 命令”。内置守卫只记录状态和授权边界，不会自行调用 OpenClaw、服务管理器或其他程序。
+
+## 命名说明
+
+- ClawHub slug / 安装标识：`upgrade-openclaw-safely`
+- 本地 OpenClaw Skill key：`openclaw-verified-upgrade`
+- 展示名：`OpenClaw Verified Upgrade`
+
+公开 slug 不同，是因为 ClawHub 的 `openclaw-*` 命名空间受保护。这个映射是有意保留的，不会生成第二个本地 Skill。
 
 ## 什么时候使用
 
@@ -29,7 +37,7 @@
 
 这很重要，因为 CLI 可能已经升级，但原来的 Gateway 进程仍然在运行旧版本。
 
-## 普通用户流程
+## 事务流程
 
 用户只需要选择升级方式：
 
@@ -39,7 +47,7 @@
 3. 指定版本
 ```
 
-后续由 agent 在内部完成：
+后续由 agent 按有上限的事务执行：
 
 1. 识别当前环境。
 2. 发现当前 OpenClaw 可用命令，并确认命令语义。
@@ -49,10 +57,12 @@
 6. 检查升级前健康状态。
 7. 创建并读回校验本地备份。
 8. 在真正变更前请求最终确认。
-9. 使用当前版本支持的路径执行升级。
-10. 必要时通过正确的 Gateway 管理器重启或 reload。
-11. 验证 CLI、运行中的 Gateway、配置、日志、频道、插件、agent 和关键链路。
-12. 给出带证据的结果，或在失败时安全停止并提供恢复计划。
+9. 只允许一次核心升级尝试。
+10. 即使命令非零退出，也先记录实际安装版本。
+11. 失败先分类并从持久化状态恢复，不盲目重跑 update。
+12. 最多武装一个单独授权的服务动作。
+13. 收集多次 readiness 观测并计算稳定性。
+14. 给出带证据的结果，或安全停止并提供恢复计划。
 
 ## 关键护栏
 
@@ -63,6 +73,9 @@
 - 升级前必须检查 release notes 和 migration 风险。
 - 变更前必须创建并读回校验备份。
 - 一次授权不等于授权所有恢复动作。
+- 单个事务最多开始一次核心升级。
+- 单个事务最多武装一个服务生命周期动作。
+- 目标版本已存在时进入升级后恢复，绝不再次完整更新。
 - 重试必须基于失败分类，并且有次数上限。
 - 除非提前授权，否则回滚前必须再次确认。
 - 成功必须基于证据，而不是 exit code 0。
@@ -95,6 +108,8 @@
 - 日志中没有新的 fatal startup error。
 - 关键插件、频道、agent、路由仍然可用。
 - 在安全且支持的情况下，完成最小端到端检查。
+- 至少三次采样覆盖 120 秒，PID、二进制路径和 inode 保持一致。
+- service、port、RPC、application、channel 全通过，且没有新增 fatal、外部 SIGTERM 或 `source=update` 增量。
 
 ## 失败处理
 
@@ -112,7 +127,11 @@
 - [`SKILL.md`](./SKILL.md) — 实际 OpenClaw skill 文档。
 - [`README.md`](./README.md) — 英文说明。
 - [`README.zh-CN.md`](./README.zh-CN.md) — 中文说明。
-- [`test-prompts.json`](./test-prompts.json) — dry-run 或 full-test 评估用的压力测试提示词。
+- [`scripts/upgrade-transaction.mjs`](./scripts/upgrade-transaction.mjs) — scanner-safe 事务状态守卫。
+- [`references/transaction-contract.md`](./references/transaction-contract.md) — 状态、尝试次数和完成条件。
+- [`references/recovery-contract.md`](./references/recovery-contract.md) — 失败分类和恢复边界。
+- [`examples/test-prompts.json`](./examples/test-prompts.json) — 当前压力测试提示词。
+- [`test-prompts.json`](./test-prompts.json) — 兼容保留的旧版提示词。
 
 ## 发布提示
 
