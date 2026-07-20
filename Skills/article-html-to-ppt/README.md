@@ -6,7 +6,7 @@
 
 - **公开品牌：** MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
 - **兼容安装名：** `article-html-to-ppt`
-- **当前版本：** `2.0.2`（v2.0 能力线的 ClawHub registry recovery 与公开分发补丁）
+- **当前版本：** `2.0.3`（v2.0 能力线的 ClawHub 公开注册表恢复版本）
 - **开源定位：** 核心引擎、基础五风格、通用组件、可编辑对象、QA 与可信交付
 
 > PPTSmith 的 GitHub / ClawHub 开源版用于分发、获客与建立可信度。专业生产包、企业品牌适配、专属页面原型、定制组件和代生成/部署服务采用独立商业交付，不包含在本仓库与 ClawHub 包中。
