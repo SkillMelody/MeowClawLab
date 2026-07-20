@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -23,7 +24,7 @@ def load_json(path: Path) -> dict[str, Any]:
     return data
 
 
-def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
+def run_cli(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "verify_deck.py"), *args],
         cwd=str(ROOT),
@@ -31,6 +32,7 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        env=env,
     )
 
 
@@ -78,6 +80,7 @@ def test_verify_cli_returns_unavailable_when_render_requested(tmp_path: Path) ->
         "--render",
         "--output",
         str(output),
+        env={**os.environ, "PPTSMITH_TEST_RENDERERS": "none"},
     )
     assert result.returncode == 2, result.stderr
     report = load_json(output)

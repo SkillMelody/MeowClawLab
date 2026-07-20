@@ -10,7 +10,7 @@ meowclaw-pptsmith, meowclaw-decksmith <br>
 ## Description: <br>
 MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
-Version 2.0.0 is engineering-complete and **Standard production-ready on the verified acceptance environment** for commercial/non-commercial use. `python_pptx` is the canonical production Builder; PptxGenJS is portability evidence. **Premium is not final on this host** because no verified PowerPoint/LibreOffice renderer is available. <br>
+Version 2.0.0 is engineering-complete and **Standard production-ready on the verified acceptance environment** for commercial/non-commercial use. `python_pptx` is the canonical Standard Builder; PptxGenJS is portability evidence. A separate **LibreOffice Premium acceptance** is final on the recorded PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 environment; native Microsoft PowerPoint compatibility is not verified. <br>
 
 ## Owner
 SkillMelody <br>
@@ -75,7 +75,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 ## Skill Version(s): <br>
 2.0.0 <br>
 
-Readiness scope: Standard production on the verified acceptance environment. Premium final readiness remains externally blocked pending real renderer, render/readback, zero-error QA, rubric, and fallback evidence. <br>
+Readiness scope: Standard production on the verified acceptance environment; Premium final on the recorded LibreOffice acceptance route with bound render/readback, zero-error QA, 15/18 visual rubric, and fallback disclosure; Microsoft PowerPoint native compatibility remains unverified. <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>

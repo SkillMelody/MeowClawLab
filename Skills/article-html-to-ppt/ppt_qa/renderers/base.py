@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import platform
+import os
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -75,6 +76,8 @@ def _renderer_by_name(name: str) -> PptxRenderer:
 
 
 def select_renderer(engine: str) -> Optional[PptxRenderer]:
+    if os.environ.get("PPTSMITH_TEST_RENDERERS") == "none":
+        return None
     if engine == "auto":
         for name in _platform_auto_order():
             renderer = _renderer_by_name(name)

@@ -27,6 +27,7 @@ STAGES = [
     "build",
     "inspect",
     "verify",
+    "score",
     "prepare_delivery",
     "package_delivery",
 ]
@@ -77,6 +78,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--assets", "--asset-manifest", dest="assets", type=Path)
     parser.add_argument("--builder", choices=["auto", "python_pptx", "pptxgenjs"], default="auto")
     parser.add_argument("--profile", choices=["fast", "standard", "premium"], default="standard")
+    parser.add_argument("--rubric-case", type=Path, help="Benchmark case containing an explicit human/model reference rubric for Premium final.")
+    parser.add_argument("--use-reference-rubric", action="store_true", help="Use the rubric referenced by --rubric-case as the final judgment.")
     parser.add_argument("--work-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--json-output", action="store_true")
@@ -105,6 +108,8 @@ class Pipeline:
             "asset_manifest": str(args.assets.resolve()) if args.assets else None,
             "builder": args.builder,
             "profile": args.profile,
+            "rubric_case": str(args.rubric_case.resolve()) if args.rubric_case else None,
+            "use_reference_rubric": args.use_reference_rubric,
             "work_dir": str(self.work),
             "output_dir": str(self.output),
         }
@@ -198,6 +203,8 @@ class Pipeline:
         for name, source in sources.items():
             copy_input(source, targets[name])
             self.state["input_fingerprints"][name] = fingerprint(source)
+        if self.args.profile == "premium" and not self.args.assets:
+            write_json(targets["asset_manifest"], {"schema_version": "2.0", "assets": []})
         requirements = load_json(targets["requirements"])
         requirements["production_profile"] = self.args.profile
         write_json(targets["requirements"], requirements)
@@ -336,12 +343,78 @@ class Pipeline:
         if report.get("status") in {"fail", "blocked"}:
             raise StageFailure("verify", f"QA hard failure: {report.get('status')}", completed.returncode or 1)
 
+    def score(self) -> None:
+        if self.args.profile != "premium":
+            return
+        if not self.args.rubric_case or not self.args.use_reference_rubric:
+            raise StageFailure("score", "PREMIUM_RUBRIC_REQUIRED: pass --rubric-case and --use-reference-rubric; automatic metrics cannot grant final status")
+        completed = self.run_command("score", [
+            sys.executable, str(SCRIPTS / "score_deck.py"),
+            "--case", str(self.args.rubric_case.resolve()),
+            "--ppt-ir", str(self.contracts / "ppt-ir.json"),
+            "--qa-report", str(self.qa / "qa-report.json"),
+            "--build-manifest", str(self.contracts / "build-manifest.json"),
+            "--pptx", str(self.deck_path()),
+            "--output", str(self.qa / "benchmark-score.json"),
+            "--use-reference-rubric",
+        ], accepted={0, 1})
+        if completed.returncode != 0:
+            score_path = self.qa / "benchmark-score.json"
+            if score_path.exists():
+                score = load_json(score_path)
+                raise StageFailure(
+                    "score",
+                    f"PREMIUM_RUBRIC_FAILED: total={score.get('total_score')} status={score.get('overall_status')}",
+                    completed.returncode,
+                )
+            raise StageFailure("score", "PREMIUM_RUBRIC_SCORER_FAILED", completed.returncode)
+
+    def create_contact_sheet(self, render_report: dict[str, Any]) -> None:
+        from PIL import Image, ImageDraw
+
+        slide_paths = [Path(str(item.get("image"))) for item in render_report.get("slides", []) if item.get("image")]
+        if not slide_paths or any(not path.is_file() for path in slide_paths):
+            raise StageFailure("prepare_delivery", "PREMIUM_CONTACT_SHEET_INPUT_MISSING")
+        thumb_width = 480
+        margin = 20
+        label_height = 30
+        thumbs: list[Image.Image] = []
+        for path in slide_paths:
+            with Image.open(path) as source:
+                thumb = source.convert("RGB")
+                thumb.thumbnail((thumb_width, 300))
+                thumbs.append(thumb.copy())
+        columns = 3
+        cell_width = thumb_width + margin * 2
+        cell_height = max(image.height for image in thumbs) + label_height + margin * 2
+        rows = (len(thumbs) + columns - 1) // columns
+        sheet = Image.new("RGB", (cell_width * columns, cell_height * rows), "white")
+        draw = ImageDraw.Draw(sheet)
+        for index, thumb in enumerate(thumbs):
+            x = (index % columns) * cell_width + margin
+            y = (index // columns) * cell_height + margin + label_height
+            draw.text((x, y - label_height + 5), f"Slide {index + 1}", fill="black")
+            sheet.paste(thumb, (x, y))
+        target = self.work / "renders" / "contact-sheet.png"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        sheet.save(target)
+
     def prepare_delivery(self) -> None:
         build_path = self.contracts / "build-manifest.json"
         build = load_json(build_path)
         qa = load_json(self.qa / "qa-report.json")
         inspection = load_json(self.qa / "pptx-inspection.json")
-        trusted = str(qa.get("trusted_delivery_status") or "created")
+        benchmark = load_json(self.qa / "benchmark-score.json") if (self.qa / "benchmark-score.json").exists() else None
+        from package_delivery import calculate_delivery_status
+        trusted = calculate_delivery_status(
+            profile=self.args.profile,
+            build_manifest=build,
+            qa_report=qa,
+            benchmark_score=benchmark,
+            pptx_path=self.deck_path(),
+        )
+        qa["trusted_delivery_status"] = trusted
+        write_json(self.qa / "qa-report.json", qa)
         build["status"] = trusted if trusted in {"created", "rendered", "read_back", "verified", "final"} else "failed"
         build["last_successful_stage"] = "verify"
         build["failed_stage"] = None if qa.get("status") not in {"fail", "blocked"} else "verify"
@@ -364,12 +437,14 @@ class Pipeline:
         )
         build["outputs"]["verification_report"] = str(report.resolve())
         render = qa.get("evidence", {}).get("render_report")
-        if isinstance(render, dict) and render.get("status") == "passed" and render.get("pdf_path"):
-            pdf = Path(str(render["pdf_path"]))
+        if isinstance(render, dict) and render.get("status") == "passed" and (render.get("pdf") or render.get("pdf_path")):
+            pdf = Path(str(render.get("pdf") or render.get("pdf_path")))
             if pdf.is_file():
                 target = self.build_dir / "deck-preview.pdf"
                 shutil.copy2(pdf, target)
                 build["outputs"]["preview_pdf"] = str(target.resolve())
+            if self.args.profile == "premium":
+                self.create_contact_sheet(render)
         write_json(build_path, build)
         self.validate("prepare_delivery", include_delivery=True, include_build=True)
 
@@ -398,6 +473,7 @@ class Pipeline:
             self.stage("build", self.build)
             self.stage("inspect", self.inspect)
             self.stage("verify", self.verify)
+            self.stage("score", self.score)
             self.stage("prepare_delivery", self.prepare_delivery)
             self.stage("package_delivery", self.package)
         except (StageFailure, OSError, ValueError, json.JSONDecodeError) as exc:

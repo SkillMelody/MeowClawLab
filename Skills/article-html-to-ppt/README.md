@@ -1,236 +1,140 @@
 # MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
 
-Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks.
+> English documentation: [README.en.md](./README.en.md) · OpenClaw 执行规范：[SKILL.md](./SKILL.md)
 
-`MeowClaw 夜猫 PPT 工坊` is the public display name. `MeowClaw PPTSmith` is the English alias. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for backward compatibility and update continuity. `meowclaw-pptsmith` is the primary brand alias; `meowclaw-decksmith` is retained as a legacy brand alias.
+把文章、Markdown、HTML、公众号草稿、PRD、研究材料与设计说明，转成**低返工、可编辑、可验证**的专业演示文稿。
 
-**v2.0.0 readiness:** engineering-complete and **Standard production-ready on the verified acceptance environment**. `python_pptx` is the canonical production Builder; PptxGenJS is verified portability evidence on the same source semantic contracts. **Premium is not final on this host** because no verified PowerPoint/LibreOffice renderer is available. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md). Generated acceptance artifacts are maintained outside the public source tree.
+- **公开品牌：** MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
+- **兼容安装名：** `article-html-to-ppt`
+- **当前版本：** `2.0.0`
+- **开源定位：** 核心引擎、基础五风格、通用组件、可编辑对象、QA 与可信交付
 
-This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
+> PPTSmith 的 GitHub / ClawHub 开源版用于分发、获客与建立可信度。专业生产包、企业品牌适配、专属页面原型、定制组件和代生成/部署服务采用独立商业交付，不包含在本仓库与 ClawHub 包中。
 
-This skill supports:
+## v2.0 一眼看懂
 
-- direct PPTX export
-- native dynamic PPTX via progressive build slides
-- HTML preview or dynamic HTML companion decks
-- Feishu Slides routing
-- MeowClawLab visual systems
-- persona-fit deck defaults for product owners, agent engineers, and knowledge creators
-- consulting-style and editorial knowledge deck baselines
-- SVG/HTML preview policy for simple, polished, code-backed layouts
-- evidence-backed storyboards
-- content lock, slide manifest, and lightweight visual QA gates
-- production profiles (`fast`, `standard`, `premium`) with trusted status reporting
-- formal PPT IR, Style Contract v2, build, QA, and delivery contracts
-- a minimal `python_pptx` runtime builder for native text/table smoke builds
+PPTSmith v2.0 不只是“把文字塞进模板”，而是一条从内容判断到可信交付的完整生产链：
 
-## Quality Contract
+1. **先理解内容，再画页面**：内容分析、证据盘点、故事线、判断式标题与表达模式先行。
+2. **五套基础视觉系统**：咨询报告、产品汇报、技术蓝图、咨询 × 技术混合、编辑知识型。
+3. **Style Contract v2**：颜色、字体、网格、间距、卡片、表格、图表、图解等设计参数可锁定、可校验，减少不同模型随意漂移。
+4. **双 Builder 与自动选路**：支持 `python_pptx` 与 PptxGenJS，根据环境能力选择合适构建路径。
+5. **复杂图解不再硬画**：通过 PPT IR、Diagram IR、组件注册表和 Delivery Plan，为表格、图表、流程、架构与关系图选择原生、SVG 或混合交付路线。
+6. **核心信息保持可编辑**：标题、正文、卡片、表格、简单图表与关键标签优先保留为 PowerPoint 原生对象。
+7. **Fast / Standard / Premium 三档生产配置**：按用途决定所需工件和验证强度，避免草稿流程过重，也避免正式交付缺证据。
+8. **端到端 QA 与可信状态**：能力探测、构建清单、结构检查、真实渲染、回读、视觉评分、交付清单逐层验证；明确区分 `Created`、`Rendered`、`Read back`、`Verified` 与 `Final`。
+9. **失败时诚实收口**：没有真实渲染器、证据绑定或评分不达标时，不伪造截图、不手写 `final`，而是明确降级或阻断。
+10. **多种交付出口**：本地 PPTX、原生渐进式动态 PPTX、HTML 预览，以及经用户明确授权后的飞书幻灯片路线。
 
-- Important claims, numbers, examples, diagrams, and recommendations must trace back to source material or be labeled as reconstruction or assumption.
-- Storyline comes before slide production.
-- Persona and delivery context come before visual styling.
-- Slide content is locked before visual previews or PPTX export.
-- Non-trivial decks should maintain `slide_manifest.json`.
-- Core text should remain editable where the export format supports it.
-- Visual structure should not be downgraded into a flat screenshot unless the user explicitly accepts that tradeoff.
-- Platform capability gaps are reported instead of hidden.
-- Dynamic PPT requests are answered with native PPTX progressive-build decks unless the user explicitly asks for web-only output.
-- A handoff must separate `Created`, `Rendered`, `Read back`, and `Final`.
+## 适合谁
 
-## Persona Defaults
+- **产品负责人 / 汇报人：** 决策摘要、指标、路线图、风险与下一步。
+- **Agent 工程师 / 自动化开发者：** 工作流、架构、权限、失败模式、实施计划与 ROI。
+- **自媒体作者 / 知识创作者：** 钩子、框架、案例、步骤、知识卡片与品牌节奏。
+- **咨询、研究与业务团队：** 把长文、报告和证据整理成结构清晰、可追溯的正式 deck。
 
-- Product owners / product reporters: executive summary, decision ask, metrics, roadmap, risks, and next steps.
-- Agent engineers / automation developers: workflow, architecture, failure modes, implementation plan, permissions, and ROI.
-- Self-media authors / knowledge bloggers: hook, framework, examples, practical steps, reusable social/content cards, and brand rhythm.
+## 输入与输出
 
-## When To Use
+**常见输入**
 
-Use this skill when you need to:
+- 文章、Markdown、HTML、微信公众号草稿
+- PRD、产品方案、复盘、路线图
+- 技术架构、自动化方案、Agent 工作流
+- 研究材料、知识笔记、审稿通过的长文
 
-- Convert long-form writing into a slide deck.
-- Turn a WeChat article, Markdown draft, HTML article, PRD, automation proposal, product report, knowledge post, or research synthesis into a presentation.
-- Generate a local `.pptx` file that can be opened in PowerPoint, Keynote, LibreOffice Impress, or imported into Google Slides.
-- Generate a dynamic PPTX that reveals content step by step during presentation.
-- Create or upload a Feishu Slides deck for online collaboration and sharing.
-- Preserve source-rights boundaries and attribution.
-- Keep a deck professional, readable, persona-fit, and brand-consistent.
-- Use SVG or HTML/CSS as a preview/design aid while preserving editable PPT core objects where practical.
-- Maintain slide manifests and lightweight QA gates for non-trivial decks.
-- Distinguish generated, rendered, read-back, and final delivery states.
+**常见输出**
 
-## Stage 6 Verification
+- `deck.pptx`：静态、可编辑 PPTX
+- `deck-dynamic-native.pptx`：原生渐进式动态 PPTX
+- `deck-preview.pdf`：在可用渲染环境下生成的预览
+- `verification-report.md`：验证与限制说明
+- `delivery-manifest.json`：可信交付状态与产物清单
 
-After building a deck, run the verifier:
+## 快速使用
 
-```bash
-python3 scripts/verify_deck.py deck.pptx \
-  --ppt-ir .ppt-work/contracts/ppt-ir.json \
-  --style .ppt-work/contracts/style-contract.json \
-  --delivery .ppt-work/contracts/delivery-plan.json \
-  --build .ppt-work/contracts/build-manifest.json \
-  --render \
-  --output .ppt-work/qa/qa-report.json
-```
-
-Exit codes are `0` pass, `1` verification failure, `2` renderer unavailable,
-`3` bad input, and `4` internal error. This repository does not fabricate render
-evidence: if PowerPoint/Keynote/LibreOffice is unavailable, the report records
-`RENDER_ENGINE_UNAVAILABLE` and caps the build status.
-
-For repair loops:
-
-```bash
-python3 scripts/repair_deck.py deck.pptx \
-  --qa-report .ppt-work/qa/qa-report.json \
-  --output-pptx .ppt-work/qa/repaired.pptx \
-  --output-report .ppt-work/qa/repair-report.json
-```
-
-Only registered safe deterministic repairs may run. Visual/render defects remain
-manual until a real renderer can recheck them.
-
-## Privacy And Cloud Export Notice
-
-Local PPTX export is the safer default for sensitive drafts, PRDs, internal metrics, automation designs, and unpublished content. Feishu/Lark Slides export sends source content, generated slide text, and relevant metadata to the Feishu/Lark cloud environment. Only use Feishu/Lark upload or sharing when the user explicitly asks for cloud delivery and the content is appropriate for that service. Before uploading, summarize what will be transmitted and confirm the intended destination or sharing boundary.
-
-## How To Use
-
-Give the agent the source material, audience/persona, and desired export target:
+把材料、受众、目标和交付格式告诉 Agent：
 
 ```text
-Use MeowClaw PPTSmith to turn this PRD and metrics summary into an editable PPTX.
-Compatible route: article-html-to-ppt.
-Audience: product leadership
-Persona: product owner / product reporter
-Goal: secure roadmap approval
-Style: clean product review, consulting-style, low rework
-Slides: around 8-12
+使用 MeowClaw PPTSmith（兼容路由 article-html-to-ppt）把这份 PRD 做成 10 页左右的可编辑 PPTX。
+受众：产品管理层
+目标：争取路线图审批
+风格：产品汇报，克制、清晰、低返工
+必须包含：关键判断、指标、路线图、风险和下一步
 ```
 
-For Agent engineering or automation decks:
+技术汇报示例：
 
 ```text
-Use MeowClaw PPTSmith to create a technical review PPT.
-Compatible route: article-html-to-ppt.
-Persona: Agent engineer / automation developer
-Include: workflow diagram, architecture, failure modes, implementation plan, ROI.
-Use SVG for simple architecture or state-machine diagrams if helpful.
+使用 MeowClaw PPTSmith 制作技术评审 PPT。
+受众：Agent 工程师与业务负责人
+包含：工作流、系统架构、权限边界、失败模式、实施计划和 ROI。
+核心文字、表格和简单图表保持可编辑。
 ```
 
-For knowledge creators:
+## 生产链
 
 ```text
-Use MeowClaw PPTSmith to turn this article into a knowledge deck.
-Compatible route: article-html-to-ppt.
-Persona: self-media author / knowledge blogger
-Include: hook, framework, examples, practical steps, and reusable social-card slides.
+源材料 / 文章 / 设计说明
+→ 内容分析与证据盘点
+→ 故事线与判断式标题
+→ PPT IR / Diagram IR
+→ Style Contract v2
+→ 能力探测与 Builder 选择
+→ 组件交付路线解析
+→ 可编辑 / 混合式 PPT 构建
+→ 结构检查与真实渲染回读
+→ 视觉评分与修订
+→ 交付打包与 Delivery Manifest
 ```
 
-For native dynamic PPTX:
+## 五套基础视觉系统
 
-```text
-Use MeowClaw PPTSmith to create a dynamic PPTX.
-Compatible route: article-html-to-ppt.
-The exported PPT should reveal bullets step by step during presentation.
-Also include speaker notes and a verification report.
-```
+| 风格 | 适用场景 | 默认特征 |
+| --- | --- | --- |
+| `consulting-light` | 管理层汇报、研究与咨询报告 | 结论先行、留白克制、证据清晰 |
+| `product-report` | PRD、路线图、发布与复盘 | 指标、权衡、计划与产品节奏 |
+| `technical-blueprint` | 架构、工作流、实施与运维 | 精确边界、节点、链路和故障模式 |
+| `consulting-blueprint-hybrid` | Agent / 自动化的业务技术汇报 | 咨询结构为主，技术图解为证据层 |
+| `editorial-knowledge` | 长文、课程、知识产品与个人 IP | 温暖纸张感、框架化、便于传播 |
 
-For Feishu Slides:
+这些是公开基础系统。企业品牌模板、专属母版、行业生产包和定制组件不随开源包发布。
 
-```text
-Use MeowClaw PPTSmith to turn this article into Feishu Slides
-and send me the shareable Feishu Slides link.
-```
+## 可信交付边界
 
-## Export Behavior
+PPTSmith 不把“文件生成成功”等同于“最终完成”：
 
-The skill chooses the export route from the user's wording, persona, delivery context, and available capabilities.
+- **Created**：PPTX 已生成。
+- **Rendered**：真实办公套件或渲染器已完成渲染。
+- **Read back**：结构与渲染结果已回读检查。
+- **Verified**：合同、结构、QA 与证据通过验证。
+- **Final**：满足对应生产档位的全部可信门槛。
 
-### Generates a PPTX file
+v2.0 已完成 Standard 生产验收；另有一条记录明确的 PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 Premium 验收路线，实现 9/9 页渲染回读、零错误 QA 与绑定证据的 15/18 视觉评分。该结论**不等于**已验证所有 Microsoft PowerPoint / Keynote 版本的像素级一致性。详情见 [v2.0 验收报告](docs/v2.0-acceptance-report.md)。
 
-The skill should generate a local PPTX file when the user asks for:
+## 隐私与云端导出
 
-- `PPT`, `PPTX`, `PowerPoint`, `Keynote`, or an editable deck file
-- direct export
-- a file that can be sent, archived, opened locally, or imported elsewhere
-- dynamic PPT / animated PPT that must work in presentation mode
-- both a local deck and a cloud upload
+敏感草稿、内部 PRD、业务指标和未公开材料默认优先本地生成 PPTX。只有用户明确要求并确认目标位置与分享边界后，才进入飞书 / Lark 云端创建或上传流程。
 
-Typical outputs:
+## 文档入口
 
-- `deck.pptx` for a static editable deck
-- `deck-dynamic-native.pptx` for a native dynamic deck
-- `pptx-build-report.json` or `native-dynamic-pptx-report.json`
-- `verification-report.md`
+- [OpenClaw 执行规范](./SKILL.md)
+- [英文 README](./README.en.md)
+- [v2.0 验收报告](docs/v2.0-acceptance-report.md)
+- [v1.5 → v2.0 收口清单](docs/v1.5-v2.0-closeout-checklist.md)
+- [生产配置说明](references/production-profiles.md)
+- [五套视觉系统](references/five-style-master-systems.md)
+- [组件交付与 Builder 适配](references/builder-adapters.md)
+- [验证体系](references/verification-harness.md)
 
-### Uses SVG or HTML/CSS when useful
+## 开源与商业化边界
 
-SVG and HTML/CSS are design aids, not excuses to flatten the whole deck:
+本仓库与 ClawHub 包持续开放可复用的 PPTSmith 核心能力，让个人与团队能独立生成、检查并交付可靠的演示文稿。
 
-- Use native PPT objects for standard text, shapes, tables, diagrams, and simple charts.
-- Use SVG for simple, scalable effects: issue trees, icons, line diagrams, badges, dividers, simple architecture maps, and state machines.
-- Use HTML/CSS as a preview surface for layout, typography, tables, dashboards, longform editorial pages, or dense technical diagrams before rebuilding/exporting to PPTX.
-- Do not use HTML screenshots as the final deck unless the user accepts low editability.
+以下内容保持独立商业交付：
 
-### Generates a native dynamic PPTX
+- 专业生产包与行业化工作流
+- 企业品牌适配、专属母版与视觉资产
+- 专属页面原型与定制组件
+- 代生成、部署、培训、维护与私有化服务
 
-When the user asks for dynamic PPT, the default is **native dynamic PPTX**, not HTML.
-
-The stable implementation is progressive-build slides:
-
-- one logical slide may become multiple physical PPTX slides
-- each physical slide reveals the next bullet, diagram part, or emphasis
-- PowerPoint/Keynote presentation mode advances through these build steps
-- optional native fade transitions make the reveal feel smoother
-
-The handoff should report both:
-
-- logical slide count
-- native build-step slide count
-
-### Uploads or creates Feishu Slides
-
-The skill should create or upload to Feishu Slides when the user asks for:
-
-- `Feishu Slides`, `飞书幻灯片`, `Lark Slides`, or an online slide deck
-- a shareable cloud link
-- collaborative editing in Feishu
-- direct upload to a specific Feishu location
-- final delivery as a Feishu document rather than a local file
-
-Feishu delivery depends on the current environment's Feishu/Lark authorization and API capability. Creation/upload is not the same as final verification: when possible, the agent should read back or screenshot the Feishu Slides result before calling it final.
-
-Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not silently upload sensitive drafts, internal PRDs, metrics, automation designs, or unpublished content.
-
-## Files
-
-- `SKILL.md` - the actual OpenClaw skill document.
-- `skill-card.md` - public-facing skill card metadata.
-- `README.md` - public documentation entry for `MeowClaw 夜猫 PPT 工坊` / `MeowClaw PPTSmith`, while preserving the `article-html-to-ppt` compatibility route.
-- `docs/migration-v1.1-to-v1.2.md` - migration guide for older manifests and templates.
-- `docs/v1.5-v2.0-closeout-checklist.md` - completed closeout criteria and remaining Premium external acceptance item.
-- `docs/v2.0-acceptance-report.md` - canonical Standard acceptance verdict, evidence, provenance, and limitations.
-- `references/export-pipelines.md` - export routing for PPTX, dynamic PPTX, Feishu Slides, and HTML.
-- `references/visual-design-archetypes.md` - visual direction archetypes.
-- `references/visual-systems.md` - reusable visual system constraints.
-- `templates/storyboard-template.md` - storyboard and verification template.
-- `templates/content-lock-template.md` - content lock template.
-- `templates/slide-manifest-template.json` - slide manifest template.
-- `templates/visual-qa-gate-template.json` - visual QA gate template.
-
-## Templates
-
-- `templates/storyboard-template.md`
-- `templates/content-lock-template.md`
-- `templates/slide-manifest-template.json`
-- `templates/visual-qa-gate-template.json`
-
-## Version
-
-2.0.0
-
-The version claim is limited to engineering completion and Standard production readiness on the verified environment. Premium final readiness remains externally blocked until real render/readback evidence exists.
-
-## Publishing Note
-
-This skill is intended to be reusable and GitHub-friendly. It should not contain local secrets, user-specific credentials, private paths, raw chat logs, or platform tokens.
+这样既不削弱开源版的真实可用性，也避免把高价值商业资产混入 MIT-0 公共分发包。

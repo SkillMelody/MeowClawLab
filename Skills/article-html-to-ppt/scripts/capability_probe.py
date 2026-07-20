@@ -268,6 +268,20 @@ def probe_builders(registry: dict[str, Any] | None, timeout: int, only: str | No
 
 
 def probe_renderers(only: str | None = None) -> dict[str, Any]:
+    if os.environ.get("PPTSMITH_TEST_RENDERERS") == "none":
+        names = [only] if only else ["microsoft_powerpoint", "libreoffice", "keynote"]
+        return {
+            name: {
+                "available": False,
+                "version": None,
+                "command": None,
+                "supports_pdf": False,
+                "supports_png": False,
+                "supports_readback": False,
+            }
+            for name in names
+            if name in {"microsoft_powerpoint", "libreoffice", "keynote"}
+        }
     power = PowerPointMacOSRenderer()
     libre = LibreOfficeRenderer()
     renderers = {

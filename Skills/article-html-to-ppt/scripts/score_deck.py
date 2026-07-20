@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -65,6 +67,8 @@ METRIC_DIMENSION_MAP = {
 
 HARD_GATE_SEVERITIES = {"error", "fatal"}
 WARNING_SEVERITIES = {"warning"}
+TRUSTED_SCORER_TYPES = {"human_reference", "model"}
+ABSOLUTE_PATH = re.compile(r"(?:/Users/|/home/|/tmp/|[A-Za-z]:\\)")
 
 
 class ScoreInputError(ValueError):
@@ -112,6 +116,7 @@ def build_rubric_score(
     scorer_name: str = "automatic-metrics",
     scorer_version: str = "1.0",
     use_reference_rubric: bool = False,
+    pptx_path: Optional[Path] = None,
 ) -> dict[str, Any]:
     case_id = str(case.get("case_id") or "")
     if not case_id:
@@ -126,6 +131,17 @@ def build_rubric_score(
     automatic_evidence = build_automatic_evidence(metrics, issue_counts, ppt_ir)
     reference_score = _load_reference_score(case, case_path) if use_reference_rubric else None
     if reference_score:
+        render_report = _render_report(qa_report)
+        if pptx_path is None:
+            pptx_path = _manifest_pptx_path(build_manifest, case_path)
+        validate_reference_rubric(
+            reference_score,
+            case_id=case_id,
+            build_id=build_id,
+            deck_id=_deck_id(case_id, ppt_ir, build_manifest, qa_report),
+            pptx_path=pptx_path,
+            render_report=render_report,
+        )
         dimensions = _dimensions_from_reference(reference_score, automatic_evidence)
         manual_review_required = False
         scorer = reference_score.get("scorer") if isinstance(reference_score.get("scorer"), dict) else {
@@ -165,6 +181,7 @@ def build_rubric_score(
         "rubric_quality_status": rubric_status,
         "overall_status": overall_status,
         "manual_review_required": manual_review_required,
+        "evidence_binding": dict(reference_score["bindings"]) if reference_score else None,
         "decoupling": {
             "fatal_or_error_prevents_pass": hard_gate_status == "failed",
             "score_below_14_fails_quality": total_score is not None and total_score < 14,
@@ -298,13 +315,18 @@ def _dimensions_from_reference(reference_score: dict[str, Any], automatic_eviden
         score = ref_item.get("score")
         if not isinstance(score, int) or score < 0 or score > 3:
             raise ScoreInputError(f"reference rubric for {dimension} must contain integer score 0-3")
+        evidence = ref_item.get("evidence")
+        if not isinstance(evidence, list) or not evidence or any(not isinstance(item, str) or not item.strip() for item in evidence):
+            raise ScoreInputError(f"reference rubric for {dimension} must contain non-empty evidence")
+        if any(ABSOLUTE_PATH.search(item) for item in evidence):
+            raise ScoreInputError(f"reference rubric for {dimension} evidence contains an absolute local path")
         auto = automatic_evidence.get(dimension, {})
         dimensions.append(
             {
                 "dimension": dimension,
                 "score": score,
                 "provisional_score": auto.get("provisional_score"),
-                "evidence": ref_item.get("evidence") if isinstance(ref_item.get("evidence"), list) else [],
+                "evidence": evidence,
                 "automatic_metrics": auto.get("metrics", {}),
                 "confidence": ref_item.get("confidence") if isinstance(ref_item.get("confidence"), (int, float)) else 1.0,
                 "manual_review_required": False,
@@ -318,6 +340,102 @@ def _load_reference_score(case: dict[str, Any], case_path: Path) -> Optional[dic
     if ref_path is None or not ref_path.exists():
         return None
     return load_json(ref_path)
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return "sha256:" + digest.hexdigest()
+
+
+def _canonical_render_report(report: dict[str, Any]) -> dict[str, Any]:
+    def clean(value: Any, key: str = "") -> Any:
+        if isinstance(value, dict):
+            return {name: clean(item, name) for name, item in sorted(value.items())}
+        if isinstance(value, list):
+            return [clean(item, key) for item in value]
+        if isinstance(value, str) and key in {"pptx", "pdf", "pdf_path", "image"}:
+            # Bind report semantics, not transient/renamed package paths. PPTX
+            # bytes and rendered image bytes are bound separately below.
+            return f"<{key}>"
+        return value
+    return clean(report)
+
+
+def _json_sha256(data: dict[str, Any]) -> str:
+    encoded = json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def render_evidence_sha256(report: dict[str, Any]) -> str:
+    slides = report.get("slides")
+    if not isinstance(slides, list) or not slides:
+        raise ScoreInputError("render report must contain rendered slide evidence")
+    digest = hashlib.sha256()
+    for item in sorted((item for item in slides if isinstance(item, dict)), key=lambda item: int(item.get("slide_index") or 0)):
+        image = item.get("image")
+        if not isinstance(image, str) or not Path(image).is_file():
+            raise ScoreInputError("render report slide image evidence is missing")
+        digest.update(str(item.get("slide_index")).encode("ascii"))
+        digest.update(bytes.fromhex(sha256_file(Path(image)).split(":", 1)[1]))
+    return "sha256:" + digest.hexdigest()
+
+
+def build_evidence_binding(pptx_path: Path, render_report: dict[str, Any]) -> dict[str, str]:
+    if not pptx_path.is_file():
+        raise ScoreInputError("current PPTX is missing")
+    if render_report.get("status") != "passed":
+        raise ScoreInputError("render report must be passed")
+    return {
+        "pptx_sha256": sha256_file(pptx_path),
+        "render_report_sha256": _json_sha256(_canonical_render_report(render_report)),
+        "render_evidence_sha256": render_evidence_sha256(render_report),
+    }
+
+
+def validate_reference_rubric(
+    reference: dict[str, Any], *, case_id: str, build_id: str, deck_id: str,
+    pptx_path: Optional[Path], render_report: Optional[dict[str, Any]],
+) -> None:
+    bindings = reference.get("bindings")
+    if not isinstance(bindings, dict):
+        raise ScoreInputError("reference rubric bindings are required")
+    expected_ids = {"case_id": case_id, "build_id": build_id, "deck_id": deck_id}
+    for field, expected in expected_ids.items():
+        if reference.get(field) != expected or bindings.get(field) != expected:
+            raise ScoreInputError(f"reference rubric {field} does not match current evidence")
+    scorer = reference.get("scorer")
+    provenance = scorer.get("provenance") if isinstance(scorer, dict) else None
+    if (
+        not isinstance(scorer, dict)
+        or scorer.get("type") not in TRUSTED_SCORER_TYPES
+        or not all(isinstance(scorer.get(field), str) and scorer[field].strip() for field in ("name", "version"))
+        or not isinstance(provenance, dict)
+        or not all(isinstance(provenance.get(field), str) and provenance[field].strip() for field in ("review_id", "reviewed_at", "method"))
+    ):
+        raise ScoreInputError("reference rubric scorer provenance is not trusted")
+    if pptx_path is None or render_report is None:
+        raise ScoreInputError("reference rubric requires current PPTX and render evidence")
+    actual = build_evidence_binding(pptx_path, render_report)
+    for field, digest in actual.items():
+        if bindings.get(field) != digest:
+            raise ScoreInputError(f"reference rubric {field} does not match current evidence")
+
+
+def _render_report(qa_report: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
+    evidence = qa_report.get("evidence") if isinstance(qa_report, dict) else None
+    report = evidence.get("render_report") if isinstance(evidence, dict) else None
+    return report if isinstance(report, dict) else None
+
+
+def _manifest_pptx_path(build_manifest: Optional[dict[str, Any]], case_path: Path) -> Optional[Path]:
+    raw = build_manifest.get("outputs", {}).get("deck") if isinstance(build_manifest, dict) and isinstance(build_manifest.get("outputs"), dict) else None
+    if not isinstance(raw, str) or not raw:
+        return None
+    path = Path(raw)
+    return path if path.is_absolute() else case_path.parent / path
 
 
 def _total_score(dimensions: list[dict[str, Any]]) -> Optional[int]:
@@ -448,6 +566,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--ppt-ir", type=Path)
     parser.add_argument("--qa-report", type=Path)
     parser.add_argument("--build-manifest", type=Path)
+    parser.add_argument("--pptx", type=Path, help="Current PPTX whose bytes the reference rubric must bind.")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--use-reference-rubric", action="store_true", help="Use the case's human/reference rubric as final scores.")
     parser.add_argument("--scorer-name", default="automatic-metrics")
@@ -469,6 +588,7 @@ def main(argv: list[str]) -> int:
             scorer_name=args.scorer_name,
             scorer_version=args.scorer_version,
             use_reference_rubric=args.use_reference_rubric,
+            pptx_path=args.pptx,
         )
         write_json(score, args.output)
         return 0 if score["overall_status"] in {"passed", "warning", "manual_review_required"} else 1

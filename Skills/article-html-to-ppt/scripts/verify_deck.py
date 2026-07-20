@@ -6,6 +6,7 @@ import json
 import logging
 import sys
 import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -107,6 +108,26 @@ def _has_available_renderer(capabilities: dict | None) -> bool:
     )
 
 
+def _unavailable_render_report(pptx: Path, expected_slides: int) -> dict:
+    now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+    return {
+        "schema_version": "1.0",
+        "pptx": str(pptx),
+        "status": "unavailable",
+        "engine": None,
+        "engine_version": None,
+        "pdf": None,
+        "slides": [],
+        "slide_count_expected": expected_slides,
+        "slide_count_rendered": 0,
+        "started_at": now,
+        "finished_at": now,
+        "duration_seconds": 0.0,
+        "warnings": [],
+        "errors": [{"code": "RENDER_ENGINE_UNAVAILABLE", "message": "RENDER_ENGINE_UNAVAILABLE"}],
+    }
+
+
 def main(argv: list[str]) -> int:
     try:
         args = parse_args(argv)
@@ -136,15 +157,19 @@ def main(argv: list[str]) -> int:
             )
         render_report = load_json(args.render_report)
         if render_report is None and args.render:
-            render_report = run_render_report(
-                args.pptx,
-                args.render_output,
-                engine=args.render_engine,
-                expected_slides=int(inspection_report.get("slide_count") or 0),
-                expected_aspect=args.expected_aspect,
-                timeout=args.timeout,
-                dpi=args.dpi,
-            )
+            expected_slides = int(inspection_report.get("slide_count") or 0)
+            if capability_report is not None and not _has_available_renderer(capability_report):
+                render_report = _unavailable_render_report(args.pptx, expected_slides)
+            else:
+                render_report = run_render_report(
+                    args.pptx,
+                    args.render_output,
+                    engine=args.render_engine,
+                    expected_slides=expected_slides,
+                    expected_aspect=args.expected_aspect,
+                    timeout=args.timeout,
+                    dpi=args.dpi,
+                )
         effective_profile = args.profile or str((build_manifest or {}).get("profile") or "standard")
         render_required = args.render_required
         if effective_profile == "premium" and capability_report is not None and not _has_available_renderer(capability_report):

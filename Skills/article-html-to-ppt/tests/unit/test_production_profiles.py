@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -100,7 +101,101 @@ def test_premium_cannot_be_final_without_render() -> None:
         benchmark_score={"rubric_score": 15},
     )
     assert status != "final"
-    assert status == "read_back"
+
+
+def premium_gate_inputs(tmp_path: Path) -> tuple[dict, dict, dict, Path]:
+    deck = tmp_path / "deck.pptx"
+    deck.write_bytes(b"bound deck")
+    digest = sha256_file(deck)
+    build = {
+        "status": "verified",
+        "build_id": "build-unit",
+        "deck_id": "unit-case",
+        "outputs": {"deck": "deck.pptx"},
+        "stages": {"built": True, "read_back": True, "rendered": True},
+        "metrics": {
+            "editable_core_ratio": 1.0,
+            "whole_slide_raster_count": 0,
+            "qa_error_count": 0,
+            "qa_fatal_count": 0,
+        },
+        "fallbacks": [],
+        "errors": [],
+    }
+    inspection = {"schema_version": "1.0", "status": "passed", "pptx_sha256": digest, "issues": [], "slides": [], "metrics": {}}
+    slide = tmp_path / "slide-1.png"
+    slide.write_bytes(b"rendered slide")
+    render_report = {"status": "passed", "slides": [{"slide_index": 1, "image": str(slide), "status": "passed"}]}
+    render_report_digest = "sha256:" + hashlib.sha256(json.dumps({"slides": [{"image": "<image>", "slide_index": 1, "status": "passed"}], "status": "passed"}, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    render_evidence_digest = hashlib.sha256()
+    render_evidence_digest.update(b"1")
+    render_evidence_digest.update(bytes.fromhex(sha256_file(slide).split(":", 1)[1]))
+    qa_report = {
+        "status": "pass",
+        "metrics": {"editable_core_ratio": 1.0, "whole_slide_raster_count": 0, "qa_error_count": 0},
+        "issues": [],
+        "evidence": {"render_report": render_report, "structural_inspection": inspection},
+    }
+    rubric = {
+        "case_id": "unit-case",
+        "build_id": "build-unit",
+        "deck_id": "unit-case",
+        "rubric_score": 18,
+        "overall_status": "passed",
+        "manual_review_required": False,
+        "scorer": {"type": "human_reference", "name": "reviewer", "version": "1"},
+        "evidence_binding": {
+            "case_id": "unit-case",
+            "build_id": "build-unit",
+            "deck_id": "unit-case",
+            "pptx_sha256": digest,
+            "render_report_sha256": render_report_digest,
+            "render_evidence_sha256": "sha256:" + render_evidence_digest.hexdigest(),
+        },
+    }
+    return build, qa_report, rubric, deck
+
+
+def test_premium_automatic_score_cannot_grant_final(tmp_path: Path) -> None:
+    build, qa_report, _rubric, deck = premium_gate_inputs(tmp_path)
+
+    status = calculate_delivery_status(
+        profile="premium",
+        build_manifest=build,
+        qa_report=qa_report,
+        benchmark_score={
+            "rubric_score": 18,
+            "overall_status": "passed",
+            "manual_review_required": True,
+            "scorer": {"type": "automatic_metrics", "name": "test", "version": "1"},
+        },
+        pptx_path=deck,
+    )
+
+    assert status == "verified"
+
+
+def test_qa_json_without_explicit_inspection_cannot_claim_read_back_or_final(tmp_path: Path) -> None:
+    build, qa_report, rubric, deck = premium_gate_inputs(tmp_path)
+    qa_report["evidence"].pop("structural_inspection")
+    build["stages"]["read_back"] = False
+    status = calculate_delivery_status(profile="premium", build_manifest=build, qa_report=qa_report, benchmark_score=rubric, pptx_path=deck)
+    assert status in {"created", "rendered"}
+
+
+def test_failed_or_hash_mismatched_inspection_cannot_grant_final(tmp_path: Path) -> None:
+    build, qa_report, rubric, deck = premium_gate_inputs(tmp_path)
+    qa_report["evidence"]["structural_inspection"]["status"] = "failed"
+    assert calculate_delivery_status(profile="premium", build_manifest=build, qa_report=qa_report, benchmark_score=rubric, pptx_path=deck) != "final"
+    qa_report["evidence"]["structural_inspection"]["status"] = "passed"
+    qa_report["evidence"]["structural_inspection"]["pptx_sha256"] = "sha256:" + "0" * 64
+    assert calculate_delivery_status(profile="premium", build_manifest=build, qa_report=qa_report, benchmark_score=rubric, pptx_path=deck) != "final"
+
+
+def test_bound_successful_inspection_allows_premium_final(tmp_path: Path) -> None:
+    build, qa_report, rubric, deck = premium_gate_inputs(tmp_path)
+    status = calculate_delivery_status(profile="premium", build_manifest=build, qa_report=qa_report, benchmark_score=rubric, pptx_path=deck)
+    assert status == "final"
 
 
 def test_delivery_manifest_hashes_files(tmp_path: Path) -> None:

@@ -65,7 +65,6 @@ def test_benchmark_smoke_run_writes_valid_json_and_markdown(tmp_path: Path) -> N
         "technical_agent",
         "--repeat",
         "1",
-        "--use-reference-rubric",
         "--json",
         str(output),
         "--markdown",
@@ -78,6 +77,7 @@ def test_benchmark_smoke_run_writes_valid_json_and_markdown(tmp_path: Path) -> N
     assert report["summary"]["case_count"] == 2
     assert markdown.exists()
     assert all(item["rubric_score"] for item in report["results"])
+    assert all(item["manual_review_required"] for item in report["results"])
 
 
 def test_compare_benchmark_runs_detects_score_regression(tmp_path: Path) -> None:

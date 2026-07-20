@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "case_id": "pptsmith-v2-premium-acceptance",
+  "build_id": "build-pptsmith-v2-shared-builder-acceptance-20260720T094431Z",
+  "deck_id": "pptsmith-v2-shared-builder-acceptance",
+  "bindings": {
+    "pptx_sha256": "sha256:85a8a52838d2f77dfb1c1926ee9676ab59b5a17d65f4f6d1b94d7a541918082a",
+    "render_report_sha256": "sha256:c5e3906e7e18a70bf8d7e07f7f773960f0367c3bed1c6369c5f8c7182be10500",
+    "render_evidence_sha256": "sha256:29611d620fb56da79cc75b267c16eb26c8b70bb92122b9767b6b180d4f0f04f4",
+    "case_id": "pptsmith-v2-premium-acceptance",
+    "build_id": "build-pptsmith-v2-shared-builder-acceptance-20260720T094431Z",
+    "deck_id": "pptsmith-v2-shared-builder-acceptance"
+  },
+  "scorer": {
+    "type": "model",
+    "name": "OpenClaw configured vision reviewer",
+    "version": "tian-shu-gpt/gpt-5.6-sol",
+    "provenance": {
+      "review_id": "pptsmith-v2-premium-p1-vision-20260720",
+      "reviewed_at": "2026-07-20T17:46:54+08:00",
+      "method": "Full nine-slide contact-sheet visual review of this run’s LibreOffice-rendered slide images; structural editability assessed separately by inspection."
+    }
+  },
+  "dimensions": [
+    {
+      "dimension": "title_role_and_message_quality",
+      "score": 3,
+      "confidence": 0.93,
+      "evidence": [
+        "Slides 2–8 use clear assertion-style titles, including “Evidence is counted, not implied” (S03) and “Comparability does not require identical rendering” (S07); S01 and S09 form a coherent opening and closing."
+      ]
+    },
+    {
+      "dimension": "content_fidelity",
+      "score": 3,
+      "confidence": 0.82,
+      "evidence": [
+        "Visible claims are internally coherent: S03 reports nine inspected slides and two builders, while S04’s contract table, S05’s capability chart, and S06’s Plan–Build–Inspect flow support the acceptance-evidence narrative. External source/package truth is outside visual review and is checked separately by contracts and inspection."
+      ]
+    },
+    {
+      "dimension": "expression_architecture",
+      "score": 2,
+      "confidence": 0.89,
+      "evidence": [
+        "The nine-slide sequence moves from shared contracts (S02), through counted evidence and native objects (S03–S05), to process/comparability (S06–S08) and the shipping gate (S09); S02, S07, and S08 remain comparatively sparse text-card treatments."
+      ]
+    },
+    {
+      "dimension": "page_composition",
+      "score": 2,
+      "confidence": 0.9,
+      "evidence": [
+        "All nine renders maintain consistent margins, title placement, and alignment; S03, S06, and S07 are balanced, while S02, S04, S05, and S08 retain substantial lower-page whitespace and some small secondary labels at contact-sheet scale."
+      ]
+    },
+    {
+      "dimension": "component_craft",
+      "score": 2,
+      "confidence": 0.9,
+      "evidence": [
+        "S04’s table is orderly, S05’s chart is legible with direct values, and S06’s numbered process cards are consistent; restrained beige surfaces, thin rules, and plain text-heavy cards keep the result below top-tier Premium polish."
+      ]
+    },
+    {
+      "dimension": "editability_hygiene",
+      "score": 3,
+      "confidence": 0.94,
+      "evidence": [
+        "LibreOffice renders for S01–S09 show stable geometry with no visible clipping, overlap, blank page, broken glyph, or malformed component; separate inspection binds this judgment to native text/table/chart and zero whole-slide raster evidence."
+      ]
+    }
+  ],
+  "notes": [
+    "Total visual score: 15/18; no zero dimension.",
+    "No visible clipping, overlap, blank slide, or LibreOffice render artifact was found in the nine-slide contact sheet.",
+    "Scores are model visual judgments bound to the exact deck bytes and render set; automatic metrics are separate corroboration."
+  ]
+}

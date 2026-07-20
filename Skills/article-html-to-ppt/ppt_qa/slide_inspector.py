@@ -76,9 +76,12 @@ def _classify_shape(shape: Any, svg_shape_ids: set[int]) -> str:
         return "media"
     if shape_type == MSO_SHAPE_TYPE.EMBEDDED_OLE_OBJECT:
         return "ole"
-    if getattr(shape, "has_text_frame", False):
+    # AutoShapes often expose an empty text frame even when they are purely
+    # decorative. Only classify them as text when text is actually present;
+    # true text boxes/placeholders remain text objects for empty-box QA.
+    if shape_type in {MSO_SHAPE_TYPE.TEXT_BOX, MSO_SHAPE_TYPE.PLACEHOLDER}:
         return "text"
-    if shape_type == MSO_SHAPE_TYPE.PLACEHOLDER and getattr(shape, "has_text_frame", False):
+    if getattr(shape, "has_text_frame", False) and str(getattr(shape, "text", "")).strip():
         return "text"
     return "shape"
 

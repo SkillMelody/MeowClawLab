@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -43,11 +44,13 @@ def make_busy_png(path: Path, *, width: int = 320, height: int = 180) -> Path:
     return path
 
 
-def test_auto_renderer_selection_is_unavailable_cleanly_on_this_machine() -> None:
+def test_auto_renderer_selection_is_unavailable_cleanly_when_disabled(monkeypatch) -> None:
+    monkeypatch.setenv("PPTSMITH_TEST_RENDERERS", "none")
     assert select_renderer("auto") is None
 
 
-def test_explicit_unavailable_renderer_returns_none() -> None:
+def test_explicit_unavailable_renderer_returns_none(monkeypatch) -> None:
+    monkeypatch.setenv("PPTSMITH_TEST_RENDERERS", "none")
     assert select_renderer("libreoffice") is None
 
 
@@ -133,6 +136,7 @@ def test_render_cli_writes_unavailable_report_for_valid_fixture(tmp_path: Path) 
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        env={**os.environ, "PPTSMITH_TEST_RENDERERS": "none"},
     )
     assert result.returncode == 2, result.stderr
     report = load_json(output / "render-report.json")

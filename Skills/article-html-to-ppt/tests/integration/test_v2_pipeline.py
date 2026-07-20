@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -33,6 +34,7 @@ def run_pipeline(
     builder: str = "python_pptx",
     profile: str = "standard",
     env: dict[str, str] | None = None,
+    rubric_case: Path | None = None,
 ) -> subprocess.CompletedProcess[str]:
     work_dir = tmp_path / ".ppt-work"
     output_dir = tmp_path / "delivery"
@@ -46,6 +48,7 @@ def run_pipeline(
             *(["--assets", str(assets)] if assets else []),
             "--builder", builder,
             "--profile", profile,
+            *(["--rubric-case", str(rubric_case), "--use-reference-rubric"] if rubric_case else []),
             "--work-dir", str(work_dir),
             "--output-dir", str(output_dir),
         ],
@@ -216,7 +219,7 @@ def test_profile_builder_matrix_runs_real_success_pipeline(tmp_path: Path, profi
     qa = load_json(work / "qa" / "qa-report.json")
     delivery = load_json(output / "delivery-manifest.json")
     decks = list(output.glob("*.pptx"))
-    expected_qa_status = "pass" if builder == "python_pptx" else "warning"
+    expected_qa_status = "pass"
     assert state["status"] == "completed"
     assert copied_requirements["production_profile"] == profile
     assert production["selected_profile"] == profile
@@ -237,11 +240,14 @@ def test_profile_builder_matrix_runs_real_success_pipeline(tmp_path: Path, profi
 
 
 def test_premium_without_renderer_is_truthfully_blocked_and_never_delivered(tmp_path: Path) -> None:
+    env = dict(os.environ)
+    env["PPTSMITH_TEST_RENDERERS"] = "none"
     completed = run_pipeline(
         tmp_path,
         FIXTURES / "requirements-premium.json",
         builder="pptxgenjs",
         profile="premium",
+        env=env,
     )
 
     assert completed.returncode != 0
@@ -257,6 +263,38 @@ def test_premium_without_renderer_is_truthfully_blocked_and_never_delivered(tmp_
     assert not output.exists()
     assert not list(tmp_path.rglob("delivery-manifest.json"))
     assert not list(tmp_path.glob("delivery/*.pptx"))
+
+
+def test_premium_with_renderer_still_requires_explicit_rubric(tmp_path: Path) -> None:
+    completed = run_pipeline(
+        tmp_path,
+        FIXTURES / "requirements-premium.json",
+        builder="pptxgenjs",
+        profile="premium",
+        env=dict(os.environ),
+    )
+
+    assert completed.returncode != 0
+    assert "PREMIUM_RUBRIC_REQUIRED" in completed.stderr
+    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    assert state["failed_stage"] in {"verify", "score"}
+    assert not (tmp_path / "delivery").exists()
+
+
+@pytest.mark.skipif(not Path("/Applications/LibreOffice.app").exists() and not shutil.which("soffice"), reason="real renderer required")
+def test_premium_rejects_rubric_bound_to_another_build_even_with_real_renderer(tmp_path: Path) -> None:
+    completed = run_pipeline(
+        tmp_path,
+        FIXTURES / "requirements-premium.json",
+        builder="pptxgenjs",
+        profile="premium",
+        env=dict(os.environ),
+        rubric_case=FIXTURES / "premium-rubric" / "case.json",
+    )
+
+    assert completed.returncode != 0
+    assert "reference rubric build_id does not match current evidence" in completed.stderr
+    assert not (tmp_path / "delivery").exists()
 
 
 def test_actual_pipeline_build_route_deviation_fails_strict_validation(tmp_path: Path) -> None:

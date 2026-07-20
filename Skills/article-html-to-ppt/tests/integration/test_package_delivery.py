@@ -88,6 +88,14 @@ def create_standard_workdir(tmp_path: Path, *, failed: bool = False) -> Path:
             "qa_fatal_count": 0,
         },
         "evidence": {
+            "structural_inspection": {
+                "schema_version": "1.0",
+                "status": "passed",
+                "pptx_sha256": "sha256:" + hashlib.sha256(deck.read_bytes()).hexdigest(),
+                "issues": [],
+                "slides": [],
+                "metrics": {},
+            },
             "render_report": {
                 "status": "passed",
                 "engine": "test-renderer",

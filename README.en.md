@@ -6,12 +6,31 @@ MeowClawLab is a small lab repository for practical OpenClaw skills, workflows, 
 
 The current focus is reliability-first automation: skills should be easy for ordinary users to invoke, while remaining conservative enough for real systems where Gateway availability, config safety, plugins, channels, agent routing, and final delivery quality matter.
 
+## 🔥 Featured: MeowClaw PPTSmith v2.0
+
+[`MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) has evolved from basic article-to-template conversion into a **low-rework, editable, and verifiable** presentation production chain.
+
+**New core capabilities:**
+
+- content analysis, evidence inventory, storyline, judgment titles, and expression planning before layout;
+- five foundational visual systems for consulting, product, technical, hybrid, and editorial decks;
+- Style Contract v2 to pin colors, typography, grid, spacing, cards, tables, charts, and diagram rules;
+- dual real Builders (`python_pptx` and PptxGenJS) with capability-aware routing;
+- PPT IR, Diagram IR, Component Registry, and Delivery Plan routing for editable and hybrid components;
+- Fast / Standard / Premium production profiles;
+- capability probes, structural inspection, real rendering, readback, visual scoring, and trusted Delivery Manifests;
+- local PPTX, native progressive-build PPTX, HTML preview, and consent-gated Feishu Slides routes.
+
+[Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
+
+> The public edition includes the core engine, five foundational styles, reusable components, QA, and trusted delivery. Professional production packs, enterprise brand adaptation, proprietary page prototypes, and custom services remain separate commercial deliverables.
+
 ## Skills
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A guided, evidence-based OpenClaw upgrade workflow that chooses a target version, checks release risk, creates verified backups, upgrades safely, and validates the running Gateway plus critical user paths. | Published |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | Turns articles, Markdown drafts, HTML pages, WeChat drafts, and review-approved manuscripts into formal, brand-consistent slide decks with HTML preview, PPTX / Feishu Slides export paths, and verification handoff. | Published |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0 |
 
 ## Design Principles
 
@@ -33,6 +52,7 @@ MeowClawLab/
 └── Skills/
     ├── article-html-to-ppt/
     │   ├── README.md
+    │   ├── README.en.md
     │   ├── SKILL.md
     │   ├── skill-card.md
     │   ├── references/

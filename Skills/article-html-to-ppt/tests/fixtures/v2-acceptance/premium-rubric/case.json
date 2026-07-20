@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "case_id": "pptsmith-v2-premium-acceptance",
+  "title": "PPTSmith v2 Premium acceptance",
+  "profile": "premium",
+  "renderer": "libreoffice",
+  "builder": "pptxgenjs",
+  "reference_rubric": "reference-rubric.json"
+}

@@ -4,10 +4,11 @@
   "title": "Article HTML to PPT PPTX Inspection",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "pptx", "slide_count", "status", "metrics", "slides", "issues"],
+  "required": ["schema_version", "pptx", "pptx_sha256", "slide_count", "status", "metrics", "slides", "issues"],
   "properties": {
     "schema_version": {"const": "1.0"},
     "pptx": {"type": "string"},
+    "pptx_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
     "slide_count": {"type": "integer", "minimum": 0},
     "status": {"enum": ["passed", "failed"]},
     "metrics": {"type": "object"},

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -43,9 +44,12 @@ def inspection_to_dict(inspection: PackageInspection, include_raw_xml: bool = Fa
     issues = list(inspection.issues)
     for slide in inspection.slides:
         issues.extend(slide.issues)
+    pptx = Path(inspection.pptx_path)
+    digest = hashlib.sha256(pptx.read_bytes()).hexdigest() if pptx.is_file() else None
     return {
         "schema_version": "1.0",
         "pptx": inspection.pptx_path,
+        "pptx_sha256": f"sha256:{digest}" if digest else None,
         "slide_count": inspection.slide_count,
         "status": inspection.status,
         "metrics": _clean(inspection.metrics),
