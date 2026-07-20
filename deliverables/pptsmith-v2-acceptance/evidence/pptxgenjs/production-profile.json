@@ -1,0 +1,37 @@
+{
+  "allowed_skips": [
+    "full_render",
+    "benchmark"
+  ],
+  "confidence": 0.99,
+  "override_applied": true,
+  "reason_codes": [
+    "USER_REQUESTED_STANDARD"
+  ],
+  "required_artifacts": [
+    ".ppt-work/analysis/content-lock.md",
+    ".ppt-work/analysis/storyboard.md",
+    ".ppt-work/contracts/ppt-ir.json",
+    ".ppt-work/contracts/style-contract.json",
+    ".ppt-work/contracts/asset-manifest.json",
+    ".ppt-work/contracts/delivery-plan.json",
+    ".ppt-work/contracts/build-manifest.json",
+    ".ppt-work/qa/qa-report.json",
+    ".ppt-work/renders/representative-renders/",
+    "deck.pptx",
+    "deck-preview.pdf",
+    "verification-report.md",
+    "delivery-manifest.json"
+  ],
+  "required_gates": [
+    "contracts_valid",
+    "pptx_package_readable",
+    "structural_inspection",
+    "editability_check",
+    "color_contract_check",
+    "representative_render_when_available",
+    "qa_error_count_zero"
+  ],
+  "schema_version": "1.0",
+  "selected_profile": "standard"
+}

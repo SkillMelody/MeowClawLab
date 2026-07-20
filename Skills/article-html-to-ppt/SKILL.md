@@ -4,8 +4,9 @@ description: "MeowClaw PPTSmith: convert articles/docs to polished hybrid-editab
 metadata:
   display_name: "MeowClaw 夜猫 PPT 工坊"
   english_alias: "MeowClaw PPTSmith"
-  public_slug: "meowclaw-pptsmith"
-  compatibility_aliases: ["article-html-to-ppt", "meowclaw-decksmith"]
+  registry_slug: "article-html-to-ppt"
+  version: "2.0.0"
+  brand_aliases: ["meowclaw-pptsmith", "meowclaw-decksmith"]
 ---
 
 # MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
@@ -16,10 +17,12 @@ Public identity:
 
 - Display name: `MeowClaw 夜猫 PPT 工坊`
 - English alias: `MeowClaw PPTSmith`
-- Technical slug: `meowclaw-pptsmith`
-- Compatibility aliases: `article-html-to-ppt`, `meowclaw-decksmith`
+- ClawHub / installed route: `article-html-to-ppt`
+- Brand aliases: `meowclaw-pptsmith`, `meowclaw-decksmith`
 
-Keep the OpenClaw skill route and directory name as `article-html-to-ppt` until all installed clients, ClawHub versions, GitHub paths, and historical workflows have migrated. Treat `article-html-to-ppt` and `meowclaw-decksmith` as backward-compatible aliases, not as the primary public name.
+Keep the ClawHub slug, OpenClaw route, and directory name as `article-html-to-ppt` for backward compatibility and update continuity. `meowclaw-pptsmith` is the primary brand alias, not a separately registered ClawHub slug.
+
+Version `2.0.0` is engineering-complete and **Standard production-ready on the verified acceptance environment**. The canonical acceptance route is `python_pptx`; PptxGenJS is validated portability evidence on the same source semantic contracts. **Never present this as Premium final readiness:** the accepted host has no verified PowerPoint/LibreOffice renderer, so Premium remains externally blocked pending real render/readback evidence, zero QA errors, rubric pass, and disclosed fallbacks. See `docs/v2.0-acceptance-report.md`; the full acceptance evidence is published in the GitHub source repository under `deliverables/pptsmith-v2-acceptance/`.
 
 Default delivery is `hybrid editable`: polished material/background layers may be raster, SVG, or generated image components, while message-bearing content remains editable PowerPoint objects. Avoid both extremes: screenshot-only decks that cannot be edited, and pure native-object decks that look like rough wireframes.
 
@@ -42,7 +45,7 @@ Optimize in this order:
 
 ## Standard Production Chain
 
-Use this chain for serious decks:
+Use this chain for serious decks. For the v2 one-command Standard route, run `scripts/run_pipeline.py` with `--builder auto|python_pptx|pptxgenjs`, `--profile standard`, isolated `--work-dir`, and a unique `--output-dir`. Production runs select one Builder; do not routinely generate two user finals. The dual-Builder execution is acceptance/regression evidence only, with `python_pptx` as the canonical accepted deck.
 
 ```text
 source/article/design brief
@@ -383,6 +386,17 @@ Default options (5 styles):
 5. `editorial-knowledge`: premium knowledge deck for longform ideas. Palette: `warm-paper` (default).
 
 For Agent systems, automation workflows, architecture, toolchains, permissions, failure modes, observability, OpenClaw/Codex workflows, or engineering strategy decks, prefer `consulting-blueprint-hybrid` unless the audience is purely implementation-focused.
+
+## Production Template Packs
+
+For a reusable v2 production starting point, select one validated pack before mapping slides:
+
+- `references/template-packs/editorial-knowledge.json`: longform explainers, newsletters, courses, personal IP, and knowledge products.
+- `references/template-packs/technical-blueprint.json`: implementation-focused architecture, workflow, runbook, and engineering evidence decks.
+
+Validate packs against `schemas/template-pack.schema.json`. Each pack binds a v2 Style Contract to exactly six production roles (cover, judgment, evidence/data, process/relationship, comparison/implementation, and closing), current `primary_expression` modes, named Component Registry types, allowed delivery routes, editable-core policy, forbidden patterns, and truthful delivery constraints.
+
+A template pack is **not** a screenshot library or dead master deck. It is reusable Style Contract plus archetype/component-routing policy. Resolve its component policies through `references/component-registry.json` and the normal Delivery Plan gate; do not treat a preferred route as proof that the active builder supports it. Keep message-bearing titles, arguments, data, labels, tables, diagrams, source notes, and actions editable as declared. Any bounded SVG, raster, background, or generated component must preserve the required native overlay and be disclosed. Pack selection does not waive render/readback/QA requirements or justify a Premium `final` claim without evidence.
 
 ## Technical Blueprint Refinement
 

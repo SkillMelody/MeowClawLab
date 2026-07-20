@@ -59,6 +59,52 @@ def test_probe_detects_pptxgenjs(monkeypatch) -> None:
     assert report["features"]["native_chart"] is True
 
 
+def test_probe_does_not_import_unexported_pptxgenjs_package_json(monkeypatch) -> None:
+    class Completed:
+        returncode = 0
+        stdout = "4.0.1\n"
+        stderr = ""
+
+    captured: list[str] = []
+
+    def fake_run(command, timeout):
+        captured.append(command[2])
+        return Completed()
+
+    monkeypatch.setattr(capability_probe.shutil, "which", lambda name: "/usr/bin/node" if name == "node" else None)
+    monkeypatch.setattr(capability_probe, "run_command", fake_run)
+
+    report = capability_probe.probe_pptxgenjs({"components": []}, timeout=1)
+
+    assert report["available"] is True
+    assert len(captured) == 1
+    assert "require('pptxgenjs/package.json')" not in captured[0]
+    assert "require.resolve('pptxgenjs')" in captured[0]
+
+
+def test_probe_rejects_wrong_ancestor_package_identity(monkeypatch) -> None:
+    class Completed:
+        returncode = 1
+        stdout = ""
+        stderr = "PPTXGENJS_PACKAGE_IDENTITY_MISMATCH"
+
+    captured: list[str] = []
+
+    def fake_run(command, timeout):
+        captured.append(command[2])
+        return Completed()
+
+    monkeypatch.setattr(capability_probe.shutil, "which", lambda name: "/usr/bin/node" if name == "node" else None)
+    monkeypatch.setattr(capability_probe, "run_command", fake_run)
+
+    report = capability_probe.probe_pptxgenjs({"components": []}, timeout=1)
+
+    assert report["available"] is False
+    assert report["version"] is None
+    assert "pkg.name !== 'pptxgenjs'" in captured[0]
+    assert "CAPABILITY_PPTXGENJS_PACKAGE_IDENTITY_INVALID" in report["errors"]
+
+
 def test_missing_builder_is_reported(monkeypatch) -> None:
     monkeypatch.setattr(capability_probe.shutil, "which", lambda name: None)
     report = capability_probe.probe_officecli({"components": []}, timeout=1)

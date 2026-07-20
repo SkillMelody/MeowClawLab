@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "ppt_ir_ref": "ppt-ir.json",
+  "style_contract_ref": "style-contract-editorial.json",
+  "component_registry_ref": "../../../references/component-registry.json",
+  "capability_report_ref": null,
+  "profile": "standard",
+  "builder": {
+    "requested": "auto",
+    "selected": "unknown",
+    "version": null,
+    "selection_score": 0,
+    "selection_reasons": [
+      "SHARED_MULTI_BUILDER_ACCEPTANCE_PLAN"
+    ],
+    "candidates": [],
+    "warnings": [],
+    "errors": []
+  },
+  "slides": [
+    {
+      "slide_id": "S01",
+      "objects": []
+    },
+    {
+      "slide_id": "S02",
+      "objects": [
+        {
+          "slide_id": "S02",
+          "object_id": "judgment-card",
+          "component_type": "card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S03",
+      "objects": [
+        {
+          "slide_id": "S03",
+          "object_id": "evidence-coverage",
+          "component_type": "metric_card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        },
+        {
+          "slide_id": "S03",
+          "object_id": "evidence-builders",
+          "component_type": "metric_card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S04",
+      "objects": [
+        {
+          "slide_id": "S04",
+          "object_id": "acceptance-table",
+          "component_type": "native_table",
+          "preferred_route": "native_table",
+          "selected_route": "native_table",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S05",
+      "objects": [
+        {
+          "slide_id": "S05",
+          "object_id": "coverage-chart",
+          "component_type": "bar_chart",
+          "preferred_route": "native_chart",
+          "selected_route": "native_chart",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S06",
+      "objects": [
+        {
+          "slide_id": "S06",
+          "object_id": "acceptance-process",
+          "component_type": "process",
+          "preferred_route": "native_diagram",
+          "selected_route": "native_diagram",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S07",
+      "objects": [
+        {
+          "slide_id": "S07",
+          "object_id": "comparison-semantics",
+          "component_type": "card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        },
+        {
+          "slide_id": "S07",
+          "object_id": "comparison-truth",
+          "component_type": "card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S08",
+      "objects": [
+        {
+          "slide_id": "S08",
+          "object_id": "implementation-plan",
+          "component_type": "card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S09",
+      "objects": []
+    }
+  ],
+  "summary": {
+    "total_objects": 9,
+    "fallback_count": 0,
+    "unsupported_count": 0,
+    "risk_codes": []
+  }
+}

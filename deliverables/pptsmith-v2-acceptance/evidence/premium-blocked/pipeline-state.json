@@ -1,0 +1,55 @@
+{
+  "attempt": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "command_inputs": {
+        "asset_manifest": null,
+        "builder": "pptxgenjs",
+        "output_dir": "/private/tmp/pptsmith-task6.F1Rx5h/premium/delivery",
+        "ppt_ir": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/ppt-ir.json",
+        "profile": "premium",
+        "requirements": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/requirements-premium.json",
+        "style": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/style-contract-editorial.json",
+        "work_dir": "/private/tmp/pptsmith-task6.F1Rx5h/premium/.ppt-work"
+      },
+      "completed_at": "2026-07-19T14:59:47+08:00",
+      "error": "QA hard failure: fail",
+      "failed_stage": "verify",
+      "input_fingerprints": {
+        "ppt_ir": "sha256:044d9990071393f8f33dcbe141d070c5a466457fd24645a59ea8ba222b6992c6",
+        "requirements": "sha256:6255d28df1c439f5f338695223786fd90f6f092497bf68f4297085cfafce7476",
+        "style": "sha256:d53ea191bc4bb97b39deaf6d36878043024bcab123dc89ec170d394830678f48"
+      },
+      "last_successful_stage": "inspect",
+      "started_at": "2026-07-19T14:59:36+08:00",
+      "status": "blocked"
+    }
+  ],
+  "command_inputs": {
+    "asset_manifest": null,
+    "builder": "pptxgenjs",
+    "output_dir": "/private/tmp/pptsmith-task6.F1Rx5h/premium/delivery",
+    "ppt_ir": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/ppt-ir.json",
+    "profile": "premium",
+    "requirements": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/requirements-premium.json",
+    "style": "/Users/skillmelody/.openclaw/workspace/.worktrees/pptsmith-v2-closeout/skills/article-html-to-ppt/tests/fixtures/v2-acceptance/style-contract-editorial.json",
+    "work_dir": "/private/tmp/pptsmith-task6.F1Rx5h/premium/.ppt-work"
+  },
+  "completed_at": "2026-07-19T14:59:47+08:00",
+  "current_stage": "verify",
+  "error": "QA hard failure: fail",
+  "failed_stage": "verify",
+  "input_fingerprints": {
+    "ppt_ir": "sha256:044d9990071393f8f33dcbe141d070c5a466457fd24645a59ea8ba222b6992c6",
+    "requirements": "sha256:6255d28df1c439f5f338695223786fd90f6f092497bf68f4297085cfafce7476",
+    "style": "sha256:d53ea191bc4bb97b39deaf6d36878043024bcab123dc89ec170d394830678f48"
+  },
+  "last_successful_stage": "inspect",
+  "provisional_reason": "RENDER_ENGINE_UNAVAILABLE",
+  "resumed_from": null,
+  "schema_version": "1.0",
+  "started_at": "2026-07-19T14:59:36+08:00",
+  "status": "blocked",
+  "updated_at": "2026-07-19T14:59:47+08:00"
+}

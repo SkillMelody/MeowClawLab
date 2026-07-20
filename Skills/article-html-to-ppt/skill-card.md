@@ -1,16 +1,16 @@
 ## Public Name: <br>
 MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith <br>
 
-## Technical Slug: <br>
-meowclaw-pptsmith <br>
+## ClawHub / Installed Slug: <br>
+article-html-to-ppt <br>
 
-## Compatibility Alias(es): <br>
-article-html-to-ppt, meowclaw-decksmith <br>
+## Brand Alias(es): <br>
+meowclaw-pptsmith, meowclaw-decksmith <br>
 
 ## Description: <br>
 MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
-This skill is ready for commercial/non-commercial use. <br>
+Version 2.0.0 is engineering-complete and **Standard production-ready on the verified acceptance environment** for commercial/non-commercial use. `python_pptx` is the canonical production Builder; PptxGenJS is portability evidence. **Premium is not final on this host** because no verified PowerPoint/LibreOffice renderer is available. <br>
 
 ## Owner
 SkillMelody <br>
@@ -51,6 +51,8 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [Visual Systems Reference](references/visual-systems.md) <br>
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
 - [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
+- [v2.0 Acceptance Report](docs/v2.0-acceptance-report.md) <br>
+- Canonical v2 acceptance package: GitHub source repository path `deliverables/pptsmith-v2-acceptance/` <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
 - [Content Lock Template](templates/content-lock-template.md) <br>
 - [Slide Manifest Template](templates/slide-manifest-template.json) <br>
@@ -72,7 +74,9 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-1.2.0 <br>
+2.0.0 <br>
+
+Readiness scope: Standard production on the verified acceptance environment. Premium final readiness remains externally blocked pending real renderer, render/readback, zero-error QA, rubric, and fallback evidence. <br>
 
 ## Ethical Considerations: <br>
 This skill should not be used to repackage copyrighted third-party articles or images as owned public content without permission. It is designed to make transformation boundaries explicit and to prevent synthetic or reconstructed visuals from being presented as factual historical screenshots. <br>

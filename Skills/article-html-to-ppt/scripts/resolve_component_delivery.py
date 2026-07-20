@@ -68,7 +68,9 @@ def registry_map(registry: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 def infer_component_type(obj: dict[str, Any]) -> str:
     if obj.get("component_type"):
-        return obj["component_type"]
+        explicit = str(obj["component_type"])
+        aliases = {"card": "comparison_card", "process": "process_flow"}
+        return aliases.get(explicit, explicit)
     plan = obj.get("visual_component_plan") if isinstance(obj.get("visual_component_plan"), dict) else {}
     if plan.get("component_type"):
         return plan["component_type"]
@@ -149,7 +151,10 @@ def load_diagram_for_object(obj: dict[str, Any], ppt_ir_base: Path) -> dict[str,
 def route_allowed_by_builder(route: str, level: str) -> bool:
     if route == "unsupported":
         return False
-    return level in ROUTE_REQUIRED_LEVEL.get(route, {"full", "partial", "visual_only"})
+    allowed = ROUTE_REQUIRED_LEVEL.get(route, {"full", "partial", "visual_only"})
+    if route in NATIVE_ROUTES and level == "partial":
+        return True
+    return level in allowed
 
 
 def route_allowed_by_policy(route: str, obj: dict[str, Any], component: dict[str, Any], profile: str) -> tuple[bool, list[str]]:
@@ -181,7 +186,7 @@ def route_allowed_by_support(route: str, level: str, obj: dict[str, Any], profil
     if obj.get("editability") == "native_required":
         if route not in NATIVE_ROUTES:
             reasons.append("BUILDER_NATIVE_REQUIRED_UNSUPPORTED")
-        if level != "full":
+        if level not in {"full", "partial"} or (profile == "premium" and level != "full"):
             reasons.append("BUILDER_NATIVE_REQUIRED_UNSUPPORTED")
         if level == "visual_only":
             reasons.append("BUILDER_VISUAL_ONLY_FOR_NATIVE_REQUIRED")
@@ -392,7 +397,15 @@ def main() -> int:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
     else:
         print(f"delivery plan written: {args.output}")
-    return 1 if args.strict and plan["summary"]["unsupported_count"] else 0
+    strict_errors = [str(item) for item in plan.get("builder", {}).get("errors", [])]
+    if plan.get("builder", {}).get("selected") == "unknown" and not strict_errors:
+        strict_errors.append("BUILDER_SELECTION_UNKNOWN")
+    if plan["summary"]["unsupported_count"]:
+        strict_errors.append("DELIVERY_PLAN_UNSUPPORTED")
+    if args.strict and strict_errors:
+        print(", ".join(sorted(set(strict_errors))), file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

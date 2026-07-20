@@ -1,0 +1,516 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "pptsmith-v2-shared-builder-acceptance",
+    "title": "PPTSmith v2 Shared Builder Acceptance",
+    "source_type": "report",
+    "audience": "PPTSmith maintainers",
+    "purpose": "multi-builder acceptance",
+    "language": "en",
+    "presentation_context": "internal",
+    "aspect_ratio": "16:9",
+    "production_profile": "standard",
+    "target_builder": "multi-builder",
+    "logical_slide_count": 9
+  },
+  "sources": [
+    {
+      "source_id": "acceptance-source",
+      "type": "report",
+      "title": "PPTSmith v2 Shared Builder Acceptance"
+    }
+  ],
+  "style_contract_ref": "style-contract-editorial.json",
+  "asset_manifest_ref": "asset-manifest.json",
+  "slides": [
+    {
+      "id": "S01",
+      "index": 1,
+      "slide_role": "cover",
+      "title_role": "navigation",
+      "title": "One IR, two real builders",
+      "judgment": null,
+      "message": "PPTSmith v2 shared builder acceptance deck.",
+      "audience_question": "What does acceptance slide 1 prove?",
+      "source_refs": [],
+      "primary_expression": "conceptual_scene",
+      "supporting_expressions": [],
+      "primary_anchor": "title",
+      "objects": [],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title"
+        ]
+      }
+    },
+    {
+      "id": "S02",
+      "index": 2,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "Shared contracts make builder differences visible",
+      "judgment": "One semantic deck can produce truthful, editable packages through both adapters.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 2 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "judgment-card",
+      "objects": [
+        {
+          "id": "judgment-card",
+          "type": "shape",
+          "component_type": "card",
+          "semantic_role": "judgment",
+          "content": "Contract-first: Compare outputs without hiding route deviations.",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "judgment-card"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "judgment-card"
+        ]
+      }
+    },
+    {
+      "id": "S03",
+      "index": 3,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "Evidence is counted, not implied",
+      "judgment": "Acceptance evidence must connect manifests to inspected packages.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 3 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "metric-row",
+      "objects": [
+        {
+          "id": "evidence-coverage",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "Slides inspected: 9",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "evidence-builders",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "Builders exercised: 2",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "evidence-coverage",
+          "evidence-builders"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "evidence-coverage",
+          "evidence-builders"
+        ]
+      }
+    },
+    {
+      "id": "S04",
+      "index": 4,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "Native tables remain editable",
+      "judgment": "The table is a native-required acceptance object.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 4 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "table_matrix",
+      "supporting_expressions": [],
+      "primary_anchor": "acceptance-table",
+      "objects": [
+        {
+          "id": "acceptance-table",
+          "type": "table",
+          "component_type": "native_table",
+          "semantic_role": "evidence",
+          "content": {
+            "headers": [
+              "Contract",
+              "Expectation",
+              "Evidence"
+            ],
+            "body": [
+              [
+                "PPT IR",
+                "Shared",
+                "9 slides"
+              ],
+              [
+                "Build Manifest",
+                "Truthful",
+                "Counts + routes"
+              ],
+              [
+                "PPTX",
+                "Real package",
+                "Inspector passes"
+              ]
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "acceptance-table"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "acceptance-table"
+        ]
+      }
+    },
+    {
+      "id": "S05",
+      "index": 5,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "Builder coverage is measurable",
+      "judgment": "A native chart exposes route capability differences.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 5 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "data_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "coverage-chart",
+      "objects": [
+        {
+          "id": "coverage-chart",
+          "type": "chart",
+          "component_type": "bar_chart",
+          "semantic_role": "evidence",
+          "content": {
+            "categories": [
+              "Text",
+              "Table",
+              "Chart",
+              "Process"
+            ],
+            "series": [
+              {
+                "name": "Acceptance objects",
+                "values": [
+                  4,
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "coverage-chart"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "coverage-chart"
+        ]
+      }
+    },
+    {
+      "id": "S06",
+      "index": 6,
+      "slide_role": "diagram",
+      "title_role": "judgment",
+      "title": "A simple process closes the evidence loop",
+      "judgment": "Plan, build, and inspect are all required.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 6 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "relationship_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "acceptance-process",
+      "objects": [
+        {
+          "id": "acceptance-process",
+          "type": "shape",
+          "component_type": "process",
+          "semantic_role": "process",
+          "content": {
+            "nodes": [
+              {
+                "label": "Plan"
+              },
+              {
+                "label": "Build"
+              },
+              {
+                "label": "Inspect"
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "acceptance-process"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "acceptance-process"
+        ]
+      }
+    },
+    {
+      "id": "S07",
+      "index": 7,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "Comparability does not require identical rendering",
+      "judgment": "Comparable evidence is stronger than pixel identity.",
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 7 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "comparison-row",
+      "objects": [
+        {
+          "id": "comparison-semantics",
+          "type": "shape",
+          "component_type": "card",
+          "semantic_role": "comparison",
+          "content": "Equal semantics: Same IR and slide count",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "comparison-truth",
+          "type": "shape",
+          "component_type": "card",
+          "semantic_role": "comparison",
+          "content": "Truthful evidence: Actual routes and fallbacks",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "comparison-semantics",
+          "comparison-truth"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "comparison-semantics",
+          "comparison-truth"
+        ]
+      }
+    },
+    {
+      "id": "S08",
+      "index": 8,
+      "slide_role": "instruction",
+      "title_role": "instruction",
+      "title": "Implementation is a repeatable three-step gate",
+      "judgment": null,
+      "message": "Acceptance evidence is explicit and inspectable.",
+      "audience_question": "What does acceptance slide 8 prove?",
+      "source_refs": [
+        {
+          "source_id": "acceptance-source",
+          "locator": "acceptance-contract",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "implementation-plan",
+      "objects": [
+        {
+          "id": "implementation-plan",
+          "type": "shape",
+          "component_type": "card",
+          "semantic_role": "instruction",
+          "content": "Run the gate: Validate contracts, build both, inspect both",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "implementation-plan"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "implementation-plan"
+        ]
+      }
+    },
+    {
+      "id": "S09",
+      "index": 9,
+      "slide_role": "closing",
+      "title_role": "closing",
+      "title": "Ship only what the packages prove",
+      "judgment": null,
+      "message": "Both builders must create nine-slide PPTX packages with complete native-required objects.",
+      "audience_question": "What does acceptance slide 9 prove?",
+      "source_refs": [],
+      "primary_expression": "textual_argument",
+      "supporting_expressions": [],
+      "primary_anchor": "closing-line",
+      "objects": [],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title"
+        ]
+      }
+    }
+  ]
+}

@@ -139,8 +139,23 @@ def probe_pptxgenjs(registry: dict[str, Any] | None, timeout: int) -> dict[str, 
         warnings.append("node command not found.")
     else:
         script = (
+            "const fs = require('fs');"
+            "const path = require('path');"
             "const pptxgen = require('pptxgenjs');"
-            "const pkg = require('pptxgenjs/package.json');"
+            "let packageDir = path.dirname(require.resolve('pptxgenjs'));"
+            "let packagePath = null;"
+            "while (true) {"
+            "const candidate = path.join(packageDir, 'package.json');"
+            "if (fs.existsSync(candidate)) {"
+            "const candidatePkg = JSON.parse(fs.readFileSync(candidate, 'utf8'));"
+            "if (candidatePkg.name === 'pptxgenjs') { packagePath = candidate; break; }"
+            "}"
+            "const parent = path.dirname(packageDir);"
+            "if (parent === packageDir) break;"
+            "packageDir = parent;"
+            "}"
+            "const pkg = packagePath ? JSON.parse(fs.readFileSync(packagePath, 'utf8')) : {};"
+            "if (pkg.name !== 'pptxgenjs') { console.error('PPTXGENJS_PACKAGE_IDENTITY_MISMATCH'); process.exit(2); }"
             "const pptx = new pptxgen();"
             "pptx.layout = 'LAYOUT_WIDE';"
             "let slide = pptx.addSlide();"
@@ -154,7 +169,10 @@ def probe_pptxgenjs(registry: dict[str, Any] | None, timeout: int) -> dict[str, 
                 version = (completed.stdout or "").strip().splitlines()[-1] if completed.stdout.strip() else None
             else:
                 warnings.append("pptxgenjs package is not importable by node.")
-                errors.append("CAPABILITY_SMOKE_TEST_FAILED")
+                if "PPTXGENJS_PACKAGE_IDENTITY_MISMATCH" in (completed.stderr or ""):
+                    errors.append("CAPABILITY_PPTXGENJS_PACKAGE_IDENTITY_INVALID")
+                else:
+                    errors.append("CAPABILITY_SMOKE_TEST_FAILED")
         except (OSError, subprocess.TimeoutExpired):
             errors.append("CAPABILITY_SMOKE_TEST_FAILED")
     return {

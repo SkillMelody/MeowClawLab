@@ -659,9 +659,11 @@ def validate_build_delivery_semantics(file: Path, build: dict[str, Any], deliver
         if not isinstance(fallback, dict):
             continue
         key = (fallback.get("slide_id"), fallback.get("object_id"))
-        planned_route = planned.get(key)
-        if planned_route and fallback.get("planned_route") != planned_route:
-            errors.append(issue(file, f"/fallbacks/{idx}/planned_route", "BUILD_ROUTE_DEVIATION", fallback.get("planned_route"), planned_route, "Use the route selected in delivery-plan.json or record a new delivery plan."))
+        authoritative_route = planned.get(key)
+        if authoritative_route and fallback.get("planned_route") != authoritative_route:
+            errors.append(issue(file, f"/fallbacks/{idx}/planned_route", "BUILD_ROUTE_DEVIATION", fallback.get("planned_route"), authoritative_route, "Use the route selected in delivery-plan.json or record a new delivery plan."))
+        if authoritative_route and fallback.get("actual_route") != authoritative_route:
+            errors.append(issue(file, f"/fallbacks/{idx}/actual_route", "BUILD_ROUTE_DEVIATION", fallback.get("actual_route"), authoritative_route, "Build the route selected in delivery-plan.json; any permitted fallback must be selected and disclosed in a new authoritative delivery plan before building."))
     return errors
 
 

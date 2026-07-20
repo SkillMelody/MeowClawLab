@@ -139,7 +139,7 @@ def test_package_standard_delivery(tmp_path: Path) -> None:
     assert deck_entry["hash"] == expected_hash
 
 
-def test_failed_build_preserves_workdir(tmp_path: Path) -> None:
+def test_failed_build_preserves_workdir_without_user_facing_output(tmp_path: Path) -> None:
     workdir = create_standard_workdir(tmp_path, failed=True)
     output = tmp_path / "delivery"
     manifest_path = output / "delivery-manifest.json"
@@ -147,6 +147,40 @@ def test_failed_build_preserves_workdir(tmp_path: Path) -> None:
     assert result.returncode == 1
     assert workdir.exists()
     assert (workdir / "contracts" / "build-manifest.json").exists()
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert manifest["status"] == "failed"
-    assert manifest["resume"]["failed_stage"] == "render"
+    assert not output.exists()
+
+
+def test_late_privacy_failure_never_promotes_pptx_or_manifest(tmp_path: Path) -> None:
+    workdir = create_standard_workdir(tmp_path)
+    report = workdir / "builds" / "final" / "verification-report.md"
+    report.write_text("api_key=abcdefghijklmnop\n", encoding="utf-8")
+    output = tmp_path / "delivery"
+    output.mkdir()
+    (output / "old.pptx").write_bytes(b"stale")
+    manifest_path = output / "delivery-manifest.json"
+
+    result = run_packager(workdir, output, manifest_path)
+
+    assert result.returncode == 1
+    assert "DELIVERY_SECRET_LEAK" in result.stderr
+    assert not output.exists()
+    assert not list(tmp_path.glob(".delivery.staging-*"))
+
+
+def test_strict_packaging_rejects_invalid_trust_ratio_without_clamping(tmp_path: Path) -> None:
+    workdir = create_standard_workdir(tmp_path)
+    build_path = workdir / "contracts" / "build-manifest.json"
+    build = json.loads(build_path.read_text(encoding="utf-8"))
+    build["metrics"]["editable_core_ratio"] = 1.01
+    write_json(build_path, build)
+    qa_path = workdir / "qa" / "qa-report.json"
+    qa = json.loads(qa_path.read_text(encoding="utf-8"))
+    qa["metrics"]["editable_core_ratio"] = 1.01
+    write_json(qa_path, qa)
+    output = tmp_path / "delivery"
+
+    result = run_packager(workdir, output, output / "delivery-manifest.json")
+
+    assert result.returncode == 1
+    assert "DELIVERY_INVALID_TRUST_RATIO: editable_core_ratio" in result.stderr
+    assert not output.exists()

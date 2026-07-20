@@ -25,6 +25,7 @@ class BuildPlan:
     slides: list[dict[str, Any]] = field(default_factory=list)
     unsupported_objects: list[dict[str, Any]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    style_contract: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

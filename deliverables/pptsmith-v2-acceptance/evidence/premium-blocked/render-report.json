@@ -1,0 +1,21 @@
+{
+  "duration_seconds": 0.0,
+  "engine": null,
+  "engine_version": null,
+  "errors": [
+    {
+      "code": "RENDER_ENGINE_UNAVAILABLE",
+      "message": "RENDER_ENGINE_UNAVAILABLE"
+    }
+  ],
+  "finished_at": "2026-07-19T14:59:47+08:00",
+  "pdf": null,
+  "pptx": "/private/tmp/pptsmith-task6.F1Rx5h/premium/.ppt-work/builds/final/deck.pptx",
+  "schema_version": "1.0",
+  "slide_count_expected": 9,
+  "slide_count_rendered": 0,
+  "slides": [],
+  "started_at": "2026-07-19T14:59:47+08:00",
+  "status": "unavailable",
+  "warnings": []
+}

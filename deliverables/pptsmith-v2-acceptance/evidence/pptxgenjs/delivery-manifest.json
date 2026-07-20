@@ -1,0 +1,119 @@
+{
+  "build_id": "build-pptsmith-v2-shared-builder-acceptance-20260719T065909Z",
+  "builder": {
+    "name": "pptxgenjs",
+    "version": "4.0.1"
+  },
+  "deck_id": "pptsmith-v2-shared-builder-acceptance",
+  "fallbacks": [],
+  "files": [
+    {
+      "hash": "sha256:13bcd9b81bd1c15042da3baaf1aed7d865043e9f8f5c9246d4839543acb852b8",
+      "path": "deck.pptx",
+      "required": true,
+      "role": "pptx"
+    },
+    {
+      "hash": "sha256:6679bcbd90acf1d10654410a2ae5d4278186f3460423eeb566cb0da68682c420",
+      "path": "verification-report.md",
+      "required": true,
+      "role": "verification_report"
+    },
+    {
+      "hash": "sha256:1a90c814ffa5db1afc95b1c8f5a1fa36085f0041f7a2cc5e92c134b450769298",
+      "path": "delivery-manifest.json",
+      "required": true,
+      "role": "delivery_manifest"
+    }
+  ],
+  "generated_at": "2026-07-19T14:59:10+08:00",
+  "known_limitations": [
+    "Unsupported style field ignored by PptxGenJS runtime: description",
+    "Unsupported style field ignored by PptxGenJS runtime: audience",
+    "Unsupported style field ignored by PptxGenJS runtime: formality",
+    "Unsupported style field ignored by PptxGenJS runtime: presentation_context",
+    "Unsupported style field ignored by PptxGenJS runtime: colors.positive",
+    "Unsupported style field ignored by PptxGenJS runtime: colors.warning",
+    "Unsupported style field ignored by PptxGenJS runtime: colors.negative",
+    "Unsupported style field ignored by PptxGenJS runtime: colors.allowed_opacity",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.font_mono",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.title_sizes_pt.cover",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.title_sizes_pt.section",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.body_sizes_pt.large",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.body_sizes_pt.footnote",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.metric_sizes_pt",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.minimum_body_size_pt",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.minimum_footnote_size_pt",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.line_height",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.paragraph_spacing_pt",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.letter_spacing_pt",
+    "Unsupported style field ignored by PptxGenJS runtime: typography.weights",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.columns",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.rows",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.margin_bottom_in",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.gutter_vertical_in",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.footer_zone_height_in",
+    "Unsupported style field ignored by PptxGenJS runtime: grid.safe_zone_in",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.scale.xs",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.scale.sm",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.scale.xl",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.scale.xxl",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.rules.section_gap",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.rules.icon_to_label",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.rules.label_to_value",
+    "Unsupported style field ignored by PptxGenJS runtime: spacing.rules.paragraph_gap",
+    "Unsupported style field ignored by PptxGenJS runtime: shape_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: shadow_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: card_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: table_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: chart_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: diagram_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: image_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: icon_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: footer_tokens",
+    "Unsupported style field ignored by PptxGenJS runtime: density_limits",
+    "Unsupported style field ignored by PptxGenJS runtime: component_variants",
+    "Unsupported style field ignored by PptxGenJS runtime: allowed_effects",
+    "Unsupported style field ignored by PptxGenJS runtime: forbidden_drift",
+    "Unsupported style field ignored by PptxGenJS runtime: compatibility_aliases",
+    "Trusted delivery status is verified, not final."
+  ],
+  "metrics": {
+    "average_object_count": 4.4444,
+    "editable_core_ratio": 1.0,
+    "fallback_count": 0,
+    "logical_slide_count": 9,
+    "media_count": 0,
+    "native_chart_count": 1,
+    "native_connector_count": 0,
+    "native_table_count": 1,
+    "native_text_ratio": 1.0,
+    "object_count": 9,
+    "physical_slide_count": 9,
+    "qa_error_count": 0,
+    "qa_fatal_count": 0,
+    "qa_info_count": 0,
+    "qa_warning_count": 11,
+    "rasterized_area_ratio": 0.0,
+    "slide_count": 9,
+    "whole_slide_raster_count": 0
+  },
+  "privacy": {
+    "contains_external_links": false,
+    "contains_private_assets": false,
+    "issues": []
+  },
+  "profile": "standard",
+  "renderer": {
+    "name": null,
+    "version": null
+  },
+  "resume": {
+    "checkpoints": null,
+    "failed_stage": null,
+    "last_successful_stage": "verify",
+    "resume_from": null
+  },
+  "schema_version": "1.0",
+  "status": "verified"
+}

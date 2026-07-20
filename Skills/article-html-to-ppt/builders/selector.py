@@ -15,7 +15,9 @@ def registry_map(registry: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 def infer_component_type(obj: dict[str, Any]) -> str:
     if obj.get("component_type"):
-        return str(obj["component_type"])
+        explicit = str(obj["component_type"])
+        aliases = {"card": "comparison_card", "process": "process_flow"}
+        return aliases.get(explicit, explicit)
     plan = obj.get("visual_component_plan") if isinstance(obj.get("visual_component_plan"), dict) else {}
     if plan.get("component_type"):
         return str(plan["component_type"])
@@ -116,7 +118,7 @@ def route_support_ok(route: str, level: SupportLevel, editability: str | None, p
     if editability == "native_required":
         if route not in NATIVE_ROUTES:
             reasons.append("BUILDER_NATIVE_REQUIRED_UNSUPPORTED")
-        if level != "full":
+        if level not in {"full", "partial"} or (profile == "premium" and level != "full"):
             reasons.append("BUILDER_NATIVE_REQUIRED_UNSUPPORTED")
         if level == "visual_only":
             reasons.append("BUILDER_VISUAL_ONLY_FOR_NATIVE_REQUIRED")
@@ -251,6 +253,8 @@ def select_builder(
     else:
         reasons = ["BUILDER_SELECTION_NO_VALID_CANDIDATE"]
         selected = {"builder": "unknown", "version": None, "score": 0.0, "errors": []}
+        if requested_builder != "auto" and candidates:
+            errors.extend(candidates[0]["errors"])
         errors.append("BUILDER_SELECTION_NO_VALID_CANDIDATE")
 
     return BuilderSelection(

@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
+import os
 import re
 import shutil
 import sys
@@ -165,6 +167,17 @@ def merged_metrics(build_manifest: dict[str, Any], qa_report: dict[str, Any] | N
         metrics["qa_error_count"] = sum(1 for issue in qa_report.get("issues", []) if isinstance(issue, dict) and issue.get("severity") == "error")
         metrics["qa_fatal_count"] = sum(1 for issue in qa_report.get("issues", []) if isinstance(issue, dict) and issue.get("severity") == "fatal")
     return metrics
+
+
+def invalid_trust_ratios(metrics: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    for key in ("editable_core_ratio", "native_text_ratio", "rasterized_area_ratio"):
+        value = metrics.get(key)
+        if value is None:
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(float(value)) or not 0.0 <= float(value) <= 1.0:
+            errors.append(f"DELIVERY_INVALID_TRUST_RATIO: {key}={value!r}")
+    return errors
 
 
 def build_delivery_manifest(
@@ -356,6 +369,9 @@ def package_delivery(args: argparse.Namespace) -> tuple[int, list[str]]:
         return 1, [f"Missing build manifest: {build_path}"]
     qa_report = load_json(qa_path)
     benchmark_score = load_json(benchmark_path)
+    metrics = merged_metrics(build_manifest, qa_report, benchmark_score)
+    if args.strict:
+        errors.extend(invalid_trust_ratios(metrics))
 
     for rel in REQUIRED_INTERNAL[profile]:
         if not (workdir / rel).exists():
@@ -370,13 +386,21 @@ def package_delivery(args: argparse.Namespace) -> tuple[int, list[str]]:
     if args.strict and not status_at_least(status, PROFILE_MIN_STATUS[profile]):
         errors.append(f"Trusted status {status} does not meet {profile} requirement {PROFILE_MIN_STATUS[profile]}")
 
-    output = args.output
+    output = args.output.resolve()
     if output.exists():
         shutil.rmtree(output)
-    output.mkdir(parents=True, exist_ok=True)
+    staging = output.parent / f".{output.name}.staging-{os.getpid()}"
+    if staging.exists():
+        shutil.rmtree(staging)
+    staging.mkdir(parents=True)
 
     files: list[dict[str, Any]] = []
     roles = list(REQUIRED_DELIVERY_ROLES[profile])
+    # Standard visual rendering is best-effort by contract. Do not invent a PDF
+    # when the verifier truthfully reports that no renderer ran; Premium still
+    # requires it and remains non-final/blocked.
+    if profile == "standard" and _render_status(qa_report) in {"not_run", "unavailable"}:
+        roles.remove("preview_pdf")
     if args.include_assets:
         roles.append("assets")
     if args.include_sources:
@@ -390,17 +414,21 @@ def package_delivery(args: argparse.Namespace) -> tuple[int, list[str]]:
             continue
         if role == "pptx" and not pptx_readable(source):
             errors.append(f"PPTX package is not readable: {source}")
-        files.append(copy_artifact(role, source, output, required=required))
+        files.append(copy_artifact(role, source, staging, required=required))
 
-    privacy = scan_privacy(output)
+    privacy = scan_privacy(staging)
     if args.strict and privacy["issues"]:
         for item in privacy["issues"]:
             errors.append(f"{item['code']}: {item['file']}")
 
-    zip_path = write_zip(output) if args.zip else None
+    if errors:
+        shutil.rmtree(staging, ignore_errors=True)
+        return 1, errors
+
+    zip_path = write_zip(staging) if args.zip else None
     manifest = build_delivery_manifest(
         profile=profile,
-        status="failed" if errors else status,
+        status=status,
         build_manifest=build_manifest,
         qa_report=qa_report,
         benchmark_score=benchmark_score,
@@ -408,15 +436,18 @@ def package_delivery(args: argparse.Namespace) -> tuple[int, list[str]]:
         privacy=privacy,
         zip_path=zip_path,
     )
-    args.manifest.parent.mkdir(parents=True, exist_ok=True)
-    args.manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    if args.manifest.parent.resolve() != output.resolve():
-        shutil.copy2(args.manifest, output / args.manifest.name)
-    else:
-        files.append({"role": "delivery_manifest", "path": args.manifest.name, "required": True, "hash": sha256_file(args.manifest)})
+    manifest_in_output = args.manifest.parent.resolve() == output
+    staged_manifest = staging / args.manifest.name if manifest_in_output else staging / "delivery-manifest.json"
+    staged_manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    if manifest_in_output:
+        files.append({"role": "delivery_manifest", "path": args.manifest.name, "required": True, "hash": sha256_file(staged_manifest)})
         manifest["files"] = files
-        args.manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    return (1 if errors else 0), errors
+        staged_manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    staging.replace(output)
+    if not manifest_in_output:
+        args.manifest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output / staged_manifest.name, args.manifest)
+    return 0, []
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -437,6 +468,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str]) -> int:
+    args: argparse.Namespace | None = None
     try:
         args = parse_args(argv)
         code, errors = package_delivery(args)
@@ -447,6 +479,10 @@ def main(argv: list[str]) -> int:
                 print(error, file=sys.stderr)
         return code
     except Exception as exc:
+        if args is not None:
+            shutil.rmtree(args.output, ignore_errors=True)
+            for staging in args.output.resolve().parent.glob(f".{args.output.name}.staging-*"):
+                shutil.rmtree(staging, ignore_errors=True)
         print(f"package_delivery: {exc}", file=sys.stderr)
         return 1
 

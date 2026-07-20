@@ -331,7 +331,7 @@ def inspect_slides(
         metrics = {
             "native_text_character_count": native_chars,
             "expected_text_character_count": expected_chars,
-            "native_text_ratio": round(native_chars / expected_chars, 4) if expected_chars else None,
+            "native_text_ratio": round(min(native_chars, expected_chars) / expected_chars, 4) if expected_chars else None,
             "text_box_count": len(text_boxes),
             "average_characters_per_text_box": round(native_chars / len(text_boxes), 4) if text_boxes else 0,
             "small_text_box_count": len([obj for obj in text_boxes if obj.w_in < 1.0 or obj.h_in < 0.25]),
@@ -359,7 +359,7 @@ def inspect_slides(
 
     slide_count = max(len(prs.slides), 1)
     deck_metrics["native_text_ratio"] = (
-        round(deck_metrics["native_text_character_count"] / deck_metrics["expected_text_character_count"], 4)
+        round(min(deck_metrics["native_text_character_count"], deck_metrics["expected_text_character_count"]) / deck_metrics["expected_text_character_count"], 4)
         if deck_metrics["expected_text_character_count"]
         else None
     )

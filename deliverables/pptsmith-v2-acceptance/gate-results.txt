@@ -1,0 +1,18 @@
+$ JSON parsing: tracked skill JSON excluding runtime dependencies and transient output
+243 tracked JSON files parsed
+$ Python compilation: all tracked production/test Python in skill
+65 Python files compiled
+$ Focused Node runtime syntax and execution tests
+........                                                                 [100%]
+8 passed in 1.97s
+$ Focused shared builder acceptance tests
+..                                                                       [100%]
+2 passed in 1.39s
+$ Focused profile/builder pipeline acceptance tests
+............                                                             [100%]
+12 passed in 172.08s (0:02:52)
+$ Full skill pytest
+........................................................................ [ 52%]
+.................................................................        [100%]
+137 passed in 209.39s (0:03:29)
+$ git diff --check

@@ -51,12 +51,25 @@ def build_manifest(
     deck_id = ppt_ir.get("deck", {}).get("id", "deck")
     profile = delivery_plan.get("profile") or ppt_ir.get("deck", {}).get("production_profile", "standard")
     status = "created" if result.status == "created" else "failed"
+    planned_builder = delivery_plan.get("builder") if isinstance(delivery_plan.get("builder"), dict) else {}
+    builder = dict(planned_builder)
+    builder.setdefault("requested", builder_name)
+    planned_selected = builder.get("selected")
+    builder["selected"] = builder_name
+    builder.setdefault("version", None)
+    builder.setdefault("selection_score", 0)
+    reasons = list(builder.get("selection_reasons", []) or [])
+    manifest_warnings = list(result.warnings)
+    if planned_selected and planned_selected != builder_name:
+        reasons.append("EXPLICIT_BUILDER_OVERRIDE")
+        manifest_warnings.append(f"Explicit builder override selected {builder_name}; delivery plan planned builder {planned_selected}.")
+    builder["selection_reasons"] = list(dict.fromkeys(reasons))
     return {
         "schema_version": "2.0",
         "build_id": f"build-{deck_id}-{now}",
         "deck_id": deck_id,
         "profile": profile,
-        "builder": delivery_plan.get("builder", {"requested": builder_name, "selected": builder_name, "version": None, "selection_score": 0, "selection_reasons": []}),
+        "builder": builder,
         "builder_profile": builder_name,
         "status": status,
         "production_profile_ref": None,
@@ -81,7 +94,7 @@ def build_manifest(
             "fallback_count": len(result.fallbacks),
         },
         "fallbacks": result.fallbacks,
-        "warnings": result.warnings,
+        "warnings": manifest_warnings,
         "errors": [{"message": error} if isinstance(error, str) else error for error in result.errors],
     }
 
