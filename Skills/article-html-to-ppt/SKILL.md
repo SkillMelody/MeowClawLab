@@ -5,7 +5,7 @@ metadata:
   display_name: "MeowClaw 夜猫 PPT 工坊"
   english_alias: "MeowClaw PPTSmith"
   registry_slug: "article-html-to-ppt"
-  version: "2.0.3"
+  version: "2.0.4"
   brand_aliases: ["meowclaw-pptsmith", "meowclaw-decksmith"]
 ---
 
@@ -22,7 +22,7 @@ Public identity:
 
 Keep the ClawHub slug, OpenClaw route, and directory name as `article-html-to-ppt` for backward compatibility and update continuity. `meowclaw-pptsmith` is the primary brand alias, not a separately registered ClawHub slug.
 
-Version `2.0.3` is the public registry recovery release for the engineering-complete v2.0 capability line, which is **Standard production-ready on the verified acceptance environment**. The canonical Standard acceptance route is `python_pptx`; PptxGenJS is validated portability evidence on the same source semantic contracts. A separate **LibreOffice Premium acceptance** is final on the recorded environment: PptxGenJS 4.0.1 plus LibreOffice 26.2.4.2 rendered and read back all 9 slides, passed zero-error QA, and passed an evidence-bound model visual rubric at 15/18. This does **not** verify native Microsoft PowerPoint compatibility or promise cross-implementation pixel parity. See `docs/v2.0-acceptance-report.md`; generated acceptance artifacts are maintained outside the public source tree.
+Version `2.0.4` is the clean public registry recovery release for the engineering-complete v2.0 capability line, which is **Standard production-ready on the verified acceptance environment**. The canonical Standard acceptance route is `python_pptx`; PptxGenJS is validated portability evidence on the same source semantic contracts. A separate **LibreOffice Premium acceptance** is final on the recorded environment: PptxGenJS 4.0.1 plus LibreOffice 26.2.4.2 rendered and read back all 9 slides, passed zero-error QA, and passed an evidence-bound model visual rubric at 15/18. This does **not** verify native Microsoft PowerPoint compatibility or promise cross-implementation pixel parity. See `docs/v2.0-acceptance-report.md`; generated acceptance artifacts are maintained outside the public source tree.
 
 Default delivery is `hybrid editable`: polished material/background layers may be raster, SVG, or generated image components, while message-bearing content remains editable PowerPoint objects. Avoid both extremes: screenshot-only decks that cannot be edited, and pure native-object decks that look like rough wireframes.
 

@@ -6,7 +6,7 @@ MeowClawLab is a small lab repository for practical OpenClaw skills, workflows, 
 
 The current focus is reliability-first automation: skills should be easy for ordinary users to invoke, while remaining conservative enough for real systems where Gateway availability, config safety, plugins, channels, agent routing, and final delivery quality matter.
 
-## 🔥 Featured: MeowClaw PPTSmith v2.0.3
+## 🔥 Featured: MeowClaw PPTSmith v2.0.4
 
 [`MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) has evolved from basic article-to-template conversion into a **low-rework, editable, and verifiable** presentation production chain.
 
@@ -46,7 +46,7 @@ These images come from the earlier 14-slide stress test based on McKinsey / Quan
 | Skill | Purpose | Status |
 | --- | --- | --- |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A guided, evidence-based OpenClaw upgrade workflow that chooses a target version, checks release risk, creates verified backups, upgrades safely, and validates the running Gateway plus critical user paths. | Published |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0.3 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0.3 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0.4 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0.4 |
 
 ## Design Principles
 
