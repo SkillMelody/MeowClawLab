@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Python caches and test state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# JavaScript dependencies
+node_modules/
+
+# Local agent/tool state
+.superpowers/
+
+# Generated PPT workspaces and delivery outputs
+.ppt-work/
+deliverables/
+
+# Repository presentation media is maintained outside the source tree
+Assets/
+assets/

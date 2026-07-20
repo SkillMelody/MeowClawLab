@@ -4,7 +4,7 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 
 `MeowClaw 夜猫 PPT 工坊` is the public display name. `MeowClaw PPTSmith` is the English alias. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for backward compatibility and update continuity. `meowclaw-pptsmith` is the primary brand alias; `meowclaw-decksmith` is retained as a legacy brand alias.
 
-**v2.0.0 readiness:** engineering-complete and **Standard production-ready on the verified acceptance environment**. `python_pptx` is the canonical production Builder; PptxGenJS is verified portability evidence on the same source semantic contracts. **Premium is not final on this host** because no verified PowerPoint/LibreOffice renderer is available. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md). The full canonical acceptance package is published in the GitHub source repository under `deliverables/pptsmith-v2-acceptance/`.
+**v2.0.0 readiness:** engineering-complete and **Standard production-ready on the verified acceptance environment**. `python_pptx` is the canonical production Builder; PptxGenJS is verified portability evidence on the same source semantic contracts. **Premium is not final on this host** because no verified PowerPoint/LibreOffice renderer is available. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md). Generated acceptance artifacts are maintained outside the public source tree.
 
 This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
 
@@ -210,7 +210,6 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 - `docs/migration-v1.1-to-v1.2.md` - migration guide for older manifests and templates.
 - `docs/v1.5-v2.0-closeout-checklist.md` - completed closeout criteria and remaining Premium external acceptance item.
 - `docs/v2.0-acceptance-report.md` - canonical Standard acceptance verdict, evidence, provenance, and limitations.
-- GitHub source repository `deliverables/pptsmith-v2-acceptance/` - the unique committed acceptance package; one canonical Python deck plus clearly labeled PptxGenJS portability evidence.
 - `references/export-pipelines.md` - export routing for PPTX, dynamic PPTX, Feishu Slides, and HTML.
 - `references/visual-design-archetypes.md` - visual direction archetypes.
 - `references/visual-systems.md` - reusable visual system constraints.

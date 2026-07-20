@@ -52,7 +52,6 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
 - [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
 - [v2.0 Acceptance Report](docs/v2.0-acceptance-report.md) <br>
-- Canonical v2 acceptance package: GitHub source repository path `deliverables/pptsmith-v2-acceptance/` <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
 - [Content Lock Template](templates/content-lock-template.md) <br>
 - [Slide Manifest Template](templates/slide-manifest-template.json) <br>
