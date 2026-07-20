@@ -6,7 +6,7 @@ MeowClawLab is a small lab repository for practical OpenClaw skills, workflows, 
 
 The current focus is reliability-first automation: skills should be easy for ordinary users to invoke, while remaining conservative enough for real systems where Gateway availability, config safety, plugins, channels, agent routing, and final delivery quality matter.
 
-## 🔥 Featured: MeowClaw PPTSmith v2.0
+## 🔥 Featured: MeowClaw PPTSmith v2.0.1
 
 [`MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) has evolved from basic article-to-template conversion into a **low-rework, editable, and verifiable** presentation production chain.
 
@@ -25,12 +25,28 @@ The current focus is reliability-first automation: skills should be easy for ord
 
 > The public edition includes the core engine, five foundational styles, reusable components, QA, and trusted delivery. Professional production packs, enterprise brand adaptation, proprietary page prototypes, and custom services remain separate commercial deliverables.
 
+
+## Real PPT Output Gallery (Preserved Sample)
+
+These images come from the earlier 14-slide stress test based on McKinsey / QuantumBlack’s public *The State of AI in 2025* report. They show actual generated output rather than conceptual placeholders:
+
+- **No raster screenshots as body slides**: core text, cards, tables, nodes, arrows, and relationship diagrams are native PPT objects.
+- **302 editable text runs** for continued editing in PowerPoint, Keynote, or Feishu Slides.
+- **Richer relationship graphics** including curved arrows, dashed lines, polylines, elbow connectors, and double arrows.
+- **Upgraded palette contracts** across five low-chroma, warm-tempered foundational styles.
+
+![State of AI 2025 14-page PPT sample](./Assets/article-html-to-ppt/stateofai-2025-final-contact-sheet.png)
+
+![Palette upgrade overview](./Assets/article-html-to-ppt/palette-upgrade-overview.png)
+
+![Native editable architecture diagram](./Assets/article-html-to-ppt/native-architecture-diagram.png)
+
 ## Skills
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A guided, evidence-based OpenClaw upgrade workflow that chooses a target version, checks release risk, creates verified backups, upgrades safely, and validates the running Gateway plus critical user paths. | Published |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0.1 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0.1 |
 
 ## Design Principles
 
