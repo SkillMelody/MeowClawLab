@@ -43,6 +43,46 @@ PPTSmith v2.0 不只是“把文字塞进模板”，而是一条从内容判断
 - QA 阻断未声明的空白实色色块，避免残留箭头头部、意外覆盖层和偶发多余色块。
 - 文件可打开、文字可编辑、无越界、非空白只是结构条件，不再视为专业视觉质量证明。
 
+## 样例图库
+
+以下样例与仓库首页保持一致，并复制到 Skill 自有资产目录，确保从当前页面浏览时可直接查看。
+
+### State of AI 2025：14 页完整演示样例
+
+![State of AI 2025 14-page PPT sample](./assets/samples/stateofai-2025-final-contact-sheet.png)
+
+### 统一配色系统升级
+
+![Palette upgrade overview](./assets/samples/palette-upgrade-overview.png)
+
+### 原生可编辑技术架构图
+
+![Native editable architecture diagram](./assets/samples/native-architecture-diagram.png)
+
+## 2.0.7 AI 工程项目汇报样例
+
+这组样例来自真实生成并通过 LibreOffice 渲染验收的 19 页 AI 项目汇报。重点展示 2.0.7 对执行组织层、状态机、Agent Router、RAG、模型路由和部署演进的升级。
+
+![AI engineering project core upgrade contact sheet](./assets/samples/ai-project-core-upgrade-contact-sheet.png)
+
+### 执行组织层：跨层关系使用肘形折线
+
+Runtime 与能力节点使用专用连接通道，避免斜直线穿越内容。
+
+![AI project execution layer](./assets/samples/ai-project-execution-layer.png)
+
+### Agent Router：总线代替放射式线团
+
+Policy、Router、Dispatch Bus 与 Agent Group 分区表达，输出路径可逐条追踪。
+
+![AI project Agent Router](./assets/samples/ai-project-agent-router.png)
+
+### 模型路由：输入容器、策略评分与能力池
+
+约束条件先汇入输入容器，再进入 Routing Score 和三类能力池；主路径与外部动作边界清晰。
+
+![AI project model routing](./assets/samples/ai-project-model-routing.png)
+
 ## 适合谁
 
 - **产品负责人 / 汇报人：** 决策摘要、指标、路线图、风险与下一步。

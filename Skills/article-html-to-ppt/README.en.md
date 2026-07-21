@@ -8,6 +8,46 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 
 **v2.0.7 readiness:** this release adds native straight, orthogonal/elbow, and curved connector routing plus diagram-topology gates. QA rejects straight connectors through unrelated nodes or text and ambiguous connector crossings. Complex technical diagrams require enlarged single-slide render review before whole-deck packaging. The v2.0.6 public name and discovery copy remain unchanged. Native Microsoft PowerPoint compatibility remains unverified. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md).
 
+## Sample Gallery
+
+These samples mirror the repository-home gallery and are copied into the Skill-owned asset directory so they render directly from this page.
+
+### State of AI 2025: complete 14-slide sample
+
+![State of AI 2025 14-page PPT sample](./assets/samples/stateofai-2025-final-contact-sheet.png)
+
+### Unified palette-system upgrade
+
+![Palette upgrade overview](./assets/samples/palette-upgrade-overview.png)
+
+### Native editable architecture diagram
+
+![Native editable architecture diagram](./assets/samples/native-architecture-diagram.png)
+
+## v2.0.7 AI Engineering Project Deck
+
+These screenshots come from a real 19-slide AI project deck rendered and reviewed with LibreOffice. They demonstrate the v2.0.7 upgrades for execution layers, state machines, Agent routing, RAG, model routing, and deployment evolution.
+
+![AI engineering project core upgrade contact sheet](./assets/samples/ai-project-core-upgrade-contact-sheet.png)
+
+### Execution layer: elbow routing across layers
+
+Runtime-to-capability relationships use reserved connector channels instead of diagonal lines through content.
+
+![AI project execution layer](./assets/samples/ai-project-execution-layer.png)
+
+### Agent Router: a dispatch bus instead of a radial connector web
+
+Policy, Router, Dispatch Bus, and Agent Groups are separated so every route remains traceable.
+
+![AI project Agent Router](./assets/samples/ai-project-agent-router.png)
+
+### Model routing: input container, score policy, and capability pools
+
+Constraints enter one explicit container before Routing Score and the three capability pools, keeping the main path and external-action boundary clear.
+
+![AI project model routing](./assets/samples/ai-project-model-routing.png)
+
 This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
 
 This skill supports:
