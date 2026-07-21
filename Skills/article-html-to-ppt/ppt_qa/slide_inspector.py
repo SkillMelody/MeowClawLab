@@ -32,7 +32,7 @@ def _hex(rgb: Any) -> Optional[str]:
 def _shape_color(container: Any) -> list[str]:
     colors: list[str] = []
     try:
-        if container is not None and container.type is not None:
+        if container is not None:
             color = _hex(container.fore_color.rgb)
             if color:
                 colors.append(color)
@@ -76,12 +76,9 @@ def _classify_shape(shape: Any, svg_shape_ids: set[int]) -> str:
         return "media"
     if shape_type == MSO_SHAPE_TYPE.EMBEDDED_OLE_OBJECT:
         return "ole"
-    # AutoShapes often expose an empty text frame even when they are purely
-    # decorative. Only classify them as text when text is actually present;
-    # true text boxes/placeholders remain text objects for empty-box QA.
-    if shape_type in {MSO_SHAPE_TYPE.TEXT_BOX, MSO_SHAPE_TYPE.PLACEHOLDER}:
+    if getattr(shape, "has_text_frame", False):
         return "text"
-    if getattr(shape, "has_text_frame", False) and str(getattr(shape, "text", "")).strip():
+    if shape_type == MSO_SHAPE_TYPE.PLACEHOLDER and getattr(shape, "has_text_frame", False):
         return "text"
     return "shape"
 
@@ -395,7 +392,25 @@ def _add_slide_issues(
     if not slide.objects:
         slide.issues.append(factory.create("PPTX_BLANK_SLIDE", "error", "content", "Slide contains no editable or visual objects.", slide_id=slide.slide_id, evidence={}))
     for obj in slide.objects:
-        if obj.shape_type == "text" and not obj.text.strip():
+        declared_non_text_layer = obj.name.lower().startswith(("decoration:", "background:", "material:", "connector:"))
+        if (
+            obj.shape_type == "text"
+            and not obj.text.strip()
+            and obj.fill_colors
+            and obj.area_ratio >= 0.01
+            and not declared_non_text_layer
+        ):
+            slide.issues.append(factory.create(
+                "PPTX_ORPHAN_SOLID_COLOR_BLOCK",
+                "error",
+                "visual",
+                "Unlabeled solid-color block may be a stray arrowhead or accidental shape.",
+                slide_id=slide.slide_id,
+                object_id=obj.object_id,
+                ppt_shape_id=obj.shape_id,
+                evidence={"name": obj.name, "fill_colors": obj.fill_colors, "area_ratio": obj.area_ratio},
+            ))
+        if obj.shape_type == "text" and not obj.text.strip() and not declared_non_text_layer:
             slide.issues.append(factory.create("PPTX_EMPTY_TEXT_BOX", "warning", "editability", "Text box is empty.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"name": obj.name}))
         if obj.x_in < 0 or obj.y_in < 0 or obj.x_in + obj.w_in > slide_w or obj.y_in + obj.h_in > slide_h:
             slide.issues.append(factory.create("PPTX_TEXT_OUT_OF_BOUNDS" if obj.shape_type == "text" else "GEOMETRY_OBJECT_OUT_OF_BOUNDS", "error", "geometry", "Object extends beyond slide bounds.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"x_in": obj.x_in, "y_in": obj.y_in, "w_in": obj.w_in, "h_in": obj.h_in, "slide_w_in": slide_w, "slide_h_in": slide_h}))

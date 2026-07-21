@@ -283,6 +283,40 @@ def test_python_adapter_preserves_native_required_chart_and_process_semantics(tm
     }
 
 
+def test_process_uses_single_bound_arrow_connectors_without_arrowhead_shapes(tmp_path: Path) -> None:
+    from pptx import Presentation
+
+    plan = sample_ppt_ir()
+    plan["deck"]["logical_slide_count"] = 1
+    plan["slides"] = [{
+        **plan["slides"][1],
+        "id": "S01",
+        "index": 1,
+        "title": "Bound process connectors",
+        "objects": [{
+            "id": "process-1", "type": "shape", "component_type": "process",
+            "content": {"nodes": [{"label": "Plan"}, {"label": "Build"}, {"label": "Inspect"}]},
+            "editability": "native_required", "source_refs": [],
+        }],
+    }]
+    delivery = sample_delivery_plan()
+    delivery["slides"] = [{"slide_id": "S01", "objects": [
+        {**delivery["slides"][0]["objects"][0], "slide_id": "S01", "object_id": "process-1", "component_type": "process", "selected_route": "native_diagram"},
+    ]}]
+
+    result = PythonPptxAdapter().build(PythonPptxAdapter().plan(plan, json.loads(STYLE.read_text()), delivery), tmp_path)
+    deck = Presentation(result.pptx)
+    slide = deck.slides[0]
+    connectors = [shape for shape in slide.shapes if shape.shape_type == 9]
+    assert len(connectors) == 2
+    assert not any(shape.auto_shape_type == 7 for shape in slide.shapes if shape.shape_type == 1)
+    for connector in connectors:
+        xml = connector._element.xml
+        assert "<a:stCxn" in xml
+        assert "<a:endCxn" in xml
+        assert '<a:tailEnd type="triangle"' in xml
+
+
 def test_cli_builder_override_is_truthful_and_preserves_plan_metadata(tmp_path: Path) -> None:
     ppt_ir = tmp_path / "ppt-ir.json"; style = tmp_path / "style.json"; delivery = tmp_path / "delivery.json"
     manifest = tmp_path / "manifest.json"; output = tmp_path / "out"

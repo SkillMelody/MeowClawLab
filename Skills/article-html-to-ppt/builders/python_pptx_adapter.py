@@ -103,13 +103,15 @@ class PythonPptxAdapter:
             objects = slide_plan.get("objects", []) or []
             if not objects:
                 continue
-            card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
+            object_count = max(len(objects), 1)
+            available_width = 11.7
+            card_width = available_width if object_count == 1 else min(3.6, (available_width - style["card_gap"] * (object_count - 1)) / object_count)
             for index, obj in enumerate(objects):
                 route = ((obj.get("delivery_plan") or {}).get("selected_route") or obj.get("delivery_preferences", {}).get("preferred_route") or "native_ppt")
                 actual_route = route
                 component_type = obj.get("component_type") or obj.get("type")
                 is_chart = route == "native_chart" and obj.get("type") == "chart"
-                is_process = route == "native_diagram" and component_type == "process"
+                is_process = component_type in {"process", "process_flow"}
                 if route in {"hybrid_overlay", "svg_component", "generated_image", "background_image"}:
                     actual_route = "native_ppt"
                     fallbacks.append(
@@ -126,24 +128,30 @@ class PythonPptxAdapter:
                 x = style["margin_left"] + index * (card_width + style["card_gap"])
                 y = 1.85
                 if route == "native_table" or obj.get("type") == "table":
-                    _add_table(slide, obj, x=x, y=y, w=min(10.8, card_width * 2), h=2.3, style=style)
+                    _add_table(slide, obj, x=style["margin_left"], y=1.78, w=12.2, h=4.65, style=style)
                 elif is_chart:
                     _add_chart(slide, obj, x=x, y=y, w=card_width, h=3.4, style=style)
                 elif is_process:
-                    _add_process(slide, obj, x=x, y=y, w=card_width, h=1.35, style=style)
+                    _add_process(slide, obj, x=style["margin_left"], y=2.0, w=12.2, h=1.0, style=style)
                 else:
-                    shape = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(card_width), Inches(1.35))
+                    shape = slide.shapes.add_shape(MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(card_width), Inches(2.15 if object_count == 1 else 1.55))
                     shape.fill.solid()
                     shape.fill.fore_color.rgb = RGBColor.from_string(style["surface"])
                     shape.line.color.rgb = RGBColor.from_string(style["border"])
                     text_frame = shape.text_frame
                     text_frame.clear()
-                    paragraph = text_frame.paragraphs[0]
-                    run = paragraph.add_run()
-                    run.text = _object_text(obj)
-                    run.font.size = Pt(style["body_size"])
-                    run.font.name = style["font_name"]
-                    run.font.color.rgb = RGBColor.from_string(style["text_primary"])
+                    text_frame.margin_left = Inches(0.18)
+                    text_frame.margin_right = Inches(0.18)
+                    text_frame.margin_top = Inches(0.14)
+                    lines = _object_text(obj).split("\n")
+                    for line_index, line in enumerate(lines):
+                        paragraph = text_frame.paragraphs[0] if line_index == 0 else text_frame.add_paragraph()
+                        run = paragraph.add_run()
+                        run.text = line
+                        run.font.size = Pt(style["body_size"] + (2 if line_index == 0 and len(lines) > 1 else 0))
+                        run.font.bold = line_index == 0 and len(lines) > 1
+                        run.font.name = style["font_name"]
+                        run.font.color.rgb = RGBColor.from_string(style["primary"] if line_index == 0 and len(lines) > 1 else style["text_primary"])
                 object_results.append(
                     {
                         "slide_id": slide_plan.get("id"),
@@ -199,10 +207,13 @@ def _object_text(obj: dict[str, Any]) -> str:
     if isinstance(content, str) and content.strip():
         return content.strip()
     if isinstance(content, dict):
-        for key in ("title", "label", "claim", "text", "value"):
+        parts: list[str] = []
+        for key in ("title", "value", "label", "claim", "text"):
             value = content.get(key)
-            if isinstance(value, str) and value.strip():
-                return value.strip()
+            if isinstance(value, str) and value.strip() and value.strip() not in parts:
+                parts.append(value.strip())
+        if parts:
+            return "\n".join(parts)
     component = obj.get("component_type") or obj.get("semantic_role") or obj.get("type")
     return str(component or "PPT object").replace("_", " ").title()
 
@@ -273,6 +284,8 @@ def _process_labels(obj: dict[str, Any]) -> list[str]:
 
 
 def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
+    from lxml import etree
+    from pptx.oxml.ns import qn
     from pptx.dml.color import RGBColor
     from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE, MSO_CONNECTOR
     from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
@@ -307,6 +320,12 @@ def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: floa
             after.top + after.height // 2,
         )
         connector.line.color.rgb = RGBColor.from_string(style["primary"])
+        connector.begin_connect(before, 3)
+        connector.end_connect(after, 1)
+        line_xml = connector.line._get_or_add_ln()
+        tail_end = etree.Element(qn("a:tailEnd"))
+        tail_end.set("type", "triangle")
+        line_xml.append(tail_end)
 
 
 def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:

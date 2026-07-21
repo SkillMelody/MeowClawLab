@@ -10,7 +10,7 @@ meowclaw-pptsmith, meowclaw-decksmith <br>
 ## Description: <br>
 MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
-Version 2.0.4 is the clean public registry recovery release for the engineering-complete v2.0 capability line, which is **Standard production-ready on the verified acceptance environment** for commercial/non-commercial use. `python_pptx` is the canonical Standard Builder; PptxGenJS is portability evidence. A separate **LibreOffice Premium acceptance** is final on the recorded PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 environment; native Microsoft PowerPoint compatibility is not verified. <br>
+Version 2.0.5 is the native-connector and visual-quality safety release. Standard readiness is component-scoped: simple Python process diagrams use one arrowed connector bound to both endpoint shapes; unsupported complex diagrams are blocked instead of flattened into generic text boxes. A separate LibreOffice Premium acceptance remains final only on the recorded PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 environment; native Microsoft PowerPoint compatibility is not verified. <br>
 
 ## Owner
 SkillMelody <br>

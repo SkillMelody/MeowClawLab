@@ -126,6 +126,11 @@ def test_builds_nonempty_two_slide_pptx_and_runtime_result(tmp_path: Path) -> No
     inspection = inspect_package(deck)
     assert inspection.status == "passed"
     assert inspection.slide_count == 2
+    with zipfile.ZipFile(deck) as package:
+        slide_xml = package.read("ppt/slides/slide2.xml").decode("utf-8")
+    assert 'prst="chevron"' not in slide_xml
+    assert '<a:tailEnd type="triangle"' in slide_xml
+    assert "Material:process-node:" in slide_xml
 
 
 def test_plan_preserves_style_contract_and_runtime_applies_supported_style(tmp_path: Path) -> None:

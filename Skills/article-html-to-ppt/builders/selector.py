@@ -186,6 +186,19 @@ def score_builder(
     available = builder_available(builder, capabilities, profile)
     if not available:
         errors.append("CAPABILITY_BUILDER_NOT_FOUND")
+    if builder == "python_pptx" and profile in {"standard", "premium"}:
+        relationship_components = {
+            "layered_architecture", "capability_landscape",
+            "comparison_matrix", "timeline", "flywheel", "causal_chain",
+            "stakeholder_network", "ecosystem_map",
+        }
+        has_complex_relationship = any(
+            any(infer_component_type(obj) in relationship_components for obj in (slide.get("objects", []) or []) if isinstance(obj, dict))
+            for slide in ppt_ir.get("slides", []) or []
+            if isinstance(slide, dict)
+        )
+        if has_complex_relationship:
+            errors.append("BUILDER_STANDARD_RELATIONSHIP_VISUAL_UNQUALIFIED")
     version = None
     if capabilities:
         cap = (capabilities.get("builders", {}) or {}).get(builder, {})

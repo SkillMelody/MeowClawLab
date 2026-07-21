@@ -45,19 +45,12 @@ try {
     const slide = pptx.addSlide();
     slide.background = { color: style.colors.background };
     const contentWidth = style.pageWidth - style.grid.left - style.grid.right;
-    const body = [slidePlan.judgment, slidePlan.message].filter((v) => typeof v === "string" && v.trim()).join("\n");
-    const objects = slidePlan.objects || [];
-    if (objects.length === 0) {
-      renderStatementSlide(slide, slidePlan, body, style);
-      continue;
-    }
     addText(slide, slidePlan.title || "Untitled", style.grid.left, style.grid.top, contentWidth, style.grid.titleHeight, { fontFace: style.titleFont, fontSize: style.titleSize, bold: true, color: style.colors.textPrimary });
-    const bodyY = style.grid.top + style.grid.titleHeight + style.spacing.titleToBody;
-    const bodyLines = Math.max(1, body.split("\n").length);
-    const bodyHeight = Math.max(0.55, bodyLines * 0.34);
-    const objectY = bodyY + bodyHeight + 0.24;
-    if (body) addText(slide, body, style.grid.left, bodyY, contentWidth, bodyHeight, { fontSize: style.bodySize, color: style.colors.textSecondary, breakLine: false, valign: "mid" });
+    const body = [slidePlan.judgment, slidePlan.message].filter((v) => typeof v === "string" && v.trim()).join("\n");
+    const objectY = style.grid.top + style.grid.titleHeight + style.spacing.titleToBody + 0.65;
+    if (body) addText(slide, body, style.grid.left, style.grid.top + style.grid.titleHeight + style.spacing.titleToBody, contentWidth, 0.55, { fontSize: style.bodySize, color: style.colors.textSecondary, breakLine: false });
 
+    const objects = slidePlan.objects || [];
     for (const [objectIndex, obj] of objects.entries()) {
       const plannedRoute = obj.delivery_plan?.selected_route || obj.delivery_preferences?.preferred_route || "native_ppt";
       const rendered = renderObject(pptx, slide, obj, objectIndex, objects.length, style, objectY);
@@ -151,18 +144,18 @@ function renderObject(pptx, slide, obj, index, count, style, y) {
   const kind = String(obj.component_type || obj.type || "").toLowerCase();
   const route = obj.delivery_plan?.selected_route || obj.delivery_preferences?.preferred_route || "native_ppt";
   const availableWidth = style.pageWidth - style.grid.left - style.grid.right;
-  const colWidth = Math.max(1.8, (availableWidth - style.spacing.cardGap * Math.max(count - 1, 0)) / Math.max(count, 1));
+  const colWidth = Math.max(1.8, Math.min(3.8, (availableWidth - style.spacing.cardGap * Math.max(count - 1, 0)) / Math.max(count, 1)));
   const x = style.grid.left + index * (colWidth + style.spacing.cardGap);
 
   if (kind === "table" || kind === "native_table" || route === "native_table") {
     const rows = tableRows(obj);
-    slide.addTable(rows, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 3.25, border: { type: "solid", color: style.colors.border, pt: 1 }, fill: style.colors.background, color: style.colors.textPrimary, fontFace: style.bodyFont, fontSize: Math.max(style.smallBodySize, 13), margin: 0.14, rowH: 0.62, autoFit: false, bold: false });
+    slide.addTable(rows, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 2.3, border: { type: "solid", color: style.colors.border, pt: 1 }, fill: style.colors.background, color: style.colors.textPrimary, fontFace: style.bodyFont, fontSize: style.smallBodySize, margin: 0.08, rowH: 0.4, autoFit: false });
     return { route: "native_table" };
   }
   if (kind.includes("chart") || route === "native_chart") {
     const data = chartData(obj);
     const chartType = kind.includes("line") ? pptx.ChartType.line : kind.includes("pie") ? pptx.ChartType.pie : pptx.ChartType.bar;
-    slide.addChart(chartType, data, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 3.75, showLegend: data.length > 1, showTitle: false, showValue: true, catAxisLabelFontSize: 14, valAxisLabelFontSize: 12, showCatName: true, showValAxisTitle: false, showCatAxisTitle: false, showValue: true, showGridLines: false, chartColors: style.colors.dataSeries });
+    slide.addChart(chartType, data, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 2.8, showLegend: data.length > 1, showTitle: false, showValue: true, catAxisLabelFontSize: 10, valAxisLabelFontSize: 9, chartColors: style.colors.dataSeries });
     return { route: "native_chart" };
   }
   if (["diagram", "process", "relationship"].includes(kind) || route === "native_diagram") {
@@ -174,52 +167,19 @@ function renderObject(pptx, slide, obj, index, count, style, y) {
   return { route: "native_ppt", semanticFallback: !knownCard };
 }
 
-function renderStatementSlide(slide, slidePlan, body, style) {
-  const contentWidth = style.pageWidth - style.grid.left - style.grid.right;
-  const title = slidePlan.title || "Untitled";
-  const isOpening = String(slidePlan.id || slidePlan.slide_id || "").toUpperCase() === "S01";
-  const titleY = isOpening ? 2.15 : 2.0;
-  slide.addShape("roundRect", {
-    x: style.grid.left, y: titleY - 0.7, w: contentWidth, h: 3.45,
-    rectRadius: 0.06, fill: { color: style.colors.surface1 },
-    line: { color: style.colors.border, transparency: 100 },
-  });
-  addText(slide, title, style.grid.left + 0.45, titleY, contentWidth - 0.9, 1.25, {
-    fontFace: style.titleFont, fontSize: style.titleSize + 8, bold: true,
-    color: style.colors.textPrimary, align: "center", valign: "mid",
-  });
-  if (body) addText(slide, body, style.grid.left + 1.35, titleY + 1.4, contentWidth - 2.7, 1.0, {
-    fontFace: style.bodyFont, fontSize: style.bodySize + 2,
-    color: style.colors.textSecondary, align: "center", valign: "mid",
-  });
-  slide.addShape("line", {
-    x: style.pageWidth / 2 - 0.65, y: titleY - 0.25, w: 1.3, h: 0,
-    line: { color: style.colors.primary, pt: 2.5 },
-  });
-}
-
 function renderCard(pptx, slide, obj, x, y, w, style) {
-  const kind = String(obj.component_type || obj.type || "").toLowerCase();
-  const height = kind === "metric_card" ? 2.35 : 2.15;
-  slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h: height, rectRadius: 0.08, fill: { color: style.colors.surface1 }, line: { color: style.colors.border, pt: 1 } });
-  if (kind === "metric_card") {
-    const [label, value] = objectText(obj).split(":", 2);
-    addText(slide, objectText(obj), x + 0.28, y + 0.28, w - 0.56, 0.45, { fontFace: style.bodyFont, fontSize: Math.max(style.bodySize, 14), color: style.colors.textSecondary, align: "center" });
-    addText(slide, value || objectText(obj), x + 0.28, y + 0.78, w - 0.56, 1.05, { fontFace: style.titleFont, fontSize: Math.max(style.titleSize + 8, 30), bold: true, color: style.colors.primary, align: "center", valign: "mid" });
-  } else {
-    addText(slide, objectText(obj), x + 0.34, y + 0.32, w - 0.68, height - 0.64, { fontFace: style.bodyFont, fontSize: Math.max(style.bodySize + 2, 15), bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
-  }
+  slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h: 1.35, objectName: `Material:card:${obj.id || "object"}`, rectRadius: 0.08, fill: { color: style.colors.surface1 }, line: { color: style.colors.border, pt: 1 } });
+  addText(slide, objectText(obj), x + style.spacing.padding, y + style.spacing.padding, w - 2 * style.spacing.padding, 1.0, { fontFace: style.bodyFont, fontSize: style.bodySize, bold: true, color: style.colors.textPrimary, valign: "mid" });
 }
 
 function renderProcess(pptx, slide, obj, x, y, w, style) {
   const nodes = processNodes(obj);
-  const nodeW = (w - 0.42 * (nodes.length - 1)) / nodes.length;
+  const nodeW = Math.min(1.65, (w - 0.3 * (nodes.length - 1)) / nodes.length);
   nodes.forEach((label, i) => {
-    const nodeX = x + i * (nodeW + 0.42);
-    if (i > 0) slide.addShape(pptx.ShapeType.chevron, { x: nodeX - 0.31, y: y + 0.82, w: 0.2, h: 0.34, fill: { color: style.colors.primary }, line: { color: style.colors.primary } });
-    slide.addShape(pptx.ShapeType.roundRect, { x: nodeX, y, w: nodeW, h: 2.0, fill: { color: style.colors.surface2 }, line: { color: style.colors.primary, pt: 1.2 } });
-    addText(slide, String(i + 1).padStart(2, "0"), nodeX + 0.16, y + 0.18, nodeW - 0.32, 0.42, { fontFace: style.titleFont, fontSize: 18, bold: true, color: style.colors.primary, align: "center" });
-    addText(slide, label, nodeX + 0.16, y + 0.75, nodeW - 0.32, 0.78, { fontFace: style.bodyFont, fontSize: Math.max(style.bodySize + 2, 15), bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
+    const nodeX = x + i * (nodeW + 0.3);
+    if (i > 0) slide.addShape(pptx.ShapeType.line, { x: nodeX - 0.28, y: y + 0.575, w: 0.23, h: 0, objectName: `Connector:process:${i}`, line: { color: style.colors.primary, pt: 1.5, beginArrowType: "none", endArrowType: "triangle" } });
+    slide.addShape(pptx.ShapeType.roundRect, { x: nodeX, y, w: nodeW, h: 1.15, objectName: `Material:process-node:${i}`, fill: { color: style.colors.surface2 }, line: { color: style.colors.primary, pt: 1.2 } });
+    addText(slide, label, nodeX + 0.08, y + 0.12, nodeW - 0.16, 0.9, { fontFace: style.bodyFont, fontSize: style.smallBodySize, bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
   });
 }
 
