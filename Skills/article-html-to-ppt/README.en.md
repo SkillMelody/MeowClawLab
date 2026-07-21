@@ -1,12 +1,12 @@
-# MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith
+# MeowClaw PPT Smith
 
 > 中文文档（默认）: [README.md](./README.md) · OpenClaw execution contract: [SKILL.md](./SKILL.md)
 
 Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks.
 
-`MeowClaw 夜猫 PPT 工坊` is the public display name. `MeowClaw PPTSmith` is the English alias. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for backward compatibility and update continuity. `meowclaw-pptsmith` is the primary brand alias; `meowclaw-decksmith` is retained as a legacy brand alias.
+`MeowClaw PPT Smith` is the public display name introduced in v2.0.6. `MeowClaw PPTSmith` and `MeowClaw 夜猫 PPT 工坊` remain compatibility and search aliases only. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for update continuity.
 
-**v2.0.5 readiness:** this is the native-connector and visual-quality safety release. Standard readiness is component-scoped: simple Python process diagrams use one arrowed connector bound to both endpoint shapes; unsupported complex architecture, hierarchy, matrix, flywheel, ecosystem, or staircase semantics are blocked instead of flattened into generic text boxes. QA rejects undeclared empty solid-color blocks that may be detached arrowheads or accidental overlays. A separate LibreOffice Premium acceptance remains final only for the recorded PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 environment. Native Microsoft PowerPoint compatibility remains unverified. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md).
+**v2.0.7 readiness:** this release adds native straight, orthogonal/elbow, and curved connector routing plus diagram-topology gates. QA rejects straight connectors through unrelated nodes or text and ambiguous connector crossings. Complex technical diagrams require enlarged single-slide render review before whole-deck packaging. The v2.0.6 public name and discovery copy remain unchanged. Native Microsoft PowerPoint compatibility remains unverified. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md).
 
 This skill is designed for article-to-presentation and source-to-deck workflows where the output must be more than a quick template conversion. It helps an agent identify the user persona, derive a storyline, lock content, select a fitting visual baseline, generate editable PPTX files when possible, create native dynamic PPTX decks for presentation mode, upload to Feishu Slides when requested, and report verification status honestly.
 

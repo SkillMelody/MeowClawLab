@@ -175,9 +175,13 @@ function renderCard(pptx, slide, obj, x, y, w, style) {
 function renderProcess(pptx, slide, obj, x, y, w, style) {
   const nodes = processNodes(obj);
   const nodeW = Math.min(1.65, (w - 0.3 * (nodes.length - 1)) / nodes.length);
+  const route = String(obj.connector_route || obj.connectorRoute || "straight");
+  if (route !== "straight") {
+    throw new Error(`PPTXGENJS_CONNECTOR_ROUTE_UNSUPPORTED:${route}`);
+  }
   nodes.forEach((label, i) => {
     const nodeX = x + i * (nodeW + 0.3);
-    if (i > 0) slide.addShape(pptx.ShapeType.line, { x: nodeX - 0.28, y: y + 0.575, w: 0.23, h: 0, objectName: `Connector:process:${i}`, line: { color: style.colors.primary, pt: 1.5, beginArrowType: "none", endArrowType: "triangle" } });
+    if (i > 0) slide.addShape(pptx.ShapeType.line, { x: nodeX - 0.28, y: y + 0.575, w: 0.23, h: 0, objectName: `Connector:${route}:process:${i}`, line: { color: style.colors.primary, pt: 1.5, beginArrowType: "none", endArrowType: "triangle" } });
     slide.addShape(pptx.ShapeType.roundRect, { x: nodeX, y, w: nodeW, h: 1.15, objectName: `Material:process-node:${i}`, fill: { color: style.colors.surface2 }, line: { color: style.colors.primary, pt: 1.2 } });
     addText(slide, label, nodeX + 0.08, y + 0.12, nodeW - 0.16, 0.9, { fontFace: style.bodyFont, fontSize: style.smallBodySize, bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
   });

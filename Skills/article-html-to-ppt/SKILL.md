@@ -2,20 +2,20 @@
 name: "article-html-to-ppt"
 description: "Use when turning articles, docs, PRDs, or specs into polished editable PPT decks."
 metadata:
-  display_name: MeowClaw 夜猫 PPT 工坊
-  english_alias: MeowClaw PPTSmith
+  display_name: MeowClaw PPT Smith
+  english_alias: MeowClaw PPT Smith
   registry_slug: article-html-to-ppt
-  version: 2.0.5
+  version: 2.0.7
   brand_aliases: [meowclaw-pptsmith, meowclaw-decksmith]
 ---
 
-# MeowClaw PPTSmith
+# MeowClaw PPT Smith
 
 Build presentation-ready, evidence-bounded, hybrid-editable slide decks. A valid PPTX is not automatically a professionally designed deck.
 
 ## Release Boundary
 
-Version `2.0.5` is the native-connector and visual-quality safety release.
+Version `2.0.7` adds connector routing and diagram-topology gates. It preserves the `2.0.6` MeowClaw PPT Smith name and discovery copy.
 
 Standard readiness is component-scoped:
 
@@ -24,6 +24,7 @@ Standard readiness is component-scoped:
 - Complex architectures, layered systems, matrices, flywheels, ecosystems, stakeholder maps, and commercial staircases require a qualified component implementation.
 - If no qualified implementation exists, stop at contracts or a labeled visual reference. Never flatten relationship semantics into generic text boxes and call the result final.
 - PptxGenJS can produce editable visual output but does not prove native endpoint binding. Do not claim structurally movable diagrams unless binding is verified in the PPTX package.
+- PptxGenJS 4.0.1 is qualified only for straight process connectors in this release. Orthogonal/elbow and curved native routing must use the verified Python Builder or another qualified Builder; do not emulate them with disconnected line segments.
 - LibreOffice or other renderer evidence is environment-specific and does not promise Microsoft PowerPoint pixel parity.
 
 ## Core Standard
@@ -106,6 +107,7 @@ Before implementing `relationship_visual`:
 5. Preserve one visually dominant main path.
 
 Read `references/expression-mode-gate.md`, `references/diagram-ir-and-layout.md`, and `references/diagram-auto-repair.md`.
+For connector routing, bus patterns, return paths, and topology QA, read `references/connector-routing-and-topology-gate.md`.
 
 ## Connector Invariants
 
@@ -117,6 +119,18 @@ These are hard requirements:
 - A group containing a line and triangle is not a single connector.
 - Connector direction and semantic relation must remain readable after rendering.
 - If a Builder cannot bind endpoints, disclose the limitation and use a qualified route. Do not claim the diagram is structurally editable.
+
+### Routing grammar
+
+- Use a straight connector only for short, same-axis adjacency with no intervening object.
+- Use one native orthogonal/elbow connector for cross-row process flow, bus attachment, hierarchy, and routes that must avoid nodes or labels.
+- Use one native curved connector for feedback, recovery, influence, or an outer return path.
+- Use a bus plus short branches for many-to-one or one-to-many routing. Do not draw a radial web through a hub.
+- Reserve an explicit connector channel between layers. A connector must never occupy a text line or layer subtitle gap.
+- Do not build a continuous arrow from multiple independent line objects. The complete route and arrowhead belong to one connector object.
+- If arbitrary multi-bend geometry cannot preserve native endpoint binding, simplify the topology, use a qualified Builder, or stop. Do not fabricate editability.
+
+Before drawing, freeze the topology: main path, branch zones, return path, buses, connector channels, and node ports. Relationship completeness does not justify an unreadable line web.
 
 PPTX readback for a bound arrow connector should show:
 
@@ -141,18 +155,9 @@ Do not silence this detector by naming arbitrary objects. A declared layer must 
 
 ## Style Contract
 
-For serious decks, resolve a complete `style-contract.json` before building. It is the source of truth for:
+For serious decks, resolve a complete `style-contract.json` before building. It is the source of truth for colors, typography, grid, spacing, cards, tables, charts, diagrams, image treatment, footer, and density limits.
 
-- colors and opacity;
-- typography and minimum sizes;
-- grid and margins;
-- spacing;
-- cards and tables;
-- charts and diagrams;
-- image treatment;
-- footer and density limits.
-
-Confirm the style with the user or match an supplied reference. Do not invent visual tokens during implementation.
+Confirm the style with the user or match a supplied reference. Do not invent visual tokens during implementation.
 
 Read `references/design-token-contract.md`, `references/five-style-master-systems.md`, and the matching template pack.
 
@@ -197,13 +202,7 @@ Use HTML/CSS, rendered previews, or bounded visual components to calibrate typog
 
 ### Lane B: Editable Reconstruction
 
-Rebuild message-bearing content as native PPT objects:
-
-- titles and body text;
-- cards and callouts;
-- tables and simple charts;
-- simple processes and diagrams;
-- labels and source notes.
+Rebuild message-bearing content as native PPT objects: titles and body text, cards and callouts, tables and simple charts, simple processes and diagrams, labels and source notes.
 
 Raster/SVG/generated layers are allowed for complex backgrounds, photos, illustrations, and bounded complex diagrams when disclosed. Do not rasterize ordinary editable content.
 
@@ -214,13 +213,14 @@ Before handoff:
 1. Inspect package structure.
 2. Verify expected native text, tables, charts, and connectors.
 3. Check bound connector XML for native movable diagrams.
-4. Detect orphan solid blocks.
-5. Check clipping, overlap, out-of-bounds objects, missing media, and color/font drift.
-6. Render with a real available renderer.
-7. Inspect the full contact sheet.
-8. Enlarge and inspect all process, architecture, matrix, staircase, risk, and closing pages.
-9. Revise and rerender when any visual issue remains.
-10. Package only after trusted status is calculated.
+4. Reject connectors crossing unrelated nodes or text and ambiguous connector crossings.
+5. Detect orphan solid blocks.
+6. Check clipping, overlap, out-of-bounds objects, missing media, and color/font drift.
+7. Render every complex diagram page immediately after construction.
+8. Enlarge and inspect process, architecture, state, routing, matrix, staircase, risk, and closing pages before building the full contact sheet.
+9. Render with a real available renderer and inspect the full contact sheet.
+10. Revise and rerender when any visual issue remains.
+11. Package only after trusted status is calculated.
 
 If the authoritative capability report says no renderer is available, do not secretly use an undeclared renderer. Preserve `RENDER_ENGINE_UNAVAILABLE` and mark the task blocked/provisional as appropriate.
 
@@ -228,16 +228,7 @@ A Standard or Premium deck must not be released merely because structural inspec
 
 ## Delivery Status
 
-Keep statuses distinct:
-
-- `planned`
-- `created`
-- `rendered`
-- `read_back`
-- `verified`
-- `final`
-- `blocked`
-- `failed`
+Keep statuses distinct: `planned`, `created`, `rendered`, `read_back`, `verified`, `final`, `blocked`, `failed`.
 
 Environment capability missing is `blocked`, not a fabricated success and not necessarily a product failure. Builders and agents must not handwrite `final`.
 
@@ -255,6 +246,7 @@ Load only what the task needs:
 - `references/builder-adapters.md`
 - `references/diagram-ir-and-layout.md`
 - `references/diagram-auto-repair.md`
+- `references/connector-routing-and-topology-gate.md`
 - `references/master-ppt-design-rubric.md`
 - `references/component-raster-fallback.md`
 - `references/production-profiles.md`

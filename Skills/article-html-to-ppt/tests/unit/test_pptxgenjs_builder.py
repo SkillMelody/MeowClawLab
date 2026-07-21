@@ -133,6 +133,21 @@ def test_builds_nonempty_two_slide_pptx_and_runtime_result(tmp_path: Path) -> No
     assert "Material:process-node:" in slide_xml
 
 
+def test_process_connector_route_truthfully_blocks_unqualified_elbow_and_curve(tmp_path: Path) -> None:
+    adapter = PptxGenJsAdapter()
+    plan = two_slide_plan()
+    process = plan.slides[1]["objects"][2]
+    process["connector_route"] = "orthogonal"
+    result = adapter.build(plan, tmp_path / "orthogonal")
+    assert result.status == "failed"
+    assert "PPTXGENJS_CONNECTOR_ROUTE_UNSUPPORTED:orthogonal" in str(result.errors)
+
+    process["connector_route"] = "curved"
+    result = adapter.build(plan, tmp_path / "curved")
+    assert result.status == "failed"
+    assert "PPTXGENJS_CONNECTOR_ROUTE_UNSUPPORTED:curved" in str(result.errors)
+
+
 def test_plan_preserves_style_contract_and_runtime_applies_supported_style(tmp_path: Path) -> None:
     style = {
         "schema_version": "2.0",

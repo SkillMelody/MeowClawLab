@@ -283,11 +283,57 @@ def _process_labels(obj: dict[str, Any]) -> list[str]:
     return labels
 
 
-def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
+def _add_routed_connector(
+    slide: Any,
+    start: Any,
+    end: Any,
+    *,
+    route: str = "straight",
+    feedback: bool = False,
+    color: str = "2D3340",
+    width_pt: float = 1.5,
+) -> Any:
+    """Add one native, endpoint-bound arrow using the requested routing grammar."""
     from lxml import etree
-    from pptx.oxml.ns import qn
     from pptx.dml.color import RGBColor
-    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE, MSO_CONNECTOR
+    from pptx.enum.shapes import MSO_CONNECTOR
+    from pptx.oxml.ns import qn
+    from pptx.util import Pt
+
+    connector_type = {
+        "straight": MSO_CONNECTOR.STRAIGHT,
+        "orthogonal": MSO_CONNECTOR.ELBOW,
+        "curved": MSO_CONNECTOR.CURVE,
+    }.get(route)
+    if connector_type is None:
+        raise ValueError(f"Unsupported connector route: {route}")
+
+    start_x = start.left + start.width
+    start_y = start.top + start.height // 2
+    end_x = end.left
+    end_y = end.top + end.height // 2
+    if feedback:
+        start_x = start.left + start.width // 2
+        start_y = start.top + start.height
+        end_x = end.left + end.width // 2
+        end_y = end.top
+
+    connector = slide.shapes.add_connector(connector_type, start_x, start_y, end_x, end_y)
+    connector.name = f"Connector:{route}"
+    connector.line.color.rgb = RGBColor.from_string(color)
+    connector.line.width = Pt(width_pt)
+    connector.begin_connect(start, 3 if not feedback else 2)
+    connector.end_connect(end, 1 if not feedback else 0)
+    line_xml = connector.line._get_or_add_ln()
+    tail_end = etree.Element(qn("a:tailEnd"))
+    tail_end.set("type", "triangle")
+    line_xml.append(tail_end)
+    return connector
+
+
+def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
     from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
     from pptx.util import Inches, Pt
 
@@ -311,21 +357,9 @@ def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: floa
             run.font.size = Pt(style["body_size"])
             run.font.color.rgb = RGBColor.from_string(style["text_primary"])
         shapes.append(shape)
+    route = str(obj.get("connector_route") or "straight")
     for before, after in zip(shapes, shapes[1:]):
-        connector = slide.shapes.add_connector(
-            MSO_CONNECTOR.STRAIGHT,
-            before.left + before.width,
-            before.top + before.height // 2,
-            after.left,
-            after.top + after.height // 2,
-        )
-        connector.line.color.rgb = RGBColor.from_string(style["primary"])
-        connector.begin_connect(before, 3)
-        connector.end_connect(after, 1)
-        line_xml = connector.line._get_or_add_ln()
-        tail_end = etree.Element(qn("a:tailEnd"))
-        tail_end.set("type", "triangle")
-        line_xml.append(tail_end)
+        _add_routed_connector(slide, before, after, route=route, color=style["primary"])
 
 
 def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:

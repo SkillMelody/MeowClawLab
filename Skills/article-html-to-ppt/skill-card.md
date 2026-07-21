@@ -1,5 +1,5 @@
 ## Public Name: <br>
-MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith <br>
+MeowClaw PPT Smith <br>
 
 ## ClawHub / Installed Slug: <br>
 article-html-to-ppt <br>
@@ -8,9 +8,9 @@ article-html-to-ppt <br>
 meowclaw-pptsmith, meowclaw-decksmith <br>
 
 ## Description: <br>
-MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
+MeowClaw PPT Smith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. Compatibility search terms include MeowClaw PPTSmith and MeowClaw 夜猫 PPT 工坊. <br>
 
-Version 2.0.5 is the native-connector and visual-quality safety release. Standard readiness is component-scoped: simple Python process diagrams use one arrowed connector bound to both endpoint shapes; unsupported complex diagrams are blocked instead of flattened into generic text boxes. A separate LibreOffice Premium acceptance remains final only on the recorded PptxGenJS 4.0.1 + LibreOffice 26.2.4.2 environment; native Microsoft PowerPoint compatibility is not verified. <br>
+Version 2.0.7 adds native straight, orthogonal/elbow, and curved routing plus topology QA for connector-through-node and connector-crossing defects. It preserves the v2.0.6 MeowClaw PPT Smith public name and SEO copy. Native Microsoft PowerPoint compatibility is not verified. <br>
 
 ## Owner
 SkillMelody <br>
@@ -52,6 +52,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
 - [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
 - [v2.0 Acceptance Report](docs/v2.0-acceptance-report.md) <br>
+- [Connector Routing and Diagram Topology Gate](references/connector-routing-and-topology-gate.md) <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
 - [Content Lock Template](templates/content-lock-template.md) <br>
 - [Slide Manifest Template](templates/slide-manifest-template.json) <br>
@@ -73,7 +74,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-2.0.4 <br>
+2.0.7 <br>
 
 Readiness scope: Standard production on the verified acceptance environment; Premium final on the recorded LibreOffice acceptance route with bound render/readback, zero-error QA, 15/18 visual rubric, and fallback disclosure; Microsoft PowerPoint native compatibility remains unverified. <br>
 

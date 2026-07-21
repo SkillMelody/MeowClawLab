@@ -245,6 +245,43 @@ def _estimate_text_overflow(obj: InspectedObject) -> Optional[float]:
     return required_h / obj.h_in
 
 
+def _segments_intersect(
+    a: tuple[float, float], b: tuple[float, float],
+    c: tuple[float, float], d: tuple[float, float],
+) -> bool:
+    def orient(p: tuple[float, float], q: tuple[float, float], r: tuple[float, float]) -> float:
+        return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+
+    o1, o2, o3, o4 = orient(a, b, c), orient(a, b, d), orient(c, d, a), orient(c, d, b)
+    return o1 * o2 < 0 and o3 * o4 < 0
+
+
+def _segment_intersects_rect(
+    start: tuple[float, float], end: tuple[float, float],
+    rect: tuple[float, float, float, float],
+) -> bool:
+    x1, y1, x2, y2 = rect
+    if x1 < start[0] < x2 and y1 < start[1] < y2:
+        return True
+    if x1 < end[0] < x2 and y1 < end[1] < y2:
+        return True
+    edges = [((x1, y1), (x2, y1)), ((x2, y1), (x2, y2)), ((x2, y2), (x1, y2)), ((x1, y2), (x1, y1))]
+    return any(_segments_intersect(start, end, edge_start, edge_end) for edge_start, edge_end in edges)
+
+
+def _connector_segment(obj: InspectedObject) -> tuple[tuple[float, float], tuple[float, float]]:
+    xml = str(obj.raw.get("xml", ""))
+    flip_h = 'flipH="1"' in xml or 'flipH="true"' in xml
+    flip_v = 'flipV="1"' in xml or 'flipV="true"' in xml
+    x1, x2 = obj.x_in, obj.x_in + obj.w_in
+    y1, y2 = obj.y_in, obj.y_in + obj.h_in
+    if flip_h:
+        x1, x2 = x2, x1
+    if flip_v:
+        y1, y2 = y2, y1
+    return (x1, y1), (x2, y2)
+
+
 def inspect_slides(
     pptx_path: Path,
     package_inspection: PackageInspection,
@@ -311,7 +348,7 @@ def inspect_slides(
                 font_families=families,
                 image_ext=ext,
                 image_px=image_px,
-                raw={"xml": shape.element.xml} if include_raw_xml else {},
+                raw={"xml": shape.element.xml} if include_raw_xml or kind == "connector" else {},
             )
             objects.append(obj)
             if kind in {"picture", "svg"}:
@@ -434,6 +471,37 @@ def _add_slide_issues(
             ppi_y = obj.image_px["height"] / max(obj.h_in, 0.001)
             if min(ppi_x, ppi_y) < thresholds.low_resolution_ppi:
                 slide.issues.append(factory.create("PPTX_LOW_RESOLUTION_IMAGE", "warning", "editability", "Image resolution is low for its displayed size.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"ppi_x": round(ppi_x, 2), "ppi_y": round(ppi_y, 2), "image_px": obj.image_px}))
+
+    connectors = [obj for obj in slide.objects if obj.shape_type == "connector"]
+    straight_connectors = [
+        obj for obj in connectors
+        if 'prst="line"' in str(obj.raw.get("xml", ""))
+        or 'prst="straightConnector' in str(obj.raw.get("xml", ""))
+    ]
+    nodes = [obj for obj in slide.objects if obj.shape_type in {"text", "shape"} and obj.w_in >= 0.4 and obj.h_in >= 0.25]
+    for connector in straight_connectors:
+        start, end = _connector_segment(connector)
+        for node in nodes:
+            rect = (node.x_in + 0.03, node.y_in + 0.03, node.x_in + node.w_in - 0.03, node.y_in + node.h_in - 0.03)
+            if _segment_intersects_rect(start, end, rect):
+                slide.issues.append(factory.create(
+                    "PPTX_CONNECTOR_THROUGH_NODE", "error", "visual",
+                    "Connector passes through an unrelated node or text region.",
+                    slide_id=slide.slide_id, object_id=connector.object_id, ppt_shape_id=connector.shape_id,
+                    evidence={"connector_name": connector.name, "intersected_object_id": node.object_id, "intersected_name": node.name},
+                ))
+                break
+    for index, first in enumerate(straight_connectors):
+        first_start, first_end = _connector_segment(first)
+        for second in straight_connectors[index + 1:]:
+            second_start, second_end = _connector_segment(second)
+            if _segments_intersect(first_start, first_end, second_start, second_end):
+                slide.issues.append(factory.create(
+                    "PPTX_CONNECTOR_CROSSING", "error", "visual",
+                    "Two connectors cross and make the relationship path ambiguous.",
+                    slide_id=slide.slide_id, object_id=first.object_id, ppt_shape_id=first.shape_id,
+                    evidence={"first_connector": first.name, "second_connector": second.name},
+                ))
 
     object_count = slide.metrics["object_count"]
     if object_count > thresholds.objects_per_slide_error:
