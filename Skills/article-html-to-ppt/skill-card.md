@@ -16,7 +16,7 @@ Version 2.0.7 adds native straight, orthogonal/elbow, and curved routing plus to
 SkillMelody <br>
 
 ### License/Terms of Use: <br>
-MIT-0 <br>
+Apache-2.0 <br>
 
 ## Use Case: <br>
 Product owners, product reporters, Agent engineers, automation developers, self-media authors, knowledge bloggers, editors, educators, and content teams who need to turn source material into structured presentation decks without losing source boundaries, audience fit, editability, or verification discipline. <br>
