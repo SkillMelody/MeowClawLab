@@ -1,5 +1,9 @@
 # MeowClaw PPT Smith
 
+<p align="center">
+  <img src="../../Assets/article-html-to-ppt/pptsmith-logo-256.png" alt="MeowClaw PPT Smith 图标" width="128">
+</p>
+
 > English documentation: [README.en.md](./README.en.md) · OpenClaw 执行规范：[SKILL.md](./SKILL.md)
 
 把文章、Markdown、HTML、公众号草稿、PRD、研究材料与设计说明，转成**低返工、可编辑、可验证**的专业演示文稿。

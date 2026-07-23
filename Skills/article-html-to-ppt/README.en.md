@@ -1,5 +1,9 @@
 # MeowClaw PPT Smith
 
+<p align="center">
+  <img src="../../Assets/article-html-to-ppt/pptsmith-logo-256.png" alt="MeowClaw PPT Smith icon" width="128">
+</p>
+
 > 中文文档（默认）: [README.md](./README.md) · OpenClaw execution contract: [SKILL.md](./SKILL.md)
 
 Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks.

@@ -8,6 +8,10 @@ The current focus is reliability-first automation: skills should be easy for ord
 
 ## 🔥 Featured: MeowClaw PPTSmith v2.0.4
 
+<p align="center">
+  <img src="./Assets/article-html-to-ppt/pptsmith-logo-256.png" alt="MeowClaw PPTSmith icon" width="128">
+</p>
+
 [`MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) has evolved from basic article-to-template conversion into a **low-rework, editable, and verifiable** presentation production chain.
 
 **New core capabilities:**
