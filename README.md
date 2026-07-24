@@ -9,7 +9,7 @@ MeowClawLab 是一个面向 OpenClaw 的实验仓库，用来沉淀实用技能�
 ## 🔥 当前重点：MeowClaw PPTSmith v2.0.4
 
 <p align="center">
-  <img src="./Assets/article-html-to-ppt/pptsmith-logo-256.png" alt="MeowClaw PPTSmith 图标" width="128">
+  <img src="./Assets/article-html-to-ppt/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
 </p>
 
 [`MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) 已从“文章转模板”升级为一条**低返工、可编辑、可验证**的 PPT 生产链。
