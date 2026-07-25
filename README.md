@@ -1,4 +1,4 @@
-# MeowClaw Lab
+# MeowClaw Lab<img src="./Assets/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
 
 > English version: [README.en.md](./README.en.md)
 
