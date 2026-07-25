@@ -1,7 +1,7 @@
 # MeowClaw PPT Smith
 
 <p align="center">
-  <img src="../../Assets/article-html-to-ppt/pptsmith-logo-256.png" alt="MeowClaw PPT Smith icon" width="128">
+  <img src="../../Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPT Smith icon" width="836">
 </p>
 
 > 中文文档（默认）: [README.md](./README.md) · OpenClaw execution contract: [SKILL.md](./SKILL.md)
