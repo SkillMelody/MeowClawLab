@@ -1,33 +1,35 @@
-# MeowClawLab
+# MeowClaw Lab
 
 > 中文版本: [README.md](./README.md)
 
-MeowClawLab is a small lab repository for practical OpenClaw skills, workflows, and operational playbooks.
+MeowClaw Lab is a reliability-first home for reusable OpenClaw skills, workflows, and operational playbooks.
 
-The current focus is reliability-first automation: skills should be easy for ordinary users to invoke, while remaining conservative enough for real systems where Gateway availability, config safety, plugins, channels, agent routing, and final delivery quality matter.
+The repository goes beyond prompts that merely run. Its production workflows define capability probes, consent boundaries, failure behavior, and evidence-based completion. It currently maintains two projects: the professional presentation skill `article-html-to-ppt` and the safe-upgrade skill `openclaw-verified-upgrade`.
 
-## 🔥 Featured: MeowClaw PPTSmith v2.0.4
+## MeowClaw PPT Smith v2.0.7
 
 <p align="center">
   <img src="./Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
 </p>
 
-[`MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) has evolved from basic article-to-template conversion into a **low-rework, editable, and verifiable** presentation production chain.
+[`MeowClaw PPT Smith`](./Skills/article-html-to-ppt/) turns articles, Markdown, HTML, WeChat drafts, PRDs, research, and design specifications into **low-rework, editable, and verifiable** professional presentations.
 
-**New core capabilities:**
+**Core capabilities:**
 
 - content analysis, evidence inventory, storyline, judgment titles, and expression planning before layout;
 - five foundational visual systems for consulting, product, technical, hybrid, and editorial decks;
 - Style Contract v2 to pin colors, typography, grid, spacing, cards, tables, charts, and diagram rules;
 - dual real Builders (`python_pptx` and PptxGenJS) with capability-aware routing;
 - PPT IR, Diagram IR, Component Registry, and Delivery Plan routing for editable and hybrid components;
+- native straight, orthogonal/elbow, and curved connector routing in v2.0.7; process arrows must be single connector objects with endpoints bound by a qualified Builder;
+- topology gates that reject lines through unrelated nodes or text, ambiguous crossings, unbound relationships, and undeclared blank solid-color blocks;
 - Fast / Standard / Premium production profiles;
-- capability probes, structural inspection, real rendering, readback, visual scoring, and trusted Delivery Manifests;
+- capability probes, structural inspection, real rendering, enlarged single-slide review, readback, visual scoring, and trusted Delivery Manifests;
 - local PPTX, native progressive-build PPTX, HTML preview, and consent-gated Feishu Slides routes.
 
 [Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
 
-> The public edition includes the core engine, five foundational styles, reusable components, QA, and trusted delivery. Professional production packs, enterprise brand adaptation, proprietary page prototypes, and custom services remain separate commercial deliverables.
+> v2.0.7 has been verified through the LibreOffice rendering path. Native Microsoft PowerPoint compatibility still requires validation in the target environment. The public edition includes the core engine, five foundational styles, reusable components, QA, and trusted delivery. Professional production packs, enterprise brand adaptation, proprietary page prototypes, and custom services remain separate commercial deliverables.
 
 
 ## Real PPT Output Gallery (Preserved Sample)
@@ -45,12 +47,25 @@ These images come from the earlier 14-slide stress test based on McKinsey / Quan
 
 ![Native editable architecture diagram](./Assets/article-html-to-ppt/native-architecture-diagram.png)
 
+## OpenClaw Verified Upgrade
+
+[`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) treats an OpenClaw upgrade as a recoverable, auditable transaction rather than a one-shot update command. Completion requires verified agreement across the selected package, running Gateway, configuration, critical routes, and a bounded stability window.
+
+It exposes two explicit runtime profiles:
+
+- **V2 managed:** enabled only when `openclaw_upgrade_harness` is available and its coordinator is ready and compatible with the running OpenClaw version. The coordinator owns package mutation, Gateway lifecycle, crash recovery, the transaction ledger, and stability observations.
+- **Lite supervised:** uses the bundled transaction guard and an operator-visible CLI workflow when the V2 plugin or coordinator is absent, incompatible, or unhealthy. It never claims autonomous continuity across a Gateway restart.
+
+Both profiles enforce the same boundaries: a vague request authorizes planning only, backup evidence is required before mutation, a transaction can begin the core update only once, recovery and rollback need separate approval, an already-installed target is never blindly reinstalled, and completion requires fresh evidence.
+
+[Read the OpenClaw Verified Upgrade guide →](./Skills/openclaw-verified-upgrade/README.md)
+
 ## Skills
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
-| [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A guided, evidence-based OpenClaw upgrade workflow that chooses a target version, checks release risk, creates verified backups, upgrades safely, and validates the running Gateway plus critical user paths. | Published |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0.4 turns articles, PRDs, research, and technical plans into low-rework, editable, verifiable decks with five visual systems, dual Builders, component routing, production profiles, and trusted QA. | v2.0.4 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with dual Builders, three production profiles, native connector routing, diagram-topology gates, and trusted QA. | v2.0.7 |
+| [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A safe OpenClaw upgrade transaction with Lite supervised and V2 managed runtime profiles. | Published |
 
 ## Design Principles
 
@@ -102,6 +117,7 @@ Upgrade OpenClaw to version 2026.x.x with backup and rollback planning.
 Turn this WeChat article into Feishu Slides.
 Convert this Markdown draft into a formal brand-consistent PPT.
 Create the presentation storyboard and HTML preview before exporting to slides.
+Build an editable AI engineering project deck and verify connector topology and final rendering.
 ```
 
 ## Safety Note

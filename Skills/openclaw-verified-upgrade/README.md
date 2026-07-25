@@ -1,6 +1,6 @@
 # openclaw-verified-upgrade
 
-A reliability-first OpenClaw upgrade skill.
+A reliability-first OpenClaw upgrade skill with Lite supervised and V2 managed runtime profiles.
 
 This skill treats an upgrade as one evidence-backed transaction, not as “run an update command and hope.” Its bundled guard records state and authorization boundaries but never invokes OpenClaw, a service manager, or another program.
 
@@ -11,6 +11,13 @@ This skill treats an upgrade as one evidence-backed transaction, not as “run a
 - Display name: `OpenClaw Verified Upgrade`
 
 The public slug differs because the `openclaw-*` registry namespace is protected. This mapping is intentional and does not create a second local skill.
+
+## Runtime profiles
+
+- **V2 managed** is available only when the installed `openclaw_upgrade_harness` tool reports a ready coordinator compatible with the running OpenClaw version. The coordinator owns package mutation, Gateway lifecycle, crash recovery, the transaction ledger, and bounded stability observations.
+- **Lite supervised** uses the bundled guard and an operator-visible CLI workflow when the plugin or coordinator is missing, disabled, incompatible, or unhealthy. Lite mode does not claim autonomous continuity across a Gateway restart.
+
+The skill does not install, enable, repair, or initialize the V2 coordinator merely because an upgrade was requested. If V2 becomes unavailable after apply, it preserves the existing run and stops mutation instead of falling back to an unguarded Lite update.
 
 ## When to use
 
@@ -47,7 +54,7 @@ The user should only need to choose:
 3. Specific version
 ```
 
-The agent then follows a bounded transaction:
+The selected runtime then follows a bounded transaction:
 
 1. Detect the current environment.
 2. Discover current OpenClaw commands and semantics.
@@ -63,6 +70,8 @@ The agent then follows a bounded transaction:
 12. Arm at most one separately approved service action.
 13. Collect repeated readiness observations and compute stability.
 14. Report evidence or stop safely with a recovery plan.
+
+In V2 managed mode, all transaction mutations go through `openclaw_upgrade_harness`; the skill does not invoke the package manager, `openclaw update`, or a service manager directly. In Lite supervised mode, the bundled guard records authorization and state but never executes external commands itself.
 
 ## Key safeguards
 

@@ -1,6 +1,6 @@
 # openclaw-verified-upgrade
 
-一个可靠性优先的 OpenClaw 安全升级技能。
+一个可靠性优先、提供 Lite supervised 与 V2 managed 双运行档的 OpenClaw 安全升级技能。
 
 这个技能把升级视为一笔有证据的事务，而不是“跑一个 update 命令”。内置守卫只记录状态和授权边界，不会自行调用 OpenClaw、服务管理器或其他程序。
 
@@ -11,6 +11,13 @@
 - 展示名：`OpenClaw Verified Upgrade`
 
 公开 slug 不同，是因为 ClawHub 的 `openclaw-*` 命名空间受保护。这个映射是有意保留的，不会生成第二个本地 Skill。
+
+## 运行档
+
+- **V2 managed：** 仅当已安装的 `openclaw_upgrade_harness` 工具报告协调器就绪、并与当前 OpenClaw 版本兼容时启用。协调器负责 package 变更、Gateway 生命周期、崩溃恢复、事务账本和有上限的稳定性采样。
+- **Lite supervised：** 当插件或协调器缺失、禁用、不兼容或不健康时，使用 Skill 自带事务守卫和操作者可见的 CLI 流程。Lite 模式不会声称 Gateway 重启后仍能自主续接。
+
+Skill 不会仅因为用户要求升级，就自动安装、启用、修复或初始化 V2 协调器。如果 apply 后 V2 不可用，它会保留原 run 并停止继续变更，不会降级为无守卫的 Lite 更新。
 
 ## 什么时候使用
 
@@ -47,7 +54,7 @@
 3. 指定版本
 ```
 
-后续由 agent 按有上限的事务执行：
+后续由选定运行档按有上限的事务执行：
 
 1. 识别当前环境。
 2. 发现当前 OpenClaw 可用命令，并确认命令语义。
@@ -63,6 +70,8 @@
 12. 最多武装一个单独授权的服务动作。
 13. 收集多次 readiness 观测并计算稳定性。
 14. 给出带证据的结果，或安全停止并提供恢复计划。
+
+在 V2 managed 模式中，所有事务变更都通过 `openclaw_upgrade_harness` 完成，Skill 不直接调用包管理器、`openclaw update` 或服务管理器。在 Lite supervised 模式中，自带守卫负责记录授权和状态，但自身不会执行外部命令。
 
 ## 关键护栏
 

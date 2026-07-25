@@ -1,33 +1,35 @@
-# MeowClawLab
+# MeowClaw Lab
 
 > English version: [README.en.md](./README.en.md)
 
-MeowClawLab 是一个面向 OpenClaw 的实验仓库，用来沉淀实用技能、工作流和运维型 playbook。
+MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复用的 Skills、工作流和运维 playbook。
 
-当前重点是“可靠优先”的自动化：技能要让普通用户容易使用，同时在真实系统中足够保守，能保护 Gateway 可用性、配置安全、插件、频道、agent 路由和最终交付质量。
+这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `article-html-to-ppt`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
 
-## 🔥 当前重点：MeowClaw PPTSmith v2.0.4
+## MeowClaw PPT Smith v2.0.7
 
 <p align="center">
   <img src="./Assets/article-html-to-ppt/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
 </p>
 
-[`MeowClaw 夜猫 PPT 工坊 / MeowClaw PPTSmith`](./Skills/article-html-to-ppt/) 已从“文章转模板”升级为一条**低返工、可编辑、可验证**的 PPT 生产链。
+[`MeowClaw PPT Smith`](./Skills/article-html-to-ppt/) 把文章、Markdown、HTML、公众号草稿、PRD、研究材料和设计说明转成**低返工、可编辑、可验证**的专业演示文稿。
 
-**新增核心能力：**
+**核心能力：**
 
 - **内容先于排版：** 内容分析、证据盘点、故事线、判断式标题与表达模式先行。
 - **五套基础视觉系统：** 咨询报告、产品汇报、技术蓝图、咨询 × 技术混合、编辑知识型。
 - **Style Contract v2：** 锁定颜色、字体、网格、间距、卡片、表格、图表和图解规则，减少模型间视觉漂移。
 - **双 Builder + 自动选路：** 支持 `python_pptx` 与 PptxGenJS，并按环境能力选择构建路径。
 - **复杂图解与组件路由：** 通过 PPT IR、Diagram IR、组件注册表与 Delivery Plan，兼顾复杂表达和核心信息可编辑性。
+- **原生连接器与拓扑门禁：** v2.0.7 支持直线、肘形/正交和曲线连接器路由；流程箭头必须是单一连接器对象，并在合格 Builder 中绑定两端节点。
+- **图解质量阻断：** 自动拒绝穿过无关节点或文字的直线、歧义交叉、未绑定关系，以及未声明的空白实色色块。
 - **Fast / Standard / Premium：** 根据草稿、正式汇报或高价值交付自动匹配工件与验证强度。
-- **可信 QA：** 能力探测、结构检查、真实渲染、回读、视觉评分与交付清单逐层验证，明确区分 `Created`、`Rendered`、`Read back`、`Verified` 与 `Final`。
+- **可信 QA：** 能力探测、结构检查、真实渲染、放大单页复核、回读、视觉评分与交付清单逐层验证，明确区分 `Created`、`Rendered`、`Read back`、`Verified` 与 `Final`。
 - **多出口交付：** 支持本地 PPTX、原生渐进式动态 PPTX、HTML 预览，以及经明确授权后的飞书幻灯片路线。
 
 [查看 PPTSmith 中文说明与快速用法 →](./Skills/article-html-to-ppt/README.md)
 
-> 开源版提供核心引擎、基础风格、通用组件、QA 与可信交付；专业生产包、企业品牌适配、专属页面原型和定制服务保持独立商业交付。
+> v2.0.7 已通过 LibreOffice 渲染链路验证；原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。开源版提供核心引擎、基础风格、通用组件、QA 与可信交付；专业生产包、企业品牌适配、专属页面原型和定制服务保持独立商业交付。
 
 
 ## 真实 PPT 效果展示（保留样例）
@@ -45,12 +47,25 @@ MeowClawLab 是一个面向 OpenClaw 的实验仓库，用来沉淀实用技能�
 
 ![Native editable architecture diagram](./Assets/article-html-to-ppt/native-architecture-diagram.png)
 
+## OpenClaw Verified Upgrade
+
+[`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) 把 OpenClaw 升级视为一笔可恢复、可审计的事务，而不是简单执行一次更新命令。完成标准是目标 package、运行中的 Gateway、配置、关键路由与稳定性观察窗口全部通过验证。
+
+它提供两种明确的运行档：
+
+- **V2 managed：** 仅在 `openclaw_upgrade_harness` 可用、协调器就绪且与当前 OpenClaw 版本兼容时启用；由协调器负责 package 变更、Gateway 生命周期、崩溃恢复、事务账本和稳定性采样。
+- **Lite supervised：** 当 V2 插件或协调器缺失、不兼容或不健康时，使用 Skill 自带事务守卫和操作者可见的 CLI 流程；不会虚假宣称 Gateway 重启后仍可自主续接。
+
+共同安全边界包括：模糊升级请求只生成计划、变更前必须验证备份、单次事务最多执行一次核心升级、恢复和回滚需要独立授权、目标版本已安装后禁止盲目重跑，以及没有新鲜证据就不能宣称完成。
+
+[查看 OpenClaw Verified Upgrade 中文说明 →](./Skills/openclaw-verified-upgrade/README.zh-CN.md)
+
 ## 技能列表
 
 | 技能 | 用途 | 状态 |
 | --- | --- | --- |
-| [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | 带验证链路的 OpenClaw 安全升级技能：选择目标版本、检查版本风险、创建可验证备份、安全升级，并验证运行中的 Gateway 与关键用户链路。 | 已发布 |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPTSmith v2.0.4：把文章、PRD、研究材料和技术方案转成低返工、可编辑、可验证的演示稿，提供五套基础视觉系统、双 Builder、复杂图解路由、分档生产与可信 QA。 | v2.0.4 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：双 Builder、三档生产、原生连接器路由、图解拓扑门禁与可信 QA。 | v2.0.7 |
+| [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | 带 Lite supervised 与 V2 managed 双运行档的 OpenClaw 安全升级事务。 | 已发布 |
 
 ## 设计原则
 
@@ -102,6 +117,7 @@ MeowClawLab/
 把这篇公众号文章转成飞书幻灯片。
 把这份 Markdown 草稿做成正式品牌版 PPT。
 先生成演示分镜和 HTML 预览，再导出到幻灯片。
+为这份 AI 工程项目汇报生成可编辑 PPT，并验证连接器拓扑和最终渲染。
 ```
 
 ## 安全提示

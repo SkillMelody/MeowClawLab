@@ -1,6 +1,6 @@
 ---
 name: "openclaw-verified-upgrade"
-description: "Use when upgrading OpenClaw or recovering from partial updates, gateway failures, migrations, service drift, channel failures, or version mismatch."
+description: "Verified OpenClaw upgrades with Lite and managed V2 runtime profiles."
 ---
 
 # OpenClaw Verified Upgrade
@@ -35,6 +35,27 @@ Read references/transaction-contract.md and references/recovery-contract.md befo
 12. Never auto-delete state, sessions, migration sources, databases, plugins, skills, credentials, or service definitions.
 13. Never use sudo for user-level service repair.
 14. Never claim success without fresh evidence.
+
+## Runtime Selection
+
+This Skill has two explicit execution profiles:
+
+- **V2 managed:** use only when the installed plugin exposes the `openclaw_upgrade_harness` tool and its `setup-status` action reports a ready coordinator compatible with the running OpenClaw version.
+- **Lite supervised:** use the guard and operator-visible CLI workflow in this Skill when the plugin or coordinator is absent, disabled, incompatible, or unhealthy.
+
+Never imply that Lite mode survives a Gateway restart autonomously. Never install, enable, repair, or initialize the V2 plugin or coordinator merely because the user requested an OpenClaw upgrade.
+
+In V2 managed mode:
+
+1. The Skill never invokes `openclaw update`, a package manager, or a service manager directly. All transaction mutations go through `openclaw_upgrade_harness`.
+2. Call `setup-status` and `status` before planning. Fail closed on an unavailable coordinator, incompatible schema, active foreign transaction, ambiguous prior result, or exhausted mutation budget.
+3. A vague upgrade request authorizes only `plan`. The tool must return an exact target, run id, baseline, risk, downtime, backup result, command preview, and required approval.
+4. Call `apply` only after explicit user approval naming the run id or exact target. Preserve the returned authorization record.
+5. The coordinator owns package mutation, Gateway lifecycle, crash recovery, ledger persistence, and bounded stability observations for the transaction. The Skill owns user communication and may only request read-only status while the Gateway lifecycle is in flight.
+6. After reconnection, call `resume` or `status` for the existing run. Never create a replacement run to retry a failed or ambiguous mutation.
+7. Recovery and rollback remain separate actions with separate approval. A prior apply approval never authorizes force-install, config restore, plugin disable, credential repair, package rollback, or data migration changes.
+8. If the coordinator becomes unavailable after apply, report the known run id and evidence location, stop mutation, and provide the explicit local status command. Do not fall back to an unguarded Lite update for the same target.
+9. Completion requires the coordinator to report the selected package version, the running Gateway version/path, configuration, critical routes, and the full stability window as verified. Re-check the final status after the coordinator reports completion.
 
 ## Modes
 
