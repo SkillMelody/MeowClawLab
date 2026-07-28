@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
@@ -80,7 +81,11 @@ def run_render_report(
     dpi: int = 144,
 ) -> dict[str, Any]:
     started_at = iso_now()
-    renderer = select_renderer(engine)
+    renderer = (
+        None
+        if os.environ.get("PPTSMITH_TEST_RENDERER_UNAVAILABLE") == "1"
+        else select_renderer(engine)
+    )
     if renderer is None:
         result = RenderResult(
             status="unavailable",

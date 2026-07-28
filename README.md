@@ -6,7 +6,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `article-html-to-ppt`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
 
-## MeowClaw PPT Smith v2.0.7
+## MeowClaw PPT Smith v2.1.0
 
 <p align="center">
   <img src="./Assets/article-html-to-ppt/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
@@ -21,7 +21,8 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 - **Style Contract v2：** 锁定颜色、字体、网格、间距、卡片、表格、图表和图解规则，减少模型间视觉漂移。
 - **双 Builder + 自动选路：** 支持 `python_pptx` 与 PptxGenJS，并按环境能力选择构建路径。
 - **复杂图解与组件路由：** 通过 PPT IR、Diagram IR、组件注册表与 Delivery Plan，兼顾复杂表达和核心信息可编辑性。
-- **原生连接器与拓扑门禁：** v2.0.7 支持直线、肘形/正交和曲线连接器路由；流程箭头必须是单一连接器对象，并在合格 Builder 中绑定两端节点。
+- **Visual Planner 与节奏门禁：** 根据任务类型、页面角色与证据结构选择矩阵、架构、下钻、路线图等表达，并阻断原型单一、卡片过载和关键视觉页不足。
+- **原生连接器与拓扑门禁：** 保留 v2.0.7 的直线、肘形/正交和曲线连接器路由；流程箭头必须是单一连接器对象，并在合格 Builder 中绑定两端节点。
 - **图解质量阻断：** 自动拒绝穿过无关节点或文字的直线、歧义交叉、未绑定关系，以及未声明的空白实色色块。
 - **Fast / Standard / Premium：** 根据草稿、正式汇报或高价值交付自动匹配工件与验证强度。
 - **可信 QA：** 能力探测、结构检查、真实渲染、放大单页复核、回读、视觉评分与交付清单逐层验证，明确区分 `Created`、`Rendered`、`Read back`、`Verified` 与 `Final`。
@@ -29,8 +30,13 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 [查看 PPTSmith 中文说明与快速用法 →](./Skills/article-html-to-ppt/README.md)
 
-> v2.0.7 已通过 LibreOffice 渲染链路验证；原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。开源版提供核心引擎、基础风格、通用组件、QA 与可信交付；专业生产包、企业品牌适配、专属页面原型和定制服务保持独立商业交付。
+> v2.1.0 Standard 已在 macOS + LibreOffice 验收环境通过真渲染、结构回读与回归测试；原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。Premium 最终交付仍要求目标环境真渲染、零错误 QA、显式评分与人工视觉复核。
 
+## v2.1 Hero Showcase
+
+《未来工作 2030》展示稿由原生文本、形状、连接线、图表和表格构建，12/12 页真渲染通过，未整页图片化。它用于展示 v2.1 的视觉叙事上限，不代表每份材料都能一次自动达到同等完成度。
+
+![PPTSmith 2.1 Hero Showcase](./Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ## 真实 PPT 效果展示（保留样例）
 
@@ -64,7 +70,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 | 技能 | 用途 | 状态 |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：双 Builder、三档生产、原生连接器路由、图解拓扑门禁与可信 QA。 | v2.0.7 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：Visual Planner、双 Builder、三档生产、原生连接器路由、视觉门禁与可信 QA。 | v2.1.0 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | 带 Lite supervised 与 V2 managed 双运行档的 OpenClaw 安全升级事务。 | 已发布 |
 
 ## 设计原则

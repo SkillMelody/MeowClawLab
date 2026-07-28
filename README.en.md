@@ -6,7 +6,7 @@ MeowClaw Lab is a reliability-first home for reusable OpenClaw skills, workflows
 
 The repository goes beyond prompts that merely run. Its production workflows define capability probes, consent boundaries, failure behavior, and evidence-based completion. It currently maintains two projects: the professional presentation skill `article-html-to-ppt` and the safe-upgrade skill `openclaw-verified-upgrade`.
 
-## MeowClaw PPT Smith v2.0.7
+## MeowClaw PPT Smith v2.1.0
 
 <p align="center">
   <img src="./Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
@@ -21,7 +21,8 @@ The repository goes beyond prompts that merely run. Its production workflows def
 - Style Contract v2 to pin colors, typography, grid, spacing, cards, tables, charts, and diagram rules;
 - dual real Builders (`python_pptx` and PptxGenJS) with capability-aware routing;
 - PPT IR, Diagram IR, Component Registry, and Delivery Plan routing for editable and hybrid components;
-- native straight, orthogonal/elbow, and curved connector routing in v2.0.7; process arrows must be single connector objects with endpoints bound by a qualified Builder;
+- task routing, Page Design Intent, Visual Planner, and Deck Rhythm gates for stronger visual narratives;
+- the v2.0.7 native straight, orthogonal/elbow, and curved connector contract remains supported; process arrows must be single connector objects with endpoints bound by a qualified Builder;
 - topology gates that reject lines through unrelated nodes or text, ambiguous crossings, unbound relationships, and undeclared blank solid-color blocks;
 - Fast / Standard / Premium production profiles;
 - capability probes, structural inspection, real rendering, enlarged single-slide review, readback, visual scoring, and trusted Delivery Manifests;
@@ -29,8 +30,13 @@ The repository goes beyond prompts that merely run. Its production workflows def
 
 [Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
 
-> v2.0.7 has been verified through the LibreOffice rendering path. Native Microsoft PowerPoint compatibility still requires validation in the target environment. The public edition includes the core engine, five foundational styles, reusable components, QA, and trusted delivery. Professional production packs, enterprise brand adaptation, proprietary page prototypes, and custom services remain separate commercial deliverables.
+> v2.1.0 Standard has passed real rendering, structural readback, and regression tests on the verified macOS + LibreOffice environment. Native Microsoft PowerPoint compatibility still requires target-environment validation. Premium final status remains run-specific and requires real rendering, zero-error QA, explicit rubric scoring, and human visual review.
 
+## v2.1 Hero Showcase
+
+The 12-slide *Future of Work 2030* showcase is built from native text, shapes, connectors, charts, and tables. It passed real rendering without whole-slide rasterization. It demonstrates the visual upper bound of v2.1, not a promise that every source reaches the same result in one automatic pass.
+
+![PPTSmith 2.1 Hero Showcase](./Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ## Real PPT Output Gallery (Preserved Sample)
 
@@ -64,7 +70,7 @@ Both profiles enforce the same boundaries: a vague request authorizes planning o
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with dual Builders, three production profiles, native connector routing, diagram-topology gates, and trusted QA. | v2.0.7 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with Visual Planner, dual Builders, native connector routing, visual gates, and trusted QA. | v2.1.0 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A safe OpenClaw upgrade transaction with Lite supervised and V2 managed runtime profiles. | Published |
 
 ## Design Principles

@@ -72,10 +72,12 @@
         "area_ratio": {"type": "number"},
         "text": {"type": "string"},
         "font_sizes_pt": {"type": "array", "items": {"type": ["number", "null"]}},
+        "font_colors": {"type": "array", "items": {"type": "string"}},
         "fill_colors": {"type": "array", "items": {"type": "string"}},
         "line_colors": {"type": "array", "items": {"type": "string"}},
         "source_relationship": {"type": ["string", "null"]},
         "font_families": {"type": "array", "items": {"type": "string"}},
+        "geometry_type": {"type": ["string", "null"]},
         "image_ext": {"type": ["string", "null"]},
         "image_px": {
           "type": ["object", "null"],

@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
+from pptx import Presentation
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -135,6 +136,379 @@ def test_python_pptx_adapter_builds_inspectable_deck(tmp_path: Path) -> None:
     assert inspection.slide_count == 2
 
 
+def test_python_pptx_adapter_deduplicates_title_judgment_and_message(tmp_path: Path) -> None:
+    plan = sample_ppt_ir()
+    slide = plan["slides"][1]
+    slide["title"] = "同一个管理结论"
+    slide["judgment"] = "同一个管理结论"
+    slide["message"] = "同一个管理结论"
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            sample_delivery_plan(),
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    occurrences = sum(
+        shape.text.count("同一个管理结论")
+        for shape in deck.slides[1].shapes
+        if shape.has_text_frame
+    )
+    assert occurrences == 1
+
+
+def test_python_adapter_uses_presentation_scale_cover_layout(tmp_path: Path) -> None:
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            sample_ppt_ir(),
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            sample_delivery_plan(),
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    slide = deck.slides[0]
+    title = next(
+        shape
+        for shape in slide.shapes
+        if shape.has_text_frame and shape.text == "Builder Smoke"
+    )
+    title_size = title.text_frame.paragraphs[0].runs[0].font.size.pt
+    assert title_size >= 32
+    assert title.width / 914400 >= 9
+    assert len(slide.shapes) >= 3
+
+
+def test_python_adapter_adds_native_source_footer_and_page_number(
+    tmp_path: Path,
+) -> None:
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            sample_ppt_ir(),
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            sample_delivery_plan(),
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    slide = deck.slides[1]
+    source = next(shape for shape in slide.shapes if shape.name == "source_note")
+    page = next(shape for shape in slide.shapes if shape.name == "footer_page")
+    assert "src-001" in source.text
+    assert "s1" in source.text
+    assert page.text == "02"
+    assert source.text_frame.paragraphs[0].runs[0].font.size.pt == 8.5
+
+
+def test_python_adapter_expands_metric_wall_into_editable_large_values(
+    tmp_path: Path,
+) -> None:
+    plan = sample_ppt_ir()
+    slide = plan["slides"][1]
+    slide["objects"] = [
+        {
+            "id": "metrics-1",
+            "type": "shape",
+            "component_type": "metric_card",
+            "semantic_role": "primary_anchor",
+            "content": {
+                "metrics": [
+                    {"label": "技术潜力", "value": "57", "suffix": "%"},
+                    {"label": "潜在价值", "value": "453", "prefix": "$", "suffix": "B"},
+                    {"label": "共享技能", "value": "66", "suffix": "%"},
+                ]
+            },
+            "editability": "native_required",
+            "source_refs": [],
+        }
+    ]
+    delivery = sample_delivery_plan()
+    delivery["slides"][0]["objects"][0].update(
+        {
+            "object_id": "metrics-1",
+            "component_type": "metric_card",
+            "selected_route": "native_ppt",
+        }
+    )
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    slide = deck.slides[1]
+    editable_text = {
+        shape.text.strip()
+        for shape in slide.shapes
+        if shape.has_text_frame and shape.text.strip()
+    }
+    assert {"技术潜力", "57%", "潜在价值", "$453B", "共享技能", "66%"} <= editable_text
+    value_sizes = [
+        run.font.size.pt
+        for shape in slide.shapes
+        if shape.has_text_frame and shape.text.strip() in {"57%", "$453B", "66%"}
+        for paragraph in shape.text_frame.paragraphs
+        for run in paragraph.runs
+        if run.font.size is not None
+    ]
+    assert value_sizes and min(value_sizes) >= 24
+    metric_cards = [
+        shape
+        for shape in slide.shapes
+        if shape.name.startswith("Material:metric_wall:card:")
+    ]
+    assert metric_cards
+    assert max(shape.height / 914400 for shape in metric_cards) <= 3
+
+
+def test_single_chart_uses_full_canvas_and_table_uses_full_width(
+    tmp_path: Path,
+) -> None:
+    plan = sample_ppt_ir()
+    plan["deck"]["logical_slide_count"] = 2
+    plan["slides"] = [
+        {
+            **plan["slides"][1],
+            "id": "S01",
+            "index": 1,
+            "objects": [
+                {
+                    "id": "chart-1",
+                    "type": "chart",
+                    "component_type": "bar_chart",
+                    "content": {
+                        "categories": ["A", "B"],
+                        "series": [{"name": "Value", "values": [10, 20]}],
+                    },
+                    "editability": "native_required",
+                    "source_refs": [],
+                }
+            ],
+        },
+        {
+            **plan["slides"][1],
+            "id": "S02",
+            "index": 2,
+            "objects": [
+                {
+                    "id": "table-1",
+                    "type": "table",
+                    "component_type": "native_table",
+                    "content": {
+                        "headers": ["A", "B"],
+                        "body": [["1", "2"], ["3", "4"]],
+                    },
+                    "editability": "native_required",
+                    "source_refs": [],
+                }
+            ],
+        },
+    ]
+    delivery = sample_delivery_plan()
+    base = delivery["slides"][0]["objects"][0]
+    delivery["slides"] = [
+        {
+            "slide_id": "S01",
+            "objects": [
+                {
+                    **base,
+                    "slide_id": "S01",
+                    "object_id": "chart-1",
+                    "component_type": "bar_chart",
+                    "selected_route": "native_chart",
+                }
+            ],
+        },
+        {
+            "slide_id": "S02",
+            "objects": [
+                {
+                    **base,
+                    "slide_id": "S02",
+                    "object_id": "table-1",
+                    "component_type": "native_table",
+                    "selected_route": "native_table",
+                }
+            ],
+        },
+    ]
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    chart_shape = next(shape for shape in deck.slides[0].shapes if shape.has_chart)
+    table_shape = next(shape for shape in deck.slides[1].shapes if shape.has_table)
+    assert chart_shape.width / 914400 >= 10
+    assert table_shape.width / 914400 >= 10
+    assert chart_shape.height / 914400 >= 4
+    assert 1.5 <= table_shape.height / 914400 <= 2.5
+
+
+def test_single_card_uses_the_full_content_canvas(tmp_path: Path) -> None:
+    plan = sample_ppt_ir()
+    slide = plan["slides"][1]
+    slide["title"] = "A short judgment title"
+    slide["judgment"] = None
+    slide["message"] = None
+    slide["objects"] = [
+        {
+            "id": "card-1",
+            "type": "shape",
+            "component_type": "comparison_card",
+            "content": {"title": "The primary comparison message"},
+            "editability": "native_required",
+            "source_refs": [],
+        }
+    ]
+    delivery = sample_delivery_plan()
+    delivery["slides"][0]["objects"][0].update(
+        {
+            "object_id": "card-1",
+            "component_type": "comparison_card",
+            "selected_route": "native_ppt",
+        }
+    )
+
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    card = next(
+        shape
+        for shape in deck.slides[1].shapes
+        if shape.has_text_frame and shape.text == "The primary comparison message"
+    )
+    assert card.width / 914400 >= 10
+    assert card.height / 914400 >= 4
+    assert card.text_frame.paragraphs[0].runs[0].font.size.pt >= 20
+
+
+def test_single_process_is_vertically_balanced_in_the_content_canvas(
+    tmp_path: Path,
+) -> None:
+    plan = sample_ppt_ir()
+    slide = plan["slides"][1]
+    slide["objects"] = [
+        {
+            "id": "process-1",
+            "type": "diagram",
+            "component_type": "process",
+            "content": {
+                "nodes": [
+                    {"label": "Evidence"},
+                    {"label": "Redesign"},
+                    {"label": "Value"},
+                ]
+            },
+            "editability": "native_required",
+            "source_refs": [],
+        }
+    ]
+    delivery = sample_delivery_plan()
+    delivery["slides"][0]["objects"][0].update(
+        {
+            "object_id": "process-1",
+            "component_type": "process",
+            "selected_route": "native_diagram",
+        }
+    )
+
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    nodes = [
+        shape
+        for shape in deck.slides[1].shapes
+        if shape.has_text_frame and shape.text in {"Evidence", "Redesign", "Value"}
+    ]
+    assert len(nodes) == 3
+    assert min(shape.top / 914400 for shape in nodes) >= 2.6
+    assert min(shape.height / 914400 for shape in nodes) >= 2
+    assert max(
+        (shape.left + shape.width) / 914400 for shape in nodes
+    ) - min(shape.left / 914400 for shape in nodes) >= 10
+    assert min(
+        shape.text_frame.paragraphs[0].runs[0].font.size.pt for shape in nodes
+    ) >= 18
+
+
+def test_low_row_table_is_compact_centered_and_legible(tmp_path: Path) -> None:
+    plan = sample_ppt_ir()
+    slide = plan["slides"][1]
+    slide["objects"] = [
+        {
+            "id": "table-1",
+            "type": "table",
+            "component_type": "native_table",
+            "content": {
+                "headers": ["Evidence", "Implication"],
+                "body": [["Survey", "A concise management implication"]],
+            },
+            "editability": "native_required",
+            "source_refs": [],
+        }
+    ]
+    delivery = sample_delivery_plan()
+    delivery["slides"][0]["objects"][0].update(
+        {
+            "object_id": "table-1",
+            "component_type": "native_table",
+            "selected_route": "native_table",
+        }
+    )
+
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    table_shape = next(shape for shape in deck.slides[1].shapes if shape.has_table)
+    assert table_shape.top / 914400 >= 2.5
+    assert 1.5 <= table_shape.height / 914400 <= 2.5
+    sizes = [
+        run.font.size.pt
+        for row in table_shape.table.rows
+        for cell in row.cells
+        for paragraph in cell.text_frame.paragraphs
+        for run in paragraph.runs
+        if run.font.size is not None
+    ]
+    assert sizes and min(sizes) >= 13
+
+
 def test_build_deck_cli_writes_manifest(tmp_path: Path) -> None:
     ppt_ir = tmp_path / "ppt-ir.json"
     style = tmp_path / "style-contract.json"
@@ -187,10 +561,10 @@ def test_python_adapter_preserves_and_applies_supported_style_contract(tmp_path:
     style["footer_tokens"]["enabled"] = True
     plan = PythonPptxAdapter().plan(sample_ppt_ir(), style, sample_delivery_plan())
     assert plan.style_contract == style
-    assert any("footer_tokens.enabled" in warning for warning in plan.warnings)
+    assert not any("footer_tokens.enabled" in warning for warning in plan.warnings)
 
     result = PythonPptxAdapter().build(plan, tmp_path)
-    assert any("footer_tokens.enabled" in warning for warning in result.warnings)
+    assert not any("footer_tokens.enabled" in warning for warning in result.warnings)
     deck = Presentation(result.pptx)
     assert round(deck.slide_width / 914400, 3) == 13.333
     assert round(deck.slide_height / 914400, 3) == 7.5

@@ -10,7 +10,13 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 
 `MeowClaw PPT Smith` is the public display name introduced in v2.0.6. `MeowClaw PPTSmith` and `MeowClaw 夜猫 PPT 工坊` remain compatibility and search aliases only. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for update continuity.
 
-**v2.0.7 readiness:** this release adds native straight, orthogonal/elbow, and curved connector routing plus diagram-topology gates. QA rejects straight connectors through unrelated nodes or text and ambiguous connector crossings. Complex technical diagrams require enlarged single-slide render review before whole-deck packaging. The v2.0.6 public name and discovery copy remain unchanged. Native Microsoft PowerPoint compatibility remains unverified. See [the v2.0 acceptance report](docs/v2.0-acceptance-report.md).
+**v2.1.0 readiness:** this release adds task routing, Page Design Intent, Visual Planner, Deck Rhythm, editable semantic renderers, and stronger overflow/contrast/arrow-safety gates. It preserves the v2.0.7 native connector and topology contract. Standard is verified on macOS with LibreOffice; Premium remains run-specific and requires real rendering, zero-error QA, rubric scoring, and human visual review. See [the v2.1 acceptance report](docs/v2.1-rc1-acceptance-report.md).
+
+## v2.1 Hero Showcase
+
+The 12-slide *Future of Work 2030* showcase uses native editable objects and passed real rendering without whole-slide rasterization.
+
+![PPTSmith 2.1 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ## Sample Gallery
 
@@ -273,7 +279,7 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 
 ## Version
 
-2.0.7
+2.1.0
 
 The version claim distinguishes three scopes: Standard production readiness on the verified environment; Premium final acceptance on the recorded LibreOffice route; and native Microsoft PowerPoint compatibility, which has not been verified.
 

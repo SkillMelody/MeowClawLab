@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import unicodedata
 import zipfile
 from pathlib import Path
 from typing import Any, Optional
@@ -32,7 +33,7 @@ def _hex(rgb: Any) -> Optional[str]:
 def _shape_color(container: Any) -> list[str]:
     colors: list[str] = []
     try:
-        if container is not None:
+        if container is not None and container.type is not None:
             color = _hex(container.fore_color.rgb)
             if color:
                 colors.append(color)
@@ -41,18 +42,40 @@ def _shape_color(container: Any) -> list[str]:
     return colors
 
 
-def _text_font_data(shape: Any) -> tuple[list[Optional[float]], list[str]]:
+def _text_font_data(shape: Any) -> tuple[list[Optional[float]], list[str], list[str]]:
     sizes: list[Optional[float]] = []
     families: list[str] = []
+    colors: list[str] = []
     if not getattr(shape, "has_text_frame", False):
-        return sizes, families
+        return sizes, families, colors
     for paragraph in shape.text_frame.paragraphs:
         for run in paragraph.runs:
             size = run.font.size
             sizes.append(round(size.pt, 2) if size is not None else None)
             if run.font.name:
                 families.append(run.font.name)
-    return sizes, sorted(set(families))
+            try:
+                color = _hex(run.font.color.rgb)
+            except Exception:
+                color = None
+            if color:
+                colors.append(color)
+    return sizes, sorted(set(families)), sorted(set(colors))
+
+
+DECLARED_VISUAL_PREFIXES = (
+    "background:",
+    "boundary:",
+    "connector:",
+    "decoration:",
+    "material:",
+)
+
+
+def _is_declared_visual_shape(shape: Any) -> bool:
+    name = str(getattr(shape, "name", "") or "").strip().lower()
+    text = str(getattr(shape, "text", "") or "").strip()
+    return not text and name.startswith(DECLARED_VISUAL_PREFIXES)
 
 
 def _classify_shape(shape: Any, svg_shape_ids: set[int]) -> str:
@@ -76,9 +99,15 @@ def _classify_shape(shape: Any, svg_shape_ids: set[int]) -> str:
         return "media"
     if shape_type == MSO_SHAPE_TYPE.EMBEDDED_OLE_OBJECT:
         return "ole"
-    if getattr(shape, "has_text_frame", False):
+    if shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
         return "text"
     if shape_type == MSO_SHAPE_TYPE.PLACEHOLDER and getattr(shape, "has_text_frame", False):
+        return "text"
+    if (
+        getattr(shape, "has_text_frame", False)
+        and str(getattr(shape, "text", "") or "").strip()
+        and not _is_declared_visual_shape(shape)
+    ):
         return "text"
     return "shape"
 
@@ -184,11 +213,99 @@ def _style_allowed_fonts(style: Optional[dict[str, Any]]) -> set[str]:
     return fonts
 
 
-def _minimum_font_size(style: Optional[dict[str, Any]]) -> Optional[float]:
+def _minimum_font_sizes(
+    style: Optional[dict[str, Any]],
+) -> tuple[Optional[float], Optional[float]]:
     if not isinstance(style, dict):
+        return None, None
+    typography = style.get("typography", {})
+    body = typography.get("minimum_body_size_pt")
+    footnote = typography.get("minimum_footnote_size_pt")
+    return (
+        float(body) if isinstance(body, (int, float)) else None,
+        float(footnote) if isinstance(footnote, (int, float)) else None,
+    )
+
+
+SMALL_TEXT_ROLE_TOKENS = (
+    "caption",
+    "footnote",
+    "footer",
+    "section_label",
+    "source_note",
+)
+
+
+def _minimum_for_object(
+    obj: InspectedObject,
+    body_minimum: Optional[float],
+    footnote_minimum: Optional[float],
+) -> Optional[float]:
+    name = obj.name.lower()
+    if footnote_minimum is not None and any(
+        token in name for token in SMALL_TEXT_ROLE_TOKENS
+    ):
+        return footnote_minimum
+    return body_minimum
+
+
+def _geometry_type(shape: Any) -> Optional[str]:
+    try:
+        geometry = shape.auto_shape_type
+    except Exception:
         return None
-    value = style.get("typography", {}).get("minimum_body_size_pt")
-    return float(value) if isinstance(value, (int, float)) else None
+    name = getattr(geometry, "name", None)
+    if isinstance(name, str):
+        return name.upper()
+    text = str(geometry or "").strip()
+    return text.split(" ", 1)[0].upper() if text else None
+
+
+def _rect_overlap_area(left: InspectedObject, right: InspectedObject) -> float:
+    x1 = max(left.x_in, right.x_in)
+    y1 = max(left.y_in, right.y_in)
+    x2 = min(left.x_in + left.w_in, right.x_in + right.w_in)
+    y2 = min(left.y_in + left.h_in, right.y_in + right.h_in)
+    return max(0.0, x2 - x1) * max(0.0, y2 - y1)
+
+
+def _background_object(
+    objects: list[InspectedObject],
+    text_index: int,
+) -> Optional[InspectedObject]:
+    text = objects[text_index]
+    text_area = max(text.w_in * text.h_in, 0.001)
+    candidates: list[tuple[float, int, InspectedObject]] = []
+    for index, candidate in enumerate(objects[:text_index]):
+        if not candidate.fill_colors:
+            continue
+        overlap_ratio = _rect_overlap_area(text, candidate) / text_area
+        if overlap_ratio >= 0.1:
+            candidates.append((overlap_ratio, index, candidate))
+    if not candidates:
+        return None
+    return max(candidates, key=lambda item: (item[1], item[0]))[2]
+
+
+def _relative_luminance(color: str) -> float:
+    channels = [
+        int(color.lstrip("#")[index : index + 2], 16) / 255.0
+        for index in (0, 2, 4)
+    ]
+    linear = [
+        channel / 12.92
+        if channel <= 0.04045
+        else ((channel + 0.055) / 1.055) ** 2.4
+        for channel in channels
+    ]
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+
+def _contrast_ratio(foreground: str, background: str) -> float:
+    first = _relative_luminance(foreground)
+    second = _relative_luminance(background)
+    lighter, darker = max(first, second), min(first, second)
+    return (lighter + 0.05) / (darker + 0.05)
 
 
 def _slide_expectations(ppt_ir: Optional[dict[str, Any]], slide_id: str, slide_index: int) -> tuple[int, list[str]]:
@@ -199,17 +316,25 @@ def _slide_expectations(ppt_ir: Optional[dict[str, Any]], slide_id: str, slide_i
             continue
         if slide.get("id") == slide_id or slide.get("index") == slide_index:
             texts: list[str] = []
+            seen: set[str] = set()
+
+            def add_text(value: Any) -> None:
+                if not isinstance(value, str):
+                    return
+                normalized = value.strip()
+                if normalized and normalized not in seen:
+                    texts.append(normalized)
+                    seen.add(normalized)
+
             for field in ("title", "message"):
-                if isinstance(slide.get(field), str):
-                    texts.append(slide[field])
+                add_text(slide.get(field))
             for obj in slide.get("objects", []) or []:
                 content = obj.get("content") if isinstance(obj, dict) else None
                 if isinstance(content, str):
-                    texts.append(content)
+                    add_text(content)
                 elif isinstance(content, dict):
                     for value in content.values():
-                        if isinstance(value, str):
-                            texts.append(value)
+                        add_text(value)
             return sum(len(text) for text in texts), texts
     return 0, []
 
@@ -237,27 +362,47 @@ def _estimate_text_overflow(obj: InspectedObject) -> Optional[float]:
         return None
     explicit = [size for size in obj.font_sizes_pt if isinstance(size, (int, float))]
     font_size = float(max(explicit)) if explicit else 14.0
-    avg_char_width_in = font_size / 72.0 * 0.52
+    def character_width_in(character: str) -> float:
+        if character.isspace():
+            width_em = 0.28
+        elif unicodedata.east_asian_width(character) in {"W", "F"}:
+            width_em = 1.0
+        else:
+            width_em = 0.52
+        return font_size / 72.0 * width_em
+
     line_height_in = font_size / 72.0 * 1.25
-    chars_per_line = max(1, int(obj.w_in / max(avg_char_width_in, 0.001)))
-    lines = math.ceil(len(obj.text) / chars_per_line)
+    lines = 0
+    for explicit_line in obj.text.splitlines() or [obj.text]:
+        estimated_width = sum(character_width_in(char) for char in explicit_line)
+        lines += max(1, math.ceil(estimated_width / obj.w_in))
+    if lines <= 1:
+        return None
     required_h = lines * line_height_in
     return required_h / obj.h_in
 
 
 def _segments_intersect(
-    a: tuple[float, float], b: tuple[float, float],
-    c: tuple[float, float], d: tuple[float, float],
+    a: tuple[float, float],
+    b: tuple[float, float],
+    c: tuple[float, float],
+    d: tuple[float, float],
 ) -> bool:
-    def orient(p: tuple[float, float], q: tuple[float, float], r: tuple[float, float]) -> float:
+    def orient(
+        p: tuple[float, float],
+        q: tuple[float, float],
+        r: tuple[float, float],
+    ) -> float:
         return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
 
-    o1, o2, o3, o4 = orient(a, b, c), orient(a, b, d), orient(c, d, a), orient(c, d, b)
+    o1, o2 = orient(a, b, c), orient(a, b, d)
+    o3, o4 = orient(c, d, a), orient(c, d, b)
     return o1 * o2 < 0 and o3 * o4 < 0
 
 
 def _segment_intersects_rect(
-    start: tuple[float, float], end: tuple[float, float],
+    start: tuple[float, float],
+    end: tuple[float, float],
     rect: tuple[float, float, float, float],
 ) -> bool:
     x1, y1, x2, y2 = rect
@@ -265,11 +410,21 @@ def _segment_intersects_rect(
         return True
     if x1 < end[0] < x2 and y1 < end[1] < y2:
         return True
-    edges = [((x1, y1), (x2, y1)), ((x2, y1), (x2, y2)), ((x2, y2), (x1, y2)), ((x1, y2), (x1, y1))]
-    return any(_segments_intersect(start, end, edge_start, edge_end) for edge_start, edge_end in edges)
+    edges = [
+        ((x1, y1), (x2, y1)),
+        ((x2, y1), (x2, y2)),
+        ((x2, y2), (x1, y2)),
+        ((x1, y2), (x1, y1)),
+    ]
+    return any(
+        _segments_intersect(start, end, edge_start, edge_end)
+        for edge_start, edge_end in edges
+    )
 
 
-def _connector_segment(obj: InspectedObject) -> tuple[tuple[float, float], tuple[float, float]]:
+def _connector_segment(
+    obj: InspectedObject,
+) -> tuple[tuple[float, float], tuple[float, float]]:
     xml = str(obj.raw.get("xml", ""))
     flip_h = 'flipH="1"' in xml or 'flipH="true"' in xml
     flip_v = 'flipV="1"' in xml or 'flipV="true"' in xml
@@ -300,7 +455,7 @@ def inspect_slides(
     slide_area = max(slide_w * slide_h, 0.001)
     allowed_colors = _style_allowed_colors(style)
     allowed_fonts = _style_allowed_fonts(style)
-    min_font = _minimum_font_size(style)
+    min_body_font, min_footnote_font = _minimum_font_sizes(style)
 
     deck_metrics = {
         "native_text_character_count": 0,
@@ -327,7 +482,7 @@ def inspect_slides(
             w = emu_to_in(shape.width)
             h = emu_to_in(shape.height)
             kind = _classify_shape(shape, svg_ids)
-            sizes, families = _text_font_data(shape)
+            sizes, families, font_colors = _text_font_data(shape)
             ext, image_px = _image_info(shape) if kind in {"picture", "svg"} else (None, None)
             obj = InspectedObject(
                 object_id=f"ppt-object-{slide_index}-{idx}",
@@ -342,13 +497,17 @@ def inspect_slides(
                 area_ratio=round((max(w, 0) * max(h, 0)) / slide_area, 6),
                 text=getattr(shape, "text", "") if getattr(shape, "has_text_frame", False) else "",
                 font_sizes_pt=sizes,
+                font_colors=font_colors,
                 fill_colors=_shape_color(getattr(shape, "fill", None)),
                 line_colors=_shape_color(getattr(shape, "line", None)),
                 source_relationship=None,
                 font_families=families,
                 image_ext=ext,
                 image_px=image_px,
-                raw={"xml": shape.element.xml} if include_raw_xml or kind == "connector" else {},
+                geometry_type=_geometry_type(shape),
+                raw={
+                    "xml": shape.element.xml
+                } if include_raw_xml or kind == "connector" else {},
             )
             objects.append(obj)
             if kind in {"picture", "svg"}:
@@ -383,7 +542,19 @@ def inspect_slides(
             "native_connector_count": len([obj for obj in objects if obj.shape_type == "connector"]),
         }
         slide_result = SlideInspection(slide_index=slide_index, slide_id=slide_id, objects=objects, metrics=metrics)
-        _add_slide_issues(slide_result, factory, slide_w, slide_h, thresholds, allowed_colors, allowed_fonts, min_font, delivery_objects, expected_texts)
+        _add_slide_issues(
+            slide_result,
+            factory,
+            slide_w,
+            slide_h,
+            thresholds,
+            allowed_colors,
+            allowed_fonts,
+            min_body_font,
+            min_footnote_font,
+            delivery_objects,
+            expected_texts,
+        )
         package_inspection.slides.append(slide_result)
 
         deck_metrics["native_text_character_count"] += native_chars
@@ -422,16 +593,19 @@ def _add_slide_issues(
     thresholds: Thresholds,
     allowed_colors: set[str],
     allowed_fonts: set[str],
-    min_font: Optional[float],
+    min_body_font: Optional[float],
+    min_footnote_font: Optional[float],
     delivery_objects: list[dict[str, Any]],
     expected_texts: list[str],
 ) -> None:
     if not slide.objects:
         slide.issues.append(factory.create("PPTX_BLANK_SLIDE", "error", "content", "Slide contains no editable or visual objects.", slide_id=slide.slide_id, evidence={}))
-    for obj in slide.objects:
-        declared_non_text_layer = obj.name.lower().startswith(("decoration:", "background:", "material:", "connector:"))
+    for object_index, obj in enumerate(slide.objects):
+        declared_non_text_layer = obj.name.lower().startswith(
+            ("decoration:", "background:", "material:", "connector:")
+        )
         if (
-            obj.shape_type == "text"
+            obj.shape_type in {"text", "shape"}
             and not obj.text.strip()
             and obj.fill_colors
             and obj.area_ratio >= 0.01
@@ -445,16 +619,29 @@ def _add_slide_issues(
                 slide_id=slide.slide_id,
                 object_id=obj.object_id,
                 ppt_shape_id=obj.shape_id,
-                evidence={"name": obj.name, "fill_colors": obj.fill_colors, "area_ratio": obj.area_ratio},
+                evidence={
+                    "name": obj.name,
+                    "fill_colors": obj.fill_colors,
+                    "area_ratio": obj.area_ratio,
+                },
             ))
-        if obj.shape_type == "text" and not obj.text.strip() and not declared_non_text_layer:
+        if (
+            obj.shape_type == "text"
+            and not obj.text.strip()
+            and not declared_non_text_layer
+        ):
             slide.issues.append(factory.create("PPTX_EMPTY_TEXT_BOX", "warning", "editability", "Text box is empty.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"name": obj.name}))
         if obj.x_in < 0 or obj.y_in < 0 or obj.x_in + obj.w_in > slide_w or obj.y_in + obj.h_in > slide_h:
             slide.issues.append(factory.create("PPTX_TEXT_OUT_OF_BOUNDS" if obj.shape_type == "text" else "GEOMETRY_OBJECT_OUT_OF_BOUNDS", "error", "geometry", "Object extends beyond slide bounds.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"x_in": obj.x_in, "y_in": obj.y_in, "w_in": obj.w_in, "h_in": obj.h_in, "slide_w_in": slide_w, "slide_h_in": slide_h}))
-        if min_font is not None:
+        object_minimum = _minimum_for_object(
+            obj,
+            min_body_font,
+            min_footnote_font,
+        )
+        if object_minimum is not None:
             for size in obj.font_sizes_pt:
-                if isinstance(size, (int, float)) and size < min_font:
-                    slide.issues.append(factory.create("PPTX_FONT_SIZE_BELOW_MINIMUM", "error", "style", "Font size is below the style contract minimum.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"font_size_pt": size, "minimum_body_size_pt": min_font}))
+                if isinstance(size, (int, float)) and size < object_minimum:
+                    slide.issues.append(factory.create("PPTX_FONT_SIZE_BELOW_MINIMUM", "error", "style", "Font size is below the style contract minimum.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"font_size_pt": size, "minimum_size_pt": object_minimum, "text_role": "small_text" if object_minimum == min_footnote_font else "body"}))
         if allowed_fonts:
             for family in obj.font_families:
                 if family not in allowed_fonts:
@@ -465,7 +652,43 @@ def _add_slide_issues(
                     slide.issues.append(factory.create("STYLE_COLOR_DRIFT", "warning", "style", "Object uses a color outside the style contract palette.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"color": color, "allowed_colors": sorted(allowed_colors)}))
         overflow = _estimate_text_overflow(obj)
         if overflow is not None and overflow > 1.15:
-            slide.issues.append(factory.create("TEXT_OVERFLOW_RISK", "warning", "text", "Text box may overflow based on character count, font size, and box geometry.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"overflow_ratio_estimate": round(overflow, 4)}))
+            severity = "error" if overflow > 1.5 else "warning"
+            slide.issues.append(factory.create("TEXT_OVERFLOW_RISK", severity, "text", "Text box may overflow based on character count, font size, and box geometry.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"overflow_ratio_estimate": round(overflow, 4)}))
+        if obj.shape_type == "text" and obj.text.strip() and obj.font_colors:
+            background = (
+                obj.fill_colors[0]
+                if obj.fill_colors
+                else None
+            )
+            background_object = None
+            if background is None:
+                background_object = _background_object(slide.objects, object_index)
+                if background_object is not None:
+                    background = background_object.fill_colors[0]
+            if background is not None:
+                ratio = min(
+                    _contrast_ratio(color, background)
+                    for color in obj.font_colors
+                )
+                if ratio < 2.0:
+                    slide.issues.append(factory.create("TEXT_LOW_CONTRAST", "error", "style", "Text color has insufficient contrast against its containing fill.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"contrast_ratio": round(ratio, 3), "font_colors": obj.font_colors, "background_color": background, "background_object_id": background_object.object_id if background_object else obj.object_id}))
+        if obj.shape_type == "text" and obj.text.strip():
+            background_shape = _background_object(slide.objects, object_index)
+            if (
+                background_shape is not None
+                and background_shape.geometry_type
+                in {"CHEVRON", "LEFT_ARROW", "NOTCHED_RIGHT_ARROW", "RIGHT_ARROW"}
+                and background_shape.w_in > 0
+            ):
+                left_inset = (obj.x_in - background_shape.x_in) / background_shape.w_in
+                right_inset = (
+                    background_shape.x_in
+                    + background_shape.w_in
+                    - obj.x_in
+                    - obj.w_in
+                ) / background_shape.w_in
+                if min(left_inset, right_inset) < 0.12:
+                    slide.issues.append(factory.create("TEXT_UNSAFE_SHAPE_INSET", "error", "geometry", "Text enters the unsafe notch or arrowhead zone of its containing shape.", slide_id=slide.slide_id, object_id=obj.object_id, ppt_shape_id=obj.shape_id, evidence={"container_object_id": background_shape.object_id, "geometry_type": background_shape.geometry_type, "left_inset_ratio": round(left_inset, 4), "right_inset_ratio": round(right_inset, 4), "minimum_inset_ratio": 0.12}))
         if obj.shape_type in {"picture", "svg"} and obj.image_px:
             ppi_x = obj.image_px["width"] / max(obj.w_in, 0.001)
             ppi_y = obj.image_px["height"] / max(obj.h_in, 0.001)
@@ -474,34 +697,70 @@ def _add_slide_issues(
 
     connectors = [obj for obj in slide.objects if obj.shape_type == "connector"]
     straight_connectors = [
-        obj for obj in connectors
+        obj
+        for obj in connectors
         if 'prst="line"' in str(obj.raw.get("xml", ""))
         or 'prst="straightConnector' in str(obj.raw.get("xml", ""))
     ]
-    nodes = [obj for obj in slide.objects if obj.shape_type in {"text", "shape"} and obj.w_in >= 0.4 and obj.h_in >= 0.25]
+    nodes = [
+        obj
+        for obj in slide.objects
+        if obj.shape_type in {"text", "shape"}
+        and obj.w_in >= 0.4
+        and obj.h_in >= 0.25
+    ]
     for connector in straight_connectors:
         start, end = _connector_segment(connector)
         for node in nodes:
-            rect = (node.x_in + 0.03, node.y_in + 0.03, node.x_in + node.w_in - 0.03, node.y_in + node.h_in - 0.03)
+            rect = (
+                node.x_in + 0.03,
+                node.y_in + 0.03,
+                node.x_in + node.w_in - 0.03,
+                node.y_in + node.h_in - 0.03,
+            )
             if _segment_intersects_rect(start, end, rect):
-                slide.issues.append(factory.create(
-                    "PPTX_CONNECTOR_THROUGH_NODE", "error", "visual",
-                    "Connector passes through an unrelated node or text region.",
-                    slide_id=slide.slide_id, object_id=connector.object_id, ppt_shape_id=connector.shape_id,
-                    evidence={"connector_name": connector.name, "intersected_object_id": node.object_id, "intersected_name": node.name},
-                ))
+                slide.issues.append(
+                    factory.create(
+                        "PPTX_CONNECTOR_THROUGH_NODE",
+                        "error",
+                        "visual",
+                        "Connector passes through an unrelated node or text region.",
+                        slide_id=slide.slide_id,
+                        object_id=connector.object_id,
+                        ppt_shape_id=connector.shape_id,
+                        evidence={
+                            "connector_name": connector.name,
+                            "intersected_object_id": node.object_id,
+                            "intersected_name": node.name,
+                        },
+                    )
+                )
                 break
     for index, first in enumerate(straight_connectors):
         first_start, first_end = _connector_segment(first)
-        for second in straight_connectors[index + 1:]:
+        for second in straight_connectors[index + 1 :]:
             second_start, second_end = _connector_segment(second)
-            if _segments_intersect(first_start, first_end, second_start, second_end):
-                slide.issues.append(factory.create(
-                    "PPTX_CONNECTOR_CROSSING", "error", "visual",
-                    "Two connectors cross and make the relationship path ambiguous.",
-                    slide_id=slide.slide_id, object_id=first.object_id, ppt_shape_id=first.shape_id,
-                    evidence={"first_connector": first.name, "second_connector": second.name},
-                ))
+            if _segments_intersect(
+                first_start,
+                first_end,
+                second_start,
+                second_end,
+            ):
+                slide.issues.append(
+                    factory.create(
+                        "PPTX_CONNECTOR_CROSSING",
+                        "error",
+                        "visual",
+                        "Two connectors cross and make the relationship path ambiguous.",
+                        slide_id=slide.slide_id,
+                        object_id=first.object_id,
+                        ppt_shape_id=first.shape_id,
+                        evidence={
+                            "first_connector": first.name,
+                            "second_connector": second.name,
+                        },
+                    )
+                )
 
     object_count = slide.metrics["object_count"]
     if object_count > thresholds.objects_per_slide_error:
@@ -514,10 +773,21 @@ def _add_slide_issues(
     elif tiny_count > thresholds.tiny_object_warn:
         slide.issues.append(factory.create("PPTX_TINY_OBJECT_OVERLOAD", "warning", "editability", "Slide has many tiny objects.", slide_id=slide.slide_id, evidence={"tiny_object_count": tiny_count, "threshold": thresholds.tiny_object_warn}))
     fragmentation = slide.metrics["text_boxes_per_100_characters"]
-    if fragmentation > thresholds.text_boxes_per_100_characters_error:
-        slide.issues.append(factory.create("PPTX_TEXT_FRAGMENTATION", "error", "editability", "Text is split across too many text boxes.", slide_id=slide.slide_id, evidence={"text_boxes_per_100_characters": fragmentation}))
-    elif fragmentation > thresholds.text_boxes_per_100_characters_warn:
-        slide.issues.append(factory.create("PPTX_TEXT_FRAGMENTATION", "warning", "editability", "Text box fragmentation is high.", slide_id=slide.slide_id, evidence={"text_boxes_per_100_characters": fragmentation}))
+    text_objects = [obj for obj in slide.objects if obj.shape_type == "text"]
+    structured_metric_text = [
+        obj
+        for obj in text_objects
+        if obj.name.lower().startswith("component:metric_wall:")
+    ]
+    metric_wall_dominates = (
+        bool(text_objects)
+        and len(structured_metric_text) / len(text_objects) >= 0.6
+    )
+    if not metric_wall_dominates:
+        if fragmentation > thresholds.text_boxes_per_100_characters_error:
+            slide.issues.append(factory.create("PPTX_TEXT_FRAGMENTATION", "error", "editability", "Text is split across too many text boxes.", slide_id=slide.slide_id, evidence={"text_boxes_per_100_characters": fragmentation}))
+        elif fragmentation > thresholds.text_boxes_per_100_characters_warn:
+            slide.issues.append(factory.create("PPTX_TEXT_FRAGMENTATION", "warning", "editability", "Text box fragmentation is high.", slide_id=slide.slide_id, evidence={"text_boxes_per_100_characters": fragmentation}))
 
     native_text = "\n".join(obj.text for obj in slide.objects if obj.shape_type == "text")
     for expected in expected_texts:

@@ -23,6 +23,10 @@ if str(ROOT) not in sys.path:
 
 from ppt_qa.renderers.libreoffice import LibreOfficeRenderer
 from ppt_qa.renderers.powerpoint_macos import PowerPointMacOSRenderer
+from visual_narrative.renderer_registry import (
+    effective_component_support,
+    load_renderer_capabilities,
+)
 
 FEATURE_DEFAULTS: dict[str, bool | str] = {
     "native_text": "unknown",
@@ -36,6 +40,7 @@ FEATURE_DEFAULTS: dict[str, bool | str] = {
     "readback": "unknown",
 }
 GENERIC_FONTS = {"sans-serif", "serif", "monospace", "cursive", "fantasy", "system-ui"}
+DEFAULT_RENDERER_CAPABILITIES = ROOT / "references" / "renderer-capabilities.json"
 
 
 def load_json(path: Path | None) -> Any:
@@ -75,18 +80,19 @@ def package_version(name: str) -> str | None:
         return None
 
 
-def registry_component_support(registry: dict[str, Any] | None, builder: str) -> dict[str, str]:
-    support: dict[str, str] = {}
-    for component in (registry or {}).get("components", []) or []:
-        if not isinstance(component, dict):
-            continue
-        levels = component.get("builder_support", {})
-        if builder in levels:
-            support[component["component_type"]] = str(levels[builder].get("level", "unknown"))
-    return support
+def registry_component_support(
+    registry: dict[str, Any] | None,
+    renderer_capabilities: dict[str, Any],
+    builder: str,
+) -> dict[str, str]:
+    return effective_component_support(registry or {}, renderer_capabilities, builder)
 
 
-def probe_python_pptx(registry: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
+def probe_python_pptx(
+    registry: dict[str, Any] | None,
+    timeout: int,
+    renderer_capabilities: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     warnings: list[str] = []
     errors: list[str] = []
     version = package_version("python-pptx")
@@ -123,13 +129,21 @@ def probe_python_pptx(registry: dict[str, Any] | None, timeout: int) -> dict[str
             "slide_master": "partial" if available else False,
             "readback": available,
         },
-        "components": registry_component_support(registry, "python_pptx") if available else {},
+        "components": (
+            registry_component_support(registry, renderer_capabilities or {}, "python_pptx")
+            if available
+            else {}
+        ),
         "warnings": warnings,
         "errors": errors,
     }
 
 
-def probe_pptxgenjs(registry: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
+def probe_pptxgenjs(
+    registry: dict[str, Any] | None,
+    timeout: int,
+    renderer_capabilities: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     node = shutil.which("node")
     warnings: list[str] = []
     errors: list[str] = []
@@ -190,13 +204,21 @@ def probe_pptxgenjs(registry: dict[str, Any] | None, timeout: int) -> dict[str, 
             "slide_master": "partial" if available else False,
             "readback": False,
         },
-        "components": registry_component_support(registry, "pptxgenjs") if available else {},
+        "components": (
+            registry_component_support(registry, renderer_capabilities or {}, "pptxgenjs")
+            if available
+            else {}
+        ),
         "warnings": warnings,
         "errors": errors,
     }
 
 
-def probe_officecli(registry: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
+def probe_officecli(
+    registry: dict[str, Any] | None,
+    timeout: int,
+    renderer_capabilities: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     officecli = shutil.which("officecli")
     warnings: list[str] = []
     errors: list[str] = []
@@ -218,13 +240,21 @@ def probe_officecli(registry: dict[str, Any] | None, timeout: int) -> dict[str, 
         "version": version,
         "command": "officecli" if officecli else None,
         "features": FEATURE_DEFAULTS | ({"readback": available} if available else {}),
-        "components": registry_component_support(registry, "officecli") if available else {},
+        "components": (
+            registry_component_support(registry, renderer_capabilities or {}, "officecli")
+            if available
+            else {}
+        ),
         "warnings": warnings,
         "errors": errors,
     }
 
 
-def probe_html_svg(registry: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
+def probe_html_svg(
+    registry: dict[str, Any] | None,
+    timeout: int,
+    renderer_capabilities: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     del timeout
     warnings: list[str] = []
     errors: list[str] = []
@@ -250,13 +280,22 @@ def probe_html_svg(registry: dict[str, Any] | None, timeout: int) -> dict[str, A
             "slide_master": False,
             "readback": False,
         },
-        "components": registry_component_support(registry, "html_svg") if available else {},
+        "components": (
+            registry_component_support(registry, renderer_capabilities or {}, "html_svg")
+            if available
+            else {}
+        ),
         "warnings": warnings + ["html_svg is visual-only; it cannot satisfy native-required objects."],
         "errors": errors,
     }
 
 
-def probe_builders(registry: dict[str, Any] | None, timeout: int, only: str | None = None) -> dict[str, Any]:
+def probe_builders(
+    registry: dict[str, Any] | None,
+    timeout: int,
+    only: str | None = None,
+    renderer_capabilities: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     probes = {
         "officecli": probe_officecli,
         "pptxgenjs": probe_pptxgenjs,
@@ -264,7 +303,11 @@ def probe_builders(registry: dict[str, Any] | None, timeout: int, only: str | No
         "html_svg": probe_html_svg,
     }
     selected = [only] if only else list(probes)
-    return {name: probes[name](registry, timeout) for name in selected if name in probes}
+    return {
+        name: probes[name](registry, timeout, renderer_capabilities)
+        for name in selected
+        if name in probes
+    }
 
 
 def probe_renderers(only: str | None = None) -> dict[str, Any]:
@@ -448,6 +491,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a local PPT capability report from real environment checks.")
     parser.add_argument("--style", type=Path)
     parser.add_argument("--registry", type=Path)
+    parser.add_argument("--renderer-capabilities", type=Path, default=DEFAULT_RENDERER_CAPABILITIES)
     parser.add_argument("--output", type=Path, default=Path(".ppt-work/capability-report.json"))
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--check-builder")
@@ -465,7 +509,13 @@ def main(argv: list[str]) -> int:
         return 2
     style = load_json(args.style)
     registry = load_json(args.registry)
-    builders = probe_builders(registry, args.timeout, only=args.check_builder)
+    renderer_capabilities = load_renderer_capabilities(args.renderer_capabilities)
+    builders = probe_builders(
+        registry,
+        args.timeout,
+        only=args.check_builder,
+        renderer_capabilities=renderer_capabilities,
+    )
     renderers = probe_renderers(only=args.check_renderer)
     fonts = probe_fonts(style, args.timeout) if (args.check_fonts or args.style) else {"installed": [], "required_missing": [], "fallback_map": {}}
     report = {

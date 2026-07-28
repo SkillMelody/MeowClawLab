@@ -53,12 +53,14 @@ class InspectedObject:
     area_ratio: float
     text: str
     font_sizes_pt: list[Optional[float]] = field(default_factory=list)
+    font_colors: list[str] = field(default_factory=list)
     fill_colors: list[str] = field(default_factory=list)
     line_colors: list[str] = field(default_factory=list)
     source_relationship: Optional[str] = None
     font_families: list[str] = field(default_factory=list)
     image_ext: Optional[str] = None
     image_px: Optional[dict[str, int]] = None
+    geometry_type: Optional[str] = None
     raw: dict[str, Any] = field(default_factory=dict)
 
 

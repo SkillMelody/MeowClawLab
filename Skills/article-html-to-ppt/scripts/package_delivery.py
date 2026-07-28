@@ -512,10 +512,9 @@ def package_delivery(args: argparse.Namespace) -> tuple[int, list[str]]:
     manifest_in_output = args.manifest.parent.resolve() == output
     staged_manifest = staging / args.manifest.name if manifest_in_output else staging / "delivery-manifest.json"
     staged_manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    if manifest_in_output:
-        files.append({"role": "delivery_manifest", "path": args.manifest.name, "required": True, "hash": sha256_file(staged_manifest)})
-        manifest["files"] = files
-        staged_manifest.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    # The manifest must not claim a hash for itself. Rewriting the file after
+    # computing that hash changes its bytes, so a self-entry can never be
+    # truthful. External release checksums may cover the manifest as a whole.
     staging.replace(output)
     if not manifest_in_output:
         args.manifest.parent.mkdir(parents=True, exist_ok=True)

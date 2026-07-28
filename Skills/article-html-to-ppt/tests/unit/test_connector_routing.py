@@ -26,10 +26,10 @@ def _arrow_xml(shape) -> str:
 
 def test_skill_keeps_206_brand_name_and_advances_only_version() -> None:
     skill = (Path(__file__).resolve().parents[2] / "SKILL.md").read_text(encoding="utf-8")
-    assert "display_name: MeowClaw PPT Smith" in skill
-    assert "english_alias: MeowClaw PPT Smith" in skill
+    assert 'display_name: "MeowClaw PPT Smith"' in skill
+    assert 'english_alias: "MeowClaw PPT Smith"' in skill
     assert "# MeowClaw PPT Smith" in skill
-    assert "version: 2.0.7" in skill
+    assert 'version: "2.1.0"' in skill
 
 
 def test_routed_connector_emits_native_straight_elbow_and_curve_with_binding() -> None:

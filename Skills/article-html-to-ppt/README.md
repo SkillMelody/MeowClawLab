@@ -11,14 +11,14 @@
 - **公开品牌：** MeowClaw PPT Smith
 - **兼容安装名：** `article-html-to-ppt`
 - **兼容搜索词：** MeowClaw PPTSmith、MeowClaw 夜猫 PPT 工坊
-- **当前版本：** `2.0.7`（连接器路由与图拓扑质量门禁）
+- **当前版本：** `2.1.0`（视觉叙事、布局可靠性与可信交付）
 - **开源定位：** 核心引擎、基础五风格、通用组件、可编辑对象、QA 与可信交付
 
 > PPTSmith 的 GitHub / ClawHub 开源版用于分发、获客与建立可信度。专业生产包、企业品牌适配、专属页面原型、定制组件和代生成/部署服务采用独立商业交付，不包含在本仓库与 ClawHub 包中。
 
-## v2.0 一眼看懂
+## v2.1 一眼看懂
 
-PPTSmith v2.0 不只是“把文字塞进模板”，而是一条从内容判断到可信交付的完整生产链：
+PPTSmith v2.1 不只是“把文字塞进模板”，而是一条从内容判断到可信交付的完整生产链：
 
 1. **先理解内容，再画页面**：内容分析、证据盘点、故事线、判断式标题与表达模式先行。
 2. **五套基础视觉系统**：咨询报告、产品汇报、技术蓝图、咨询 × 技术混合、编辑知识型。
@@ -30,6 +30,16 @@ PPTSmith v2.0 不只是“把文字塞进模板”，而是一条从内容判断
 8. **端到端 QA 与可信状态**：能力探测、构建清单、结构检查、真实渲染、回读、视觉评分、交付清单逐层验证；明确区分 `Created`、`Rendered`、`Read back`、`Verified` 与 `Final`。
 9. **失败时诚实收口**：没有真实渲染器、证据绑定或评分不达标时，不伪造截图、不手写 `final`，而是明确降级或阻断。
 10. **多种交付出口**：本地 PPTX、原生渐进式动态 PPTX、HTML 预览，以及经用户明确授权后的飞书幻灯片路线。
+
+### 2.1.0 视觉叙事与布局可靠性
+
+- 新增任务路由、Page Design Intent、Visual Planner、Deck Rhythm Gate 与受约束的二次精修请求。
+- 新增原生可编辑热力矩阵、分层架构、指标下钻阶梯和阶段路线图 Renderer。
+- Standard QA 阻断严重文本溢出、低对比文字、箭头凹口不安全文本、旧渲染证据和核心信息不可编辑。
+- 保留 2.0.7 的原生连接器、端点绑定与图拓扑门禁；新版能力为增量升级。
+- Standard 已在 macOS + LibreOffice 验收环境验证；Premium 仍需每次运行完成真实渲染、零错误 QA、评分和人工视觉复核。
+
+![PPTSmith 2.1 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ### 2.0.7 连接器路由与图拓扑门禁
 
@@ -180,6 +190,8 @@ v2.0 已完成 Standard 生产验收；另有一条记录明确的 PptxGenJS 4.0
 
 - [OpenClaw 执行规范](./SKILL.md)
 - [英文 README](./README.en.md)
+- [v2.1 RC1 验收报告](docs/v2.1-rc1-acceptance-report.md)
+- [v2.1 发布说明](docs/v2.1-release-notes.md)
 - [v2.0 验收报告](docs/v2.0-acceptance-report.md)
 - [v1.5 → v2.0 收口清单](docs/v1.5-v2.0-closeout-checklist.md)
 - [生产配置说明](references/production-profiles.md)

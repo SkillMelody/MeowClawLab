@@ -20,6 +20,10 @@ REGISTRY = ROOT / "references" / "component-registry.json"
 STAGES = [
     "prepare_inputs",
     "validate_inputs",
+    "route_task",
+    "plan_visual_narrative",
+    "validate_visual_plan",
+    "deck_rhythm",
     "resolve_profile",
     "capability_probe",
     "resolve_delivery",
@@ -27,6 +31,7 @@ STAGES = [
     "build",
     "inspect",
     "verify",
+    "visual_revision",
     "score",
     "prepare_delivery",
     "package_delivery",
@@ -76,6 +81,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--ppt-ir", type=Path, required=True)
     parser.add_argument("--style", type=Path, required=True)
     parser.add_argument("--assets", "--asset-manifest", dest="assets", type=Path)
+    parser.add_argument("--content-analysis", type=Path)
+    parser.add_argument("--storyline", type=Path)
+    parser.add_argument("--visual-system", type=Path)
     parser.add_argument("--builder", choices=["auto", "python_pptx", "pptxgenjs"], default="auto")
     parser.add_argument("--profile", choices=["fast", "standard", "premium"], default="standard")
     parser.add_argument("--rubric-case", type=Path, help="Benchmark case containing an explicit human/model reference rubric for Premium final.")
@@ -83,7 +91,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--work-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--json-output", action="store_true")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if bool(args.content_analysis) != bool(args.storyline):
+        parser.error("--content-analysis and --storyline must be provided together")
+    return args
 
 
 class Pipeline:
@@ -106,6 +117,9 @@ class Pipeline:
             "ppt_ir": str(args.ppt_ir.resolve()),
             "style": str(args.style.resolve()),
             "asset_manifest": str(args.assets.resolve()) if args.assets else None,
+            "content_analysis": str(args.content_analysis.resolve()) if args.content_analysis else None,
+            "storyline": str(args.storyline.resolve()) if args.storyline else None,
+            "visual_system": str(args.visual_system.resolve()) if args.visual_system else None,
             "builder": args.builder,
             "profile": args.profile,
             "rubric_case": str(args.rubric_case.resolve()) if args.rubric_case else None,
@@ -128,6 +142,8 @@ class Pipeline:
             "updated_at": now,
             "completed_at": None,
             "error": None,
+            "stage_order": [],
+            "visual_revision_count": 0,
             "attempts": self.attempts,
         }
         self.attempts.append(self.attempt_snapshot(self.state))
@@ -170,6 +186,7 @@ class Pipeline:
         self.save_state()
         action()
         self.state["last_successful_stage"] = name
+        self.state["stage_order"].append(name)
         self.save_state()
 
     def prepare_inputs(self) -> None:
@@ -194,11 +211,20 @@ class Pipeline:
         }
         if self.args.assets:
             sources["asset_manifest"] = self.args.assets
+        if self.args.content_analysis:
+            sources["content_analysis"] = self.args.content_analysis
+        if self.args.storyline:
+            sources["storyline"] = self.args.storyline
+        if self.args.visual_system:
+            sources["visual_system"] = self.args.visual_system
         targets = {
             "requirements": contract_stage / "requirements.json",
             "ppt_ir": contract_stage / "ppt-ir.json",
             "style": contract_stage / "style-contract.json",
             "asset_manifest": contract_stage / "asset-manifest.json",
+            "content_analysis": contract_stage / "content-analysis.json",
+            "storyline": contract_stage / "storyline.json",
+            "visual_system": contract_stage / "visual-system.json",
         }
         for name, source in sources.items():
             copy_input(source, targets[name])
@@ -218,6 +244,9 @@ class Pipeline:
             "ppt_ir": self.contracts / "ppt-ir.json",
             "style": self.contracts / "style-contract.json",
             "asset_manifest": self.contracts / "asset-manifest.json",
+            "content_analysis": self.contracts / "content-analysis.json",
+            "storyline": self.contracts / "storyline.json",
+            "visual_system": self.contracts / "visual-system.json",
         }
         analysis = self.work / "analysis"
         analysis.mkdir(parents=True, exist_ok=True)
@@ -226,6 +255,78 @@ class Pipeline:
             ppt_ir = load_json(targets["ppt_ir"])
             lines = ["# Storyboard", ""] + [f"- {slide.get('id', '?')}: {slide.get('title', '')}" for slide in ppt_ir.get("slides", [])]
             (analysis / "storyboard.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    @property
+    def visual_enabled(self) -> bool:
+        return bool(self.args.content_analysis and self.args.storyline)
+
+    def route_task(self) -> None:
+        self.run_command(
+            "route_task",
+            [
+                sys.executable,
+                str(SCRIPTS / "route_task.py"),
+                "--analysis",
+                str(self.contracts / "content-analysis.json"),
+                "--output",
+                str(self.contracts / "task-route.json"),
+            ],
+        )
+
+    def visual_style_id(self) -> str:
+        path = self.contracts / "visual-system.json"
+        if not path.is_file():
+            return "azure-insight-architecture"
+        value = load_json(path)
+        style_id = value.get("style_id")
+        if not isinstance(style_id, str) or not style_id.strip():
+            raise StageFailure("plan_visual_narrative", "VISUAL_SYSTEM_STYLE_ID_REQUIRED")
+        return style_id.strip()
+
+    def plan_visual_narrative(self) -> None:
+        self.run_command(
+            "plan_visual_narrative",
+            [
+                sys.executable,
+                str(SCRIPTS / "plan_visual_narrative.py"),
+                "--task-route",
+                str(self.contracts / "task-route.json"),
+                "--storyline",
+                str(self.contracts / "storyline.json"),
+                "--style-id",
+                self.visual_style_id(),
+                "--output",
+                str(self.contracts / "visual-plan.json"),
+            ],
+        )
+
+    def validate_visual_plan(self) -> None:
+        self.run_command(
+            "validate_visual_plan",
+            [
+                sys.executable,
+                str(SCRIPTS / "validate_contracts.py"),
+                "--task-route",
+                str(self.contracts / "task-route.json"),
+                "--visual-plan",
+                str(self.contracts / "visual-plan.json"),
+                "--strict",
+                "--json-output",
+            ],
+        )
+
+    def deck_rhythm(self) -> None:
+        from visual_narrative.rhythm import evaluate_deck_rhythm
+
+        report = evaluate_deck_rhythm(load_json(self.contracts / "visual-plan.json"))
+        write_json(self.contracts / "deck-rhythm-report.json", report)
+        if report.get("status") != "passed":
+            codes = [
+                str(item.get("code"))
+                for item in report.get("issues", [])
+                if isinstance(item, dict) and item.get("code")
+            ]
+            raise StageFailure("deck_rhythm", ", ".join(codes) or "DECK_RHYTHM_FAILED")
 
     def validate(self, stage: str, *, include_delivery: bool = False, include_build: bool = False) -> None:
         command = [sys.executable, str(SCRIPTS / "validate_contracts.py"), "--ppt-ir", str(self.contracts / "ppt-ir.json"), "--style", str(self.contracts / "style-contract.json")]
@@ -329,8 +430,13 @@ class Pipeline:
             "--output", str(self.qa / "qa-report.json"),
         ]
         accepted = {0, 1}  # verifier uses 1 for warning-only reports as well as hard QA failures
-        if self.args.profile == "premium":
-            command += ["--render", "--render-required", "--render-output", str(self.work / "renders"), "--write-render-report", str(self.qa / "render-report.json")]
+        if self.args.profile in {"standard", "premium"}:
+            render_output = self.work / "renders"
+            if render_output.exists():
+                shutil.rmtree(render_output)
+            command += ["--render", "--render-output", str(render_output), "--write-render-report", str(self.qa / "render-report.json")]
+            if self.args.profile == "premium":
+                command.append("--render-required")
             accepted.add(2)  # truthful renderer-unavailable evidence; packaging remains blocked
         completed = self.run_command("verify", command, accepted=accepted)
         report = load_json(self.qa / "qa-report.json")
@@ -343,28 +449,127 @@ class Pipeline:
         if report.get("status") in {"fail", "blocked"}:
             raise StageFailure("verify", f"QA hard failure: {report.get('status')}", completed.returncode or 1)
 
+    def visual_revision(self) -> None:
+        from visual_narrative.revision import build_revision_request
+
+        visual_plan = load_json(self.contracts / "visual-plan.json")
+        storyline = load_json(self.contracts / "storyline.json")
+        request = build_revision_request(
+            visual_plan,
+            storyline.get("revision_observations"),
+            rubric_score=storyline.get("rubric_score"),
+            contact_sheet_metrics=storyline.get("contact_sheet_metrics"),
+        )
+        request_path = self.contracts / "visual-revision-request.json"
+        write_json(request_path, request)
+        self.run_command(
+            "visual_revision",
+            [
+                sys.executable,
+                str(SCRIPTS / "validate_contracts.py"),
+                "--visual-revision",
+                str(request_path),
+                "--strict",
+                "--json-output",
+            ],
+        )
+        if request.get("status") != "revision_required":
+            return
+        if int(self.state.get("visual_revision_count", 0)) >= 1:
+            raise StageFailure("visual_revision", "VISUAL_REVISION_LIMIT_EXCEEDED")
+
+        initial = self.work / "revisions" / "initial"
+        if initial.exists():
+            shutil.rmtree(initial)
+        initial.mkdir(parents=True)
+        shutil.copy2(self.deck_path(), initial / "deck.pptx")
+        shutil.copy2(self.contracts / "build-manifest.json", initial / "build-manifest.json")
+        shutil.copy2(self.qa / "pptx-inspection.json", initial / "pptx-inspection.json")
+        shutil.copy2(self.qa / "qa-report.json", initial / "qa-report.json")
+        self._apply_visual_revision_once(visual_plan, request)
+        self.state["visual_revision_count"] = 1
+        self.save_state()
+        self.build()
+        self.inspect()
+        self.verify()
+
+    def _apply_visual_revision_once(
+        self,
+        visual_plan: dict[str, Any],
+        request: dict[str, Any],
+    ) -> None:
+        actions_by_slide = {
+            item.get("slide_id"): item.get("actions", [])
+            for item in request.get("slides", [])
+            if isinstance(item, dict)
+        }
+        for slide in visual_plan.get("slides", []):
+            if not isinstance(slide, dict):
+                continue
+            actions = actions_by_slide.get(slide.get("slide_id"))
+            if not actions:
+                continue
+            slide["revision"] = {
+                "iteration": 1,
+                "actions": actions,
+                "protected_fields": request.get("protected_fields", []),
+            }
+            action_names = {
+                action.get("action")
+                for action in actions
+                if isinstance(action, dict)
+            }
+            if "enlarge_primary_anchor" in action_names:
+                layout = slide.get("layout")
+                if isinstance(layout, dict):
+                    layout["primary_zone_ratio"] = max(
+                        float(layout.get("primary_zone_ratio", 0.0)),
+                        0.68,
+                    )
+            if "rebalance_density" in action_names:
+                density = slide.get("density")
+                if isinstance(density, dict):
+                    density["level"] = "medium"
+        write_json(self.contracts / "visual-plan.json", visual_plan)
+
     def score(self) -> None:
         if self.args.profile != "premium":
             return
         if not self.args.rubric_case or not self.args.use_reference_rubric:
-            raise StageFailure("score", "PREMIUM_RUBRIC_REQUIRED: pass --rubric-case and --use-reference-rubric; automatic metrics cannot grant final status")
-        completed = self.run_command("score", [
-            sys.executable, str(SCRIPTS / "score_deck.py"),
-            "--case", str(self.args.rubric_case.resolve()),
-            "--ppt-ir", str(self.contracts / "ppt-ir.json"),
-            "--qa-report", str(self.qa / "qa-report.json"),
-            "--build-manifest", str(self.contracts / "build-manifest.json"),
-            "--pptx", str(self.deck_path()),
-            "--output", str(self.qa / "benchmark-score.json"),
-            "--use-reference-rubric",
-        ], accepted={0, 1})
+            raise StageFailure(
+                "score",
+                "PREMIUM_RUBRIC_REQUIRED: pass --rubric-case and --use-reference-rubric; "
+                "automatic metrics cannot grant final status",
+            )
+        completed = self.run_command(
+            "score",
+            [
+                sys.executable,
+                str(SCRIPTS / "score_deck.py"),
+                "--case",
+                str(self.args.rubric_case.resolve()),
+                "--ppt-ir",
+                str(self.contracts / "ppt-ir.json"),
+                "--qa-report",
+                str(self.qa / "qa-report.json"),
+                "--build-manifest",
+                str(self.contracts / "build-manifest.json"),
+                "--pptx",
+                str(self.deck_path()),
+                "--output",
+                str(self.qa / "benchmark-score.json"),
+                "--use-reference-rubric",
+            ],
+            accepted={0, 1},
+        )
         if completed.returncode != 0:
             score_path = self.qa / "benchmark-score.json"
             if score_path.exists():
                 score = load_json(score_path)
                 raise StageFailure(
                     "score",
-                    f"PREMIUM_RUBRIC_FAILED: total={score.get('total_score')} status={score.get('overall_status')}",
+                    f"PREMIUM_RUBRIC_FAILED: total={score.get('total_score')} "
+                    f"status={score.get('overall_status')}",
                     completed.returncode,
                 )
             raise StageFailure("score", "PREMIUM_RUBRIC_SCORER_FAILED", completed.returncode)
@@ -372,7 +577,11 @@ class Pipeline:
     def create_contact_sheet(self, render_report: dict[str, Any]) -> None:
         from PIL import Image, ImageDraw
 
-        slide_paths = [Path(str(item.get("image"))) for item in render_report.get("slides", []) if item.get("image")]
+        slide_paths = [
+            Path(str(item.get("image")))
+            for item in render_report.get("slides", [])
+            if item.get("image")
+        ]
         if not slide_paths or any(not path.is_file() for path in slide_paths):
             raise StageFailure("prepare_delivery", "PREMIUM_CONTACT_SHEET_INPUT_MISSING")
         thumb_width = 480
@@ -404,8 +613,13 @@ class Pipeline:
         build = load_json(build_path)
         qa = load_json(self.qa / "qa-report.json")
         inspection = load_json(self.qa / "pptx-inspection.json")
-        benchmark = load_json(self.qa / "benchmark-score.json") if (self.qa / "benchmark-score.json").exists() else None
+        benchmark = (
+            load_json(self.qa / "benchmark-score.json")
+            if (self.qa / "benchmark-score.json").exists()
+            else None
+        )
         from package_delivery import calculate_delivery_status
+
         trusted = calculate_delivery_status(
             profile=self.args.profile,
             build_manifest=build,
@@ -437,8 +651,13 @@ class Pipeline:
         )
         build["outputs"]["verification_report"] = str(report.resolve())
         render = qa.get("evidence", {}).get("render_report")
-        if isinstance(render, dict) and render.get("status") == "passed" and (render.get("pdf") or render.get("pdf_path")):
-            pdf = Path(str(render.get("pdf") or render.get("pdf_path")))
+        render_pdf = (
+            render.get("pdf") or render.get("pdf_path")
+            if isinstance(render, dict)
+            else None
+        )
+        if isinstance(render, dict) and render.get("status") == "passed" and render_pdf:
+            pdf = Path(str(render_pdf))
             if pdf.is_file():
                 target = self.build_dir / "deck-preview.pdf"
                 shutil.copy2(pdf, target)
@@ -466,6 +685,11 @@ class Pipeline:
         try:
             self.stage("prepare_inputs", self.prepare_inputs)
             self.stage("validate_inputs", lambda: self.validate("validate_inputs"))
+            if self.visual_enabled:
+                self.stage("route_task", self.route_task)
+                self.stage("plan_visual_narrative", self.plan_visual_narrative)
+                self.stage("validate_visual_plan", self.validate_visual_plan)
+                self.stage("deck_rhythm", self.deck_rhythm)
             self.stage("resolve_profile", self.resolve_profile)
             self.stage("capability_probe", self.capability_probe)
             self.stage("resolve_delivery", self.resolve_delivery)
@@ -473,6 +697,8 @@ class Pipeline:
             self.stage("build", self.build)
             self.stage("inspect", self.inspect)
             self.stage("verify", self.verify)
+            if self.visual_enabled:
+                self.stage("visual_revision", self.visual_revision)
             self.stage("score", self.score)
             self.stage("prepare_delivery", self.prepare_delivery)
             self.stage("package_delivery", self.package)

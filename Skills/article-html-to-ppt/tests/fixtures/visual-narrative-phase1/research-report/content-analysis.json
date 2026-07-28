@@ -1,0 +1,20 @@
+{
+  "title": "中国企业生成式 AI 采用现状研究（脱敏样例）",
+  "summary": "本样例用于验证研究报告任务路由，不对应任何真实客户名称。",
+  "evidence_types": [
+    "statistics",
+    "comparison",
+    "trend"
+  ],
+  "relationship_types": [
+    "adoption_gap",
+    "capability_maturity"
+  ],
+  "project_governance_terms": [],
+  "audience": "企业管理者与业务负责人",
+  "key_findings": [
+    "头部企业已从试点走向规模化应用，中小组织仍集中在单点实验。",
+    "预算投入与产出认知之间存在显著认知落差，需要用对比与趋势图强化叙事。",
+    "跨部门协同能力是决定采用深度的关键变量。"
+  ]
+}

@@ -140,11 +140,12 @@ def test_package_standard_delivery(tmp_path: Path) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     Draft202012Validator(json.loads((ROOT / "schemas" / "delivery-manifest.schema.json").read_text(encoding="utf-8"))).validate(manifest)
     assert manifest["status"] == "verified"
-    assert {item["role"] for item in manifest["files"]} >= {"pptx", "preview_pdf", "verification_report", "delivery_manifest"}
+    assert {item["role"] for item in manifest["files"]} >= {"pptx", "preview_pdf", "verification_report"}
+    assert all(item["role"] != "delivery_manifest" for item in manifest["files"])
     assert not (output / ".ppt-work").exists()
-    deck_entry = next(item for item in manifest["files"] if item["role"] == "pptx")
-    expected_hash = "sha256:" + hashlib.sha256((output / "deck.pptx").read_bytes()).hexdigest()
-    assert deck_entry["hash"] == expected_hash
+    for item in manifest["files"]:
+        expected_hash = "sha256:" + hashlib.sha256((output / item["path"]).read_bytes()).hexdigest()
+        assert item["hash"] == expected_hash
 
 
 def test_failed_build_preserves_workdir_without_user_facing_output(tmp_path: Path) -> None:

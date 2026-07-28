@@ -43,6 +43,8 @@ def test_probe_writes_capability_report(tmp_path: Path) -> None:
     assert "pptx_write" in report["formats"]
     assert "required_missing" in report["fonts"]
     assert report["environment"]["working_directory"] == ROOT.name
+    assert report["builders"]["python_pptx"]["components"]["native_table"] == "full"
+    assert report["builders"]["python_pptx"]["components"]["flywheel"] == "unsupported"
 
 
 def test_probe_detects_pptxgenjs(monkeypatch) -> None:

@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from diagram_ir_tools import validate_diagram_semantics as validate_diagram_ir_semantics
+from visual_narrative.intent import validate_page_design_intent
 
 TITLE_ROLES = {"judgment", "navigation", "section", "instruction", "reference", "closing"}
 NON_JUDGMENT_SLIDE_ROLES = {"cover", "agenda", "section", "reference", "closing", "instruction"}
@@ -38,6 +39,10 @@ SCHEMA_FILES = {
     "diagram": "diagram-ir.schema.json",
     "component-registry": "component-registry.schema.json",
     "delivery": "delivery-plan.schema.json",
+    "page-design-intent": "page-design-intent.schema.json",
+    "task-route": "task-route.schema.json",
+    "visual-plan": "visual-plan.schema.json",
+    "visual-revision-request": "visual-revision-request.schema.json",
 }
 ORDINARY_COMPONENTS = {
     "judgment_title",
@@ -667,6 +672,22 @@ def validate_build_delivery_semantics(file: Path, build: dict[str, Any], deliver
     return errors
 
 
+def validate_page_design_intent_semantics(file: Path, document: dict[str, Any]) -> list[dict[str, Any]]:
+    errors: list[dict[str, Any]] = []
+    for intent_issue in validate_page_design_intent(document):
+        errors.append(
+            issue(
+                file,
+                "/",
+                intent_issue["code"],
+                document,
+                "valid page design intent contract",
+                "Complete the required intent fields and remove forbidden native_required fallbacks.",
+            )
+        )
+    return errors
+
+
 def detect_v1(data: Any) -> bool:
     if not isinstance(data, dict):
         return False
@@ -689,6 +710,10 @@ def main() -> int:
     parser.add_argument("--diagram", type=Path)
     parser.add_argument("--component-registry", type=Path)
     parser.add_argument("--delivery", type=Path)
+    parser.add_argument("--task-route", type=Path)
+    parser.add_argument("--visual-plan", type=Path)
+    parser.add_argument("--visual-revision", type=Path)
+    parser.add_argument("--page-design-intent", type=Path, action="append", default=[])
     parser.add_argument("--schema-dir", type=Path, default=Path(__file__).resolve().parents[1] / "schemas")
     parser.add_argument("--allow-v1", action="store_true")
     parser.add_argument("--strict", action="store_true")
@@ -706,14 +731,25 @@ def main() -> int:
         "diagram": args.diagram,
         "component-registry": args.component_registry,
         "delivery": args.delivery,
+        "task-route": args.task_route,
+        "visual-plan": args.visual_plan,
+        "visual-revision-request": args.visual_revision,
     }
+    page_design_intent_inputs = args.page_design_intent or []
 
     try:
         for name, path in inputs.items():
             if not path:
                 continue
             data = load_json(path)
-            is_v1 = name not in {"component-registry", "delivery", "diagram"} and detect_v1(data)
+            is_v1 = name not in {
+                "component-registry",
+                "delivery",
+                "diagram",
+                "task-route",
+                "visual-plan",
+                "visual-revision-request",
+            } and detect_v1(data)
             if is_v1 and not args.allow_v1:
                 errors.append(issue(path, "/", "V1_CONTRACT_DEPRECATED", data.get("schema_version"), "2.0", "Run scripts/migrate_manifest_v1_to_v2.py or pass --allow-v1 for a transition-only check."))
             if is_v1 and args.allow_v1:
@@ -722,6 +758,13 @@ def main() -> int:
             errors.extend(validate_schema_subset(data, schema, path, args.strict))
             if isinstance(data, dict):
                 loaded[name] = (path, data)
+        page_design_intents: list[tuple[Path, dict[str, Any]]] = []
+        for path in page_design_intent_inputs:
+            data = load_json(path)
+            schema = load_schema(args.schema_dir, "page-design-intent")
+            errors.extend(validate_schema_subset(data, schema, path, args.strict))
+            if isinstance(data, dict):
+                page_design_intents.append((path, data))
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
         return 2
@@ -748,6 +791,8 @@ def main() -> int:
         errors.extend(validate_delivery_semantics(loaded["delivery"][0], loaded["delivery"][1], ppt_ir))
     if "build" in loaded and "delivery" in loaded:
         errors.extend(validate_build_delivery_semantics(loaded["build"][0], loaded["build"][1], loaded["delivery"][1]))
+    for path, document in page_design_intents:
+        errors.extend(validate_page_design_intent_semantics(path, document))
 
     if args.json_output:
         print(json.dumps({"ok": not errors, "issues": errors}, ensure_ascii=False, indent=2))

@@ -121,7 +121,12 @@ async function normalizeInternalRelationshipTargets(deckPath) {
 }
 
 function validateNativeRequired(plan) {
-  const supported = new Set(["text", "shape", "card", "metric_card", "table", "native_table", "chart", "bar_chart", "column_chart", "line_chart", "pie_chart", "diagram", "process", "relationship"]);
+  const supported = new Set([
+    "text", "shape", "card", "metric_card", "comparison_card",
+    "summary_action_card", "table", "native_table", "chart", "bar_chart",
+    "column_chart", "line_chart", "pie_chart", "diagram", "process",
+    "process_flow", "relationship",
+  ]);
   for (const slide of plan.slides || []) {
     for (const obj of slide.objects || []) {
       const kind = String(obj.component_type || obj.type || "").toLowerCase();
@@ -158,12 +163,15 @@ function renderObject(pptx, slide, obj, index, count, style, y) {
     slide.addChart(chartType, data, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 2.8, showLegend: data.length > 1, showTitle: false, showValue: true, catAxisLabelFontSize: 10, valAxisLabelFontSize: 9, chartColors: style.colors.dataSeries });
     return { route: "native_chart" };
   }
-  if (["diagram", "process", "relationship"].includes(kind) || route === "native_diagram") {
+  if (["diagram", "process", "process_flow", "relationship"].includes(kind) || route === "native_diagram") {
     renderProcess(pptx, slide, obj, x, y, colWidth, style);
     return { route: "native_diagram" };
   }
   renderCard(pptx, slide, obj, x, y, colWidth, style);
-  const knownCard = ["text", "shape", "card", "metric_card"].includes(kind);
+  const knownCard = [
+    "text", "shape", "card", "metric_card", "comparison_card",
+    "summary_action_card",
+  ].includes(kind);
   return { route: "native_ppt", semanticFallback: !knownCard };
 }
 

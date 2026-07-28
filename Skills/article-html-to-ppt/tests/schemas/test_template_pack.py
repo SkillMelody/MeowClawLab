@@ -6,7 +6,6 @@ import re
 from pathlib import Path
 
 import jsonschema
-import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -15,6 +14,7 @@ PACKS = ROOT / "references" / "template-packs"
 STYLES = ROOT / "tests" / "fixtures" / "styles"
 REGISTRY_PATH = ROOT / "references" / "component-registry.json"
 ARCHETYPES_PATH = ROOT / "references" / "premium-page-archetypes.md"
+AZURE_STYLE_PATH = PACKS / "azure-insight-architecture.json"
 REQUIRED_ROLES = {
     "cover",
     "judgment",
@@ -60,6 +60,28 @@ def canonical_page_archetypes() -> set[str]:
 
 def assert_invalid(data: dict) -> None:
     assert list(validator().iter_errors(data))
+
+
+def test_azure_insight_architecture_is_semantic_visual_system() -> None:
+    style = load_json(AZURE_STYLE_PATH)
+
+    assert style["style_id"] == "azure-insight-architecture"
+    assert style["display_name_zh"] == "澄蓝智构"
+    assert style["display_name_en"] == "Azure Insight Architecture"
+
+    required_tokens = {
+        "ink_navy",
+        "signal_blue",
+        "insight_blue",
+        "mist_blue",
+        "paper_white",
+        "slate_text",
+        "hairline_grey",
+    }
+    assert required_tokens <= set(style["color_tokens"])
+    assert {"warning", "risk", "success"} <= set(style["semantic_colors"])
+    assert style["layout_budget"]["max_card_primary_ratio"] <= 0.30
+    assert "equal_cards_as_default" in style["forbidden_defaults"]
 
 
 def test_production_template_packs_pass_schema() -> None:
