@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import shutil
+import sys
 import zipfile
 from pathlib import Path
 from typing import Any
@@ -16,22 +17,10 @@ from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 
 ROOT = Path(__file__).resolve().parent
+SCRIPTS = ROOT.parents[2] / "scripts"
+sys.path.insert(0, str(SCRIPTS))
 
-
-def _validated_fixture_root(root: Path, script_path: Path) -> Path:
-    declared = Path(root)
-    if declared.is_symlink():
-        raise ValueError("fixture root must not be a symlink")
-    resolved = declared.resolve()
-    expected = Path(script_path).resolve().parent
-    if (
-        resolved != expected
-        or expected.name != "qa"
-        or expected.parent.name != "fixtures"
-        or expected.parent.parent.name != "tests"
-    ):
-        raise ValueError("fixture root must be tests/fixtures/qa beside this script")
-    return resolved
+from fixture_safety import validated_fixture_root
 
 
 def rgb(hex_color: str) -> RGBColor:
@@ -393,7 +382,7 @@ def save_complex_diagram(path: Path) -> None:
 
 
 def main() -> None:
-    cleanup_root = _validated_fixture_root(ROOT, Path(__file__))
+    cleanup_root = validated_fixture_root(ROOT, Path(__file__))
     if cleanup_root.exists():
         for item in cleanup_root.iterdir():
             if item.name == "generate_fixtures.py":
