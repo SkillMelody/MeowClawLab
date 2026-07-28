@@ -9,6 +9,23 @@ from .base import RenderResult, elapsed_since
 from .pdf_tools import rasterize_pdf_to_pngs
 
 
+def _powerpoint_export_command(pptx_path: Path, pdf_path: Path) -> list[str]:
+    script = '''
+    on run argv
+      set pptxPath to item 1 of argv
+      set pdfPath to item 2 of argv
+      tell application "Microsoft PowerPoint"
+        activate
+        open POSIX file pptxPath
+        set activePresentation to active presentation
+        save activePresentation in POSIX file pdfPath as save as PDF
+        close activePresentation saving no
+      end tell
+    end run
+    '''
+    return ["osascript", "-e", script, "--", str(pptx_path), str(pdf_path)]
+
+
 class PowerPointMacOSRenderer:
     name = "powerpoint_macos"
     app_path = Path("/Applications/Microsoft PowerPoint.app")
@@ -44,18 +61,9 @@ class PowerPointMacOSRenderer:
         if not self.is_available():
             return RenderResult("unavailable", self.name, None, None, errors=["RENDER_ENGINE_UNAVAILABLE"], duration_seconds=elapsed_since(started))
 
-        script = f'''
-        tell application "Microsoft PowerPoint"
-          activate
-          open POSIX file "{pptx_path}"
-          set activePresentation to active presentation
-          save activePresentation in POSIX file "{pdf_path}" as save as PDF
-          close activePresentation saving no
-        end tell
-        '''
         try:
             completed = subprocess.run(
-                ["osascript", "-e", script],
+                _powerpoint_export_command(pptx_path, pdf_path),
                 text=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

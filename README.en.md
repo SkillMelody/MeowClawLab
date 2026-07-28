@@ -6,7 +6,7 @@ MeowClaw Lab is a reliability-first home for reusable OpenClaw skills, workflows
 
 The repository goes beyond prompts that merely run. Its production workflows define capability probes, consent boundaries, failure behavior, and evidence-based completion. It currently maintains two projects: the professional presentation skill `article-html-to-ppt` and the safe-upgrade skill `openclaw-verified-upgrade`.
 
-## MeowClaw PPT Smith v2.1.0
+## MeowClaw PPT Smith v2.1.1
 
 <p align="center">
   <img src="./Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
@@ -30,7 +30,7 @@ The repository goes beyond prompts that merely run. Its production workflows def
 
 [Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
 
-> v2.1.0 Standard has passed real rendering, structural readback, and regression tests on the verified macOS + LibreOffice environment. Native Microsoft PowerPoint compatibility still requires target-environment validation. Premium final status remains run-specific and requires real rendering, zero-error QA, explicit rubric scoring, and human visual review.
+> v2.1.1 Standard has passed real rendering, structural readback, and regression tests on the verified macOS + LibreOffice environment. It also fixes macOS renderer path injection, fixture-cleanup containment, and excessive font-inventory disclosure. Native Microsoft PowerPoint compatibility still requires target-environment validation.
 
 ## v2.1 Hero Showcase
 
@@ -70,7 +70,7 @@ Both profiles enforce the same boundaries: a vague request authorizes planning o
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with Visual Planner, dual Builders, native connector routing, visual gates, and trusted QA. | v2.1.0 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with Visual Planner, dual Builders, native connector routing, visual gates, and trusted QA. | v2.1.1 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A safe OpenClaw upgrade transaction with Lite supervised and V2 managed runtime profiles. | Published |
 
 ## Design Principles

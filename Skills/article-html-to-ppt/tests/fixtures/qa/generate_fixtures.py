@@ -18,6 +18,22 @@ from pptx.dml.color import RGBColor
 ROOT = Path(__file__).resolve().parent
 
 
+def _validated_fixture_root(root: Path, script_path: Path) -> Path:
+    declared = Path(root)
+    if declared.is_symlink():
+        raise ValueError("fixture root must not be a symlink")
+    resolved = declared.resolve()
+    expected = Path(script_path).resolve().parent
+    if (
+        resolved != expected
+        or expected.name != "qa"
+        or expected.parent.name != "fixtures"
+        or expected.parent.parent.name != "tests"
+    ):
+        raise ValueError("fixture root must be tests/fixtures/qa beside this script")
+    return resolved
+
+
 def rgb(hex_color: str) -> RGBColor:
     value = hex_color.lstrip("#")
     return RGBColor(int(value[0:2], 16), int(value[2:4], 16), int(value[4:6], 16))
@@ -377,10 +393,13 @@ def save_complex_diagram(path: Path) -> None:
 
 
 def main() -> None:
-    if ROOT.exists():
-        for item in ROOT.iterdir():
+    cleanup_root = _validated_fixture_root(ROOT, Path(__file__))
+    if cleanup_root.exists():
+        for item in cleanup_root.iterdir():
             if item.name == "generate_fixtures.py":
                 continue
+            if item.is_symlink():
+                raise ValueError(f"fixture cleanup refuses symlink: {item}")
             if item.is_dir():
                 shutil.rmtree(item)
     fixtures = {
@@ -395,7 +414,7 @@ def main() -> None:
         "complex-diagram": save_complex_diagram,
     }
     for name, func in fixtures.items():
-        path = ROOT / name
+        path = cleanup_root / name
         path.mkdir(parents=True, exist_ok=True)
         func(path)
     for name, route, issue in [
@@ -403,14 +422,14 @@ def main() -> None:
         ("rasterized-chart", "native_chart", "PPTX_CHART_NOT_NATIVE"),
         ("route-deviation", "native_chart", "PPTX_RASTER_ROUTE_UNDECLARED"),
     ]:
-        path = ROOT / name
+        path = cleanup_root / name
         path.mkdir(parents=True, exist_ok=True)
         save_picture_component(path, route, issue)
     for name, rewrite, expected in [
         ("missing-media", lambda deck: rewrite_without_member(deck, lambda filename: filename.startswith("ppt/media/")), ["PPTX_MISSING_MEDIA"]),
         ("broken-relationship", rewrite_slide_rels_target, ["PPTX_MISSING_MEDIA"]),
     ]:
-        path = ROOT / name
+        path = cleanup_root / name
         path.mkdir(parents=True, exist_ok=True)
         save_whole_slide_image(path, name=name)
         rewrite(path / "deck.pptx")

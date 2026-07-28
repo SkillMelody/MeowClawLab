@@ -409,7 +409,11 @@ def font_stacks(style: dict[str, Any] | None) -> list[list[str]]:
 def probe_fonts(style: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
     installed = list_fonts(timeout)
     installed_lower = {font.lower() for font in installed}
-    missing = [font for font in required_fonts(style) if font.lower() not in installed_lower]
+    required = required_fonts(style)
+    available_required = [
+        font for font in required if font.lower() in installed_lower
+    ]
+    missing = [font for font in required if font.lower() not in installed_lower]
     fallback_map: dict[str, str] = {}
     for stack in font_stacks(style):
         for idx, font in enumerate(stack):
@@ -422,7 +426,7 @@ def probe_fonts(style: dict[str, Any] | None, timeout: int) -> dict[str, Any]:
             if fallback:
                 fallback_map[font] = fallback
     return {
-        "installed": installed[:250],
+        "installed": available_required,
         "required_missing": missing,
         "fallback_map": fallback_map,
     }

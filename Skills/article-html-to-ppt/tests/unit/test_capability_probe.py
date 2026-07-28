@@ -125,3 +125,21 @@ def test_core_builder_not_available_on_failed_smoke(monkeypatch) -> None:
     report = capability_probe.probe_pptxgenjs({"components": []}, timeout=1)
     assert report["available"] is False
     assert "CAPABILITY_SMOKE_TEST_FAILED" in report["errors"]
+
+
+def test_font_probe_discloses_only_fonts_required_by_style(monkeypatch) -> None:
+    monkeypatch.setattr(
+        capability_probe,
+        "list_fonts",
+        lambda timeout: ["Aptos", "Private Corporate Font", "Noto Sans CJK SC"],
+    )
+    style = {
+        "typography": {
+            "font_primary": ["Aptos", "sans-serif"],
+        }
+    }
+
+    report = capability_probe.probe_fonts(style, timeout=1)
+
+    assert report["installed"] == ["Aptos"]
+    assert "Private Corporate Font" not in report["installed"]

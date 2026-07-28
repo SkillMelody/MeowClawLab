@@ -29,7 +29,7 @@ def test_skill_keeps_206_brand_name_and_advances_only_version() -> None:
     assert 'display_name: "MeowClaw PPT Smith"' in skill
     assert 'english_alias: "MeowClaw PPT Smith"' in skill
     assert "# MeowClaw PPT Smith" in skill
-    assert 'version: "2.1.0"' in skill
+    assert 'version: "2.1.1"' in skill
 
 
 def test_routed_connector_emits_native_straight_elbow_and_curve_with_binding() -> None:

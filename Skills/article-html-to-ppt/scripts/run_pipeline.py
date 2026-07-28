@@ -17,6 +17,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 REGISTRY = ROOT / "references" / "component-registry.json"
+OUTPUT_OWNERSHIP_MARKER = ".pptsmith-output"
 STAGES = [
     "prepare_inputs",
     "validate_inputs",
@@ -36,6 +37,40 @@ STAGES = [
     "prepare_delivery",
     "package_delivery",
 ]
+
+
+def _validate_pipeline_paths(work: Path, output: Path) -> None:
+    work = Path(work).resolve()
+    output = Path(output).resolve()
+    broad_paths = {
+        Path("/").resolve(),
+        Path.home().resolve(),
+        Path.cwd().resolve(),
+        ROOT.resolve(),
+    }
+    if work in broad_paths:
+        raise ValueError(f"unsafe work directory: {work}")
+    if output in broad_paths:
+        raise ValueError(f"unsafe output directory: {output}")
+    if (
+        work == output
+        or work in output.parents
+        or output in work.parents
+    ):
+        raise ValueError("work and output directories must be distinct and non-overlapping")
+
+
+def _validate_output_reset(output: Path) -> None:
+    output = Path(output)
+    if not output.exists():
+        return
+    if not output.is_dir() or output.is_symlink():
+        raise ValueError(f"output path is not a safe directory: {output}")
+    entries = list(output.iterdir())
+    if entries and not (output / OUTPUT_OWNERSHIP_MARKER).is_file():
+        raise ValueError(
+            f"output directory is not owned by PPTSmith and will not be reset: {output}"
+        )
 
 
 class StageFailure(RuntimeError):
@@ -102,6 +137,7 @@ class Pipeline:
         self.args = args
         self.work = args.work_dir.resolve()
         self.output = args.output_dir.resolve()
+        _validate_pipeline_paths(self.work, self.output)
         self.contracts = self.work / "contracts"
         self.qa = self.work / "qa"
         self.logs = self.work / "logs"
@@ -196,6 +232,7 @@ class Pipeline:
         for path in (self.qa, self.logs, self.build_dir.parent):
             if path.exists():
                 shutil.rmtree(path)
+        _validate_output_reset(self.output)
         if self.output.exists():
             shutil.rmtree(self.output)
         contract_stage = self.work / ".contracts.current"
@@ -678,6 +715,10 @@ class Pipeline:
             "--strict",
         ]
         self.run_command("package_delivery", command)
+        (self.output / OUTPUT_OWNERSHIP_MARKER).write_text(
+            "PPTSmith managed output directory.\n",
+            encoding="utf-8",
+        )
 
     def run(self) -> int:
         self.work.mkdir(parents=True, exist_ok=True)
