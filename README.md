@@ -4,7 +4,7 @@
 
 MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复用的 Skills、工作流和运维 playbook。
 
-这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `article-html-to-ppt`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
+这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `PPT Smith`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
 
 ## MeowClaw PPT Smith v2.1.2
 
