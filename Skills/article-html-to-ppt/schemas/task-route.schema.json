@@ -23,6 +23,7 @@
         "technical_architecture",
         "enterprise_proposal",
         "product_business_review",
+        "product_prd",
         "editorial_knowledge",
         "domain_adapter",
         "general_visual_narrative"
@@ -41,6 +42,7 @@
         "technical_architecture",
         "enterprise_proposal",
         "product_business_review",
+        "product_prd",
         "editorial_knowledge",
         "domain_adapter"
       ],
@@ -61,6 +63,11 @@
           "maximum": 1
         },
         "product_business_review": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "product_prd": {
           "type": "number",
           "minimum": 0,
           "maximum": 1

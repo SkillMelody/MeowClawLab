@@ -121,6 +121,37 @@ def test_visual_narrative_stages_run_before_delivery_resolution(tmp_path: Path) 
         assert (work / "contracts" / name).is_file()
 
 
+def test_product_prd_with_unconsumed_ui_evidence_is_blocked_before_delivery(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline())
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--builder", "pptxgenjs", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    evidence = load_json(tmp_path / ".ppt-work" / "contracts" / "design-evidence.json")
+    assert completed.returncode != 0
+    assert state["failed_stage"] == "design_evidence"
+    assert "PRODUCT_PRD_REQUIRED_PROTOTYPES_UNCONSUMED" in evidence["blocking_codes"]
+
+
 def test_visual_revision_is_applied_at_most_once_and_keeps_first_pass_evidence(
     tmp_path: Path,
 ) -> None:

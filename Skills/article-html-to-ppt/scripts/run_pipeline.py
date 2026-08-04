@@ -22,6 +22,7 @@ STAGES = [
     "prepare_inputs",
     "validate_inputs",
     "route_task",
+    "design_evidence",
     "plan_visual_narrative",
     "validate_visual_plan",
     "deck_rhythm",
@@ -309,6 +310,27 @@ class Pipeline:
                 str(self.contracts / "task-route.json"),
             ],
         )
+
+    def design_evidence(self) -> None:
+        task_route = load_json(self.contracts / "task-route.json")
+        if task_route.get("selected_route") != "product_prd":
+            return
+        output = self.contracts / "design-evidence.json"
+        self.run_command(
+            "design_evidence",
+            [
+                sys.executable,
+                str(SCRIPTS / "extract_design_evidence.py"),
+                "--analysis",
+                str(self.contracts / "content-analysis.json"),
+                "--output",
+                str(output),
+            ],
+        )
+        evidence = load_json(output)
+        codes = evidence.get("blocking_codes")
+        if evidence.get("status") == "blocked" and isinstance(codes, list):
+            raise StageFailure("design_evidence", ", ".join(str(code) for code in codes))
 
     def visual_style_id(self) -> str:
         path = self.contracts / "visual-system.json"
@@ -728,6 +750,7 @@ class Pipeline:
             self.stage("validate_inputs", lambda: self.validate("validate_inputs"))
             if self.visual_enabled:
                 self.stage("route_task", self.route_task)
+                self.stage("design_evidence", self.design_evidence)
                 self.stage("plan_visual_narrative", self.plan_visual_narrative)
                 self.stage("validate_visual_plan", self.validate_visual_plan)
                 self.stage("deck_rhythm", self.deck_rhythm)

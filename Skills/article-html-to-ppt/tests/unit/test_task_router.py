@@ -34,6 +34,19 @@ def test_low_confidence_uses_general_visual_narrative_route() -> None:
     assert "TASK_ROUTE_LOW_CONFIDENCE" in result["warnings"]
 
 
+def test_explicit_product_prd_route_is_a_high_confidence_specialized_route() -> None:
+    result = route_task({"evidence_types": [], "relationship_types": []}, explicit_route="product_prd")
+
+    assert result["selected_route"] == "product_prd"
+    assert result["confidence"] >= 0.6
+
+
+def test_product_prd_request_in_analysis_routes_without_out_of_band_cli_state() -> None:
+    result = route_task({"requested_route": "product_prd", "evidence_types": [], "relationship_types": []})
+
+    assert result["selected_route"] == "product_prd"
+
+
 @pytest.mark.parametrize("malformed_analysis", [None, "oops", [], ("a", "b")])
 def test_malformed_analysis_is_parameterized(malformed_analysis: object) -> None:
     result = route_task(malformed_analysis)  # type: ignore[arg-type]
