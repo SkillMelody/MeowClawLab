@@ -110,7 +110,7 @@ class PptxGenJsAdapter:
                 status="failed",
                 errors=[{
                     "code": "PPTXGENJS_RUNTIME_UNAVAILABLE",
-                    "message": "PptxGenJS requires Node, the local module, and build-deck.mjs.",
+                    "message": "PptxGenJS requires Node, the local module, and build-deck.mjs. Run `python3 scripts/bootstrap_pptxgenjs_runtime.py` (which executes lockfile-pinned `npm ci`) from the article-html-to-ppt root, then retry.",
                     "details": capability.errors,
                 }],
             )

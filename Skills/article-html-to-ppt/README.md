@@ -143,6 +143,20 @@ Policy、Router、Dispatch Bus 与 Agent Group 分区表达，输出路径可逐
 核心文字、表格和简单图表保持可编辑。
 ```
 
+## 开发与 CI：PptxGenJS runtime
+
+`runtime/pptxgenjs/node_modules` 是本地、被忽略的构建产物，不随 Git checkout 分发。新 clone 或新 worktree 在执行 PptxGenJS 相关测试/构建前，必须从 Skill 根目录运行：
+
+```bash
+python3 scripts/bootstrap_pptxgenjs_runtime.py
+```
+
+该命令只在 `runtime/pptxgenjs` 内执行 lockfile-pinned `npm ci`，不会全局安装、更新 lockfile 或提交 `node_modules`。CI 和排障可先用以下 preflight 获取可操作状态：
+
+```bash
+python3 scripts/bootstrap_pptxgenjs_runtime.py --check
+```
+
 ## 生产链
 
 ```text
