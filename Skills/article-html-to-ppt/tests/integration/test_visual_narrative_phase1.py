@@ -119,6 +119,9 @@ def test_visual_narrative_stages_run_before_delivery_resolution(tmp_path: Path) 
         "visual-revision-request.json",
     ):
         assert (work / "contracts" / name).is_file()
+    task_route = load_json(work / "contracts" / "task-route.json")
+    assert task_route["selected_route"] == "research_report"
+    assert "product_prd" in task_route["rejected_routes"]
 
 
 def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> None:
@@ -139,7 +142,7 @@ def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> Non
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
-            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
         cwd=ROOT, text=True, capture_output=True, check=False,
@@ -173,7 +176,7 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
-            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
         cwd=ROOT, text=True, capture_output=True, check=False,
@@ -183,6 +186,9 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
     work = tmp_path / ".ppt-work"
     evidence = load_json(work / "contracts" / "design-evidence.json")
     ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    assert delivery["builder"]["requested"] == "auto"
+    assert delivery["builder"]["selected"] == "python_pptx"
     coverage = evidence["coverage_matrix"]
     assert coverage["product_ui_overview"] == {
         "required": True,
@@ -201,6 +207,36 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
         "product_ui_overview",
         "interaction_storyboard",
     }
+
+
+def test_product_prd_forced_pptxgenjs_is_honestly_blocked(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline())
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--builder", "pptxgenjs", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode != 0
+    assert "BUILDER_COMPONENT_UNSUPPORTED" in completed.stderr
+    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    assert state["failed_stage"] == "resolve_delivery"
 
 
 def test_product_prd_without_design_evidence_does_not_inject_prototypes(tmp_path: Path) -> None:

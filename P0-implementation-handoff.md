@@ -15,6 +15,15 @@ Independent acceptance found that a valid consulting/general route emits `produc
 - GREEN: added `product_prd` to `rejected_routes.items.enum`; the contract test and `test_visual_narrative_stages_run_before_delivery_resolution` passed (`2 passed`).
 - Regression contract: the test validates the actual `route_task()` result against the JSON Schema whenever a non-PRD route rejects `product_prd`.
 
+## Builder-selection contract repair
+
+The two product PRD renderers are full native implementations for `python_pptx` only. `pptxgenjs` remains unsupported for these component types; it must never silently omit, raster-fallback, or misrepresent them.
+
+- A generic visual-narrative run still requests and uses `pptxgenjs`; it selects `research_report` and legally lists `product_prd` in `rejected_routes`.
+- A PRD run with required `product_ui_overview` and `interaction_storyboard` components requests `auto` and the planner selects canonical `python_pptx`.
+- A PRD run forced to `pptxgenjs` stops at `resolve_delivery` with the explicit `BUILDER_COMPONENT_UNSUPPORTED` code.
+- RED evidence: the forced-builder test initially failed because the prior result contained only generic `BUILDER_ROUTE_UNSUPPORTED` / native-required codes. Adding the component-specific error contract brought it to GREEN.
+
 ## Final regression evidence
 
 Command:
@@ -26,7 +35,7 @@ python3 -m pytest -q --cache-clear \
   tests/unit/test_task_router.py
 ```
 
-Result: **17 passed**. The post-run pytest `lastfailed` cache was absent.
+Result: **18 passed**. The post-run pytest `lastfailed` cache was absent.
 
 ## Model evidence
 
