@@ -222,9 +222,17 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
     assert product_slides["S02"]["title"] == "产品工作台 UI 总览"
     assert product_slides["S02"]["message"] == "Canvas 是核心工作区；真实应用截图待补。"
     assert [obj["id"] for obj in product_slides["S02"]["objects"]] == ["prd-product-ui-overview"]
+    # S02 spaces from content-analysis (only Canvas is provided as ui_space)
+    s02_spaces = product_slides["S02"]["objects"][0]["content"]["spaces"]
+    s02_labels = {s["label"] for s in s02_spaces}
+    assert "Canvas" in s02_labels
+    assert len(s02_spaces) == 1
     assert product_slides["S03"]["title"] == "工作台交互路径"
-    assert product_slides["S03"]["message"] == "select 是已确认的交互触发；未给出的状态不作伪造。"
+    assert product_slides["S03"]["message"] == "从节点选区到 AI 反馈、结果采纳及异常处理的完整路径。"
     assert [obj["id"] for obj in product_slides["S03"]["objects"]] == ["prd-interaction-storyboard"]
+    s03_steps = product_slides["S03"]["objects"][0]["content"]["steps"]
+    assert len(s03_steps) == 1
+    assert s03_steps[0]["kind"] == "action"
 
 
 def test_product_prd_forced_pptxgenjs_is_honestly_blocked(tmp_path: Path) -> None:
@@ -277,10 +285,16 @@ def test_product_prd_without_design_evidence_does_not_inject_prototypes(tmp_path
     work = tmp_path / ".ppt-work"
     evidence = load_json(work / "contracts" / "design-evidence.json")
     ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
-    assert evidence["coverage_matrix"]["product_ui_overview"]["consumer_object_ids"] == []
+    # product_ui_overview is always required and injected even without ui_space evidence
+    assert evidence["coverage_matrix"]["product_ui_overview"]["consumer_object_ids"] == ["prd-product-ui-overview"]
     assert evidence["coverage_matrix"]["interaction_storyboard"]["consumer_object_ids"] == []
+    assert any(
+        obj.get("component_type") == "product_ui_overview"
+        for slide in ppt_ir["slides"]
+        for obj in slide.get("objects", [])
+    )
     assert all(
-        obj.get("component_type") not in {"product_ui_overview", "interaction_storyboard"}
+        obj.get("component_type") != "interaction_storyboard"
         for slide in ppt_ir["slides"]
         for obj in slide.get("objects", [])
     )

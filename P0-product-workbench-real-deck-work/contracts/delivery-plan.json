@@ -1,0 +1,324 @@
+{
+  "schema_version": "1.0",
+  "ppt_ir_ref": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/ppt-ir.json",
+  "style_contract_ref": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/style-contract.json",
+  "component_registry_ref": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/references/component-registry.json",
+  "capability_report_ref": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/capability-report.json",
+  "profile": "standard",
+  "builder": {
+    "requested": "auto",
+    "selected": "python_pptx",
+    "version": "1.0.2",
+    "selection_score": 0.8844,
+    "selection_reasons": [
+      "BUILDER_CANDIDATE_SCORED",
+      "BUILDER_SELECTED_BY_SCORE"
+    ],
+    "candidates": [
+      {
+        "builder": "pptxgenjs",
+        "available": true,
+        "version": "4.0.1",
+        "score": 0.775,
+        "native_component_coverage": 0.75,
+        "editable_core_coverage": 0.75,
+        "fallback_count": 0,
+        "reasons": [
+          "BUILDER_CANDIDATE_SCORED"
+        ],
+        "errors": [
+          "BUILDER_COMPONENT_UNSUPPORTED",
+          "BUILDER_NATIVE_REQUIRED_UNSUPPORTED",
+          "BUILDER_ROUTE_UNSUPPORTED"
+        ]
+      },
+      {
+        "builder": "officecli",
+        "available": false,
+        "version": null,
+        "score": 0.775,
+        "native_component_coverage": 0.75,
+        "editable_core_coverage": 0.75,
+        "fallback_count": 0,
+        "reasons": [
+          "BUILDER_CANDIDATE_SCORED"
+        ],
+        "errors": [
+          "BUILDER_COMPONENT_UNSUPPORTED",
+          "BUILDER_NATIVE_REQUIRED_UNSUPPORTED",
+          "BUILDER_ROUTE_UNSUPPORTED",
+          "CAPABILITY_BUILDER_NOT_FOUND"
+        ]
+      },
+      {
+        "builder": "python_pptx",
+        "available": true,
+        "version": "1.0.2",
+        "score": 0.8844,
+        "native_component_coverage": 0.9375,
+        "editable_core_coverage": 0.95,
+        "fallback_count": 1,
+        "reasons": [
+          "BUILDER_CANDIDATE_SCORED"
+        ],
+        "errors": []
+      },
+      {
+        "builder": "html_svg",
+        "available": true,
+        "version": "python-stdlib-svg",
+        "score": 0.325,
+        "native_component_coverage": 0.0,
+        "editable_core_coverage": 0.0,
+        "fallback_count": 0,
+        "reasons": [
+          "BUILDER_CANDIDATE_SCORED"
+        ],
+        "errors": [
+          "BUILDER_COMPONENT_UNSUPPORTED",
+          "BUILDER_NATIVE_REQUIRED_UNSUPPORTED",
+          "BUILDER_ROUTE_UNSUPPORTED"
+        ]
+      }
+    ],
+    "warnings": [],
+    "errors": []
+  },
+  "slides": [
+    {
+      "slide_id": "S01",
+      "objects": []
+    },
+    {
+      "slide_id": "S02",
+      "objects": [
+        {
+          "slide_id": "S02",
+          "object_id": "prd-product-ui-overview",
+          "component_type": "product_ui_overview",
+          "preferred_route": "native_diagram",
+          "selected_route": "native_diagram",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "space_labels",
+            "relationships",
+            "source_labels"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "EDITABLE_LABEL_RATIO",
+            "SOURCE_LABEL"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S03",
+      "objects": [
+        {
+          "slide_id": "S03",
+          "object_id": "prd-interaction-storyboard",
+          "component_type": "interaction_storyboard",
+          "preferred_route": "native_diagram",
+          "selected_route": "native_diagram",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "step_labels",
+            "transitions",
+            "source_labels"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "DIAGRAM_MAIN_PATH",
+            "EDITABLE_LABEL_RATIO",
+            "SOURCE_LABEL"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S04",
+      "objects": [
+        {
+          "slide_id": "S04",
+          "object_id": "acceptance-table",
+          "component_type": "native_table",
+          "preferred_route": "native_table",
+          "selected_route": "native_table",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "headers",
+            "cells",
+            "source_note"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "TABLE_NATIVE",
+            "TEXT_OVERFLOW",
+            "COLOR_CONTRACT",
+            "FONT_MINIMUM"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S05",
+      "objects": [
+        {
+          "slide_id": "S05",
+          "object_id": "coverage-chart",
+          "component_type": "bar_chart",
+          "preferred_route": "native_chart",
+          "selected_route": "native_chart",
+          "decision": "fallback",
+          "reason_codes": [
+            "DELIVERY_BUILDER_PARTIAL_SUPPORT",
+            "DELIVERY_FALLBACK_SELECTED"
+          ],
+          "editable_core": [
+            "data",
+            "labels",
+            "source_note"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "CHART_NATIVE",
+            "COLOR_CONTRACT"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S06",
+      "objects": [
+        {
+          "slide_id": "S06",
+          "object_id": "acceptance-process",
+          "component_type": "process_flow",
+          "preferred_route": "native_diagram",
+          "selected_route": "native_diagram",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "nodes",
+            "labels"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "DIAGRAM_MAIN_PATH"
+          ],
+          "fallback_chain": [
+            "hybrid_overlay",
+            "svg_component"
+          ]
+        }
+      ]
+    },
+    {
+      "slide_id": "S07",
+      "objects": [
+        {
+          "slide_id": "S07",
+          "object_id": "comparison-semantics",
+          "component_type": "comparison_card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "label",
+            "claim",
+            "evidence"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "COLOR_CONTRACT",
+            "TEXT_OVERFLOW"
+          ],
+          "fallback_chain": []
+        },
+        {
+          "slide_id": "S07",
+          "object_id": "comparison-truth",
+          "component_type": "comparison_card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "label",
+            "claim",
+            "evidence"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "COLOR_CONTRACT",
+            "TEXT_OVERFLOW"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S08",
+      "objects": [
+        {
+          "slide_id": "S08",
+          "object_id": "implementation-plan",
+          "component_type": "comparison_card",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "label",
+            "claim",
+            "evidence"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "COLOR_CONTRACT",
+            "TEXT_OVERFLOW"
+          ],
+          "fallback_chain": []
+        }
+      ]
+    },
+    {
+      "slide_id": "S09",
+      "objects": []
+    }
+  ],
+  "summary": {
+    "total_objects": 8,
+    "fallback_count": 1,
+    "unsupported_count": 0,
+    "risk_codes": [
+      "DELIVERY_BUILDER_PARTIAL_SUPPORT",
+      "DELIVERY_FALLBACK_SELECTED"
+    ]
+  }
+}

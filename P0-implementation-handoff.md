@@ -66,6 +66,90 @@ The final run used the canonical `python_pptx` native builder and completed ever
 
 Detailed run evidence remains under `P0-product-workbench-real-deck-work/` and the packaged delivery is under `P0-product-workbench-real-deck-delivery/`.
 
+## Builder-contract rework (second commit)
+
+Two component types (`product_ui_overview`, `interaction_storyboard`) are full native implementations for `python_pptx` only. The following were added to enforce this:
+
+- `selector.py`: new `BUILDER_COMPONENT_UNSUPPORTED` blocking code — when a forced pptxgenjs builder is given a product PRD with required native-only components, `resolve_delivery` fails with the explicit code rather than a generic unsupported error.
+- Integration test: verifies that `--builder pptxgenjs` with a product PRD content-analysis stops at `resolve_delivery` with `BUILDER_COMPONENT_UNSUPPORTED` in stderr.
+- Integration test: verifies that `--builder auto` with product PRD selects `python_pptx`.
+- Generic visual-narrative regression still uses `pptxgenjs` and legally rejects `product_prd`.
+
+## Screenshot placeholder rework
+
+`product_ui_overview` now renders:
+- Native, editable `Placeholder:product_ui_overview:application_screenshot` with fixed `16:10` aspect ratio, labelled `待替换：应用截图`.
+- Screenshot is a **secondary zone**; the main body is a native editable workspace sketch with:
+  - Readable TopBar (horizontal bar with menu items)
+  - Central Canvas with three node boxes (文章节点, AI 建议, 导出选区) connected by thin-line connectors
+  - Sub-labels below each node with source references (§5, §8.2, §11)
+  - Inspector panel (右侧属性面板)
+  - Dock bar at bottom
+- No AI-fabricated UI, no image/raster.
+- Design evidence records `coverage_matrix.application_screenshot` with asset_status, aspect_ratio, page/region.
+
+## Interaction storyboard rework
+
+`interaction_storyboard` now renders:
+- Continuous native state frames: action (entry trigger) → async_state (AI feedback/streaming) → result (Diff preview) → decision (accept/undo)
+- Error/CONFLICT branch: `error` kind steps are rendered as a separate flow below the main flow, connected from the last main step with a warning-colored connector, showing the error label and action options (重试 / 重新生成 / 查看差异).
+- S03 judgment updated to reflect that the PRD has documented the full interaction flow.
+
+## Design evidence coverage
+
+- `coverage_matrix.application_screenshot`: required=true, asset_status=missing, consumed=true, consumer_object_ids, placeholder with aspect_ratio 16:10, page_id=S02, region=product_ui_overview.primary_visual.
+- `coverage_matrix.product_ui_overview`: required=true, consumed=true, with default workspace zone injection for richer rendering.
+- `coverage_matrix.interaction_storyboard`: required=true when interactions present, consumed=true, steps carry kind/action information.
+
+## Final real-deck generation
+
+Same PRD inputs with updated content-analysis containing richer space/interaction evidence.
+
+Command:
+```text
+python3 Skills/article-html-to-ppt/scripts/run_pipeline.py \
+  --requirements P0-product-workbench-real-deck-work/contracts/requirements.json \
+  --ppt-ir P0-product-workbench-real-deck-work/contracts/ppt-ir.json \
+  --style P0-product-workbench-real-deck-work/contracts/style-contract.json \
+  --content-analysis P0-product-workbench-content-analysis.json \
+  --storyline P0-product-workbench-storyline.json \
+  --builder auto --profile standard \
+  --work-dir P0-product-workbench-real-deck-work \
+  --output-dir P0-product-workbench-real-deck-delivery --json-output
+```
+
+Result: `ok: true`, state `verified`, 9 slides.
+
+- LibreOffice 26.2.4.2: **9/9** slides rendered, zero warnings/errors.
+- Structural QA: zero errors, zero fatals.
+- `native_text_ratio`: 1.0, `editable_core_ratio`: 1.0, `media_count`: 0, `whole_slide_raster_count`: 0, `rasterized_area_ratio`: 0.0.
+- Readback: one `product_ui_overview` and one `interaction_storyboard` native component present with source labels.
+- Connector count: 6 (3 main-flow + 3 canvas-internal).
+- Delivery manifest updated with `commit_sha: 40bc3d3`.
+- Deck SHA-256: `7a0ea7dc5b75d49373fa536da19dc18f9b05f921acc8a8fc108a4d63d3d9d0c2`.
+- Detailed run evidence: `P0-product-workbench-real-deck-work/` (untracked, reproducible).
+- Packaged delivery: `P0-product-workbench-real-deck-delivery/`.
+
+## Model evidence
+
+- Requested: `volcengine-agent-plan/deepseek-v4-pro`
+- Actual: `volcengine-agent-plan/deepseek-v4-pro`
+- Fallback used: `false`
+- Gateway response: `ok: true`, `attempts: []`
+
+## Final regression
+
+Command:
+```text
+python3 -m pytest -vv --cache-clear \
+  tests/unit/test_product_prd_native_prototypes.py \
+  tests/unit/test_design_evidence.py \
+  tests/unit/test_task_router.py \
+  tests/integration/test_visual_narrative_phase1.py
+```
+
+Result: **22 passed** — all unit + integration tests. `pytest lastfailed` cache absent.
+
 ## Known boundary
 
 This proves the recorded `python_pptx` + LibreOffice route. Native Microsoft PowerPoint / Keynote pixel parity has not been run and is not claimed.

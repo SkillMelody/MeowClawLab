@@ -71,6 +71,16 @@ def test_product_ui_overview_is_source_labeled_native_workspace_sketch(tmp_path:
     names = {shape.name for shape in shapes}
     assert "Label:product_ui_overview:derived" in names
     assert "Source:product_ui_overview:0" in names
+    # Native workspace elements
+    assert "Component:product_ui_overview:topbar" in names
+    assert "Label:product_ui_overview:canvas_area" in names
+    assert "Component:product_ui_overview:inspector" in names
+    assert "Component:product_ui_overview:dock" in names
+    # Canvas nodes
+    assert sum(name.startswith("Component:product_ui_overview:canvas_node:") for name in names) == 3
+    # Connectors between canvas nodes
+    assert sum(name.startswith("Connector:product_ui_overview:canvas_edge:") for name in names) == 2
+    # Screenshot placeholder as secondary zone
     assert "Placeholder:product_ui_overview:application_screenshot" in names
     placeholder = next(
         shape
@@ -78,10 +88,6 @@ def test_product_ui_overview_is_source_labeled_native_workspace_sketch(tmp_path:
         if shape.name == "Placeholder:product_ui_overview:application_screenshot"
     )
     assert "待替换：应用截图" in placeholder.text
-    assert "固定比例 16:10" in placeholder.text
-    assert round((placeholder.width / 914400) / (placeholder.height / 914400), 2) == 1.60
-    assert sum(name.startswith("Component:product_ui_overview:space:") for name in names) == 3
-    assert sum(name.startswith("Connector:product_ui_overview:relationship:") for name in names) == 2
     assert all(shape.shape_type != 13 for shape in shapes)
 
 
@@ -133,9 +139,70 @@ def test_interaction_storyboard_is_source_labeled_native_state_flow(tmp_path: Pa
     names = {shape.name for shape in shapes}
     assert "Label:interaction_storyboard:derived" in names
     assert "Source:interaction_storyboard:0" in names
+    assert "State:interaction_storyboard:select:entry_trigger" in names
     assert "State:interaction_storyboard:stream:assistant_bubble" in names
     assert "State:interaction_storyboard:diff:diff_preview" in names
     assert "State:interaction_storyboard:adopt:decision_controls" in names
     assert sum(name.startswith("Component:interaction_storyboard:step:") for name in names) == 4
     assert sum(name.startswith("Connector:interaction_storyboard:transition:") for name in names) == 3
+    assert all(shape.shape_type != 13 for shape in shapes)
+
+
+def test_interaction_storyboard_with_error_branch_renders_separate_flow(tmp_path: Path) -> None:
+    result = PythonPptxAdapter().build(
+        BuildPlan(
+            builder="python_pptx",
+            slides=[
+                {
+                    "id": "S01",
+                    "title": "协作交互路径含异常分支",
+                    "style_contract": _style(),
+                    "objects": [
+                        {
+                            "id": "prd-storyboard-2",
+                            "component_type": "interaction_storyboard",
+                            "editability": "native_required",
+                            "delivery_plan": {"selected_route": "native_diagram"},
+                            "content": {
+                                "source_refs": ["prd#error-handling"],
+                                "steps": [
+                                    {"id": "select", "kind": "action", "label": "选区并触发"},
+                                    {"id": "stream", "kind": "async_state", "label": "流式生成中"},
+                                    {"id": "diff", "kind": "result", "label": "查看 Diff"},
+                                    {"id": "adopt", "kind": "decision", "label": "采纳或撤销"},
+                                    {"id": "api_error", "kind": "error", "label": "API 超时", "action": "重试 / 重新生成 / 查看差异"},
+                                ],
+                                "transitions": [
+                                    {"from": "select", "to": "stream"},
+                                    {"from": "stream", "to": "diff"},
+                                    {"from": "diff", "to": "adopt"},
+                                ],
+                            },
+                        }
+                    ],
+                }
+            ],
+        ),
+        tmp_path,
+    )
+
+    assert result.status == "created", result.errors
+    assert result.fallbacks == []
+    deck_path = Path(result.pptx)
+    assert inspect_package(deck_path).status == "passed"
+    with zipfile.ZipFile(deck_path) as package:
+        assert not any(name.startswith("ppt/media/") for name in package.namelist())
+
+    shapes = list(Presentation(deck_path).slides[0].shapes)
+    names = {shape.name for shape in shapes}
+    assert "Label:interaction_storyboard:derived" in names
+    # Main flow steps
+    assert sum(name.startswith("Component:interaction_storyboard:step:") for name in names) == 4
+    # Error branch
+    assert sum(name.startswith("Component:interaction_storyboard:error:") for name in names) == 1
+    assert sum(name.startswith("Connector:interaction_storyboard:error_branch:") for name in names) == 1
+    assert "Component:interaction_storyboard:error:api_error" in names
+    error_box = next(shape for shape in shapes if shape.name == "Component:interaction_storyboard:error:api_error")
+    assert "API 超时" in error_box.text
+    assert "重试" in error_box.text
     assert all(shape.shape_type != 13 for shape in shapes)

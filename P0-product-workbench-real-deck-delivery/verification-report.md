@@ -2,5 +2,5 @@
 
 - Profile: standard
 - Structural inspection: passed
-- QA status: pass
+- QA status: warning
 - Trusted delivery status: verified

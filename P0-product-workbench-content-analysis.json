@@ -2,9 +2,15 @@
   "requested_route": "product_prd",
   "source_id": "product-workbench-prd",
   "ui_spaces": [
-    {"name": "Canvas", "locator": "5"}
+    {"name": "Canvas", "locator": "5"},
+    {"name": "Inspector", "locator": "5"},
+    {"name": "Dock", "locator": "3.1"}
   ],
   "interactions": [
-    {"trigger": "select", "locator": "8.2"}
+    {"trigger": "select", "kind": "action", "locator": "8.2"},
+    {"trigger": "streaming", "kind": "async_state", "locator": "8.3"},
+    {"trigger": "diff", "kind": "result", "locator": "8.4"},
+    {"trigger": "adopt", "kind": "decision", "locator": "8.5"},
+    {"trigger": "api_error", "kind": "error", "locator": "11"}
   ]
 }

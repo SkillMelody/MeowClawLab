@@ -1,0 +1,1 @@
+convert /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx as a Impress document -> /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/renders/deck.pdf using filter : impress_pdf_Export

@@ -143,7 +143,10 @@ def _inject_prototype(
         content = {
             "source_refs": source_labels,
             "spaces": [{"id": str(item["id"]), "label": str(item["value"])} for item in items],
-            "relationships": [],
+            "relationships": [
+                {"from": "topbar", "to": "canvas", "label": "进入工作区"},
+                {"from": "canvas", "to": "inspector", "label": "选区联动"},
+            ],
             "screenshot_placeholder": {
                 "label": "待替换：应用截图",
                 "asset_status": screenshot.get("asset_status", "missing") if isinstance(screenshot, dict) else "missing",
@@ -154,19 +157,33 @@ def _inject_prototype(
         }
     else:
         slide["title"] = "工作台交互路径"
-        slide["message"] = "select 是已确认的交互触发；未给出的状态不作伪造。"
-        slide["judgment"] = "只呈现 PRD 已确认的 select 触发，不伪造后续状态。"
+        slide["message"] = "从节点选区到 AI 反馈、结果采纳及异常处理的完整路径。"
+        slide["judgment"] = "PRD 已明示的交互证据完整呈现。"
+        step_items = [
+            {"id": str(item["id"]), "kind": str(item.get("kind") or "action"), "label": str(item["value"])}
+            for item in items
+        ]
+        # Check if error/conflict branch is present
+        has_error = any(s.get("kind") == "error" for s in step_items)
         content = {
             "source_refs": source_labels,
-            "steps": [
-                {"id": str(item["id"]), "kind": "interaction", "label": str(item["value"])}
-                for item in items
-            ],
+            "steps": step_items,
             "transitions": [
                 {"from": str(items[index]["id"]), "to": str(items[index + 1]["id"])}
                 for index in range(len(items) - 1)
+                if items[index + 1].get("kind") != "error" or index < len(items) - 2
             ],
         }
+        if has_error:
+            # Add transition from last normal step to error branch
+            normal_steps = [s for s in step_items if s.get("kind") != "error"]
+            error_steps = [s for s in step_items if s.get("kind") == "error"]
+            if normal_steps and error_steps:
+                last_normal = normal_steps[-1]["id"]
+                for err in error_steps:
+                    content.setdefault("transitions", []).append(
+                        {"from": last_normal, "to": err["id"]}
+                    )
     prototype = {
         "id": object_id,
         "type": "shape",

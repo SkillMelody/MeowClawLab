@@ -1,0 +1,9 @@
+$ /Library/Developer/CommandLineTools/usr/bin/python3 /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/scripts/inspect_pptx.py /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx --ppt-ir /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/ppt-ir.json --style /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/style-contract.json --delivery /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/delivery-plan.json --build /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/build-manifest.json --output /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/qa/pptx-inspection.json
+
+STDOUT
+
+STDERR
+2026-08-04T19:10:24+0800 WARNING text S03 ppt-object-3-7 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-04T19:10:24+0800 WARNING text S03 ppt-object-3-8 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-04T19:10:24+0800 WARNING text S03 ppt-object-3-9 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-04T19:10:24+0800 WARNING text S03 ppt-object-3-10 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
