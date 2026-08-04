@@ -1,0 +1,10 @@
+{
+  "requested_route": "product_prd",
+  "source_id": "product-workbench-prd",
+  "ui_spaces": [
+    {"name": "Canvas", "locator": "5"}
+  ],
+  "interactions": [
+    {"trigger": "select", "locator": "8.2"}
+  ]
+}

@@ -81,6 +81,22 @@
           "1.0"
         ],
         "smoke_test": "passed"
+      },
+      "product_ui_overview": {
+        "level": "full",
+        "handler": "scripts.visual_narrative.renderers.product_ui_overview.render",
+        "schema_versions": [
+          "1.0"
+        ],
+        "smoke_test": "passed"
+      },
+      "interaction_storyboard": {
+        "level": "full",
+        "handler": "scripts.visual_narrative.renderers.interaction_storyboard.render",
+        "schema_versions": [
+          "1.0"
+        ],
+        "smoke_test": "passed"
       }
     },
     "pptxgenjs": {

@@ -49,6 +49,14 @@ _RENDERER_BINDINGS = {
         "handler": "scripts.visual_narrative.renderers.phase_roadmap.render",
         "schema_versions": {"1.0"},
     },
+    ("python_pptx", "product_ui_overview"): {
+        "handler": "scripts.visual_narrative.renderers.product_ui_overview.render",
+        "schema_versions": {"1.0"},
+    },
+    ("python_pptx", "interaction_storyboard"): {
+        "handler": "scripts.visual_narrative.renderers.interaction_storyboard.render",
+        "schema_versions": {"1.0"},
+    },
     **{
         ("pptxgenjs", component_type): {
             "handler": "builders.pptxgenjs_adapter.PptxGenJsAdapter.build",
@@ -214,6 +222,14 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
             ],
             "milestones": [{"label": "Gate", "phase": 0}],
         },
+        "product_ui_overview": {
+            "spaces": [{"id": "canvas", "label": "Canvas"}],
+            "relationships": [],
+        },
+        "interaction_storyboard": {
+            "steps": [{"id": "select", "kind": "interaction", "label": "Select"}],
+            "transitions": [],
+        },
     }
     return {
         "id": f"smoke-{component_type}",
@@ -228,6 +244,8 @@ def _minimum_smoke_shape_count(component_type: str) -> int:
         "layered_architecture": 4,
         "drill_down_stair": 3,
         "phase_roadmap": 4,
+        "product_ui_overview": 2,
+        "interaction_storyboard": 2,
     }[component_type]
 
 

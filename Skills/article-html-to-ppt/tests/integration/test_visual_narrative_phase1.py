@@ -121,7 +121,7 @@ def test_visual_narrative_stages_run_before_delivery_resolution(tmp_path: Path) 
         assert (work / "contracts" / name).is_file()
 
 
-def test_product_prd_with_unconsumed_ui_evidence_is_blocked_before_delivery(tmp_path: Path) -> None:
+def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> None:
     content_analysis = tmp_path / "content-analysis.json"
     storyline_path = tmp_path / "storyline.json"
     write_json(
@@ -139,17 +139,97 @@ def test_product_prd_with_unconsumed_ui_evidence_is_blocked_before_delivery(tmp_
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
-            "--builder", "pptxgenjs", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
         cwd=ROOT, text=True, capture_output=True, check=False,
     )
 
-    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    assert completed.returncode == 0, completed.stderr or completed.stdout
     evidence = load_json(tmp_path / ".ppt-work" / "contracts" / "design-evidence.json")
-    assert completed.returncode != 0
-    assert state["failed_stage"] == "design_evidence"
-    assert "PRODUCT_PRD_REQUIRED_PROTOTYPES_UNCONSUMED" in evidence["blocking_codes"]
+    assert evidence["status"] == "ready"
+    assert evidence["blocking_codes"] == []
+    assert evidence["coverage_matrix"]["product_ui_overview"]["consumed"] is True
+    assert evidence["coverage_matrix"]["interaction_storyboard"]["consumed"] is True
+
+
+def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
+    tmp_path: Path,
+) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline())
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    evidence = load_json(work / "contracts" / "design-evidence.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    coverage = evidence["coverage_matrix"]
+    assert coverage["product_ui_overview"] == {
+        "required": True,
+        "evidence_ids": ["ui_space-01"],
+        "consumed": True,
+        "consumer_object_ids": ["prd-product-ui-overview"],
+    }
+    assert coverage["interaction_storyboard"] == {
+        "required": True,
+        "evidence_ids": ["interaction-01"],
+        "consumed": True,
+        "consumer_object_ids": ["prd-interaction-storyboard"],
+    }
+    objects = [obj for slide in ppt_ir["slides"] for obj in slide.get("objects", [])]
+    assert {obj["component_type"] for obj in objects} >= {
+        "product_ui_overview",
+        "interaction_storyboard",
+    }
+
+
+def test_product_prd_without_design_evidence_does_not_inject_prototypes(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"requested_route": "product_prd", "source_id": "minimal-prd"})
+    write_json(storyline_path, storyline())
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    evidence = load_json(work / "contracts" / "design-evidence.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    assert evidence["coverage_matrix"]["product_ui_overview"]["consumer_object_ids"] == []
+    assert evidence["coverage_matrix"]["interaction_storyboard"]["consumer_object_ids"] == []
+    assert all(
+        obj.get("component_type") not in {"product_ui_overview", "interaction_storyboard"}
+        for slide in ppt_ir["slides"]
+        for obj in slide.get("objects", [])
+    )
 
 
 def test_visual_revision_is_applied_at_most_once_and_keeps_first_pass_evidence(

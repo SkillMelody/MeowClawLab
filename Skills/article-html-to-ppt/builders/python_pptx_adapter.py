@@ -35,6 +35,8 @@ class PythonPptxAdapter:
                 "layered_architecture": "full",
                 "drill_down_stair": "full",
                 "phase_roadmap": "full",
+                "product_ui_overview": "full",
+                "interaction_storyboard": "full",
             } if available else {},
             warnings=[] if available else ["python-pptx package is not importable."],
         )
@@ -47,6 +49,8 @@ class PythonPptxAdapter:
                 "layered_architecture",
                 "drill_down_stair",
                 "phase_roadmap",
+                "product_ui_overview",
+                "interaction_storyboard",
             }
             and delivery_route == "native_diagram"
         ):

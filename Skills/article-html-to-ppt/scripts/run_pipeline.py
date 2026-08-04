@@ -312,6 +312,8 @@ class Pipeline:
         )
 
     def design_evidence(self) -> None:
+        from visual_narrative.design_evidence import consume_design_evidence
+
         task_route = load_json(self.contracts / "task-route.json")
         if task_route.get("selected_route") != "product_prd":
             return
@@ -328,6 +330,10 @@ class Pipeline:
             ],
         )
         evidence = load_json(output)
+        ppt_ir_path = self.contracts / "ppt-ir.json"
+        evidence, ppt_ir = consume_design_evidence(evidence, load_json(ppt_ir_path))
+        write_json(output, evidence)
+        write_json(ppt_ir_path, ppt_ir)
         codes = evidence.get("blocking_codes")
         if evidence.get("status") == "blocked" and isinstance(codes, list):
             raise StageFailure("design_evidence", ", ".join(str(code) for code in codes))
