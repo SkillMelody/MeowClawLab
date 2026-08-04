@@ -39,16 +39,24 @@ def test_product_prd_evidence_preserves_sources_and_requires_both_prototypes() -
     assert all(item["source"]["directness"] == "direct" for item in result["items"])
     assert result["coverage_matrix"]["product_ui_overview"]["required"] is True
     assert result["coverage_matrix"]["interaction_storyboard"]["required"] is True
+    assert result["coverage_matrix"]["application_screenshot"]["required"] is True
+    assert result["coverage_matrix"]["application_screenshot"]["asset_status"] == "missing"
+    assert result["coverage_matrix"]["application_screenshot"]["placeholder"] == {
+        "aspect_ratio": "16:10",
+        "page_id": None,
+        "region": "product_ui_overview.primary_visual",
+    }
     assert result["status"] == "blocked"
     assert "PRODUCT_PRD_REQUIRED_PROTOTYPES_UNCONSUMED" in result["blocking_codes"]
 
 
-def test_product_prd_without_spaces_or_interactions_does_not_require_prototypes() -> None:
+def test_product_prd_without_spaces_or_interactions_still_requires_editable_screenshot_placeholder() -> None:
     result = build_design_evidence({"source_id": "minimal-prd", "design_tokens": []})
 
-    assert result["coverage_matrix"]["product_ui_overview"]["required"] is False
+    assert result["coverage_matrix"]["product_ui_overview"]["required"] is True
     assert result["coverage_matrix"]["interaction_storyboard"]["required"] is False
-    assert result["status"] == "ready"
+    assert result["coverage_matrix"]["application_screenshot"]["asset_status"] == "missing"
+    assert result["status"] == "blocked"
 
 
 def test_cli_writes_machine_readable_design_evidence(tmp_path: Path) -> None:

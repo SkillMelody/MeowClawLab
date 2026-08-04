@@ -1,5 +1,5 @@
 {
-  "command": "openclaw infer model run --gateway --json --model volcengine-agent-plan/deepseek-v4-pro --thinking off --prompt <product-workbench-prd-prompt>",
+  "command": "openclaw infer model run --gateway --json --model volcengine-agent-plan/deepseek-v4-pro --thinking off --prompt <product-workbench-prd-direct-evidence-prompt>",
   "stdout": {
     "ok": true,
     "capability": "model.run",
@@ -9,7 +9,7 @@
     "attempts": [],
     "outputs": [
       {
-        "text": "{\"slides\":[{\"title\":\"UI overview\",\"source\":\"5\"},{\"title\":\"Interaction storyboard\",\"source\":\"8.2\"}]}",
+        "text": "{\n  \"canvas_locator\": \"5\",\n  \"select_locator\": \"8.2\",\n  \"application_screenshot_asset\": \"missing\",\n  \"placeholder\": {\n    \"type\": \"native editable\",\n    \"aspect_ratio\": \"16:10\",\n    \"label\": \"待替换：应用截图\"\n  }\n}",
         "mediaUrl": null
       }
     ]

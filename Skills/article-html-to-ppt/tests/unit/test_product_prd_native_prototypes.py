@@ -71,6 +71,15 @@ def test_product_ui_overview_is_source_labeled_native_workspace_sketch(tmp_path:
     names = {shape.name for shape in shapes}
     assert "Label:product_ui_overview:derived" in names
     assert "Source:product_ui_overview:0" in names
+    assert "Placeholder:product_ui_overview:application_screenshot" in names
+    placeholder = next(
+        shape
+        for shape in shapes
+        if shape.name == "Placeholder:product_ui_overview:application_screenshot"
+    )
+    assert "待替换：应用截图" in placeholder.text
+    assert "固定比例 16:10" in placeholder.text
+    assert round((placeholder.width / 914400) / (placeholder.height / 914400), 2) == 1.60
     assert sum(name.startswith("Component:product_ui_overview:space:") for name in names) == 3
     assert sum(name.startswith("Connector:product_ui_overview:relationship:") for name in names) == 2
     assert all(shape.shape_type != 13 for shape in shapes)
@@ -124,6 +133,9 @@ def test_interaction_storyboard_is_source_labeled_native_state_flow(tmp_path: Pa
     names = {shape.name for shape in shapes}
     assert "Label:interaction_storyboard:derived" in names
     assert "Source:interaction_storyboard:0" in names
+    assert "State:interaction_storyboard:stream:assistant_bubble" in names
+    assert "State:interaction_storyboard:diff:diff_preview" in names
+    assert "State:interaction_storyboard:adopt:decision_controls" in names
     assert sum(name.startswith("Component:interaction_storyboard:step:") for name in names) == 4
     assert sum(name.startswith("Connector:interaction_storyboard:transition:") for name in names) == 3
     assert all(shape.shape_type != 13 for shape in shapes)

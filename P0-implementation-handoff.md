@@ -4,7 +4,14 @@
 
 - Worktree: `pptsmith-prd-p0-implementation`
 - Branch: `feat/pptsmith-prd-p0-implementation-internal`
-- Scope completed: product PRD direct-evidence routing, source-labelled native `product_ui_overview` and `interaction_storyboard` renderers, and the task-route schema compatibility repair.
+- Scope completed: product PRD direct-evidence routing, source-labelled native `product_ui_overview` and `interaction_storyboard` renderers, the task-route schema compatibility repair, and the visual FAIL rework below.
+
+## Visual FAIL rework
+
+- `product_ui_overview` now renders a native, editable, fixed `16:10` placeholder named `Placeholder:product_ui_overview:application_screenshot`. It is explicitly labelled `待替换：应用截图`, records that the asset is missing, and asks for a real PNG/JPG plus source. It is an outline/text shape, not an image or a fabricated UI screenshot.
+- Design evidence now records `coverage_matrix.application_screenshot`: requirement, asset status, consumer object, aspect ratio, target page and target region. The current PRD resolves this to `missing`, `S02`, and `product_ui_overview.primary_visual`.
+- PRD injections replace inherited generic acceptance cards on S02/S03 with the direct product evidence page, avoiding overlap and preserving an answer-first judgment required by the delivery validator.
+- `interaction_storyboard` now has differentiated native state affordances for supplied async/Diff/decision evidence. The current PRD only supplies `select`, so S03 explicitly says that later states were not given and were not fabricated.
 
 ## Acceptance repair
 
@@ -55,7 +62,7 @@ The final run used the canonical `python_pptx` native builder and completed ever
 - LibreOffice 26.2.4.2: `passed`, **9/9** slides rendered, no warnings or errors; PDF preview is included with delivery.
 - Structural inspection: `passed`, zero issues, 9 slides, native-text ratio `1.0`, zero media objects, zero whole-slide rasters.
 - Editability readback: one native `product_ui_overview` space component and one native `interaction_storyboard` step component are present, with both source labels preserved.
-- Final deck SHA-256: `4691ccec9b1d28b736bac226ddd1290735faaf4e6f05620c0c01fba293bb95af`.
+- Final deck SHA-256: `7a0ea7dc5b75d49373fa536da19dc18f9b05f921acc8a8fc108a4d63d3d9d0c2`.
 
 Detailed run evidence remains under `P0-product-workbench-real-deck-work/` and the packaged delivery is under `P0-product-workbench-real-deck-delivery/`.
 

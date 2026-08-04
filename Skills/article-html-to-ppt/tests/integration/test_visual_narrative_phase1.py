@@ -202,11 +202,29 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
         "consumed": True,
         "consumer_object_ids": ["prd-interaction-storyboard"],
     }
+    assert coverage["application_screenshot"] == {
+        "required": True,
+        "asset_status": "missing",
+        "consumed": True,
+        "consumer_object_ids": ["prd-product-ui-overview"],
+        "placeholder": {
+            "aspect_ratio": "16:10",
+            "page_id": "S02",
+            "region": "product_ui_overview.primary_visual",
+        },
+    }
     objects = [obj for slide in ppt_ir["slides"] for obj in slide.get("objects", [])]
     assert {obj["component_type"] for obj in objects} >= {
         "product_ui_overview",
         "interaction_storyboard",
     }
+    product_slides = {slide["id"]: slide for slide in ppt_ir["slides"]}
+    assert product_slides["S02"]["title"] == "产品工作台 UI 总览"
+    assert product_slides["S02"]["message"] == "Canvas 是核心工作区；真实应用截图待补。"
+    assert [obj["id"] for obj in product_slides["S02"]["objects"]] == ["prd-product-ui-overview"]
+    assert product_slides["S03"]["title"] == "工作台交互路径"
+    assert product_slides["S03"]["message"] == "select 是已确认的交互触发；未给出的状态不作伪造。"
+    assert [obj["id"] for obj in product_slides["S03"]["objects"]] == ["prd-interaction-storyboard"]
 
 
 def test_product_prd_forced_pptxgenjs_is_honestly_blocked(tmp_path: Path) -> None:

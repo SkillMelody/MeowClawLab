@@ -78,6 +78,30 @@ def render(
             bold=True,
         )
         names.append(name)
+        if kind == "async_state":
+            state = add_box(
+                slide, name=f"State:interaction_storyboard:{step_id}:assistant_bubble",
+                x=start_x + index * (node_w + 0.25) + 0.12, y=node_y + 0.72, w=node_w - 0.24, h=0.38,
+                fill=colors["paper_white"], line=colors["insight_blue"], text="AI 反馈 / 流式状态",
+                text_color=colors["signal_blue"], font_size=8,
+            )
+            names.append(state.name)
+        elif kind == "result":
+            state = add_box(
+                slide, name=f"State:interaction_storyboard:{step_id}:diff_preview",
+                x=start_x + index * (node_w + 0.25) + 0.12, y=node_y + 0.72, w=node_w - 0.24, h=0.38,
+                fill=colors["paper_white"], line=colors["hairline_grey"], text="Diff / 结果预览",
+                text_color=colors["slate_text"], font_size=8,
+            )
+            names.append(state.name)
+        elif kind == "decision":
+            state = add_box(
+                slide, name=f"State:interaction_storyboard:{step_id}:decision_controls",
+                x=start_x + index * (node_w + 0.25) + 0.12, y=node_y + 0.72, w=node_w - 0.24, h=0.38,
+                fill=colors["paper_white"], line=colors["success"], text="采纳  /  撤销",
+                text_color=colors["success"], font_size=8,
+            )
+            names.append(state.name)
 
     for index, transition in enumerate(content.get("transitions") or []):
         if not isinstance(transition, dict):
@@ -89,6 +113,14 @@ def render(
         name = f"Connector:interaction_storyboard:transition:{index}"
         add_bound_connector(slide, start, end, name=name, color=colors["signal_blue"])
         names.append(name)
+    if len(steps) == 1:
+        disclosure = add_box(
+            slide, name="Disclosure:interaction_storyboard:missing_states", x=x, y=node_y + 1.65, w=w, h=0.55,
+            fill=colors["paper_white"], line=colors["hairline_grey"],
+            text="后续流式、Diff、采纳/撤销及异常状态未在 PRD 中给出，未作伪造。",
+            text_color=colors["slate_text"], font_size=10,
+        )
+        names.append(disclosure.name)
     return RenderResult(actual_route="native_diagram", object_names=names).to_dict()
 
 

@@ -16,9 +16,12 @@ def build_design_evidence(product_prd: dict[str, Any]) -> dict[str, Any]:
 
     has_spaces = any(item["category"] == "ui_space" for item in items)
     has_interactions = any(item["category"] == "interaction" for item in items)
+    screenshot_asset_status = _screenshot_asset_status(product_prd)
     coverage = {
         "product_ui_overview": {
-            "required": has_spaces,
+            # A product PRD must reserve a native screenshot slot even when
+            # the source analysis contains no UI-space detail or image asset.
+            "required": True,
             "evidence_ids": [item["id"] for item in items if item["category"] == "ui_space"],
             "consumed": False,
             "consumer_object_ids": [],
@@ -28,6 +31,17 @@ def build_design_evidence(product_prd: dict[str, Any]) -> dict[str, Any]:
             "evidence_ids": [item["id"] for item in items if item["category"] == "interaction"],
             "consumed": False,
             "consumer_object_ids": [],
+        },
+        "application_screenshot": {
+            "required": True,
+            "asset_status": screenshot_asset_status,
+            "consumed": False,
+            "consumer_object_ids": [],
+            "placeholder": {
+                "aspect_ratio": "16:10",
+                "page_id": None,
+                "region": "product_ui_overview.primary_visual",
+            },
         },
     }
     required = [name for name, entry in coverage.items() if entry["required"] and not entry["consumed"]]
@@ -58,11 +72,24 @@ def consume_design_evidence(
             continue
         entry.setdefault("consumer_object_ids", [])
         matching = [item for item in items if isinstance(item, dict) and item.get("category") == category]
-        if entry.get("required") is not True or not matching:
+        if entry.get("required") is not True:
             continue
-        _inject_prototype(ppt_ir, component_type, object_id, matching, ordinal)
+        # The screenshot slot makes product_ui_overview mandatory even for a
+        # sparse PRD. An interaction storyboard still needs direct interaction
+        # evidence before it can be truthfully drawn.
+        if component_type != "product_ui_overview" and not matching:
+            continue
+        page_id = _inject_prototype(ppt_ir, component_type, object_id, matching, ordinal, evidence)
         entry["consumed"] = True
         entry["consumer_object_ids"] = [object_id]
+        if component_type == "product_ui_overview":
+            screenshot = coverage.get("application_screenshot")
+            if isinstance(screenshot, dict):
+                screenshot["consumed"] = True
+                screenshot["consumer_object_ids"] = [object_id]
+                placeholder = screenshot.get("placeholder")
+                if isinstance(placeholder, dict):
+                    placeholder["page_id"] = page_id
 
     unconsumed = [
         name for name, entry in coverage.items()
@@ -75,8 +102,8 @@ def consume_design_evidence(
 
 def _inject_prototype(
     ppt_ir: dict[str, Any], component_type: str, object_id: str,
-    items: list[dict[str, Any]], ordinal: int,
-) -> None:
+    items: list[dict[str, Any]], ordinal: int, evidence: dict[str, Any],
+) -> str:
     slides = ppt_ir.get("slides") if isinstance(ppt_ir.get("slides"), list) else []
     targets = [slide for slide in slides if isinstance(slide, dict) and slide.get("slide_role") != "cover"]
     if not targets:
@@ -85,8 +112,13 @@ def _inject_prototype(
     objects = slide.setdefault("objects", [])
     if not isinstance(objects, list):
         raise ValueError("PRODUCT_PRD_PROTOTYPE_OBJECTS_INVALID")
-    if any(isinstance(obj, dict) and obj.get("id") == object_id for obj in objects):
-        return
+    # Product evidence pages are a direct PRD expression, not an overlay on a
+    # generic acceptance card. Keep an existing prototype while replacing the
+    # inherited page objects that would otherwise overlap its primary visual.
+    objects[:] = [
+        obj for obj in objects
+        if isinstance(obj, dict) and obj.get("id") == object_id
+    ]
     source_refs = [_source_ref(item) for item in items]
     sources = ppt_ir.setdefault("sources", [])
     if isinstance(sources, list):
@@ -103,12 +135,27 @@ def _inject_prototype(
                 known_source_ids.add(source_ref["source_id"])
     source_labels = [f"{ref['source_id']}#{ref['locator']}" for ref in source_refs]
     if component_type == "product_ui_overview":
+        slide["title"] = "产品工作台 UI 总览"
+        slide["message"] = "Canvas 是核心工作区；真实应用截图待补。"
+        slide["judgment"] = "真实应用截图缺失时，以可编辑占位框保留替换边界。"
+        screenshot = (evidence.get("coverage_matrix") or {}).get("application_screenshot", {})
+        placeholder = screenshot.get("placeholder") if isinstance(screenshot, dict) else {}
         content = {
             "source_refs": source_labels,
             "spaces": [{"id": str(item["id"]), "label": str(item["value"])} for item in items],
             "relationships": [],
+            "screenshot_placeholder": {
+                "label": "待替换：应用截图",
+                "asset_status": screenshot.get("asset_status", "missing") if isinstance(screenshot, dict) else "missing",
+                "aspect_ratio": placeholder.get("aspect_ratio", "16:10") if isinstance(placeholder, dict) else "16:10",
+                "region": placeholder.get("region", "product_ui_overview.primary_visual") if isinstance(placeholder, dict) else "product_ui_overview.primary_visual",
+                "source_requirement": "PRD 要求真实应用截图；当前未提供截图资产。",
+            },
         }
     else:
+        slide["title"] = "工作台交互路径"
+        slide["message"] = "select 是已确认的交互触发；未给出的状态不作伪造。"
+        slide["judgment"] = "只呈现 PRD 已确认的 select 触发，不伪造后续状态。"
         content = {
             "source_refs": source_labels,
             "steps": [
@@ -120,7 +167,7 @@ def _inject_prototype(
                 for index in range(len(items) - 1)
             ],
         }
-    objects.append({
+    prototype = {
         "id": object_id,
         "type": "shape",
         "component_type": component_type,
@@ -129,12 +176,17 @@ def _inject_prototype(
         "source_refs": source_refs,
         "editability": "native_required",
         "priority": "primary",
-    })
+    }
+    if objects:
+        objects[0].update(prototype)
+    else:
+        objects.append(prototype)
     delivery = slide.setdefault("delivery_contract", {})
     for field in ("editable_core", "forbidden_raster"):
         values = delivery.setdefault(field, [])
         if isinstance(values, list) and object_id not in values:
             values.append(object_id)
+    return str(slide.get("id") or "")
 
 
 def _source_ref(item: dict[str, Any]) -> dict[str, str]:
@@ -174,3 +226,8 @@ def _items(value: Any, category: str, source_id: str) -> list[dict[str, Any]]:
 
 def _string(value: Any) -> str | None:
     return value.strip() if isinstance(value, str) and value.strip() else None
+
+
+def _screenshot_asset_status(product_prd: dict[str, Any]) -> str:
+    assets = product_prd.get("application_screenshot_assets")
+    return "provided" if isinstance(assets, list) and any(assets) else "missing"

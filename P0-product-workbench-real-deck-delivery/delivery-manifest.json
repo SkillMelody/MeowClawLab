@@ -1,5 +1,5 @@
 {
-  "build_id": "build-pptsmith-v2-shared-builder-acceptance-20260804T090954Z",
+  "build_id": "build-pptsmith-v2-shared-builder-acceptance-20260804T101702Z",
   "builder": {
     "name": "python_pptx",
     "version": "1.0.2"
@@ -8,13 +8,13 @@
   "fallbacks": [],
   "files": [
     {
-      "hash": "sha256:4691ccec9b1d28b736bac226ddd1290735faaf4e6f05620c0c01fba293bb95af",
+      "hash": "sha256:7a0ea7dc5b75d49373fa536da19dc18f9b05f921acc8a8fc108a4d63d3d9d0c2",
       "path": "deck.pptx",
       "required": true,
       "role": "pptx"
     },
     {
-      "hash": "sha256:a8216f24cebfd11ad0f0b3e07994cfdfd05b2c0c152da64f2934de927c2d09fd",
+      "hash": "sha256:58aced9560a1fabb56c51170b2bae7628a3193c031ebd6f1aeb49bbf52d23e8a",
       "path": "deck-preview.pdf",
       "required": true,
       "role": "preview_pdf"
@@ -26,7 +26,7 @@
       "role": "verification_report"
     }
   ],
-  "generated_at": "2026-08-04T17:10:16+08:00",
+  "generated_at": "2026-08-04T18:17:15+08:00",
   "known_limitations": [
     "Unsupported style field ignored by PythonPptxAdapter: allowed_effects",
     "Unsupported style field ignored by PythonPptxAdapter: aspect_ratios",
@@ -213,7 +213,7 @@
     "Trusted delivery status is verified, not final."
   ],
   "metrics": {
-    "average_object_count": 7.0,
+    "average_object_count": 7.2222,
     "editable_core_ratio": 1.0,
     "fallback_count": 0,
     "logical_slide_count": 9,
@@ -222,7 +222,7 @@
     "native_connector_count": 2,
     "native_table_count": 1,
     "native_text_ratio": 1.0,
-    "object_count": 11,
+    "object_count": 8,
     "physical_slide_count": 9,
     "qa_error_count": 0,
     "qa_fatal_count": 0,
