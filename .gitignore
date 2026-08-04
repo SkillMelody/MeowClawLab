@@ -11,6 +11,7 @@ node_modules/
 
 # Local agent/tool state
 .superpowers/
+.worktrees/
 
 # Generated PPT workspaces and delivery outputs
 .ppt-work/
