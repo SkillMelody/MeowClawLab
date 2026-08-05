@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-COMPILABLE = {"phase_roadmap"}
+COMPILABLE = {"phase_roadmap", "drill_down_stair"}
 RELATIONSHIP_EXPRESSIONS = {"relationship_visual", "sequence_visual"}
 RELATIONSHIP_LABELS = {
     "feedback_loop": "反馈闭环",
@@ -39,13 +39,26 @@ def write_json(path: Path, data: dict[str, Any]) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _native_component_base(slide: dict[str, Any], component_type: str) -> dict[str, Any]:
+    return {
+        "id": f"{slide['id']}-{component_type}",
+        "type": "diagram",
+        "component_type": component_type,
+        "semantic_role": component_type,
+        "source_refs": list(slide.get("source_refs") or []),
+        "editability": "native_required",
+        "priority": "primary",
+        "delivery_preferences": {
+            "preferred_route": "native_diagram",
+            "allowed_fallbacks": [],
+        },
+    }
+
+
 def _roadmap_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
     message = str(slide.get("message") or intent.get("message") or "关键阶段").strip()
     return {
-        "id": f"{slide['id']}-phase-roadmap",
-        "type": "diagram",
-        "component_type": "phase_roadmap",
-        "semantic_role": "phase_roadmap",
+        **_native_component_base(slide, "phase_roadmap"),
         "content": {
             "phases": [
                 {"label": "当前判断", "detail": message},
@@ -85,14 +98,35 @@ def _roadmap_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, 
             ],
         },
         "complexity": {"node_count": 3, "edge_count": 2},
-        "source_refs": list(slide.get("source_refs") or []),
-        "editability": "native_required",
-        "priority": "primary",
-        "delivery_preferences": {
-            "preferred_route": "native_diagram",
-            "allowed_fallbacks": [],
-        },
     }
+
+
+def _drill_down_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
+    message = str(slide.get("message") or intent.get("message") or "关键判断").strip()
+    levels = [
+        {"label": "总体判断", "detail": message},
+        {"label": "关键维度", "detail": "按证据逐层拆解影响因素"},
+        {"label": "行动焦点", "detail": "聚焦最需验证的优先事项"},
+    ]
+    return {
+        **_native_component_base(slide, "drill_down_stair"),
+        "content": {"levels": levels},
+        "diagram_ir": {
+            "diagram_id": f"{slide['id']}-drill-down-stair",
+            "diagram_type": "hierarchy",
+            "nodes": [
+                {"id": f"level-{index}", "label": level["label"], "priority": "primary" if index == 0 else "secondary"}
+                for index, level in enumerate(levels)
+            ],
+            "edges": [
+                {"id": f"level-{index}-to-{index + 1}", "source": f"level-{index}", "target": f"level-{index + 1}", "relation": "drill_down", "priority": "primary" if index == 0 else "secondary"}
+                for index in range(len(levels) - 1)
+            ],
+            "main_paths": [{"id": "main", "node_ids": [f"level-{index}" for index in range(len(levels))], "priority": "primary"}],
+        },
+        "complexity": {"node_count": len(levels), "edge_count": len(levels) - 1},
+    }
+
 
 
 def _unsupported_placeholder(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
@@ -147,9 +181,21 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
             raise ValueError(f"VISUAL_PLAN_IR_COMPONENT_MISMATCH:{slide_id}")
 
         slide["page_design_intent"] = intent
+        existing_components = {
+            str(obj.get("component_type") or obj.get("type") or "")
+            for obj in slide.get("objects", []) or []
+            if isinstance(obj, dict)
+        }
+        if existing_components & {"product_ui_overview", "interaction_storyboard"}:
+            bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": "design_evidence_prototype"})
+            continue
         if component in COMPILABLE:
+            compiler = {
+                "phase_roadmap": _roadmap_object,
+                "drill_down_stair": _drill_down_object,
+            }[component]
             slide["primary_expression"] = "relationship_visual"
-            slide["objects"] = [_roadmap_object(slide, intent)]
+            slide["objects"] = [compiler(slide, intent)]
             bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": component})
             continue
         if expression in RELATIONSHIP_EXPRESSIONS and component == "unsupported":

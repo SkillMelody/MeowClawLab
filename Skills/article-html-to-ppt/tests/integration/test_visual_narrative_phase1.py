@@ -187,6 +187,41 @@ def test_visual_plan_is_compiled_into_ppt_ir_before_delivery_resolution(
     assert planned["objects"][0]["selected_route"] == "native_diagram"
 
 
+def test_supported_relationship_components_are_compiled_to_verified_native_renderers(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["hierarchy", "drill_down"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["hierarchy"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    for slide_id, component in (("S02", "drill_down_stair"),):
+        slide = next(item for item in ppt_ir["slides"] if item["id"] == slide_id)
+        assert slide["objects"][0]["component_type"] == component
+        assert slide["objects"][0]["delivery_preferences"]["preferred_route"] == "native_diagram"
+        planned = next(item for item in delivery["slides"] if item["slide_id"] == slide_id)
+        assert planned["objects"][0]["component_type"] == component
+        assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
 def test_unsupported_relationship_visual_becomes_a_disclosed_native_placeholder(
     tmp_path: Path,
 ) -> None:
