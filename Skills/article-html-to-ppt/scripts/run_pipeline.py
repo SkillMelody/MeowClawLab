@@ -26,6 +26,7 @@ STAGES = [
     "design_evidence",
     "plan_visual_narrative",
     "validate_visual_plan",
+    "compile_visual_plan",
     "deck_rhythm",
     "resolve_profile",
     "capability_probe",
@@ -409,6 +410,23 @@ class Pipeline:
             ],
         )
 
+    def compile_visual_plan(self) -> None:
+        self.run_command(
+            "compile_visual_plan",
+            [
+                sys.executable,
+                str(SCRIPTS / "compile_visual_plan.py"),
+                "--ppt-ir",
+                str(self.contracts / "ppt-ir.json"),
+                "--visual-plan",
+                str(self.contracts / "visual-plan.json"),
+                "--output",
+                str(self.contracts / "ppt-ir.compiled.json"),
+            ],
+        )
+        compiled = self.contracts / "ppt-ir.compiled.json"
+        compiled.replace(self.contracts / "ppt-ir.json")
+
     def deck_rhythm(self) -> None:
         from visual_narrative.rhythm import evaluate_deck_rhythm
 
@@ -789,6 +807,7 @@ class Pipeline:
                 self.stage("design_evidence", self.design_evidence)
                 self.stage("plan_visual_narrative", self.plan_visual_narrative)
                 self.stage("validate_visual_plan", self.validate_visual_plan)
+                self.stage("compile_visual_plan", self.compile_visual_plan)
                 self.stage("deck_rhythm", self.deck_rhythm)
             self.stage("resolve_profile", self.resolve_profile)
             self.stage("capability_probe", self.capability_probe)

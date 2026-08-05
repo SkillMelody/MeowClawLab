@@ -114,7 +114,7 @@ def run_phase1_pipeline(tmp_path: Path, *, request_revision: bool = False) -> su
             "--source-context-brief",
             str(brief_path),
             "--builder",
-            "pptxgenjs",
+            "auto",
             "--profile",
             "fast",
             "--work-dir",
@@ -159,6 +159,60 @@ def test_visual_narrative_stages_run_before_delivery_resolution(tmp_path: Path) 
     task_route = load_json(work / "contracts" / "task-route.json")
     assert task_route["selected_route"] == "research_report"
     assert "product_prd" in task_route["rejected_routes"]
+
+
+def test_visual_plan_is_compiled_into_ppt_ir_before_delivery_resolution(
+    tmp_path: Path,
+) -> None:
+    completed = run_phase1_pipeline(tmp_path)
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    state = load_json(work / "state.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+
+    assert state["stage_order"].index("compile_visual_plan") < state["stage_order"].index(
+        "resolve_delivery"
+    )
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S06")
+    assert slide["primary_expression"] == "relationship_visual"
+    assert slide["objects"][0]["component_type"] == "phase_roadmap"
+    assert slide["objects"][0]["delivery_preferences"] == {
+        "preferred_route": "native_diagram",
+        "allowed_fallbacks": [],
+    }
+    planned = next(item for item in delivery["slides"] if item["slide_id"] == "S06")
+    assert planned["objects"][0]["component_type"] == "phase_roadmap"
+    assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_unsupported_relationship_visual_fails_closed_during_visual_plan_compile(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["feedback_loop"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": []})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode != 0
+    assert "VISUAL_PLAN_IR_COMPONENT_MISMATCH" in completed.stderr
+    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    assert state["failed_stage"] == "compile_visual_plan"
 
 
 def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> None:

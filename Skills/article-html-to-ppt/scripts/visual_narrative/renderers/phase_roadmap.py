@@ -94,7 +94,7 @@ def render(
             line=colors["success"],
             text=label,
             text_color=colors["ink_navy"],
-            font_size=8.2,
+            font_size=10.5,
         )
         names.append(name)
     return RenderResult(actual_route="native_diagram", object_names=names).to_dict()
