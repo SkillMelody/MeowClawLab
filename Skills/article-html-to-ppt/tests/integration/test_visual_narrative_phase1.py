@@ -187,7 +187,7 @@ def test_visual_plan_is_compiled_into_ppt_ir_before_delivery_resolution(
     assert planned["objects"][0]["selected_route"] == "native_diagram"
 
 
-def test_unsupported_relationship_visual_fails_closed_during_visual_plan_compile(
+def test_unsupported_relationship_visual_becomes_a_disclosed_native_placeholder(
     tmp_path: Path,
 ) -> None:
     document = storyline()
@@ -209,10 +209,18 @@ def test_unsupported_relationship_visual_fails_closed_during_visual_plan_compile
         cwd=ROOT, text=True, capture_output=True, check=False,
     )
 
-    assert completed.returncode != 0
-    assert "VISUAL_PLAN_IR_COMPONENT_MISMATCH" in completed.stderr
-    state = load_json(tmp_path / ".ppt-work" / "state.json")
-    assert state["failed_stage"] == "compile_visual_plan"
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    build = load_json(work / "contracts" / "build-manifest.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    placeholder = slide["objects"][0]
+    assert placeholder["component_type"] == "comparison_card"
+    assert placeholder["component_status"] == "unsupported_placeholder"
+    assert placeholder["content"]["title"] == "待补齐：关系图组件"
+    assert "原生可编辑关系图" in placeholder["content"]["claim"]
+    assert build["metrics"]["unsupported_placeholder_count"] == 1
+    assert build["status"] == "verified"
 
 
 def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> None:

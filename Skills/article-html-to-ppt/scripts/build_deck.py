@@ -50,6 +50,13 @@ def build_manifest(
     now = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     deck_id = ppt_ir.get("deck", {}).get("id", "deck")
     profile = delivery_plan.get("profile") or ppt_ir.get("deck", {}).get("production_profile", "standard")
+    unsupported_placeholder_count = sum(
+        1
+        for slide in ppt_ir.get("slides", []) or []
+        if isinstance(slide, dict)
+        for obj in slide.get("objects", []) or []
+        if isinstance(obj, dict) and obj.get("component_status") == "unsupported_placeholder"
+    )
     status = "created" if result.status == "created" else "failed"
     planned_builder = delivery_plan.get("builder") if isinstance(delivery_plan.get("builder"), dict) else {}
     builder = dict(planned_builder)
@@ -92,6 +99,7 @@ def build_manifest(
             "slide_count": len(ppt_ir.get("slides", []) or []),
             "object_count": len(result.object_results),
             "fallback_count": len(result.fallbacks),
+            "unsupported_placeholder_count": unsupported_placeholder_count,
         },
         "fallbacks": result.fallbacks,
         "warnings": manifest_warnings,

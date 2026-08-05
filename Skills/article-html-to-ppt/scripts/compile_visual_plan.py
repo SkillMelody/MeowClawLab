@@ -19,6 +19,12 @@ if str(ROOT) not in sys.path:
 
 COMPILABLE = {"phase_roadmap"}
 RELATIONSHIP_EXPRESSIONS = {"relationship_visual", "sequence_visual"}
+RELATIONSHIP_LABELS = {
+    "feedback_loop": "反馈闭环",
+    "cause_effect": "因果链",
+    "dependency": "依赖关系",
+    "data_flow": "数据流",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -89,6 +95,37 @@ def _roadmap_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, 
     }
 
 
+def _unsupported_placeholder(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
+    relationships = intent.get("evidence_refs")
+    relation_names = []
+    storyline_relationships = slide.get("relationships")
+    if isinstance(storyline_relationships, list):
+        relation_names = [RELATIONSHIP_LABELS.get(str(item), str(item)) for item in storyline_relationships]
+    detail = "、".join(relation_names) if relation_names else "该关系"
+    return {
+        "id": f"{slide['id']}-unsupported-placeholder",
+        "type": "shape",
+        "component_type": "comparison_card",
+        "semantic_role": "unsupported_component_placeholder",
+        "component_status": "unsupported_placeholder",
+        "content": {
+            "title": "待补齐：关系图组件",
+            "claim": (
+                f"此处应展示「{detail}」的原生可编辑关系图。当前 PPTSmith 尚未提供经验证的 renderer，"
+                "因此未以图表或表格替代。建议联系 MeowClaw / PPTSmith 团队进行专项优化。\n"
+                f"原始判断：{slide.get('message') or intent.get('message') or ''}"
+            ),
+        },
+        "source_refs": list(slide.get("source_refs") or []),
+        "editability": "native_required",
+        "priority": "primary",
+        "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": [],
+        },
+    }
+
+
 def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> dict[str, Any]:
     intents = visual_plan.get("slides")
     slides = ppt_ir.get("slides")
@@ -116,7 +153,10 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
             bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": component})
             continue
         if expression in RELATIONSHIP_EXPRESSIONS and component == "unsupported":
-            raise ValueError(f"VISUAL_PLAN_IR_COMPONENT_MISMATCH:{slide_id}:{component}")
+            slide["primary_expression"] = "structured_cards"
+            slide["objects"] = [_unsupported_placeholder(slide, intent)]
+            bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": "unsupported_placeholder"})
+            continue
         bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": "preserved"})
 
     ppt_ir["visual_plan_bindings"] = bind_records

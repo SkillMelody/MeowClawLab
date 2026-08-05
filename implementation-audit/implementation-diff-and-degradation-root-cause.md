@@ -256,5 +256,5 @@ python3 -m pytest -q tests/unit/test_visual_planner.py tests/integration/test_vi
 
 - 根因定位：完成。
 - PMO 包复核：完成；确认其可复用专业组件应迁入同一质量引擎，但不能将 PMO 专用 deck builder 直接作为所有文档的默认生成器。
-- 修复：H1 的第一最小闭环已完成：`compile_visual_plan.py` 在 `plan_visual_narrative` 后、`resolve_delivery` 前把 `phase_roadmap` 编译到 PPT IR，并将未实现的 relationship visual fail-closed 为 `VISUAL_PLAN_IR_COMPONENT_MISMATCH`；对应 roadmap renderer 的里程碑字号已提升至 10.5pt 以满足 style minimum。验证：`15 passed in 111.05s`（visual planner、phase roadmap renderer、visual narrative integration）。尚未重跑 State of AI 全 deck，尚未迁入其他 PMO 页面家族。
+- 修复：H1 的第一最小闭环已完成：`compile_visual_plan.py` 在 `plan_visual_narrative` 后、`resolve_delivery` 前把 `phase_roadmap` 编译到 PPT IR；对应 roadmap renderer 的里程碑字号已提升至 10.5pt 以满足 style minimum。对未实现关系组件，产品策略改为**显式原生占位**而非失败或静默降级：编译器生成 `comparison_card`，标记 `component_status=unsupported_placeholder`，在 PPT 中说明应展示的关系图、未展示原因及“联系 MeowClaw / PPTSmith 团队专项优化”；build manifest 记录 `unsupported_placeholder_count`。验证：占位定向测试 `1 passed`；完整定向集 `15 passed in 114.71s`（visual planner、phase roadmap renderer、visual narrative integration）。尚未重跑 State of AI 全 deck，尚未迁入其他 PMO 页面家族。
 - 唯一主交付物：本报告。

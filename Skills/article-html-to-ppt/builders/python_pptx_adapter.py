@@ -562,6 +562,8 @@ def _object_text(obj: dict[str, Any]) -> str:
     if isinstance(content, str) and content.strip():
         return content.strip()
     if isinstance(content, dict):
+        if all(isinstance(content.get(key), str) and content[key].strip() for key in ("title", "claim")):
+            return f"{content['title'].strip()}\n{content['claim'].strip()}"
         for key in ("title", "label", "claim", "text", "value"):
             value = content.get(key)
             if isinstance(value, str) and value.strip():
