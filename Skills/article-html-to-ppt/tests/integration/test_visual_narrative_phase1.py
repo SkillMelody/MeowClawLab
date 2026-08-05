@@ -192,9 +192,10 @@ def test_supported_relationship_components_are_compiled_to_verified_native_rende
 ) -> None:
     document = storyline()
     document["slides"][1]["relationships"] = ["hierarchy", "drill_down"]
+    document["slides"][3]["relationships"] = ["layer", "system_boundary"]
     content_analysis = tmp_path / "content-analysis.json"
     storyline_path = tmp_path / "storyline.json"
-    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["hierarchy"]})
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["hierarchy", "layer"]})
     write_json(storyline_path, document)
     brief_path = write_source_context_brief(tmp_path, "research_insight")
 
@@ -213,7 +214,7 @@ def test_supported_relationship_components_are_compiled_to_verified_native_rende
     work = tmp_path / ".ppt-work"
     ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
     delivery = load_json(work / "contracts" / "delivery-plan.json")
-    for slide_id, component in (("S02", "drill_down_stair"),):
+    for slide_id, component in (("S02", "drill_down_stair"), ("S04", "layered_architecture")):
         slide = next(item for item in ppt_ir["slides"] if item["id"] == slide_id)
         assert slide["objects"][0]["component_type"] == component
         assert slide["objects"][0]["delivery_preferences"]["preferred_route"] == "native_diagram"

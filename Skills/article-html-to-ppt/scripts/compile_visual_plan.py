@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-COMPILABLE = {"phase_roadmap", "drill_down_stair"}
+COMPILABLE = {"phase_roadmap", "drill_down_stair", "layered_architecture"}
 RELATIONSHIP_EXPRESSIONS = {"relationship_visual", "sequence_visual"}
 RELATIONSHIP_LABELS = {
     "feedback_loop": "反馈闭环",
@@ -129,6 +129,37 @@ def _drill_down_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[st
 
 
 
+def _layered_architecture_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
+    message = str(slide.get("message") or intent.get("message") or "关键判断").strip()
+    layers = [
+        {"label": "业务与体验层", "nodes": [message]},
+        {"label": "能力编排层", "nodes": ["规则、流程与协同机制"]},
+        {"label": "数据与治理层", "nodes": ["证据、数据与风险控制"]},
+    ]
+    return {
+        **_native_component_base(slide, "layered_architecture"),
+        "content": {"boundary_label": "系统能力边界", "layers": layers},
+        "diagram_ir": {
+            "diagram_id": f"{slide['id']}-layered-architecture",
+            "diagram_type": "layered_architecture",
+            "nodes": [
+                {"id": f"layer-{index}", "label": layer["label"], "priority": "primary" if index == 0 else "secondary"}
+                for index, layer in enumerate(layers)
+            ],
+            "edges": [
+                {"id": f"layer-{index}-to-{index + 1}", "source": f"layer-{index}", "target": f"layer-{index + 1}", "relation": "dependency", "priority": "primary" if index == 0 else "secondary"}
+                for index in range(len(layers) - 1)
+            ],
+            "main_paths": [{"id": "main", "node_ids": [f"layer-{index}" for index in range(len(layers))], "priority": "primary"}],
+            "groups": [
+                {"id": f"layer-group-{index}", "label": layer["label"], "node_ids": [f"layer-{index}"], "group_type": "layer", "visual_role": "container", "layout": "horizontal"}
+                for index, layer in enumerate(layers)
+            ],
+        },
+        "complexity": {"node_count": len(layers), "edge_count": len(layers) - 1},
+    }
+
+
 def _unsupported_placeholder(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
     relationships = intent.get("evidence_refs")
     relation_names = []
@@ -193,6 +224,7 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
             compiler = {
                 "phase_roadmap": _roadmap_object,
                 "drill_down_stair": _drill_down_object,
+                "layered_architecture": _layered_architecture_object,
             }[component]
             slide["primary_expression"] = "relationship_visual"
             slide["objects"] = [compiler(slide, intent)]

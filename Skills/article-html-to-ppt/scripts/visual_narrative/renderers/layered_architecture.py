@@ -50,7 +50,7 @@ def render(
             w=w - 0.36,
             h=0.28,
             color=colors["slate_text"],
-            font_size=9,
+            font_size=10.5,
             bold=True,
         )
         names.append(boundary_label_name)
@@ -71,9 +71,9 @@ def render(
         shape = add_box(
             slide,
             name=name,
-            x=x + 0.28 + index * 0.08,
+            x=x + 0.28,
             y=inner_y + index * (layer_h + gap),
-            w=w - 0.56 - index * 0.16,
+            w=w - 0.56,
             h=layer_h,
             fill=colors["mist_blue"] if index % 2 == 0 else colors["paper_white"],
             line=colors["insight_blue"] if index < 2 else colors["hairline_grey"],

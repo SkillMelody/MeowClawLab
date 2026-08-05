@@ -706,6 +706,7 @@ def _add_slide_issues(
         obj
         for obj in slide.objects
         if obj.shape_type in {"text", "shape"}
+        and not obj.name.startswith("Boundary:")
         and obj.w_in >= 0.4
         and obj.h_in >= 0.25
     ]
