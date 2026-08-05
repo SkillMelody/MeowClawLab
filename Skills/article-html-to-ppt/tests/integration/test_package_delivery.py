@@ -140,6 +140,12 @@ def test_package_standard_delivery(tmp_path: Path) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     Draft202012Validator(json.loads((ROOT / "schemas" / "delivery-manifest.schema.json").read_text(encoding="utf-8"))).validate(manifest)
     assert manifest["status"] == "verified"
+    assert manifest["commit_sha"] == subprocess.run(
+        ["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout.strip()
     assert {item["role"] for item in manifest["files"]} >= {"pptx", "preview_pdf", "verification_report"}
     assert all(item["role"] != "delivery_manifest" for item in manifest["files"])
     assert not (output / ".ppt-work").exists()
