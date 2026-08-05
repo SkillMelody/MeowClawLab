@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-COMPILABLE = {"phase_roadmap", "drill_down_stair", "layered_architecture"}
+COMPILABLE = {"phase_roadmap", "drill_down_stair", "layered_architecture", "heat_matrix"}
 RELATIONSHIP_EXPRESSIONS = {"relationship_visual", "sequence_visual"}
 RELATIONSHIP_LABELS = {
     "feedback_loop": "反馈闭环",
@@ -160,6 +160,21 @@ def _layered_architecture_object(slide: dict[str, Any], intent: dict[str, Any]) 
     }
 
 
+def _heat_matrix_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
+    data = intent.get("visual_data")
+    if not isinstance(data, dict):
+        raise ValueError(f"VISUAL_PLAN_IR_COMPONENT_MISMATCH:{slide['id']}:heat_matrix_data")
+    return {
+        **_native_component_base(slide, "heat_matrix"),
+        "type": "shape",
+        "content": data,
+        "complexity": {
+            "row_count": len(data.get("rows") or []),
+            "column_count": len(data.get("columns") or []),
+        },
+    }
+
+
 def _unsupported_placeholder(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
     relationships = intent.get("evidence_refs")
     relation_names = []
@@ -225,6 +240,7 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
                 "phase_roadmap": _roadmap_object,
                 "drill_down_stair": _drill_down_object,
                 "layered_architecture": _layered_architecture_object,
+                "heat_matrix": _heat_matrix_object,
             }[component]
             slide["primary_expression"] = "relationship_visual"
             slide["objects"] = [compiler(slide, intent)]

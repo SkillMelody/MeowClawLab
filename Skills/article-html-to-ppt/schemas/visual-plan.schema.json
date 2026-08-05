@@ -107,6 +107,18 @@
         "page_archetype": {"type": "string", "minLength": 1},
         "semantic_component": {"type": "string", "minLength": 1},
         "visual_anchor": {"type": "string", "minLength": 1},
+        "visual_data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rows", "columns", "values"],
+          "properties": {
+            "rows": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "columns": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "values": {"type": "array", "minItems": 1, "items": {"type": "array", "minItems": 1, "items": {"type": "number"}}},
+            "value_suffix": {"type": "string"},
+            "highlighted_cells": {"type": "array", "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0}}}
+          }
+        },
         "layout": {"type": "object"},
         "density": {"type": "object"},
         "editability": {"type": "object"},

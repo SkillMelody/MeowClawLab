@@ -103,6 +103,9 @@ def _plan_slide(
 
     relationships = set(_string_list(slide.get("relationships")))
     component = choose_component(relationships)
+    visual_data = _heat_matrix_data(slide.get("visual_data")) if component == "heat_matrix" else None
+    if component == "heat_matrix" and visual_data is None:
+        component = "unsupported" if role in {"relationship", "architecture", "diagram"} else _component_for_non_relationship(role)
     if component == "unsupported" and role not in {"relationship", "architecture", "diagram"}:
         component = _component_for_non_relationship(role)
 
@@ -126,6 +129,7 @@ def _plan_slide(
         "page_archetype": archetype,
         "semantic_component": component,
         "visual_anchor": component,
+        **({"visual_data": visual_data} if visual_data is not None else {}),
         "layout": {
             "family": "single_semantic_canvas",
             "zones": ["title", "primary", "evidence", "source"],
@@ -206,8 +210,32 @@ def _evidence_refs(value: Any) -> list[Any]:
     return refs
 
 
-def _component_for_non_relationship(role: str) -> str:
-    return {
+def _heat_matrix_data(value: Any) -> dict[str, Any] | None:
+    if not isinstance(value, dict):
+        return None
+    rows = value.get("rows")
+    columns = value.get("columns")
+    values = value.get("values")
+    if (
+        not isinstance(rows, list)
+        or not isinstance(columns, list)
+        or not rows
+        or not columns
+        or not all(isinstance(item, str) and item.strip() for item in rows + columns)
+        or not isinstance(values, list)
+        or len(values) != len(rows)
+        or any(not isinstance(row, list) or len(row) != len(columns) for row in values)
+        or any(not isinstance(cell, (int, float)) for row in values for cell in row)
+    ):
+        return None
+    result = {"rows": rows, "columns": columns, "values": values}
+    for key in ("value_suffix", "highlighted_cells"):
+        if key in value:
+            result[key] = value[key]
+    return result
+
+
+def _component_for_non_relationship(role: str) -> str:    return {
         "data": "data_comparison_bridge",
         "roadmap": "phase_roadmap",
         "timeline": "phase_roadmap",
