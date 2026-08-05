@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "B01",
+      "title": "公开经营指标的战略决策阅读材料",
+      "expected_route": "strategic_decision",
+      "sources": [{"publisher": "Microsoft", "published_at": "2025-04-30", "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2025-q3/press-release-webcast"}],
+      "evidence_policy": {"data_status": "quantitative", "as_of": "FY25 Q3", "prohibited": ["capital_allocation_decision", "market_share", "customer_data"]},
+      "brief": {"schema_version": "1.0", "source_id": "B01-microsoft-fy25-q3", "primary_audience": ["executive"], "delivery_objective": "decide", "source_material_type": "strategy_memo", "evidence_profile": ["quarterly_financials", "segment_comparison", "risk_disclosures"], "industry_compliance_context": ["enterprise_software", "public_disclosure"], "delivery_scenario": "strategy_review"}
+    },
+    {
+      "id": "B02",
+      "title": "投资委员会的商业尽调读前材料",
+      "expected_route": "investor_commercial",
+      "sources": [{"publisher": "Microsoft", "published_at": "2025-04-30", "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2025-q3/press-release-webcast"}],
+      "evidence_policy": {"data_status": "quantitative", "as_of": "FY25 Q3", "prohibited": ["valuation", "price_target", "investment_recommendation", "undisclosed_retention"]},
+      "brief": {"schema_version": "1.0", "source_id": "B02-microsoft-investor-read-ahead", "primary_audience": ["investor"], "delivery_objective": "commercial_due_diligence", "source_material_type": "investment_memo", "evidence_profile": ["quarterly_financials", "segment_comparison", "risk_disclosures"], "industry_compliance_context": ["public_disclosure", "financial_promotion_boundary"], "delivery_scenario": "investment_committee"}
+    },
+    {
+      "id": "B03",
+      "title": "产品工作台 PRD 评审材料",
+      "expected_route": "product_prd",
+      "sources": [{"publisher": "Internal", "published_at": "2026-08-04", "reference": "PPTSmith 产品工作台 PRD；仅本地使用"}],
+      "evidence_policy": {"data_status": "internal_nonquantitative", "as_of": "2026-08-04", "prohibited": ["invented_funnel", "invented_performance_metrics", "invented_user_behavior", "fake_screenshot"]},
+      "brief": {"schema_version": "1.0", "source_id": "B03-product-workbench-prd", "primary_audience": ["product_manager", "engineer", "designer", "tester"], "delivery_objective": "review_and_align", "source_material_type": "prd", "evidence_profile": ["scope_boundary", "interaction_evidence", "acceptance_criteria"], "industry_compliance_context": ["internal_product_material"], "delivery_scenario": "prd_review"}
+    },
+    {
+      "id": "B04",
+      "title": "零信任参考架构技术评审材料",
+      "expected_route": "technical_architecture",
+      "sources": [{"publisher": "NIST", "published_at": "2020-08", "url": "https://csrc.nist.gov/pubs/sp/800/207/final"}],
+      "evidence_policy": {"data_status": "qualitative_only", "as_of": "2020-08", "prohibited": ["implementation_certification", "slo", "attack_block_rate", "enterprise_topology"]},
+      "brief": {"schema_version": "1.0", "source_id": "B04-nist-sp-800-207", "primary_audience": ["architect", "technical_lead", "security_reviewer"], "delivery_objective": "approve_architecture", "source_material_type": "architecture_document", "evidence_profile": ["system_boundary", "data_flow", "security_constraints"], "industry_compliance_context": ["information_security"], "delivery_scenario": "architecture_review"}
+    },
+    {
+      "id": "B05",
+      "title": "项目进度与治理评审材料",
+      "expected_route": "project_governance",
+      "sources": [{"publisher": "U.S. Government Accountability Office", "published_at": "2015-12", "url": "https://www.gao.gov/products/gao-16-89g"}],
+      "evidence_policy": {"data_status": "qualitative_only", "as_of": "2015-12", "prohibited": ["fabricated_rag_status", "fabricated_owner", "fabricated_date", "fabricated_project_budget"]},
+      "brief": {"schema_version": "1.0", "source_id": "B05-gao-schedule-guide", "primary_audience": ["project_sponsor", "program_manager", "steering_committee"], "delivery_objective": "govern_delivery", "source_material_type": "project_plan", "evidence_profile": ["milestones", "dependencies", "schedule_risk"], "industry_compliance_context": ["project_governance"], "delivery_scenario": "steering_committee"}
+    },
+    {
+      "id": "B06",
+      "title": "美国收入、贫困与医保覆盖研究简报",
+      "expected_route": "research_insight",
+      "sources": [{"publisher": "U.S. Census Bureau", "published_at": "2025-09-09", "url": "https://www.census.gov/newsroom/press-releases/2025/income-poverty-health-insurance-coverage.html"}],
+      "evidence_policy": {"data_status": "quantitative", "as_of": "2024", "prohibited": ["causal_policy_claim", "suppressed_sampling_limitation", "statistically_insignificant_change_as_trend"]},
+      "brief": {"schema_version": "1.0", "source_id": "B06-census-income-poverty-insurance-2024", "primary_audience": ["researcher", "policy_maker"], "delivery_objective": "communicate_findings", "source_material_type": "research_report", "evidence_profile": ["official_statistics", "sampling_method", "limitations"], "industry_compliance_context": ["public_policy", "statistical_disclosure"], "delivery_scenario": "insight_briefing"}
+    },
+    {
+      "id": "B07",
+      "title": "机器学习入门培训材料",
+      "expected_route": "education_explanation",
+      "sources": [{"publisher": "Google for Developers", "published_at": "rolling documentation", "url": "https://developers.google.com/machine-learning/crash-course"}],
+      "evidence_policy": {"data_status": "qualitative_only", "as_of": "2026-08-05", "prohibited": ["invented_learning_outcome", "invented_model_accuracy", "copied_course_exercise"]},
+      "brief": {"schema_version": "1.0", "source_id": "B07-google-mlcc", "primary_audience": ["learner", "new_hire"], "delivery_objective": "teach", "source_material_type": "training_material", "evidence_profile": ["course_modules", "concept_model", "worked_example"], "industry_compliance_context": ["education"], "delivery_scenario": "training_session"}
+    },
+    {
+      "id": "B08",
+      "title": "Airbnb 2025 Summer Release 的品牌传播说明",
+      "expected_route": "brand_content_communication",
+      "sources": [{"publisher": "Airbnb Newsroom", "published_at": "2025-05", "url": "https://news.airbnb.com/airbnb-2025-summer-release/"}],
+      "evidence_policy": {"data_status": "quantitative", "as_of": "2025-05", "prohibited": ["brand_asset_reuse", "unverified_market_effect", "unpublished_price_or_supply_claim"]},
+      "brief": {"schema_version": "1.0", "source_id": "B08-airbnb-summer-release-2025", "primary_audience": ["consumer", "partner"], "delivery_objective": "build_awareness", "source_material_type": "campaign_brief", "evidence_profile": ["approved_claims", "launch_scope", "call_to_action"], "industry_compliance_context": ["brand_rights", "consumer_communication"], "delivery_scenario": "campaign_launch"}
+    }
+  ]
+}
