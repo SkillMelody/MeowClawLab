@@ -13,9 +13,9 @@
       "id": "B02",
       "title": "投资委员会的商业尽调读前材料",
       "expected_route": "investor_commercial",
-      "sources": [{"publisher": "Microsoft", "published_at": "2025-04-30", "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2025-q3/press-release-webcast"}],
-      "evidence_policy": {"data_status": "quantitative", "as_of": "FY25 Q3", "prohibited": ["valuation", "price_target", "investment_recommendation", "undisclosed_retention"]},
-      "brief": {"schema_version": "1.0", "source_id": "B02-microsoft-investor-read-ahead", "primary_audience": ["investor"], "delivery_objective": "commercial_due_diligence", "source_material_type": "investment_memo", "evidence_profile": ["quarterly_financials", "segment_comparison", "risk_disclosures"], "industry_compliance_context": ["public_disclosure", "financial_promotion_boundary"], "delivery_scenario": "investment_committee"}
+      "sources": [{"publisher": "U.S. Securities and Exchange Commission", "published_at": "2026-02-27", "url": "https://www.sec.gov/Archives/edgar/data/1562088/000162828026012494/duol-20251231.htm"}],
+      "evidence_policy": {"data_status": "quantitative", "as_of": "2025-12-31", "prohibited": ["valuation", "price_target", "investment_recommendation", "undisclosed_retention"]},
+      "brief": {"schema_version": "1.0", "source_id": "B02-duolingo-2025-10k", "primary_audience": ["investor"], "delivery_objective": "commercial_due_diligence", "source_material_type": "investment_memo", "evidence_profile": ["annual_financials", "historical_comparison", "risk_disclosures"], "industry_compliance_context": ["public_disclosure", "financial_promotion_boundary"], "delivery_scenario": "investment_committee"}
     },
     {
       "id": "B03",
