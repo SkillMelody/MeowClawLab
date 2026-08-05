@@ -1,0 +1,6 @@
+{
+  "production_profile": "standard",
+  "user_request": "投资委员会异步尽调读前材料；仅使用 Duolingo 2025 Form 10-K 及 SEC XBRL Company Facts 的历史披露；不构成投资建议。",
+  "style_id": "investor-read-ahead",
+  "quality_gates": ["source-lineage", "native-editability", "rendered-visual-review"]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Duolingo 2025 Form 10-K：投资委员会商业尽调读前材料",
+  "summary": "仅整理公开历史披露，区分已验证事实、尚未验证问题与下一步尽调请求。",
+  "requested_route": "research_report",
+  "evidence_types": ["statistics", "comparison", "trend"],
+  "relationship_types": ["evidence_gap", "risk_to_diligence"],
+  "project_governance_terms": [],
+  "audience": "投资委员会",
+  "key_findings": [
+    "2023 至 2025 年收入与净利润均增长，但历史增长本身不等于可持续性判断。",
+    "10-K 已披露竞争、付费需求、隐私/数据保护及 AI 监管等风险方向。",
+    "客户队列、留存、单位经济与市场验证仍需在下一步尽调中取得。"
+  ]
+}
