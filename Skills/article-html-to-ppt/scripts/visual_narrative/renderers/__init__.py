@@ -4,6 +4,7 @@ from collections.abc import Callable
 from typing import Any
 
 from . import (
+    causal_chain,
     drill_down_stair,
     heat_matrix,
     interaction_storyboard,
@@ -16,6 +17,7 @@ from . import (
 Renderer = Callable[[Any, dict[str, Any], dict[str, Any], dict[str, Any]], dict[str, Any]]
 
 RENDERERS: dict[str, Renderer] = {
+    "causal_chain": causal_chain.render,
     "heat_matrix": heat_matrix.render,
     "layered_architecture": layered_architecture.render,
     "drill_down_stair": drill_down_stair.render,

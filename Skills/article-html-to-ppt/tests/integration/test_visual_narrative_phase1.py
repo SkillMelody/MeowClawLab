@@ -223,6 +223,72 @@ def test_supported_relationship_components_are_compiled_to_verified_native_rende
         assert planned["objects"][0]["selected_route"] == "native_diagram"
 
 
+def test_causal_chain_is_compiled_only_with_explicit_source_bound_data(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["cause_effect"]
+    document["slides"][1]["causal_data"] = {"nodes": [
+        {"label": "前置验证", "role": "原因"},
+        {"label": "减少返工", "role": "机制"},
+        {"label": "可靠交付", "role": "结果"},
+    ]}
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["cause_effect"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    assert slide["objects"][0]["component_type"] == "causal_chain"
+    assert [node["label"] for node in slide["objects"][0]["content"]["nodes"]] == ["前置验证", "减少返工", "可靠交付"]
+    planned = next(item for item in delivery["slides"] if item["slide_id"] == "S02")
+    assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_causal_chain_without_explicit_data_becomes_a_disclosed_placeholder(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["cause_effect"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["cause_effect"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    ppt_ir = load_json(tmp_path / ".ppt-work" / "contracts" / "ppt-ir.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    assert slide["objects"][0]["component_status"] == "unsupported_placeholder"
+
+
 def test_heat_matrix_is_compiled_only_with_explicit_source_bound_data(
     tmp_path: Path,
 ) -> None:

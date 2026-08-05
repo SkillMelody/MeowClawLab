@@ -107,6 +107,26 @@
         "page_archetype": {"type": "string", "minLength": 1},
         "semantic_component": {"type": "string", "minLength": 1},
         "visual_anchor": {"type": "string", "minLength": 1},
+        "causal_data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nodes"],
+          "properties": {
+            "nodes": {
+              "type": "array",
+              "minItems": 3,
+              "items": {
+                "type": "object",
+                "required": ["label"],
+                "properties": {
+                  "label": {"type": "string", "minLength": 1},
+                  "role": {"type": "string"},
+                  "priority": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
         "visual_data": {
           "type": "object",
           "additionalProperties": false,

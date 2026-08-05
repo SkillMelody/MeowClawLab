@@ -33,6 +33,10 @@ _RENDERER_BINDINGS = {
         "handler": "builders.python_pptx_adapter._add_table",
         "schema_versions": {"1.0"},
     },
+    ("python_pptx", "causal_chain"): {
+        "handler": "scripts.visual_narrative.renderers.causal_chain.render",
+        "schema_versions": {"1.0"},
+    },
     ("python_pptx", "heat_matrix"): {
         "handler": "scripts.visual_narrative.renderers.heat_matrix.render",
         "schema_versions": {"1.0"},
@@ -197,6 +201,13 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
             "nodes": [{"label": "Plan"}, {"label": "Build"}, {"label": "Verify"}],
         },
         "native_table": {"rows": [["smoke"]]},
+        "causal_chain": {
+            "nodes": [
+                {"label": "Cause", "role": "cause"},
+                {"label": "Mechanism", "role": "mechanism"},
+                {"label": "Effect", "role": "effect"},
+            ],
+        },
         "heat_matrix": {
             "rows": ["A", "B"],
             "columns": ["X", "Y"],
@@ -240,6 +251,7 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
 
 def _minimum_smoke_shape_count(component_type: str) -> int:
     return {
+        "causal_chain": 5,
         "heat_matrix": 10,
         "layered_architecture": 4,
         "drill_down_stair": 3,

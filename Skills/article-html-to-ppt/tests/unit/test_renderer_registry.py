@@ -231,6 +231,7 @@ def test_merged_v2_runtime_handlers_pass_real_smoke(
         "layered_architecture",
         "drill_down_stair",
         "phase_roadmap",
+        "causal_chain",
     ],
 )
 def test_priority_renderer_bindings_pass_real_smoke(component_type: str) -> None:
@@ -252,6 +253,9 @@ def test_renderer_capability_baseline_only_declares_truth_bound_handlers() -> No
         "layered_architecture",
         "drill_down_stair",
         "phase_roadmap",
+        "product_ui_overview",
+        "interaction_storyboard",
+        "causal_chain",
     }
     assert set(document["renderers"]["pptxgenjs"]) == {
         "comparison_card",

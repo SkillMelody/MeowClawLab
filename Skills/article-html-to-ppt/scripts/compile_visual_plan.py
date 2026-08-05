@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-COMPILABLE = {"phase_roadmap", "drill_down_stair", "layered_architecture", "heat_matrix"}
+COMPILABLE = {"phase_roadmap", "drill_down_stair", "layered_architecture", "heat_matrix", "causal_chain"}
 RELATIONSHIP_EXPRESSIONS = {"relationship_visual", "sequence_visual"}
 RELATIONSHIP_LABELS = {
     "feedback_loop": "反馈闭环",
@@ -160,6 +160,32 @@ def _layered_architecture_object(slide: dict[str, Any], intent: dict[str, Any]) 
     }
 
 
+def _causal_chain_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
+    data = intent.get("causal_data")
+    if not isinstance(data, dict) or not isinstance(data.get("nodes"), list):
+        raise ValueError(f"VISUAL_PLAN_IR_COMPONENT_MISMATCH:{slide['id']}:causal_chain_data")
+    nodes = data["nodes"]
+    return {
+        **_native_component_base(slide, "causal_chain"),
+        "content": data,
+        "diagram_ir": {
+            "diagram_id": f"{slide['id']}-causal-chain",
+            "diagram_type": "causal_chain",
+            "nodes": [
+                {"id": f"node-{index}", "label": str(node["label"]), "role": str(node.get("role") or "mechanism"), "priority": "primary" if index < 3 else "supporting"}
+                for index, node in enumerate(nodes)
+            ],
+            "groups": [],
+            "edges": [
+                {"id": f"node-{index}-to-{index + 1}", "source": f"node-{index}", "target": f"node-{index + 1}", "relation": "influence", "priority": "primary" if index == 0 else "secondary"}
+                for index in range(len(nodes) - 1)
+            ],
+            "main_paths": [{"id": "main", "node_ids": [f"node-{index}" for index in range(min(3, len(nodes)))], "priority": "primary"}],
+        },
+        "complexity": {"node_count": len(nodes), "edge_count": len(nodes) - 1},
+    }
+
+
 def _heat_matrix_object(slide: dict[str, Any], intent: dict[str, Any]) -> dict[str, Any]:
     data = intent.get("visual_data")
     if not isinstance(data, dict):
@@ -241,6 +267,7 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
                 "drill_down_stair": _drill_down_object,
                 "layered_architecture": _layered_architecture_object,
                 "heat_matrix": _heat_matrix_object,
+                "causal_chain": _causal_chain_object,
             }[component]
             slide["primary_expression"] = "relationship_visual"
             slide["objects"] = [compiler(slide, intent)]

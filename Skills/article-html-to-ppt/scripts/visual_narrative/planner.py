@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 STYLE_DIR = ROOT / "references" / "template-packs"
 
 COMPONENT_RULES = (
+    ({"cause_effect"}, "causal_chain"),
     ({"heatmap", "matrix"}, "heat_matrix"),
     ({"layer", "system_boundary", "data_flow"}, "layered_architecture"),
     ({"hierarchy", "drill_down"}, "drill_down_stair"),
@@ -20,6 +21,7 @@ COMPONENT_RULES = (
 )
 
 EXPRESSION_BY_COMPONENT = {
+    "causal_chain": "relationship_visual",
     "heat_matrix": "table_matrix",
     "layered_architecture": "relationship_visual",
     "drill_down_stair": "relationship_visual",
@@ -28,6 +30,7 @@ EXPRESSION_BY_COMPONENT = {
 }
 
 ARCHETYPE_BY_COMPONENT = {
+    "causal_chain": "causal_chain",
     "heat_matrix": "heat_matrix",
     "layered_architecture": "layered_architecture",
     "drill_down_stair": "drill_down",
@@ -104,7 +107,10 @@ def _plan_slide(
     relationships = set(_string_list(slide.get("relationships")))
     component = choose_component(relationships)
     visual_data = _heat_matrix_data(slide.get("visual_data")) if component == "heat_matrix" else None
+    causal_data = _causal_chain_data(slide.get("causal_data")) if component == "causal_chain" else None
     if component == "heat_matrix" and visual_data is None:
+        component = "unsupported" if role in {"relationship", "architecture", "diagram"} else _component_for_non_relationship(role)
+    if component == "causal_chain" and causal_data is None:
         component = "unsupported" if role in {"relationship", "architecture", "diagram"} else _component_for_non_relationship(role)
     if component == "unsupported" and role not in {"relationship", "architecture", "diagram"}:
         component = _component_for_non_relationship(role)
@@ -130,6 +136,7 @@ def _plan_slide(
         "semantic_component": component,
         "visual_anchor": component,
         **({"visual_data": visual_data} if visual_data is not None else {}),
+        **({"causal_data": causal_data} if causal_data is not None else {}),
         "layout": {
             "family": "single_semantic_canvas",
             "zones": ["title", "primary", "evidence", "source"],
@@ -208,6 +215,15 @@ def _evidence_refs(value: Any) -> list[Any]:
         elif isinstance(item, dict) and item:
             refs.append(item)
     return refs
+
+
+def _causal_chain_data(value: Any) -> dict[str, Any] | None:
+    if not isinstance(value, dict) or not isinstance(value.get("nodes"), list):
+        return None
+    nodes = value["nodes"]
+    if len(nodes) < 3 or any(not isinstance(node, dict) or not isinstance(node.get("label"), str) or not node["label"].strip() for node in nodes):
+        return None
+    return {"nodes": [dict(node) for node in nodes]}
 
 
 def _heat_matrix_data(value: Any) -> dict[str, Any] | None:

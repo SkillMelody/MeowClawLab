@@ -31,6 +31,7 @@ class PythonPptxAdapter:
                 "readback": True,
             },
             components={
+                "causal_chain": "full",
                 "heat_matrix": "full",
                 "layered_architecture": "full",
                 "drill_down_stair": "full",
@@ -45,6 +46,7 @@ class PythonPptxAdapter:
         if (
             component_type
             in {
+                "causal_chain",
                 "heat_matrix",
                 "layered_architecture",
                 "drill_down_stair",
