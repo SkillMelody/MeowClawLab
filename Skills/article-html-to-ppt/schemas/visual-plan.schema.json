@@ -20,6 +20,31 @@
       "type": "string",
       "minLength": 1
     },
+    "professional_route": {
+      "type": "string",
+      "enum": [
+        "strategic_decision",
+        "investor_commercial",
+        "product_prd",
+        "technical_architecture",
+        "project_governance",
+        "research_insight",
+        "education_explanation",
+        "brand_content_communication"
+      ]
+    },
+    "professional_narrative_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence"],
+      "properties": {
+        "sequence": {
+          "type": "array",
+          "minItems": 3,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
     "style_id": {
       "const": "azure-insight-architecture"
     },

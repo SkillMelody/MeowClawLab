@@ -54,6 +54,8 @@ def plan_visual_narrative(
     task_route: dict[str, Any],
     storyline: dict[str, Any],
     style_id: str = DEFAULT_STYLE_ID,
+    *,
+    audience_route: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     route = _require_string(task_route.get("selected_route"), "PLANNER_ROUTE_REQUIRED")
     slides = storyline.get("slides")
@@ -61,11 +63,16 @@ def plan_visual_narrative(
         raise VisualPlanningError("PLANNER_SLIDES_REQUIRED")
 
     style = _load_style(style_id)
+    professional_route: str | None = None
+    narrative_contract: dict[str, Any] | None = None
+    if audience_route is not None:
+        professional_route, narrative_contract = _professional_contract(audience_route)
+        _validate_professional_storyline(slides, narrative_contract["sequence"])
     intents = [
         _plan_slide(slide, style=style)
         for slide in slides
     ]
-    return {
+    plan = {
         "schema_version": SCHEMA_VERSION,
         "selected_route": route,
         "style_id": style["style_id"],
@@ -73,6 +80,10 @@ def plan_visual_narrative(
         "display_name_en": style["display_name_en"],
         "slides": intents,
     }
+    if professional_route is not None and narrative_contract is not None:
+        plan["professional_route"] = professional_route
+        plan["professional_narrative_contract"] = narrative_contract
+    return plan
 
 
 def _plan_slide(
@@ -227,3 +238,32 @@ def _density_for_slide(slide: dict[str, Any], priority: str) -> str:
     if isinstance(density, str) and density in {"low", "medium", "high"}:
         return density
     return "medium" if priority == "key" else "low"
+
+
+def _professional_contract(audience_route: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    if audience_route.get("status") != "ready":
+        raise VisualPlanningError("PLANNER_AUDIENCE_ROUTE_NOT_READY")
+    route = _require_string(audience_route.get("selected_route"), "PLANNER_AUDIENCE_ROUTE_REQUIRED")
+    contract = audience_route.get("narrative_contract")
+    if not isinstance(contract, dict):
+        raise VisualPlanningError("PLANNER_NARRATIVE_CONTRACT_REQUIRED")
+    sequence = contract.get("sequence")
+    if not isinstance(sequence, list) or len(sequence) < 3 or not all(isinstance(item, str) and item.strip() for item in sequence):
+        raise VisualPlanningError("PLANNER_NARRATIVE_SEQUENCE_INVALID")
+    return route, {"sequence": [item.strip() for item in sequence]}
+
+
+def _validate_professional_storyline(slides: list[Any], sequence: list[str]) -> None:
+    stages: list[str] = []
+    for slide in slides:
+        if not isinstance(slide, dict):
+            raise VisualPlanningError("PLANNER_SLIDE_INVALID")
+        stage = slide.get("narrative_stage")
+        if not isinstance(stage, str) or not stage.strip() or stage.strip() not in sequence:
+            raise VisualPlanningError("PLANNER_NARRATIVE_STAGE_INVALID", str(slide.get("id", "deck")))
+        stages.append(stage.strip())
+    if set(stages) != set(sequence):
+        raise VisualPlanningError("PLANNER_NARRATIVE_STAGE_COVERAGE_INVALID")
+    indices = [sequence.index(stage) for stage in stages]
+    if indices != sorted(indices):
+        raise VisualPlanningError("PLANNER_NARRATIVE_STAGE_ORDER_INVALID")

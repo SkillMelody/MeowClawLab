@@ -21,6 +21,7 @@ OUTPUT_OWNERSHIP_MARKER = ".pptsmith-output"
 STAGES = [
     "prepare_inputs",
     "validate_inputs",
+    "route_audience",
     "route_task",
     "design_evidence",
     "plan_visual_narrative",
@@ -119,6 +120,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--assets", "--asset-manifest", dest="assets", type=Path)
     parser.add_argument("--content-analysis", type=Path)
     parser.add_argument("--storyline", type=Path)
+    parser.add_argument("--source-context-brief", type=Path)
     parser.add_argument("--visual-system", type=Path)
     parser.add_argument("--builder", choices=["auto", "python_pptx", "pptxgenjs"], default="auto")
     parser.add_argument("--profile", choices=["fast", "standard", "premium"], default="standard")
@@ -130,6 +132,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if bool(args.content_analysis) != bool(args.storyline):
         parser.error("--content-analysis and --storyline must be provided together")
+    if args.content_analysis and not args.source_context_brief:
+        parser.error("--source-context-brief is required when visual narrative inputs are provided")
     return args
 
 
@@ -156,6 +160,7 @@ class Pipeline:
             "asset_manifest": str(args.assets.resolve()) if args.assets else None,
             "content_analysis": str(args.content_analysis.resolve()) if args.content_analysis else None,
             "storyline": str(args.storyline.resolve()) if args.storyline else None,
+            "source_context_brief": str(args.source_context_brief.resolve()) if args.source_context_brief else None,
             "visual_system": str(args.visual_system.resolve()) if args.visual_system else None,
             "builder": args.builder,
             "profile": args.profile,
@@ -253,6 +258,8 @@ class Pipeline:
             sources["content_analysis"] = self.args.content_analysis
         if self.args.storyline:
             sources["storyline"] = self.args.storyline
+        if self.args.source_context_brief:
+            sources["source_context_brief"] = self.args.source_context_brief
         if self.args.visual_system:
             sources["visual_system"] = self.args.visual_system
         targets = {
@@ -262,6 +269,7 @@ class Pipeline:
             "asset_manifest": contract_stage / "asset-manifest.json",
             "content_analysis": contract_stage / "content-analysis.json",
             "storyline": contract_stage / "storyline.json",
+            "source_context_brief": contract_stage / "source-context-brief.json",
             "visual_system": contract_stage / "visual-system.json",
         }
         for name, source in sources.items():
@@ -284,6 +292,7 @@ class Pipeline:
             "asset_manifest": self.contracts / "asset-manifest.json",
             "content_analysis": self.contracts / "content-analysis.json",
             "storyline": self.contracts / "storyline.json",
+            "source_context_brief": self.contracts / "source-context-brief.json",
             "visual_system": self.contracts / "visual-system.json",
         }
         analysis = self.work / "analysis"
@@ -310,6 +319,24 @@ class Pipeline:
                 str(self.contracts / "task-route.json"),
             ],
         )
+
+    def route_audience(self) -> None:
+        completed = self.run_command(
+            "route_audience",
+            [
+                sys.executable,
+                str(SCRIPTS / "route_audience.py"),
+                "--brief",
+                str(self.contracts / "source-context-brief.json"),
+                "--output",
+                str(self.contracts / "audience-route.json"),
+            ],
+            accepted={0, 2},
+        )
+        decision = load_json(self.contracts / "audience-route.json")
+        if completed.returncode != 0 or decision.get("status") != "ready":
+            codes = decision.get("blocking_codes", [])
+            raise StageFailure("route_audience", ", ".join(str(code) for code in codes) or "AUDIENCE_ROUTE_BLOCKED", completed.returncode or 2)
 
     def design_evidence(self) -> None:
         from visual_narrative.design_evidence import consume_design_evidence
@@ -356,6 +383,8 @@ class Pipeline:
                 str(SCRIPTS / "plan_visual_narrative.py"),
                 "--task-route",
                 str(self.contracts / "task-route.json"),
+                "--audience-route",
+                str(self.contracts / "audience-route.json"),
                 "--storyline",
                 str(self.contracts / "storyline.json"),
                 "--style-id",
@@ -755,6 +784,7 @@ class Pipeline:
             self.stage("prepare_inputs", self.prepare_inputs)
             self.stage("validate_inputs", lambda: self.validate("validate_inputs"))
             if self.visual_enabled:
+                self.stage("route_audience", self.route_audience)
                 self.stage("route_task", self.route_task)
                 self.stage("design_evidence", self.design_evidence)
                 self.stage("plan_visual_narrative", self.plan_visual_narrative)

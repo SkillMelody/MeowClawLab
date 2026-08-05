@@ -26,6 +26,7 @@ def load_json(path: Path) -> dict[str, Any]:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="将故事线编译为 PPT Smith 视觉叙事计划。")
     parser.add_argument("--task-route", required=True, type=Path, help="task-route.json 路径")
+    parser.add_argument("--audience-route", type=Path, help="已通过门禁的 audience-route.json 路径")
     parser.add_argument("--storyline", required=True, type=Path, help="含证据引用的 storyline JSON 路径")
     parser.add_argument("--style-id", default=DEFAULT_STYLE_ID, help="视觉系统 style id")
     parser.add_argument("--output", required=True, type=Path, help="visual-plan.json 输出路径")
@@ -38,6 +39,7 @@ def main(argv: list[str] | None = None) -> int:
         load_json(args.task_route),
         load_json(args.storyline),
         args.style_id,
+        audience_route=load_json(args.audience_route) if args.audience_route else None,
     )
     schema = load_json(SCHEMA_PATH)
     Draft202012Validator(schema).validate(result)

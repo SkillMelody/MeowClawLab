@@ -18,7 +18,35 @@ def write_json(path: Path, document: dict) -> None:
     )
 
 
-def storyline(*, request_revision: bool = False) -> dict:
+def write_source_context_brief(tmp_path: Path, route: str) -> Path:
+    if route == "product_prd":
+        document = {
+            "schema_version": "1.0",
+            "source_id": "prd-fixture",
+            "primary_audience": ["product_manager", "engineer", "designer", "tester"],
+            "delivery_objective": "review_and_align",
+            "source_material_type": "prd",
+            "evidence_profile": ["scope_boundary", "user_flow", "acceptance_criteria"],
+            "industry_compliance_context": ["consumer_software"],
+            "delivery_scenario": "prd_review",
+        }
+    else:
+        document = {
+            "schema_version": "1.0",
+            "source_id": "research-fixture",
+            "primary_audience": ["analyst"],
+            "delivery_objective": "communicate_findings",
+            "source_material_type": "research_report",
+            "evidence_profile": ["statistics", "comparison", "trend"],
+            "industry_compliance_context": [],
+            "delivery_scenario": "insight_briefing",
+        }
+    path = tmp_path / "source-context-brief.json"
+    write_json(path, document)
+    return path
+
+
+def storyline(*, request_revision: bool = False, professional_route: str = "research_insight") -> dict:
     slides = [
         ("S01", "cover", [], "supporting"),
         ("S02", "relationship", ["hierarchy", "drill_down"], "supporting"),
@@ -30,6 +58,11 @@ def storyline(*, request_revision: bool = False) -> dict:
         ("S08", "roadmap", ["phase", "roadmap"], "supporting"),
         ("S09", "closing", [], "supporting"),
     ]
+    sequences = {
+        "research_insight": ["research_question", "evidence_and_findings", "implications_and_actions"],
+        "product_prd": ["problem_and_scope", "user_flow_and_rules", "acceptance_and_open_questions"],
+    }
+    sequence = sequences[professional_route]
     document = {
         "title": "PPTSmith 视觉叙事验收",
         "slides": [
@@ -40,8 +73,9 @@ def storyline(*, request_revision: bool = False) -> dict:
                 "evidence_refs": [{"source_id": "src-001", "locator": slide_id}],
                 "relationships": relationships,
                 "priority": priority,
+                "narrative_stage": sequence[min(index * len(sequence) // len(slides), len(sequence) - 1)],
             }
-            for slide_id, role, relationships, priority in slides
+            for index, (slide_id, role, relationships, priority) in enumerate(slides)
         ],
     }
     if request_revision:
@@ -62,6 +96,7 @@ def run_phase1_pipeline(tmp_path: Path, *, request_revision: bool = False) -> su
         },
     )
     write_json(storyline_path, storyline(request_revision=request_revision))
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
     return subprocess.run(
         [
             sys.executable,
@@ -76,6 +111,8 @@ def run_phase1_pipeline(tmp_path: Path, *, request_revision: bool = False) -> su
             str(content_analysis),
             "--storyline",
             str(storyline_path),
+            "--source-context-brief",
+            str(brief_path),
             "--builder",
             "pptxgenjs",
             "--profile",
@@ -136,12 +173,14 @@ def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> Non
             "interactions": [{"trigger": "select", "locator": "8.2"}],
         },
     )
-    write_json(storyline_path, storyline())
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
     completed = subprocess.run(
         [
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
             "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
@@ -170,12 +209,14 @@ def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
             "interactions": [{"trigger": "select", "locator": "8.2"}],
         },
     )
-    write_json(storyline_path, storyline())
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
     completed = subprocess.run(
         [
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
             "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
@@ -247,12 +288,14 @@ def test_product_prd_forced_pptxgenjs_is_honestly_blocked(tmp_path: Path) -> Non
             "interactions": [{"trigger": "select", "locator": "8.2"}],
         },
     )
-    write_json(storyline_path, storyline())
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
     completed = subprocess.run(
         [
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
             "--builder", "pptxgenjs", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
@@ -269,12 +312,14 @@ def test_product_prd_without_design_evidence_does_not_inject_prototypes(tmp_path
     content_analysis = tmp_path / "content-analysis.json"
     storyline_path = tmp_path / "storyline.json"
     write_json(content_analysis, {"requested_route": "product_prd", "source_id": "minimal-prd"})
-    write_json(storyline_path, storyline())
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
     completed = subprocess.run(
         [
             sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
             "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
             "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
             "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
             "--output-dir", str(tmp_path / "delivery"),
         ],
