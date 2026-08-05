@@ -3,7 +3,7 @@ $ /Library/Developer/CommandLineTools/usr/bin/python3 /Users/skillmelody/.opencl
 STDOUT
 
 STDERR
-2026-08-04T19:10:37+0800 WARNING text S03 ppt-object-3-7 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
-2026-08-04T19:10:37+0800 WARNING text S03 ppt-object-3-8 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
-2026-08-04T19:10:37+0800 WARNING text S03 ppt-object-3-9 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
-2026-08-04T19:10:37+0800 WARNING text S03 ppt-object-3-10 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-05T09:29:31+0800 WARNING text S03 ppt-object-3-7 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-05T09:29:31+0800 WARNING text S03 ppt-object-3-8 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-05T09:29:31+0800 WARNING text S03 ppt-object-3-9 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.
+2026-08-05T09:29:31+0800 WARNING text S03 ppt-object-3-10 TEXT_OVERFLOW_RISK Text box may overflow based on character count, font size, and box geometry.

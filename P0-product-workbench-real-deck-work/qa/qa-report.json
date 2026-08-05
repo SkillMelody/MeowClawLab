@@ -18,11 +18,11 @@
   "delivery_ref": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/delivery-plan.json",
   "evidence": {
     "render_report": {
-      "duration_seconds": 11.591,
+      "duration_seconds": 11.277,
       "engine": "libreoffice",
       "engine_version": "LibreOffice 26.2.4.2 0229ac93fcf0d7cbc6376066c6f35021cef002dc",
       "errors": [],
-      "finished_at": "2026-08-04T19:10:36+08:00",
+      "finished_at": "2026-08-05T09:29:30+08:00",
       "pdf": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/renders/deck.pdf",
       "pptx": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx",
       "schema_version": "1.0",
@@ -102,7 +102,7 @@
           "width_px": 1920
         }
       ],
-      "started_at": "2026-08-04T19:10:24+08:00",
+      "started_at": "2026-08-05T09:29:18+08:00",
       "status": "passed",
       "warnings": []
     },
@@ -189,7 +189,7 @@
         "whole_slide_raster_count": 0
       },
       "pptx": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx",
-      "pptx_sha256": "sha256:3429b63b171b5acd51104e9fed5e3f724a40753d3b7c1d6cef842b45ea5a9565",
+      "pptx_sha256": "sha256:1d0461af7cb162c065ec9535da42663e266d239d4ca99c54103b78069ba6a5d9",
       "schema_version": "1.0",
       "slide_count": 9,
       "slides": [
@@ -3090,7 +3090,7 @@
       "status": "passed"
     }
   },
-  "generated_at": "2026-08-04T19:10:37+08:00",
+  "generated_at": "2026-08-05T09:29:31+08:00",
   "inputs": {
     "inspection_report": "embedded",
     "render_report": "embedded"

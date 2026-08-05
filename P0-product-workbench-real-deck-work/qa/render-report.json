@@ -1,9 +1,9 @@
 {
-  "duration_seconds": 11.591,
+  "duration_seconds": 11.277,
   "engine": "libreoffice",
   "engine_version": "LibreOffice 26.2.4.2 0229ac93fcf0d7cbc6376066c6f35021cef002dc",
   "errors": [],
-  "finished_at": "2026-08-04T19:10:36+08:00",
+  "finished_at": "2026-08-05T09:29:30+08:00",
   "pdf": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/renders/deck.pdf",
   "pptx": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx",
   "schema_version": "1.0",
@@ -83,7 +83,7 @@
       "width_px": 1920
     }
   ],
-  "started_at": "2026-08-04T19:10:24+08:00",
+  "started_at": "2026-08-05T09:29:18+08:00",
   "status": "passed",
   "warnings": []
 }

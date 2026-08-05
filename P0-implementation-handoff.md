@@ -1,5 +1,20 @@
 # PPTSmith P0 implementation handoff
 
+## 2026-08-05 verification status — not final
+
+The real PRD deck was rebuilt once from source commit `08e0c63a351ea19a97734f3ce6ffbffe8c806982`. Its delivery manifest now records that exact commit and `generated_at`; all three packaged-file hashes and the manifest schema validate.
+
+- Focused regressions: `7 passed` (`test_package_delivery.py` and `test_product_prd_native_prototypes.py`). A single full-suite run was deliberately capped after **19/264 passed in 269.73s**; it is therefore incomplete, not reported as a full pass.
+- Pipeline: completed through `package_delivery`; LibreOffice rendered **9/9**; structural QA has `0` errors and `0` fatals, native text/editable-core ratios are `1.0`, and there are no media or whole-slide rasters.
+- Known QA signal: S03 still has four `TEXT_OVERFLOW_RISK` warnings.
+
+Fresh rendered-image review rejects the deck for P0 visual acceptance:
+
+1. **S02**: the source labels occupy and visually collide with the title/summary area. The workspace sketch is present, but the page is not presentation-clean.
+2. **S03**: all five state cards render as the same `action / 选择节点 · 触发入口`. It does not express the required streaming/AI bubble, Diff/result, accept-or-undo decision, or the error/conflict branch and recovery actions.
+
+Do not publish, merge as P0 complete, or claim an independent visual pass. The next implementation must fix the **evidence-to-step-kind/label mapping** for S03 and reserve non-overlapping source-label space for S02, then rerun one real PRD generation, structural/LibreOffice QA, and an independent visual review.
+
 ## Scope and branch
 
 - Worktree: `pptsmith-prd-p0-implementation`

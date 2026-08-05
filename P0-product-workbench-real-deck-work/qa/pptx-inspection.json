@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "pptx": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx",
-  "pptx_sha256": "sha256:3429b63b171b5acd51104e9fed5e3f724a40753d3b7c1d6cef842b45ea5a9565",
+  "pptx_sha256": "sha256:1d0461af7cb162c065ec9535da42663e266d239d4ca99c54103b78069ba6a5d9",
   "slide_count": 9,
   "status": "passed",
   "metrics": {
