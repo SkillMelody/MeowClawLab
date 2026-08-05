@@ -114,14 +114,18 @@ class PythonPptxAdapter:
                 if not (slide_plan.get("objects") or []):
                     continue
             else:
+                title = str(slide_plan.get("title") or "Untitled")
+                long_title = len(title) > 24
+                title_height = 0.78 if long_title else 0.58
+                title_size = min(style["title_size"], 20.0) if long_title else style["title_size"]
                 _add_textbox(
                     slide,
-                    slide_plan.get("title") or "Untitled",
+                    title,
                     x=style["margin_left"],
                     y=style["margin_top"],
                     w=12.2,
-                    h=0.45,
-                    font_size=style["title_size"],
+                    h=title_height,
+                    font_size=title_size,
                     bold=True,
                     color=style["primary"],
                     font_name=style["font_name"],
@@ -301,17 +305,20 @@ def _semantic_renderer(component_type: str) -> Any:
 
 def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: float, font_size: float, color: str, bold: bool = False, font_name: str | None = None) -> None:
     from pptx.dml.color import RGBColor
+    from pptx.enum.text import MSO_AUTO_SIZE
     from pptx.util import Inches, Pt
 
     box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     frame = box.text_frame
     frame.clear()
+    frame.auto_size = MSO_AUTO_SIZE.NONE
+    frame.word_wrap = True
     paragraph = frame.paragraphs[0]
     run = paragraph.add_run()
     run.text = str(text)
     run.font.size = Pt(font_size)
     run.font.bold = bold
-    run.font.name = font_name
+    run.font.name = "PingFang SC" if any("\u4e00" <= char <= "\u9fff" for char in str(text)) else font_name
     run.font.color.rgb = RGBColor.from_string(color)
     return box
 
