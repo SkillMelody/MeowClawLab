@@ -514,7 +514,7 @@ class Pipeline:
 
     def build(self) -> None:
         self.build_dir.mkdir(parents=True, exist_ok=True)
-        self.run_command("build", [
+        cmd = [
             sys.executable, str(SCRIPTS / "build_deck.py"),
             "--ppt-ir", str(self.contracts / "ppt-ir.json"),
             "--style", str(self.contracts / "style-contract.json"),
@@ -522,7 +522,11 @@ class Pipeline:
             "--builder", self.approved_builder(),
             "--output-dir", str(self.build_dir),
             "--build-manifest", str(self.contracts / "build-manifest.json"),
-        ])
+        ]
+        visual_plan = self.contracts / "visual-plan.json"
+        if visual_plan.exists():
+            cmd += ["--visual-plan", str(visual_plan)]
+        self.run_command("build", cmd)
 
     def deck_path(self) -> Path:
         manifest = load_json(self.contracts / "build-manifest.json")

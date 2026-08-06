@@ -1,20 +1,20 @@
 {
   "schema_version": "1.0",
   "pack_id": "pptsmith-pmo-consulting-pack",
-  "built_at": "2026-07-24T10:23:43.215586+00:00",
+  "built_at": "2026-08-06T07:45:48.136798+00:00",
   "status": "created",
   "builder": "private-python-pptx-pmo-renderer",
   "outputs": {
-    "deck": "output/ai-platform-project-pmo.pptx"
+    "deck": "/Users/skillmelody/.openclaw/workspace/deliverables/pptsmith-pmo-selfproject/pptsmith-upgrade-pmo-review.pptx"
   },
   "source": "examples/ai-platform-project.pmo.json",
   "style": "contracts/mckinsey-pmo.style.json",
-  "slide_count": 11,
+  "slide_count": 12,
   "slides": [
     {
       "index": 1,
       "page_type": "cover",
-      "title": "AI 内容交付平台验证项目"
+      "title": "PPTSmith 多受众路由与视觉质量升级"
     },
     {
       "index": 2,
@@ -65,6 +65,11 @@
       "index": 11,
       "page_type": "action_tracker",
       "title": "行动项追踪页像 Excel，但必须有清晰 owner、deadline 和 status"
+    },
+    {
+      "index": 12,
+      "page_type": "disclaimer",
+      "title": "关于本报告"
     }
   ],
   "editable_core_expected": [

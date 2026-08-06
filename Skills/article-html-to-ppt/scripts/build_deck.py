@@ -116,6 +116,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--build-manifest", type=Path, required=True)
     parser.add_argument("--json-output", action="store_true")
+    parser.add_argument("--visual-plan", type=Path, default=None)
     return parser.parse_args(argv)
 
 
@@ -130,7 +131,7 @@ def main(argv: list[str]) -> int:
         if adapter is None:
             raise ValueError(f"Unknown builder: {builder_name}")
         plan = adapter.plan(ppt_ir, style, delivery)
-        result = adapter.build(plan, args.output_dir)
+        result = adapter.build(plan, args.output_dir, visual_plan=load_json(args.visual_plan) if args.visual_plan else None)
         manifest = build_manifest(
             ppt_ir=ppt_ir,
             delivery_plan=delivery,

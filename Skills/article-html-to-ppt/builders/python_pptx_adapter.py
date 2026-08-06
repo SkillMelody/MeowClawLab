@@ -84,7 +84,7 @@ class PythonPptxAdapter:
         warnings = _unsupported_style_warnings(style_contract)
         return BuildPlan(builder=self.name, slides=slides, style_contract=dict(style_contract), warnings=warnings)
 
-    def build(self, build_plan: BuildPlan, output_dir: Path) -> BuildResult:
+    def build(self, build_plan: BuildPlan, output_dir: Path, *, visual_plan: dict[str, Any] | None = None) -> BuildResult:
         try:
             from pptx import Presentation
             from pptx.dml.color import RGBColor
@@ -101,6 +101,13 @@ class PythonPptxAdapter:
         presentation.slide_height = Inches(7.5)
         blank_layout = presentation.slide_layouts[6]
 
+        # Index visual plan slides by id for layout hints
+        vp_slides: dict[str, dict[str, Any]] = {}
+        if isinstance(visual_plan, dict):
+            for vs in visual_plan.get("slides", []) or []:
+                if isinstance(vs, dict) and vs.get("slide_id"):
+                    vp_slides[vs["slide_id"]] = vs
+
         object_results: list[dict[str, Any]] = []
         fallbacks: list[dict[str, Any]] = []
         warnings: list[str] = list(build_plan.warnings)
@@ -109,6 +116,13 @@ class PythonPptxAdapter:
             slide = presentation.slides.add_slide(blank_layout)
             slide.background.fill.solid()
             slide.background.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+            # --- visual-plan-driven layout hints ---
+            vp = vp_slides.get(slide_plan.get("id", "")) or {}
+            vp_layout = vp.get("layout") if isinstance(vp.get("layout"), dict) else {}
+            vp_density = vp.get("density") if isinstance(vp.get("density"), dict) else {}
+            primary_zone_ratio = float(vp_layout.get("primary_zone_ratio", 0.56))
+            density_level = str(vp_density.get("level", "medium"))
+            page_archetype = str(vp.get("page_archetype", ""))
             if slide_plan.get("slide_role") == "cover":
                 _add_cover(slide, slide_plan, style)
                 if not (slide_plan.get("objects") or []):
@@ -153,6 +167,23 @@ class PythonPptxAdapter:
             objects = slide_plan.get("objects", []) or []
             if not objects:
                 continue
+            # --- visual-plan-driven layout: dynamic position & height ---
+            title_zone_h = 0.58 if len(title) <= 28 else 0.78
+            content_top = style["margin_top"] + title_zone_h
+            if body and slide_plan.get("slide_role") != "cover":
+                content_top += 0.4  # body text zone
+            footer_h = 0.35 if style["footer_enabled"] else 0.0
+            available_h = 7.5 - content_top - style["margin_bottom"] - footer_h - 0.3
+            if vp:
+                # Visual-plan-driven: use primary_zone_ratio and density from the plan
+                content_height = available_h * primary_zone_ratio
+                dens_scale = {"high": 1.0, "medium": 0.92, "low": 0.82}.get(density_level, 0.88)
+                content_height *= dens_scale
+                y = content_top + 0.15
+            else:
+                # No visual plan: use classic hardcoded layout
+                y = 1.85
+                content_height = 4.65
             card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
             for index, obj in enumerate(objects):
                 route = ((obj.get("delivery_plan") or {}).get("selected_route") or obj.get("delivery_preferences", {}).get("preferred_route") or "native_ppt")
@@ -162,25 +193,19 @@ class PythonPptxAdapter:
                     rendered = renderer(
                         slide,
                         obj,
-                        slide_plan.get("page_design_intent")
-                        if isinstance(slide_plan.get("page_design_intent"), dict)
-                        else {},
-                        slide_plan.get("style_contract")
-                        if isinstance(slide_plan.get("style_contract"), dict)
-                        else {},
+                        slide_plan.get("page_design_intent") if isinstance(slide_plan.get("page_design_intent"), dict) else {},
+                        slide_plan.get("style_contract") if isinstance(slide_plan.get("style_contract"), dict) else {},
                     )
                     warnings.extend(rendered.get("warnings", []))
-                    object_results.append(
-                        {
-                            "slide_id": slide_plan.get("id"),
-                            "object_id": obj.get("id"),
-                            "component_type": component_type,
-                            "planned_route": route,
-                            "actual_route": rendered["actual_route"],
-                            "status": "created",
-                            "object_names": rendered.get("object_names", []),
-                        }
-                    )
+                    object_results.append({
+                        "slide_id": slide_plan.get("id"),
+                        "object_id": obj.get("id"),
+                        "component_type": component_type,
+                        "planned_route": route,
+                        "actual_route": rendered["actual_route"],
+                        "status": "created",
+                        "object_names": rendered.get("object_names", []),
+                    })
                     continue
                 actual_route = route
                 component_type = obj.get("component_type") or obj.get("type")
@@ -188,26 +213,18 @@ class PythonPptxAdapter:
                 is_process = route == "native_diagram" and component_type == "process"
                 if route in {"hybrid_overlay", "svg_component", "generated_image", "background_image"}:
                     actual_route = "native_ppt"
-                    fallbacks.append(
-                        {
-                            "slide_id": slide_plan.get("id"),
-                            "object_id": obj.get("id"),
-                            "component_type": component_type,
-                            "planned_route": route,
-                            "actual_route": actual_route,
-                            "reason_codes": ["PYTHON_PPTX_MINIMAL_NATIVE_FALLBACK"],
-                            "editable_core_preserved": obj.get("editability") != "native_required",
-                        }
-                    )
+                    fallbacks.append({
+                        "slide_id": slide_plan.get("id"),
+                        "object_id": obj.get("id"),
+                        "component_type": component_type,
+                        "planned_route": route,
+                        "actual_route": actual_route,
+                        "reason_codes": ["PYTHON_PPTX_MINIMAL_NATIVE_FALLBACK"],
+                        "editable_core_preserved": obj.get("editability") != "native_required",
+                    })
                 single_object = len(objects) == 1
-                x = (
-                    style["margin_left"]
-                    if single_object
-                    else style["margin_left"] + index * (card_width + style["card_gap"])
-                )
-                y = 1.85
+                x = (style["margin_left"] if single_object else style["margin_left"] + index * (card_width + style["card_gap"]))
                 object_width = 11.7 if single_object else card_width
-                content_height = 4.65
                 if route == "native_table" or obj.get("type") == "table":
                     _add_table(
                         slide,
