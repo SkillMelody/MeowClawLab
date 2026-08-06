@@ -121,7 +121,7 @@ def probe_python_pptx(
         "features": {
             "native_text": available,
             "native_table": available,
-            "native_chart": False,
+            "native_chart": available,
             "native_connector": "partial" if available else False,
             "svg_embed": False,
             "speaker_notes": False,
