@@ -573,7 +573,7 @@ def test_python_adapter_preserves_and_applies_supported_style_contract(tmp_path:
     title = next(shape for shape in slide.shapes if shape.has_text_frame and shape.text == "Text and tables are native")
     run = title.text_frame.paragraphs[0].runs[0]
     assert run.font.name == "Courier New"
-    assert round(run.font.size.pt) == 20  # capped for long titles (>24 chars)
+    assert round(run.font.size.pt, -1) == 30  # shrink-to-fit; ~31pt for 28-char title in 0.58" height
     assert str(run.font.color.rgb) == "654321"
     assert round(title.left / 914400, 2) == 0.91
     table = next(shape.table for shape in slide.shapes if shape.has_table)

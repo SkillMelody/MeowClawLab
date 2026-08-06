@@ -115,20 +115,23 @@ class PythonPptxAdapter:
                     continue
             else:
                 title = str(slide_plan.get("title") or "Untitled")
-                long_title = len(title) > 24
-                title_height = 0.78 if long_title else 0.58
-                title_size = min(style["title_size"], 20.0) if long_title else style["title_size"]
+                cjk_chars = sum(1 for c in title if '\u4e00' <= c <= '\u9fff')
+                # Allow up to 2 lines; shrink if text overflows
+                title_h = 0.82 if len(title) > 28 else 0.62
+                title_size = style["title_size"] if len(title) <= 28 else style["title_size"] - 2.0
                 _add_textbox(
                     slide,
                     title,
                     x=style["margin_left"],
                     y=style["margin_top"],
                     w=12.2,
-                    h=title_height,
+                    h=title_h,
                     font_size=title_size,
                     bold=True,
                     color=style["primary"],
                     font_name=style["font_name"],
+                    shrink=True,
+                    min_size=max(14.0, style["body_size"]),
                 )
             body_parts: list[str] = []
             seen_text = {
@@ -144,7 +147,7 @@ class PythonPptxAdapter:
                 seen_text.add(normalized)
             body = "\n".join(body_parts)
             if body and slide_plan.get("slide_role") != "cover":
-                _add_textbox(slide, body, x=style["margin_left"], y=1.05, w=11.7, h=0.5, font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"])
+                _add_textbox(slide, body, x=style["margin_left"], y=1.05, w=11.7, h=0.45, font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"], shrink=True, min_size=max(8.0, style["body_size"] - 3))
             if slide_plan.get("slide_role") != "cover":
                 _add_footer(slide, slide_plan, style, slide_number)
             objects = slide_plan.get("objects", []) or []
@@ -303,11 +306,37 @@ def _semantic_renderer(component_type: str) -> Any:
     return get_renderer(component_type)
 
 
-def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: float, font_size: float, color: str, bold: bool = False, font_name: str | None = None) -> None:
+def _text_metrics(text: str, font_size_pt: float) -> tuple[float, float]:
+    """Estimate rendered text extent: (width_inches, lines_if_wrapped_at_12in)"""
+    if not text:
+        return 0.0, 0.0
+    cjk = sum(1 for c in text if '\u4e00' <= c <= '\u9fff' or '\u3000' <= c <= '\u303f' or '\uff00' <= c <= '\uffef')
+    latin = len(text) - cjk
+    width_pt = (cjk * 1.0 + latin * 0.55) * font_size_pt
+    return width_pt / 72.0, font_size_pt * 1.35 / 72.0
+
+
+def _fit_text_size(text: str, max_w_in: float, max_h_in: float, start_pt: float, min_pt: float = 8.0) -> float:
+    """Return the largest font size ≤ start_pt that fits within max_w × max_h."""
+    if not text or max_w_in <= 0 or max_h_in <= 0:
+        return max(start_pt, min_pt)
+    size = start_pt
+    while size > min_pt:
+        est_w, line_h = _text_metrics(text, size)
+        lines = max(1, round(est_w / max_w_in))
+        if lines * line_h <= max_h_in:
+            return size
+        size -= 1.0
+    return max(min_pt, size)
+
+
+def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: float, font_size: float, color: str, bold: bool = False, font_name: str | None = None, shrink: bool = False, min_size: float = 8.0) -> Any:
     from pptx.dml.color import RGBColor
     from pptx.enum.text import MSO_AUTO_SIZE
     from pptx.util import Inches, Pt
 
+    if shrink:
+        font_size = _fit_text_size(str(text), w, h, font_size, min_size)
     box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     frame = box.text_frame
     frame.clear()
@@ -680,8 +709,10 @@ def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
         chart.legend.font.name = style["font_name"]
         chart.legend.font.size = Pt(style["table_size"])
     chart.value_axis.has_major_gridlines = True
+    # Scale axis labels: narrower when many categories
+    axis_label_size = max(7.0, style["table_size"] - (len(categories) - 5) * 0.8 if len(categories) > 5 else style["table_size"])
     chart.category_axis.tick_labels.font.name = style["font_name"]
-    chart.category_axis.tick_labels.font.size = Pt(style["table_size"])
+    chart.category_axis.tick_labels.font.size = Pt(axis_label_size)
     # --- data series colour injection ---
     data_series_colors = style.get("data_series")
     if isinstance(data_series_colors, list) and data_series_colors:
@@ -876,16 +907,23 @@ def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
                         srgb.set("val", border_color.lstrip("#"))
             except Exception:
                 pass
-            # Typography
+            # Typography — shrink long cell text to fit
+            cell_text = row_data[col_index] if col_index < len(row_data) else ""
+            cell_w_in = col_widths[col_index] if col_index < len(col_widths) else w / cols
+            text_len = len(str(cell_text))
+            base_size = max(13.0, style["table_size"]) if compact else style["table_size"]
+            # Scale down for overflowing cells, but keep compact tables crisp
+            if not compact and (text_len > 20 or (text_len > 12 and cell_w_in < 1.5)):
+                cell_size = max(8.0, base_size - 2.0)
+            elif not compact and text_len > 35:
+                cell_size = max(7.0, base_size - 3.0)
+            else:
+                cell_size = base_size
             for paragraph in cell.text_frame.paragraphs:
                 paragraph.space_before = Pt(2)
                 paragraph.space_after = Pt(2)
                 for run in paragraph.runs:
-                    run.font.size = Pt(
-                        max(13.0, style["table_size"])
-                        if compact
-                        else style["table_size"]
-                    )
+                    run.font.size = Pt(cell_size)
                     run.font.name = style["font_name"]
                     run.font.color.rgb = RGBColor.from_string(
                         style["background"] if is_header else style["text_primary"]
