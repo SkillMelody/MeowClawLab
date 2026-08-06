@@ -244,7 +244,7 @@ class PythonPptxAdapter:
                         h=process_height,
                         style=style,
                     )
-                elif component_type == "metric_card":
+                elif component_type == "metric_card" or (isinstance(obj.get("content"), dict) and obj["content"].get("cards")):
                     _add_metric_wall(
                         slide,
                         obj,
@@ -476,9 +476,41 @@ def _metric_entries(obj: dict[str, Any]) -> list[dict[str, str]]:
     content = obj.get("content")
     if not isinstance(content, dict):
         return []
+    # content.cards[] — shape/card-based IR (most common)
+    cards = content.get("cards")
+    if isinstance(cards, list):
+        entries: list[dict[str, str]] = []
+        for index, item in enumerate(cards, start=1):
+            if not isinstance(item, dict):
+                continue
+            value = item.get("value")
+            title = item.get("title") or item.get("label")
+            detail = item.get("detail") or item.get("description")
+            if value is not None:
+                entries.append({
+                    "label": str(title or f"指标 {index:02d}"),
+                    "value": (
+                        f"{item.get('prefix') or ''}"
+                        f"{value}"
+                        f"{item.get('suffix') or ''}"
+                    ),
+                })
+            elif title:
+                # Action card: title only, no metric value
+                num = item.get("num")
+                prefix = f"{num}. " if num is not None else ""
+                display_value = prefix + str(title)
+                detail_text = str(detail) if detail else ""
+                entries.append({
+                    "label": detail_text[:60] if detail_text else display_value,
+                    "value": display_value,
+                })
+        if entries:
+            return entries
+    # content.metrics[] — metric_wall IR
     metrics = content.get("metrics")
     if isinstance(metrics, list):
-        entries: list[dict[str, str]] = []
+        entries = []
         for index, item in enumerate(metrics, start=1):
             if not isinstance(item, dict):
                 continue
