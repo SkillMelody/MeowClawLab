@@ -89,6 +89,60 @@ source/article/design brief
 -> package user-facing delivery + delivery-manifest.json
 ```
 
+## Generation Path: Code vs IR (User Choice)
+
+Two paths, one decision. The user controls which path is used.
+
+### Path A: Code Path（精细化 / 高定模式）
+
+LLM writes a standalone Python build script (`build_deck.py`) using python-pptx directly.
+Best for: important presentations, board decks, investor pitches, anything where visual
+refinement matters more than reproducibility.
+
+**Trigger**: User says 「精细做」「高定模式」「手写代码生成」「和之前 State of AI 一样」「质量优先」
+
+**Execution**:
+```bash
+python3 build_deck.py
+```
+
+**Quality**: Highest visual quality — full control over spacing, colors, positioning.
+No pipeline overhead. But: one-shot execution, no QA gate, no fallback.
+
+**Template**: Use the consulting-light palette (`#051C2C` primary, `#2251FF` accent, white bg).
+Slide dimensions: 13.333×7.5 inches (16:9). Reference patterns:
+- Cover: dark navy bg + accent bar + title/subtitle/meta
+- Data slide: action title + left chart + right insight callout
+- KPI cards: large number + label + trend arrow
+- Every slide: source footnote + page number
+- Chart: data labels on bars, no unnecessary axis clutter
+- Table: dark header + zebra stripes
+
+### Path B: IR Path（标准路径 / Pipeline）
+
+LLM generates `ppt-ir.json`, then `run_pipeline.py` builds, validates, and delivers.
+Best for: batch generation, complex components (diagrams, PMO, PRD), standardized output,
+scenarios requiring QA traceability.
+
+**Trigger**: Default path. User says 「快速生成」「标准模式」「流水线模式」
+
+**Execution**:
+```bash
+python3 scripts/run_pipeline.py --ppt-ir ppt-ir.json --style style-contract.json \
+  --profile standard --builder python_pptx --work-dir .ppt-work --output-dir final/
+```
+
+**Quality**: Structurally guaranteed (contract validation, QA gates, fallback chains).
+Visual quality limited by builder's rendering capabilities.
+
+### Selection Rule
+
+- User explicitly says 「精细/手写/高定/代码」→ Path A
+- User explicitly says 「快速/标准/流水线」→ Path B
+- Default → Path B (IR Path)
+- When Path A: do NOT ask for confirmation, just generate the code and execute
+- When Path B: relay the `PPTSMITH_PROFILE_NOTICE`, continue without waiting
+
 ## PMO Production Route (Auto-Routing)
 
 When the user's request matches PMO/governance signals, **automatically route to the PMO builder** (`private-pmo-pack/scripts/build_pmo_deck.py`) instead of the generic pipeline.
@@ -128,6 +182,111 @@ Every generated deck MUST include a final quality-disclaimer page as the last sl
   - 公众号「夜猫子弦月」留言（内容建议/商务合作）
 
 This page should be auto-appended by the builder; the LLM must not generate it as part of the IR.
+
+## Visual Narrative Pipeline (Recommended Path)
+
+**DO NOT directly generate ppt-ir.json.** Instead, generate content-analysis + storyline, then let the visual narrative pipeline plan the IR.
+
+### Step 1: Analyze the document → `content-analysis.json`
+
+```json
+{
+  "title": "文档标题",
+  "summary": "一句话摘要",
+  "evidence_types": ["statistics", "comparison", "trend", "case_study"],
+  "relationship_types": ["adoption_gap", "cause_effect", "heatmap"],
+  "project_governance_terms": [],
+  "audience": "目标受众描述",
+  "key_findings": ["发现1", "发现2", ...]
+}
+```
+
+- `evidence_types`: pick from statistics, comparison, trend, case_study, forecast, benchmark, survey
+- `relationship_types`: pick from adoption_gap, cause_effect, heatmap, capability_maturity, system_boundary, data_flow, dependency, layer, comparison, trend
+- `project_governance_terms`: non-empty triggers PMO route; typical values: ["steering committee", "milestone", "RAID", "RACI", "workstream"]
+- `key_findings`: 3-8 items; the most important conclusions from the document
+
+### Step 2: Plan the story → `storyline.json`
+
+```json
+{
+  "title": "PPT 标题",
+  "slides": [
+    {
+      "id": "S01",
+      "role": "cover",
+      "message": "核心信息或标题",
+      "audience_question": "这页回答受众的什么问题？",
+      "evidence_refs": ["src-K1"],
+      "priority": "key"
+    },
+    ...
+  ]
+}
+```
+
+**Page count rule**: information density × audience context = page count. Not fixed at 12.
+- Light doc (2-3 key findings, simple data): 6-8 pages
+- Medium doc (5-8 findings, multi-dimension): 10-14 pages  
+- Dense doc (10+ findings, complex relationships): 15-20 pages
+
+**Slide roles** (pick the most specific that fits):
+- `cover` — title + subtitle + date/source
+- `data` — chart, table, or data visualization
+- `judgment` — key insight or management conclusion
+- `comparison` — side-by-side or before/after
+- `evidence` — supporting proof or case study
+- `roadmap` — timeline, phases, or sequence
+- `decision` — options + recommendation
+- `closing` — summary + next steps
+
+**priority**: `key` for critical slides, `supporting` for supplementary
+
+### Step 3: Generate source-context-brief → `source-context-brief.json`
+
+```json
+{
+  "schema_version": "1.0",
+  "source_id": "简短标识",
+  "primary_audience": ["executive", "management"],
+  "delivery_objective": "decide",
+  "source_material_type": "research_report",
+  "evidence_profile": ["statistics", "trend"],
+  "delivery_scenario": "strategy_review"
+}
+```
+
+- `primary_audience`: executive, management, analyst, investor, engineer, public
+- `delivery_objective`: decide, inform, recommend, align, teach
+- `source_material_type`: research_report, strategy_memo, project_plan, prd, pitch_deck, article
+- `delivery_scenario`: strategy_review, board_meeting, client_pitch, status_review, training
+
+### Step 4: Run the pipeline
+
+```bash
+python3 scripts/run_pipeline.py \
+  --requirements requirements.json \
+  --ppt-ir ppt-ir.json \
+  --style style-contract.json \
+  --content-analysis content-analysis.json \
+  --storyline storyline.json \
+  --source-context-brief source-context-brief.json \
+  --profile standard \
+  --builder python_pptx \
+  --work-dir .ppt-work \
+  --output-dir final/
+```
+
+The pipeline will:
+1. Route audience → select professional route (strategic_decision, research_insight, etc.)
+2. Route task → determine task type
+3. Plan visual narrative → generate visual-plan.json with page intents, expressions, layouts
+4. Compile visual plan → merge into final ppt-ir.json
+5. Build → verify → deliver
+
+### Fallback: Direct IR
+
+If visual narrative pipeline is not available or the topic is too simple, fall back to directly generating `ppt-ir.json` with the generic cover/data/judgment/closing structure. But always prefer the visual narrative path for professional-quality output.
 
 The critical rules are:
 

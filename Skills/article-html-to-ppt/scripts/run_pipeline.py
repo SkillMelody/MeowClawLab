@@ -441,7 +441,17 @@ class Pipeline:
             raise StageFailure("deck_rhythm", ", ".join(codes) or "DECK_RHYTHM_FAILED")
 
     def validate(self, stage: str, *, include_delivery: bool = False, include_build: bool = False) -> None:
-        command = [sys.executable, str(SCRIPTS / "validate_contracts.py"), "--ppt-ir", str(self.contracts / "ppt-ir.json"), "--style", str(self.contracts / "style-contract.json")]
+        command = [sys.executable, str(SCRIPTS / "validate_contracts.py")]
+        # When visual narrative is enabled, skip ppt-ir validation before compile_visual_plan replaces it.
+        # The second validate_inputs after compile_visual_plan will validate the compiled ppt-ir.
+        ppt_ir_ready = (
+            not self.visual_enabled
+            or stage != "validate_inputs"
+            or (self.contracts / "visual-plan.json").exists()
+        )
+        if ppt_ir_ready:
+            command += ["--ppt-ir", str(self.contracts / "ppt-ir.json")]
+        command += ["--style", str(self.contracts / "style-contract.json")]
         if (self.contracts / "asset-manifest.json").exists():
             command += ["--assets", str(self.contracts / "asset-manifest.json")]
         if include_delivery:
