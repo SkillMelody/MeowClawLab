@@ -322,6 +322,34 @@ def validate_ppt_ir_semantics(file: Path, ppt_ir: dict[str, Any], assets: dict[s
             if obj.get("editability") in {"raster_allowed", "raster_only"}:
                 if asset_ref not in raster_assets and obj.get("id") not in allowance and asset_ref not in allowance:
                     errors.append(issue(file, obj_ptr + "/asset_ref", "RASTER_UNDECLARED", asset_ref, sorted(raster_assets | allowance), "Declare raster use in asset-manifest or slide delivery_contract.raster_allowance."))
+            # --- data-density guard ---
+            content = obj.get("content") if isinstance(obj.get("content"), dict) else {}
+            obj_type = obj.get("type", "")
+            if obj_type == "chart":
+                cats = content.get("categories")
+                series_list = content.get("series")
+                cat_count: int = len(cats) if isinstance(cats, list) else 0
+                ser_count: int = len(series_list) if isinstance(series_list, list) else 0
+                if cat_count < 4:
+                    errors.append(issue(file, obj_ptr, "DATA_DENSITY_LOW",
+                        f"chart with {cat_count} categories and {ser_count} series",
+                        "≥ 4 categories per chart",
+                        "Each chart should include at least 4 data points to support meaningful comparison."))
+                total_values = sum(len(s.get("values", [])) for s in (series_list or []) if isinstance(s, dict))
+                if total_values < 4:
+                    errors.append(issue(file, obj_ptr, "DATA_DENSITY_LOW",
+                        f"chart with {total_values} total values",
+                        "≥ 4 total data values",
+                        "Each chart should carry enough values to justify its visual space."))
+            elif obj_type == "table":
+                body = content.get("body")
+                rows_list = content.get("rows")
+                row_count: int = len(body) if isinstance(body, list) else (len(rows_list) if isinstance(rows_list, list) else 0)
+                if row_count < 3:
+                    errors.append(issue(file, obj_ptr, "DATA_DENSITY_LOW",
+                        f"table with {row_count} data rows",
+                        "≥ 3 data rows",
+                        "Tables should contain enough rows to justify a tabular layout."))
     return errors
 
 

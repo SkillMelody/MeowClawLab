@@ -659,7 +659,8 @@ def _chart_data(obj: dict[str, Any]) -> tuple[list[str], list[tuple[str, list[fl
 
 def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
     from pptx.chart.data import ChartData
-    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+    from pptx.dml.color import RGBColor
+    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
     from pptx.util import Inches, Pt
 
     categories, series = _chart_data(obj)
@@ -667,16 +668,45 @@ def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
     data.categories = categories
     for name, values in series:
         data.add_series(name, values)
-    chart = slide.shapes.add_chart(
-        XL_CHART_TYPE.BAR_CLUSTERED, Inches(x), Inches(y), Inches(max(w, 5.8)), Inches(h), data
-    ).chart
-    chart.has_legend = True
-    chart.legend.position = XL_LEGEND_POSITION.BOTTOM
-    chart.legend.font.name = style["font_name"]
-    chart.legend.font.size = Pt(style["table_size"])
+    # Choose horizontal bars for many categories, vertical columns for few
+    chart_type = XL_CHART_TYPE.BAR_CLUSTERED if len(categories) > 5 else XL_CHART_TYPE.COLUMN_CLUSTERED
+    chart_frame = slide.shapes.add_chart(
+        chart_type, Inches(x), Inches(y), Inches(max(w, 5.8)), Inches(h), data
+    )
+    chart = chart_frame.chart
+    chart.has_legend = len(series) > 1
+    if chart.has_legend:
+        chart.legend.position = XL_LEGEND_POSITION.BOTTOM
+        chart.legend.font.name = style["font_name"]
+        chart.legend.font.size = Pt(style["table_size"])
     chart.value_axis.has_major_gridlines = True
     chart.category_axis.tick_labels.font.name = style["font_name"]
     chart.category_axis.tick_labels.font.size = Pt(style["table_size"])
+    # --- data series colour injection ---
+    data_series_colors = style.get("data_series")
+    if isinstance(data_series_colors, list) and data_series_colors:
+        try:
+            plot = chart.plots[0]
+            for i, s in enumerate(plot.series):
+                color_hex = data_series_colors[i % len(data_series_colors)]
+                if isinstance(color_hex, str):
+                    s.format.fill.solid()
+                    s.format.fill.fore_color.rgb = RGBColor.from_string(color_hex)
+        except Exception:
+            pass
+    # --- data labels ---
+    try:
+        plot = chart.plots[0]
+        plot.has_data_labels = True
+        data_labels = plot.data_labels
+        data_labels.font.size = Pt(max(8, style["table_size"] - 1))
+        data_labels.font.name = style["font_name"]
+        data_labels.number_format = "#,##0"
+        data_labels.show_value = True
+        if chart_type == XL_CHART_TYPE.BAR_CLUSTERED:
+            data_labels.position = XL_LABEL_POSITION.OUTSIDE_END
+    except Exception:
+        pass
 
 
 def _process_labels(obj: dict[str, Any]) -> list[str]:
@@ -788,6 +818,7 @@ def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: floa
 
 def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
     from pptx.dml.color import RGBColor
+    from pptx.oxml.ns import qn
     from pptx.util import Inches, Pt
 
     data = _table_data(obj)
@@ -806,13 +837,49 @@ def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
     )
     table_shape.name = f"Component:table:{obj.get('id') or 'primary'}"
     table = table_shape.table
-    for row_index, row in enumerate(data):
+    # Proportional column widths based on content length
+    col_max_len: list[int] = [0] * cols
+    for row_data in data:
+        for ci in range(min(cols, len(row_data))):
+            col_max_len[ci] = max(col_max_len[ci], len(str(row_data[ci])))
+    total_len = sum(col_max_len) or 1
+    col_widths = [max(0.12, (cl / total_len) * w) for cl in col_max_len]
+    for ci, cw in enumerate(col_widths):
+        table.columns[ci].width = Inches(cw)
+    # Stripe colours
+    surface2 = style.get("surface_2", "EBEDF0")
+    border_color = style.get("border", "D1D5DB")
+    for row_index, row_data in enumerate(data):
+        is_header = row_index == 0
         for col_index in range(cols):
             cell = table.cell(row_index, col_index)
-            cell.text = row[col_index] if col_index < len(row) else ""
+            cell.text = row_data[col_index] if col_index < len(row_data) else ""
+            # Fill
             cell.fill.solid()
-            cell.fill.fore_color.rgb = RGBColor.from_string(style["primary"] if row_index == 0 else style["background"])
+            if is_header:
+                cell.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
+            elif row_index % 2 == 0:
+                cell.fill.fore_color.rgb = RGBColor.from_string(surface2)
+            else:
+                cell.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+            # Thin inner border via XML (python-pptx doesn't expose per-cell borders easily)
+            try:
+                tc_pr = cell._tc.get_or_add_tcPr()
+                for border_tag, border_attr in [("a:lnL", "w"), ("a:lnR", "w"), ("a:lnT", "w"), ("a:lnB", "w")]:
+                    existing = tc_pr.find(qn(border_tag))
+                    if existing is None:
+                        from lxml import etree
+                        el = etree.SubElement(tc_pr, qn(border_tag))
+                        el.set(border_attr, "6350")
+                        solid = etree.SubElement(el, qn("a:solidFill"))
+                        srgb = etree.SubElement(solid, qn("a:srgbClr"))
+                        srgb.set("val", border_color.lstrip("#"))
+            except Exception:
+                pass
+            # Typography
             for paragraph in cell.text_frame.paragraphs:
+                paragraph.space_before = Pt(2)
+                paragraph.space_after = Pt(2)
                 for run in paragraph.runs:
                     run.font.size = Pt(
                         max(13.0, style["table_size"])
@@ -820,7 +887,9 @@ def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
                         else style["table_size"]
                     )
                     run.font.name = style["font_name"]
-                    run.font.color.rgb = RGBColor.from_string(style["background"] if row_index == 0 else style["text_primary"])
+                    run.font.color.rgb = RGBColor.from_string(
+                        style["background"] if is_header else style["text_primary"]
+                    )
 
 
 def _hex(value: Any, default: str) -> str:
@@ -837,9 +906,16 @@ def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
     body_sizes = typography.get("body_sizes_pt") if isinstance(typography.get("body_sizes_pt"), dict) else {}
     footer_tokens = contract.get("footer_tokens") if isinstance(contract.get("footer_tokens"), dict) else {}
     fonts = typography.get("font_primary") if isinstance(typography.get("font_primary"), list) else []
+    data_series = colors.get("data_series")
+    ds_colors: list[str] = []
+    if isinstance(data_series, list):
+        ds_colors = [c for c in data_series if isinstance(c, str)]
+    if not ds_colors:
+        ds_colors = ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F"]
     return {
         "background": _hex(colors.get("background"), "FFFFFF"), "primary": _hex(colors.get("primary"), "2D3340"),
-        "surface": _hex(colors.get("surface_1"), "F4F1EA"), "border": _hex(colors.get("border"), "E4E0D7"),
+        "surface": _hex(colors.get("surface_1"), "F4F1EA"), "surface_2": _hex(colors.get("surface_2", colors.get("surface_1")), "EBEDF0"),
+        "border": _hex(colors.get("border"), "E4E0D7"),
         "text_primary": _hex(colors.get("text_primary"), "2D3340"), "text_secondary": _hex(colors.get("text_secondary"), "6E6A60"),
         "font_name": next((font for font in fonts if isinstance(font, str) and font not in {"sans-serif", "serif", "monospace"}), "Aptos"),
         "title_size": float(title_sizes.get("slide", 22)), "body_size": float(body_sizes.get("normal", 13)),
@@ -850,6 +926,7 @@ def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
         "footer_enabled": bool(footer_tokens.get("enabled", False)),
         "footer_height": float(footer_tokens.get("height_in", 0.24)),
         "card_gap": _spacing_value(contract, "card_gap", 0.16),
+        "data_series": ds_colors,
     }
 
 
