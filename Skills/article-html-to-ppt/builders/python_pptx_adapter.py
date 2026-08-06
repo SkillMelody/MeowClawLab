@@ -124,7 +124,11 @@ class PythonPptxAdapter:
             density_level = str(vp_density.get("level", "medium"))
             page_archetype = str(vp.get("page_archetype", ""))
             if slide_plan.get("slide_role") == "cover":
-                _add_cover(slide, slide_plan, style)
+                _add_cover(slide, slide_plan, style, vp)
+                if not (slide_plan.get("objects") or []):
+                    continue
+            elif slide_plan.get("slide_role") == "closing":
+                _add_closing(slide, slide_plan, style, slide_number)
                 if not (slide_plan.get("objects") or []):
                     continue
             else:
@@ -372,58 +376,128 @@ def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: floa
     return box
 
 
-def _add_cover(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any]) -> None:
+def _add_cover(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any], vp: dict[str, Any] | None = None) -> None:
+    """Render cover slide with style determined by visual plan or data."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.util import Inches
+
+    title = str(slide_plan.get("title") or "Untitled")
+    subtitle = str(slide_plan.get("message") or "").strip()
+    if subtitle == title:
+        subtitle = ""
+    # Determine cover style from visual plan, page_design_intent, or fallback to title length
+    route = (vp or {}).get("professional_route", "")
+    archetype = (vp or {}).get("page_archetype", "")
+    # navy_hero: dark bg for decision/investor decks; minimal_light for reports/research
+    if route in {"strategic_decision", "investor_commercial"} or archetype == "navy_hero":
+        _cover_navy_hero(slide, title, subtitle, style)
+    else:
+        _cover_minimal_light(slide, title, subtitle, style)
+
+
+def _cover_navy_hero(slide: Any, title: str, subtitle: str, style: dict[str, Any]) -> None:
+    """Dark navy background cover — McKinsey board-deck style."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.util import Inches
+
+    # Full-slide dark background
+    bg = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5)
+    )
+    bg.name = "Decoration:cover:bg"
+    bg.fill.solid()
+    bg.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
+    bg.line.fill.background()
+    # Accent bar
+    bar = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0.8), Inches(2.0), Inches(0.08), Inches(2.8)
+    )
+    bar.name = "Decoration:cover:bar"
+    bar.fill.solid()
+    bar.fill.fore_color.rgb = RGBColor.from_string((style.get("data_series", ["2251FF"])[0] if style.get("data_series") else "2251FF").lstrip("#"))
+    bar.line.fill.background()
+    # Title
+    _add_textbox(slide, title, x=1.1, y=2.2, w=11.2, h=1.6,
+        font_size=min(38.0, style["title_size"] * 1.6), bold=True,
+        color=style["background"], font_name=style["font_name"], shrink=True, min_size=22)
+    if subtitle:
+        _add_textbox(slide, subtitle, x=1.1, y=4.0, w=10.0, h=0.7,
+            font_size=max(14.0, style["body_size"]), color=style.get("text_secondary", "8899AA"),
+            font_name=style["font_name"])
+    # Meta line
+    _add_textbox(slide, "—— MeowClaw PPT Smith 自动生成 ——",
+        x=0.8, y=6.6, w=8.0, h=0.3,
+        font_size=style["footnote_size"], color=style.get("text_secondary", "8899AA"), font_name=style["font_name"])
+
+
+def _cover_minimal_light(slide: Any, title: str, subtitle: str, style: dict[str, Any]) -> None:
+    """Clean light-background cover — research report / internal style."""
     from pptx.dml.color import RGBColor
     from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
     from pptx.util import Inches
 
     accent = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-        Inches(style["margin_left"]),
-        Inches(1.45),
-        Inches(0.12),
-        Inches(3.75),
+        Inches(style["margin_left"]), Inches(1.45), Inches(0.12), Inches(3.75),
     )
     accent.name = "Decoration:cover:accent"
     accent.fill.solid()
     accent.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
     accent.line.fill.background()
-    _add_textbox(
-        slide,
-        str(slide_plan.get("title") or "Untitled"),
-        x=style["margin_left"] + 0.42,
-        y=2.0,
-        w=10.8,
-        h=1.65,
-        font_size=max(32.0, style["title_size"] * 1.55),
-        bold=True,
-        color=style["primary"],
-        font_name=style["font_name"],
-    )
-    subtitle = str(slide_plan.get("message") or "").strip()
-    if subtitle and subtitle != str(slide_plan.get("title") or "").strip():
-        _add_textbox(
-            slide,
-            subtitle,
-            x=style["margin_left"] + 0.42,
-            y=4.0,
-            w=9.8,
-            h=0.75,
-            font_size=max(14.0, style["body_size"]),
-            color=style["text_secondary"],
-            font_name=style["font_name"],
-        )
+    _add_textbox(slide, title, x=style["margin_left"] + 0.42, y=2.0, w=10.8, h=1.65,
+        font_size=max(32.0, style["title_size"] * 1.55), bold=True,
+        color=style["primary"], font_name=style["font_name"], shrink=True, min_size=20)
+    if subtitle:
+        _add_textbox(slide, subtitle, x=style["margin_left"] + 0.42, y=4.0, w=9.8, h=0.75,
+            font_size=max(14.0, style["body_size"]), color=style["text_secondary"], font_name=style["font_name"])
     rule = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-        Inches(style["margin_left"] + 0.42),
-        Inches(5.25),
-        Inches(4.0),
-        Inches(0.04),
+        Inches(style["margin_left"] + 0.42), Inches(5.25), Inches(4.0), Inches(0.04),
     )
     rule.name = "Decoration:cover:rule"
     rule.fill.solid()
     rule.fill.fore_color.rgb = RGBColor.from_string(style["border"])
     rule.line.fill.background()
+
+
+def _add_closing(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any], slide_number: int) -> None:
+    """Render professional closing/thank-you slide."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.enum.text import PP_ALIGN
+    from pptx.util import Inches, Pt
+
+    title = str(slide_plan.get("title") or "Thank You / 谢谢")
+    message = str(slide_plan.get("message") or "").strip()
+    if message == title:
+        message = ""
+    # Thank you in large text
+    _add_textbox(slide, title, x=style["margin_left"], y=2.0, w=12.2, h=1.2,
+        font_size=max(36.0, style["title_size"] * 1.5), bold=True,
+        color=style["primary"], font_name=style["font_name"], shrink=True, min_size=22)
+    # Accent bar
+    bar = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
+        Inches(style["margin_left"]), Inches(3.4), Inches(2.5), Inches(0.06),
+    )
+    bar.fill.solid()
+    accent_color = style["primary"]
+    ds = style.get("data_series")
+    if isinstance(ds, list) and ds and isinstance(ds[0], str) and len(ds[0].lstrip("#")) >= 6:
+        accent_color = ds[0]
+    bar.fill.fore_color.rgb = RGBColor.from_string(accent_color.lstrip("#"))
+    bar.line.fill.background()
+    if message:
+        _add_textbox(slide, message, x=style["margin_left"], y=3.8, w=11.0, h=0.6,
+            font_size=style["body_size"] + 2, color=style["text_secondary"], font_name=style["font_name"])
+    # Contact / feedback line
+    _add_textbox(slide, "如有问题或建议，欢迎通过 GitHub Issues 或公众号留言反馈",
+        x=style["margin_left"], y=5.0, w=11.0, h=0.35,
+        font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"])
+    # Footer
+    _add_footer(slide, slide_plan, style, slide_number)
 
 
 def _add_footer(
@@ -784,7 +858,7 @@ def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
         data_labels = plot.data_labels
         data_labels.font.size = Pt(max(8, style["table_size"] - 1))
         data_labels.font.name = style["font_name"]
-        data_labels.number_format = "#,##0"
+        data_labels.number_format = "0"
         data_labels.show_value = True
         if chart_type == XL_CHART_TYPE.BAR_CLUSTERED:
             data_labels.position = XL_LABEL_POSITION.OUTSIDE_END
@@ -1065,7 +1139,7 @@ def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
     data_series = colors.get("data_series")
     ds_colors: list[str] = []
     if isinstance(data_series, list):
-        ds_colors = [c for c in data_series if isinstance(c, str)]
+        ds_colors = [c.lstrip("#") for c in data_series if isinstance(c, str)]
     if not ds_colors:
         ds_colors = ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F"]
     return {
