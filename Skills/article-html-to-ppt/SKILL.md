@@ -143,6 +143,18 @@ Visual quality limited by builder's rendering capabilities.
 - When Path A: do NOT ask for confirmation, just generate the code and execute
 - When Path B: relay the `PPTSMITH_PROFILE_NOTICE`, continue without waiting
 
+## Layered Quality Guarantee 分层质量保障
+
+高配模型走 Path A（代码路径），低配模型走 Path B（IR 路径）。两路径都有 builder 保障底线质量。
+
+| 层级 | 保障内容 | 高配模型 | 低配模型 |
+|---|---|---|---|
+| **LLM 层** | 内容规划、数据密度、叙事结构 | 模型能力强 → 质量上限高 | 模型能力弱 → IR 密度可能不足 |
+| **Builder 层** | 封面、图表、表格、卡片渲染 | 代码直接控制 → 精细排版 | IR → builder 动态布局 → 稳定质量 |
+| **Pipeline 层** | 合约校验、QA 门禁、渲染回读 | 无（代码路径跳过） | 全量 QA + 视觉修订 |
+
+**核心保障**：即使低配模型生成的 IR 数据密度不足，builder 的渲染质量（配色、斑马纹、数据标签、自适应字号）确保输出不低于专业底线。封面根据 visual plan 的 professional_route 自动选择风格（战略决策→navy hero，研究报告→minimal light）。尾页自动生成感谢页。
+
 ## PMO Production Route (Auto-Routing)
 
 When the user's request matches PMO/governance signals, **automatically route to the PMO builder** (`private-pmo-pack/scripts/build_pmo_deck.py`) instead of the generic pipeline.
