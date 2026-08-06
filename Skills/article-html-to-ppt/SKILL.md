@@ -89,6 +89,46 @@ source/article/design brief
 -> package user-facing delivery + delivery-manifest.json
 ```
 
+## PMO Production Route (Auto-Routing)
+
+When the user's request matches PMO/governance signals, **automatically route to the PMO builder** (`private-pmo-pack/scripts/build_pmo_deck.py`) instead of the generic pipeline.
+
+### Trigger Signals (LLM-level): match ≥2 to auto-route
+
+| Category | Signals |
+|---|---|
+| **Keywords** | 周报、月报、项目状态、里程碑、RAID、RACI、风险矩阵、决策记录、指导委员会、SteerCo、干系人、燃尽图、Sprint Review、站会、项目治理、项目管理、PMO |
+| **Material type** | 项目计划、RAID log、状态报告、Sprint 数据、里程碑清单 |
+| **User intent** | 「帮我做个项目周报」「生成 PMO dashboard」「项目管理汇报」 |
+| **Audience** | 项目赞助人、PMO、指导委员会、项目经理 |
+
+### Override
+
+- User says 「用 PMO 格式」→ force PMO
+- User says 「做咨询风格」「不要 PMO」「通用格式」→ force generic
+- User says nothing → LLM auto-judges based on signals above
+
+### PMO Input
+
+Generate a PMO domain JSON conforming to `private-pmo-pack/schemas/pmo-input.schema.json`, then run:
+```bash
+python3 private-pmo-pack/scripts/build_pmo_deck.py --input pmo-input.json --output deck.pptx
+```
+
+The PMO builder produces 11 standard page types: Cover, Executive Dashboard, Roadmap, Milestones, RAID Log, Workstreams, RACI Matrix, Risk Heat Map, Decision Page, KPI Dashboard, Action Tracker.
+
+### Quality Disclaimer (ALL routes)
+
+Every generated deck MUST include a final quality-disclaimer page as the last slide. This page must contain:
+
+- **Title**: 「关于本报告」或「质量声明」
+- **Body**: 说明本 PPT 由 MeowClaw PPT Smith 自动生成，因源文档质量差异可能导致内容不完整或数据提取不足
+- **Feedback channels**:
+  - GitHub Issues: `github.com/MeowClawLab` （技术问题/功能请求）
+  - 公众号「夜猫子弦月」留言（内容建议/商务合作）
+
+This page should be auto-appended by the builder; the LLM must not generate it as part of the IR.
+
 The critical rules are:
 
 - Do not choose layout before knowing what the audience must understand or decide.

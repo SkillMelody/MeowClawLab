@@ -275,6 +275,9 @@ class PythonPptxAdapter:
                     }
                 )
 
+        # --- quality disclaimer (final slide) ---
+        _add_disclaimer_page(presentation, style)
+
         presentation.save(deck_path)
         return BuildResult(builder=self.name, status="created", pptx=str(deck_path), object_results=object_results, fallbacks=fallbacks, warnings=warnings)
 
@@ -966,6 +969,72 @@ def _hex(value: Any, default: str) -> str:
     if isinstance(value, str) and len(value.lstrip("#")) == 6:
         return value.lstrip("#").upper()
     return default
+
+
+def _add_disclaimer_page(presentation: Any, style: dict[str, Any]) -> None:
+    """Append a quality-disclaimer slide as the final page."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+    from pptx.util import Inches, Pt
+
+    blank_layout = presentation.slide_layouts[6]
+    slide = presentation.slides.add_slide(blank_layout)
+    slide.background.fill.solid()
+    slide.background.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+
+    # Title
+    _add_textbox(
+        slide, "关于本报告",
+        x=style["margin_left"], y=1.5, w=12.2, h=0.7,
+        font_size=style["title_size"], bold=True,
+        color=style["primary"], font_name=style["font_name"],
+    )
+    # Body
+    body_lines = [
+        "本 PPT 由 MeowClaw PPT Smith 自动生成。",
+        "因源文档质量差异，可能导致内容不完整、数据提取不足或表述偏差。",
+        "建议在正式使用前对关键数据和结论进行人工复核。",
+    ]
+    for i, line in enumerate(body_lines):
+        _add_textbox(
+            slide, line,
+            x=style["margin_left"], y=2.35 + i * 0.35, w=11.5, h=0.35,
+            font_size=style["body_size"], color=style["text_secondary"],
+            font_name=style["font_name"],
+        )
+    # Feedback channels
+    _add_textbox(
+        slide, "📮 反馈与建议",
+        x=style["margin_left"], y=3.8, w=11.5, h=0.4,
+        font_size=style["body_size"] + 1, bold=True,
+        color=style["primary"], font_name=style["font_name"],
+    )
+    channels = [
+        "GitHub Issues：github.com/MeowClawLab（技术问题 / 功能请求）",
+        "公众号「夜猫子弦月」留言（内容建议 / 商务合作）",
+    ]
+    for i, ch in enumerate(channels):
+        _add_textbox(
+            slide, ch,
+            x=style["margin_left"], y=4.35 + i * 0.35, w=11.5, h=0.35,
+            font_size=style["table_size"], color=style["text_secondary"],
+            font_name=style["font_name"],
+        )
+    # Footer line
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    divider = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
+        Inches(style["margin_left"]), Inches(5.3), Inches(4.0), Inches(0.02),
+    )
+    divider.fill.solid()
+    divider.fill.fore_color.rgb = RGBColor.from_string(style["border"])
+    divider.line.fill.background()
+    _add_textbox(
+        slide, "MeowClaw Lab · 用 AI 做好每一页",
+        x=style["margin_left"], y=5.5, w=6.0, h=0.3,
+        font_size=style["footnote_size"], color=style["text_secondary"],
+        font_name=style["font_name"],
+    )
 
 
 def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:

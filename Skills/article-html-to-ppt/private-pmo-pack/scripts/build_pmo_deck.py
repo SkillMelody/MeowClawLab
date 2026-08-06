@@ -74,6 +74,28 @@ class Deck:
         self.slide_records.append({"index": page_no, "page_type": page_type, "title": title})
         return slide
 
+    def add_disclaimer(self) -> None:
+        """Append a quality-disclaimer page as the final slide."""
+        page_no = len(self.slide_records) + 1
+        slide = self.prs.slides.add_slide(self.blank)
+        slide.background.fill.solid()
+        slide.background.fill.fore_color.rgb = color(self.style, "background")
+        self.text(slide, "关于本报告", 0.56, 1.5, 11.95, 0.6, size=22, color_name="ink", bold=True)
+        self.line(slide, 0.56, 2.2, 4.0, 2.2, "line", 0.7)
+        body = [
+            "本 PPT 由 MeowClaw PPT Smith 自动生成。",
+            "因源文档质量差异，可能导致内容不完整、数据提取不足或表述偏差。",
+            "建议在正式使用前对关键数据和结论进行人工复核。",
+        ]
+        for i, line in enumerate(body):
+            self.text(slide, line, 0.56, 2.5 + i * 0.35, 11.5, 0.3, size=11, color_name="muted")
+        self.text(slide, "📮 反馈与建议", 0.56, 4.0, 11.5, 0.35, size=12, color_name="ink", bold=True)
+        self.text(slide, "GitHub Issues：github.com/MeowClawLab（技术问题 / 功能请求）", 0.56, 4.5, 11.5, 0.3, size=10, color_name="muted")
+        self.text(slide, "公众号「夜猫子弦月」留言（内容建议 / 商务合作）", 0.56, 4.85, 11.5, 0.3, size=10, color_name="muted")
+        self.text(slide, "MeowClaw Lab · 用 AI 做好每一页", 0.56, 5.5, 6.0, 0.25, size=8, color_name="muted")
+        self.text(slide, f"PMO CONSULTING PACK / {page_no:02d}", 10.0, 7.12, 2.72, 0.18, size=7.8, color_name="muted", bold=True, align=PP_ALIGN.RIGHT)
+        self.slide_records.append({"index": page_no, "page_type": "disclaimer", "title": "关于本报告"})
+
     def text(
         self,
         slide: Any,
@@ -380,6 +402,7 @@ def build(data: dict[str, Any], style: dict[str, Any], output: Path, manifest_pa
     render_decision(deck)
     render_kpis(deck)
     render_actions(deck)
+    deck.add_disclaimer()
     deck.save(output)
     manifest = {
         "schema_version": "1.0",
