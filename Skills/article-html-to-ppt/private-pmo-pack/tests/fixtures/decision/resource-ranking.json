@@ -1,0 +1,13 @@
+{
+  "criteria": [
+    {"id": "value", "weight": "0.6", "weight_source": "steerco-approved", "direction": "higher", "anchors": {"worst": "0", "best": "100"}},
+    {"id": "risk", "weight": "0.4", "weight_source": "steerco-approved", "direction": "lower", "anchors": {"worst": "10", "best": "0"}}
+  ],
+  "options": [
+    {"id": "alpha", "scores": {"value": "80", "risk": "2"}, "cost": "6", "capacity": {"team": "2"}},
+    {"id": "beta", "scores": {"value": "70", "risk": "4"}, "cost": "4", "capacity": {"team": "2"}},
+    {"id": "gamma", "scores": {"value": "50", "risk": "7"}, "cost": "3", "capacity": {"team": "1"}}
+  ],
+  "budget": "10",
+  "capacity": {"team": "4"}
+}

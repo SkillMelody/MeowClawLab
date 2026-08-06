@@ -1,0 +1,1 @@
+convert ./output/pmo-reference-visual-styles.pptx as a Impress document -> ./qa/visual-style-prototype-rendered/pmo-reference-visual-styles.pdf using filter : impress_pdf_Export

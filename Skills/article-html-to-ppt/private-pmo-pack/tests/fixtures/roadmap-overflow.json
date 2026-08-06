@@ -1,0 +1,12 @@
+{
+  "type": "roadmap",
+  "title": "Multi-phase overflow",
+  "phases": [
+    {"id": "P1", "name": "Discover", "period": "Jul", "objective": "Align", "outputs": ["Charter"], "exit_condition": "Scope signed", "gate": "G1"},
+    {"id": "P2", "name": "Design", "period": "Aug", "objective": "Design", "outputs": ["Blueprint"], "exit_condition": "Design signed", "gate": "G2"},
+    {"id": "P3", "name": "Build", "period": "Sep", "objective": "Build", "outputs": ["Release"], "exit_condition": "Release ready", "gate": "G3"},
+    {"id": "P4", "name": "Pilot", "period": "Oct", "objective": "Pilot", "outputs": ["Evidence"], "exit_condition": "Evidence reviewed", "gate": "G4"},
+    {"id": "P5", "name": "Scale", "period": "Nov", "objective": "Scale", "outputs": ["Runbook"], "exit_condition": "Runbook accepted", "gate": "G5"},
+    {"id": "P6", "name": "Optimize", "period": "Dec", "objective": "Optimize", "outputs": ["Benefits"], "exit_condition": "Benefits tracked", "gate": "G6"}
+  ]
+}

@@ -1,0 +1,1 @@
+convert ./output/pmo-decision-support-gold.pptx as a Impress document -> ./qa/wave-e-decision-support-rendered/pmo-decision-support-gold.pdf using filter : impress_pdf_Export

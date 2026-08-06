@@ -1,0 +1,11 @@
+{
+  "benefit": {"direction": "decrease", "baseline": "100", "target": "70", "actual_to_date": "88", "planned_to_date": "85", "forecast": "78"},
+  "options": {
+    "continue": {"cash_flows": [{"period": 1, "benefit": "45", "cost": "30"}], "hard_constraints_met": true},
+    "pivot": {"cash_flows": [{"period": 1, "benefit": "85", "cost": "35"}], "hard_constraints_met": true},
+    "stop": {"cash_flows": [{"period": 1, "benefit": "0", "cost": "8"}], "hard_constraints_met": true}
+  },
+  "discount_rate": "0", "completeness": "1", "confidence": "high",
+  "policy": {"completeness_threshold": "0.8", "materiality_threshold": "5", "confidence_threshold": "medium"},
+  "sensitivity": [{"name": "pivot delivery", "option": "pivot", "variable": "future_benefit", "low": "0.3", "high": "1.1"}]
+}

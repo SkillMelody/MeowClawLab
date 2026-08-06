@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pptsmith.local/schemas/pmo-component-ir.schema.json",
+  "title": "PPTSmith PMO Component IR",
+  "type": "object",
+  "required": ["schema_version", "components"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "components": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/annotated_doughnut"},
+          {"$ref": "#/$defs/roadmap"},
+          {"$ref": "#/$defs/gantt"},
+          {"$ref": "#/$defs/kpi_status"},
+          {"$ref": "#/$defs/milestone_timeline"},
+          {"$ref": "#/$defs/risk_heat_map"},
+          {"$ref": "#/$defs/raci"},
+          {"$ref": "#/$defs/phase2_future_interface"}
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "category": {
+      "type": "object",
+      "required": ["label", "value", "color_role"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1},
+        "value": {"type": "number", "exclusiveMinimum": 0},
+        "color_role": {"type": "string", "minLength": 1},
+        "amount": {"type": "number", "exclusiveMinimum": 0},
+        "label_mode": {"enum": ["callout", "legend"]},
+        "status_role": {"enum": ["healthy", "watch", "risk", "neutral"]},
+        "status_text": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "doughnut_readout": {
+      "type": "object",
+      "required": ["headline", "detail", "status_role"],
+      "properties": {
+        "headline": {"type": "string", "minLength": 1},
+        "detail": {"type": "string", "minLength": 1},
+        "status_role": {"enum": ["healthy", "watch", "risk", "neutral"]}
+      },
+      "additionalProperties": false
+    },
+    "annotated_doughnut": {
+      "type": "object",
+      "required": ["type", "title", "categories"],
+      "properties": {
+        "type": {"const": "annotated_doughnut"},
+        "title": {"type": "string", "minLength": 1},
+        "center_metric": {"type": "string"},
+        "center_caption": {"type": "string"},
+        "sum_tolerance": {"type": "number", "minimum": 0},
+        "budget_total": {"type": "number", "exclusiveMinimum": 0},
+        "amount_tolerance": {"type": "number", "minimum": 0},
+        "max_leaders": {"type": "integer", "minimum": 0},
+        "readouts": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/doughnut_readout"}
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/category"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "required": ["id", "name", "period", "objective", "outputs", "exit_condition", "gate"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "period": {"type": "string", "minLength": 1},
+        "objective": {"type": "string", "minLength": 1},
+        "outputs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "exit_condition": {"type": "string", "minLength": 1},
+        "gate": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "roadmap": {
+      "type": "object",
+      "required": ["type", "title", "phases"],
+      "properties": {
+        "type": {"const": "roadmap"},
+        "title": {"type": "string", "minLength": 1},
+        "phases": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/phase"}}
+      },
+      "additionalProperties": false
+    },
+    "interval": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date"},
+        "end": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "gantt_milestone": {
+      "type": "object",
+      "required": ["date", "label"],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "label": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "task": {
+      "type": "object",
+      "required": ["id", "label", "owner", "planned_intervals", "actual_intervals", "health", "milestones"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "label": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1},
+        "planned_intervals": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/interval"}},
+        "actual_intervals": {"type": "array", "items": {"$ref": "#/$defs/interval"}},
+        "allow_disjoint": {"type": "boolean"},
+        "exception_state": {"type": "string"},
+        "health": {"enum": ["healthy", "watch", "risk", "neutral"]},
+        "milestones": {"type": "array", "items": {"$ref": "#/$defs/gantt_milestone"}}
+      },
+      "additionalProperties": false
+    },
+    "gantt": {
+      "type": "object",
+      "required": ["type", "title", "start_date", "end_date", "tasks"],
+      "properties": {
+        "type": {"const": "gantt"},
+        "title": {"type": "string", "minLength": 1},
+        "start_date": {"type": "string", "format": "date"},
+        "end_date": {"type": "string", "format": "date"},
+        "reference_date": {"type": "string", "format": "date"},
+        "tasks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/task"}}
+      },
+      "additionalProperties": false
+    },
+    "kpi_metric": {
+      "type": "object",
+      "required": ["id", "label", "value", "unit", "target", "direction", "status", "period", "note"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "label": {"type": "string", "minLength": 1},
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1},
+        "target": {"type": "number"},
+        "direction": {"enum": ["higher_is_better", "lower_is_better"]},
+        "status": {"enum": ["healthy", "watch", "risk", "neutral"]},
+        "period": {"type": "string", "minLength": 1},
+        "note": {"type": "string", "minLength": 1},
+        "trend_values": {"type": "array", "minItems": 2, "items": {"type": "number"}}
+      },
+      "additionalProperties": false
+    },
+    "kpi_status": {
+      "type": "object",
+      "required": ["type", "title", "metrics"],
+      "properties": {
+        "type": {"const": "kpi_status"},
+        "title": {"type": "string", "minLength": 1},
+        "metrics": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/kpi_metric"}}
+      },
+      "additionalProperties": false
+    },
+    "timeline_milestone": {
+      "type": "object",
+      "required": ["id", "label", "date", "owner", "evidence", "status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "label": {"type": "string", "minLength": 1},
+        "date": {"type": "string", "format": "date"},
+        "owner": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1},
+        "status": {"enum": ["healthy", "watch", "risk", "neutral"]},
+        "phase": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "milestone_timeline": {
+      "type": "object",
+      "required": ["type", "title", "start_date", "end_date", "milestones"],
+      "properties": {
+        "type": {"const": "milestone"},
+        "title": {"type": "string", "minLength": 1},
+        "start_date": {"type": "string", "format": "date"},
+        "end_date": {"type": "string", "format": "date"},
+        "milestones": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/timeline_milestone"}}
+      },
+      "additionalProperties": false
+    },
+    "risk": {
+      "type": "object",
+      "required": ["id", "label", "likelihood", "impact", "owner", "status", "mitigation"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "label": {"type": "string", "minLength": 1},
+        "likelihood": {"type": "integer", "minimum": 1, "maximum": 5},
+        "impact": {"type": "integer", "minimum": 1, "maximum": 5},
+        "owner": {"type": "string", "minLength": 1},
+        "status": {"enum": ["healthy", "watch", "risk", "neutral"]},
+        "mitigation": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "risk_heat_map": {
+      "type": "object",
+      "required": ["type", "title", "risks"],
+      "properties": {
+        "type": {"const": "risk_heat_map"},
+        "title": {"type": "string", "minLength": 1},
+        "risks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/risk"}}
+      },
+      "additionalProperties": false
+    },
+    "raci_assignment": {
+      "type": "object",
+      "required": ["activity", "role", "code"],
+      "properties": {
+        "activity": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "code": {"enum": ["R", "A", "C", "I"]}
+      },
+      "additionalProperties": false
+    },
+    "raci": {
+      "type": "object",
+      "required": ["type", "title", "roles", "activities", "assignments"],
+      "properties": {
+        "type": {"const": "raci"},
+        "title": {"type": "string", "minLength": 1},
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "activities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "assignments": {"type": "array", "items": {"$ref": "#/$defs/raci_assignment"}}
+      },
+      "additionalProperties": false
+    },
+    "phase2_future_interface": {
+      "type": "object",
+      "description": "Interface-only schema for Phase 2 families; no renderer completion is implied.",
+      "required": ["type", "title", "payload"],
+      "properties": {
+        "type": {
+          "enum": [
+            "raid",
+            "action_tracker",
+            "decision_matrix",
+            "swimlane_dependency"
+          ]
+        },
+        "title": {"type": "string", "minLength": 1},
+        "payload": {"type": "object", "minProperties": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "benefit": {"direction": "increase", "baseline": "100", "target": "120", "actual_to_date": "108", "planned_to_date": "110", "forecast": "115"},
+  "options": {"continue": {"cash_flows": [{"period": 1, "benefit": "30", "cost": "20"}], "hard_constraints_met": true}},
+  "discount_rate": "0.1", "completeness": "0.4", "confidence": "low",
+  "policy": {"completeness_threshold": "0.8", "materiality_threshold": "5", "confidence_threshold": "medium"}
+}

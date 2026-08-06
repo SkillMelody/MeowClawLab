@@ -1,0 +1,100 @@
+{
+  "id": "pmo-steerco-gold",
+  "question": {
+    "id": "q-pmo-steerco-gold",
+    "decision_type": "multi_domain",
+    "question": "Approve the bounded programme path, portfolio allocation, schedule recovery boundary, and risk treatment for FY2027.",
+    "owner": "Programme Sponsor",
+    "decision_date": "2026-08-01",
+    "horizon": "FY2027",
+    "requested_analysis_mode": "prescriptive",
+    "option_ids": ["continue", "pivot", "stop", "platform", "security", "growth", "migration", "mitigate", "accept"],
+    "constraint_ids": ["budget", "capacity-team", "required-finish", "risk-tolerance"],
+    "baseline_id": "baseline"
+  },
+  "sources": [{
+    "id": "src-steerco-pack",
+    "title": "Approved Steering Committee evidence pack",
+    "source_type": "system",
+    "location": {"kind": "field", "value": "pmo.decision_support.gold"},
+    "retrieved_at": "2026-07-24T18:00:00+08:00"
+  }],
+  "evidence": [{
+    "id": "ev-approved-input",
+    "claim": "The declared framework inputs are approved for the 1 August Steering Committee decision.",
+    "metric": "approved_decision_input",
+    "value": "1",
+    "unit": {"dimension": "count", "symbol": "item"},
+    "source_ids": ["src-steerco-pack"],
+    "kind": "fact",
+    "confidence": "high",
+    "confidence_rationale": "Approved system extract with named cutoff.",
+    "freshness": "current",
+    "decisive": true
+  }],
+  "assumptions": [{
+    "id": "assumption-input-validity",
+    "statement": "Approved inputs remain valid through the decision date.",
+    "impact": "Material changes require re-analysis.",
+    "owner": "Programme Sponsor",
+    "validation_method": "Reconcile the evidence pack before Steering Committee.",
+    "review_date": "2026-08-01",
+    "trigger": "Any source, constraint, probability, duration, benefit, cost, capacity, or weight changes materially.",
+    "status": "open"
+  }],
+  "option_ids": ["baseline", "continue", "pivot", "stop", "platform", "security", "growth", "migration", "mitigate", "accept"],
+  "constraint_ids": ["budget", "capacity-team", "required-finish", "risk-tolerance"],
+  "schema_version": "1.0.0",
+  "created_at": "2026-07-24T18:00:00+08:00",
+  "updated_at": "2026-07-24T18:00:00+08:00",
+  "extensions": {
+    "value_gate": {
+      "benefit": {"direction": "increase", "baseline": "100", "target": "140", "actual_to_date": "124", "planned_to_date": "120", "forecast": "145"},
+      "options": {
+        "continue": {"cash_flows": [{"period": -1, "benefit": "0", "cost": "90"}, {"period": 1, "benefit": "90", "cost": "25"}, {"period": 2, "benefit": "70", "cost": "20"}], "hard_constraints_met": true},
+        "pivot": {"cash_flows": [{"period": 1, "benefit": "75", "cost": "35"}, {"period": 2, "benefit": "65", "cost": "25"}], "hard_constraints_met": true},
+        "stop": {"cash_flows": [{"period": 1, "benefit": "0", "cost": "12"}], "hard_constraints_met": true}
+      },
+      "discount_rate": "0.10",
+      "policy": {"completeness_threshold": "0.8", "materiality_threshold": "5", "confidence_threshold": "medium"},
+      "completeness": "1",
+      "confidence": "high",
+      "sensitivity": [{"name": "continue benefit realization", "option": "continue", "variable": "future_benefit", "low": "0.35", "high": "1.15"}]
+    },
+    "resource_allocation": {
+      "criteria": [{"id": "value", "weight": "1", "weight_source": "portfolio-board", "direction": "higher", "anchors": {"worst": "0", "best": "100"}}],
+      "options": [
+        {"id": "platform", "scores": {"value": "90"}, "cost": "7", "capacity": {"team": "3"}, "must_do": true, "dependencies": ["security"]},
+        {"id": "security", "scores": {"value": "40"}, "cost": "2", "capacity": {"team": "1"}},
+        {"id": "growth", "scores": {"value": "80"}, "cost": "5", "capacity": {"team": "2"}, "exclusions": ["migration"]},
+        {"id": "migration", "scores": {"value": "70"}, "cost": "4", "capacity": {"team": "2"}}
+      ],
+      "budget": "14",
+      "capacity": {"team": "6"},
+      "scenarios": {"base": {}, "downside": {"budget": "11", "score_multipliers": {"value": "0.8"}}, "relief": {"budget": "18", "capacity": {"team": "8"}}}
+    },
+    "schedule": {
+      "id": "schedule-cpm",
+      "project_start": "2026-07-27",
+      "required_finish": "2026-08-05",
+      "near_critical_threshold": 2,
+      "data_date": "2026-07-27",
+      "calendar": {"working_weekdays": [0, 1, 2, 3, 4], "holidays": ["2026-07-31"], "unit": "working_day"},
+      "tasks": [{"id": "A", "duration": 2}, {"id": "B", "duration": 3}, {"id": "C", "duration": 2}, {"id": "D", "duration": 1}, {"id": "E", "duration": 2}, {"id": "F", "duration": 1}, {"id": "G", "duration": 1}],
+      "dependencies": [
+        {"id": "ab", "predecessor": "A", "successor": "B", "type": "FS", "lag": 1},
+        {"id": "ac", "predecessor": "A", "successor": "C", "type": "SS", "lag": 1},
+        {"id": "bd", "predecessor": "B", "successor": "D", "type": "FF", "lag": 1},
+        {"id": "ce", "predecessor": "C", "successor": "E", "type": "SF", "lag": 3},
+        {"id": "df", "predecessor": "D", "successor": "F", "type": "FS", "lag": 0},
+        {"id": "eg", "predecessor": "E", "successor": "G", "type": "FS", "lag": 0}
+      ]
+    },
+    "risk_treatment": {
+      "probability": {"low": "0.20", "central": "0.30", "high": "0.40", "horizon": "FY2027"},
+      "consequences": [{"name": "service recovery", "amount": {"low": "800000", "central": "1000000", "high": "1300000"}}, {"name": "customer credits", "amount": {"low": "300000", "central": "500000", "high": "700000"}}],
+      "mitigation": {"option_id": "mitigate", "success_residual_probability": "0.075", "failure_probability": "0.20", "residual_impact_fraction": "0.75", "one_time_cost": "90000", "recurring_cost": "30000", "recurring_periods": 2},
+      "risk_tolerance": "100000"
+    }
+  }
+}

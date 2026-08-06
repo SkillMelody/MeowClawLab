@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pptsmith.local/schemas/pmo-decision-case.schema.json",
+  "title": "PPTSmith PMO Decision Case",
+  "type": "object",
+  "required": ["id", "schema_version", "question", "sources", "evidence"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "1.0.0"},
+    "created_at": {"type": ["string", "null"], "format": "date-time"},
+    "updated_at": {"type": ["string", "null"], "format": "date-time"},
+    "question": {"$ref": "#/$defs/decisionQuestion"},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/sourceReference"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceItem"}},
+    "assumptions": {"type": "array"},
+    "option_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "constraint_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "dependencies": {"type": "array"},
+    "recommendations": {"type": "array"},
+    "decision_records": {"type": "array"},
+    "extensions": {"type": "object"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "decisionQuestion": {
+      "type": "object",
+      "required": ["id", "schema_version", "decision_type", "question", "requested_analysis_mode", "option_ids", "constraint_ids"],
+      "properties": {
+        "id": {"type": "string"}, "schema_version": {"const": "1.0.0"},
+        "decision_type": {"enum": ["value", "resource", "schedule", "risk", "multi_domain", "unknown"]},
+        "question": {"type": "string"}, "owner": {"type": ["string", "null"]},
+        "decision_date": {"type": ["string", "null"], "format": "date"}, "horizon": {"type": ["string", "null"]},
+        "requested_analysis_mode": {"enum": ["descriptive", "diagnostic", "prescriptive"]},
+        "option_ids": {"type": "array", "items": {"type": "string"}}, "constraint_ids": {"type": "array", "items": {"type": "string"}},
+        "baseline_id": {"type": ["string", "null"]}, "created_at": {}, "updated_at": {}, "extensions": {"type": "object"}
+      }, "additionalProperties": false
+    },
+    "sourceReference": {
+      "type": "object", "required": ["id", "schema_version", "title", "source_type", "location"],
+      "properties": {"id": {"type": "string"}, "schema_version": {"const": "1.0.0"}, "title": {"type": "string"}, "source_type": {"type": "string"}, "location": {"type": "object"}, "url": {}, "retrieved_at": {}, "created_at": {}, "updated_at": {}, "extensions": {"type": "object"}},
+      "additionalProperties": false
+    },
+    "evidenceItem": {
+      "type": "object", "required": ["id", "schema_version", "claim", "source_ids", "kind", "confidence", "freshness"],
+      "properties": {"id": {"type": "string"}, "schema_version": {"const": "1.0.0"}, "claim": {"type": "string"}, "metric": {}, "value": {}, "unit": {}, "time_basis": {}, "source_ids": {"type": "array"}, "derivation_id": {}, "kind": {"enum": ["fact", "estimate", "assumption", "external_benchmark"]}, "confidence": {"enum": ["low", "medium", "high"]}, "confidence_rationale": {"type": "string"}, "freshness": {"enum": ["current", "aging", "stale", "unknown"]}, "conflict_status": {"type": "string"}, "tags": {"type": "array"}, "decisive": {"type": "boolean"}, "estimate": {}, "created_at": {}, "updated_at": {}, "extensions": {"type": "object"}},
+      "additionalProperties": false
+    }
+  }
+}

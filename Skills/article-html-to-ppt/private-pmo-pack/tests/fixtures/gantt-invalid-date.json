@@ -1,0 +1,17 @@
+{
+  "type": "gantt",
+  "title": "Invalid schedule",
+  "start_date": "2026-08-01",
+  "end_date": "2026-07-01",
+  "tasks": [
+    {
+      "id": "T1",
+      "label": "Invalid task",
+      "owner": "PMO",
+      "planned_intervals": [{"start": "2026-08-12", "end": "2026-08-02"}],
+      "actual_intervals": [],
+      "health": "risk",
+      "milestones": []
+    }
+  ]
+}

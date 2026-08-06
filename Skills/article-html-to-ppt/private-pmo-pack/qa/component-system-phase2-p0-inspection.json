@@ -1,0 +1,29 @@
+{
+  "path": "./output/pmo-component-system-phase2-p0.pptx",
+  "slide_count": 4,
+  "picture_count": 0,
+  "chart_count": 0,
+  "table_count": 1,
+  "connector_count": 25,
+  "text_shape_count": 103,
+  "native_shape_count": 215,
+  "total_shape_count": 215,
+  "media_file_count": 0,
+  "chart_part_count": 0,
+  "embedded_workbook_count": 0,
+  "missing_component_prefixes": [],
+  "outside_shape_names": [],
+  "gates": {
+    "slide_count_matches": true,
+    "no_picture_shapes": true,
+    "no_media_files": true,
+    "native_shapes_present": true,
+    "semantic_shape_names_present": true,
+    "native_table_present": true
+  },
+  "passed": true,
+  "limitations": [
+    "python-pptx emits native connectors but does not expose a reliable API to prove endpoint binding.",
+    "Static package inspection cannot replace rendered visual review."
+  ]
+}

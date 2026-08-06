@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "style_id": "mckinsey-pmo",
+  "display_name": "McKinsey-style PMO Consulting",
+  "description": "White executive consulting system for editable project management and PMO visualization decks.",
+  "slide": {
+    "width_in": 13.333,
+    "height_in": 7.5,
+    "margin_left_in": 0.55,
+    "margin_right_in": 0.55,
+    "margin_top_in": 0.34,
+    "margin_bottom_in": 0.34
+  },
+  "colors": {
+    "background": "FFFFFF",
+    "paper": "F7F8FA",
+    "ink": "1F2937",
+    "text": "2F3744",
+    "muted": "667085",
+    "line": "D0D5DD",
+    "soft": "EEF2F6",
+    "navy": "17365D",
+    "blue": "2F6BFF",
+    "green": "2E7D32",
+    "yellow": "F2C94C",
+    "orange": "F2994A",
+    "red": "D92D20",
+    "white": "FFFFFF"
+  },
+  "typography": {
+    "font": "Aptos",
+    "font_cjk": "Microsoft YaHei",
+    "title_pt": 21,
+    "subtitle_pt": 12,
+    "body_pt": 11,
+    "small_pt": 8.5,
+    "metric_pt": 26
+  },
+  "rules": {
+    "one_slide_one_message": true,
+    "max_main_colors_per_slide": 4,
+    "prefer_native_tables": true,
+    "prefer_native_shapes": true,
+    "forbid_whole_slide_raster": true,
+    "dashboard_pages_must_have_decision_readout": true
+  },
+  "status_colors": {
+    "green": "2E7D32",
+    "yellow": "F2C94C",
+    "red": "D92D20",
+    "gray": "98A2B3"
+  }
+}

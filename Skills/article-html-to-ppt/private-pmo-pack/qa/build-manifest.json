@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "pptsmith-pmo-consulting-pack",
+  "built_at": "2026-07-24T10:23:43.215586+00:00",
+  "status": "created",
+  "builder": "private-python-pptx-pmo-renderer",
+  "outputs": {
+    "deck": "output/ai-platform-project-pmo.pptx"
+  },
+  "source": "examples/ai-platform-project.pmo.json",
+  "style": "contracts/mckinsey-pmo.style.json",
+  "slide_count": 11,
+  "slides": [
+    {
+      "index": 1,
+      "page_type": "cover",
+      "title": "AI 内容交付平台验证项目"
+    },
+    {
+      "index": 2,
+      "page_type": "executive_dashboard",
+      "title": "项目总体健康度：工程按计划推进，商业证据仍需补齐"
+    },
+    {
+      "index": 3,
+      "page_type": "roadmap",
+      "title": "路线图不是甘特图：用阶段、目标和门禁表达管理节奏"
+    },
+    {
+      "index": 4,
+      "page_type": "milestones",
+      "title": "里程碑页把时间点、证据和状态压到一条水平轴上"
+    },
+    {
+      "index": 5,
+      "page_type": "raid_log",
+      "title": "RAID 页优先做成可查表格，避免把风险画成装饰图"
+    },
+    {
+      "index": 6,
+      "page_type": "workstreams",
+      "title": "工作流页用泳道表达责任边界，而不是堆任务清单"
+    },
+    {
+      "index": 7,
+      "page_type": "raci_matrix",
+      "title": "RACI 是精确查阅页：角色和责任必须保持表格可编辑"
+    },
+    {
+      "index": 8,
+      "page_type": "risk_heat_map",
+      "title": "风险热力图是坐标页：影响和可能性必须能被复核"
+    },
+    {
+      "index": 9,
+      "page_type": "decision_page",
+      "title": "决策页必须给出选项、权衡和推荐，而不是只列利弊"
+    },
+    {
+      "index": 10,
+      "page_type": "kpi_dashboard",
+      "title": "KPI Dashboard 用大数字和一张原生图表支撑管理判断"
+    },
+    {
+      "index": 11,
+      "page_type": "action_tracker",
+      "title": "行动项追踪页像 Excel，但必须有清晰 owner、deadline 和 status"
+    }
+  ],
+  "editable_core_expected": [
+    "titles",
+    "metric cards",
+    "native tables",
+    "roadmap phase shapes",
+    "milestone nodes",
+    "risk heat-map grid and labels",
+    "native KPI chart",
+    "action tracker rows"
+  ],
+  "known_limitations": [
+    "v0.1 renderer writes directly from PMO domain JSON; the planned PPTSmith PPT IR adapter is not complete yet.",
+    "Connector endpoint binding is not claimed for v0.1; relationship-heavy PMO diagrams should move through Diagram IR in v0.2.",
+    "Risk heat map is rendered as native shape grid plus text markers, not yet as a first-class public registry component."
+  ]
+}

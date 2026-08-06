@@ -1,0 +1,18 @@
+{
+  "type": "milestone",
+  "title": "Ten milestones split without shrinking labels",
+  "start_date": "2026-01-01",
+  "end_date": "2026-12-31",
+  "milestones": [
+    {"id": "M1", "label": "Milestone 1", "date": "2026-01-15", "owner": "PMO", "evidence": "Evidence 1", "status": "healthy"},
+    {"id": "M2", "label": "Milestone 2", "date": "2026-02-15", "owner": "PMO", "evidence": "Evidence 2", "status": "healthy"},
+    {"id": "M3", "label": "Milestone 3", "date": "2026-03-15", "owner": "PMO", "evidence": "Evidence 3", "status": "watch"},
+    {"id": "M4", "label": "Milestone 4", "date": "2026-04-15", "owner": "PMO", "evidence": "Evidence 4", "status": "healthy"},
+    {"id": "M5", "label": "Milestone 5", "date": "2026-05-15", "owner": "PMO", "evidence": "Evidence 5", "status": "risk"},
+    {"id": "M6", "label": "Milestone 6", "date": "2026-06-15", "owner": "PMO", "evidence": "Evidence 6", "status": "neutral"},
+    {"id": "M7", "label": "Milestone 7", "date": "2026-07-15", "owner": "PMO", "evidence": "Evidence 7", "status": "healthy"},
+    {"id": "M8", "label": "Milestone 8", "date": "2026-08-15", "owner": "PMO", "evidence": "Evidence 8", "status": "healthy"},
+    {"id": "M9", "label": "Milestone 9", "date": "2026-09-15", "owner": "PMO", "evidence": "Evidence 9", "status": "watch"},
+    {"id": "M10", "label": "Milestone 10", "date": "2026-10-15", "owner": "PMO", "evidence": "Evidence 10", "status": "healthy"}
+  ]
+}

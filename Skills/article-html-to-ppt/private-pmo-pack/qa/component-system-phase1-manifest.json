@@ -1,0 +1,84 @@
+{
+  "status": "passed",
+  "phase": 1,
+  "generated_at": "2026-07-25T00:37:41.899262+00:00",
+  "input": "./examples/pmo-component-system-phase1.json",
+  "schema": "./schemas/pmo-component-ir.schema.json",
+  "legacy_style": "./contracts/mckinsey-pmo.style.json",
+  "token_system": {
+    "schema_version": "1.0",
+    "system_id": "boardroom-ink",
+    "display_name": "Boardroom Ink",
+    "skin": "default",
+    "legacy_style_id": "mckinsey-pmo",
+    "legacy_schema_version": "1.0"
+  },
+  "token_sha256": "1e45fb34d29b883d2d7482878ca4638554d165911feebce0bca75e1635bae623",
+  "output": "./output/pmo-component-system-phase1.pptx",
+  "gates": {
+    "three_components": true,
+    "three_slides": true,
+    "zero_pictures": true,
+    "native_chart_present": true,
+    "native_shapes_present": true,
+    "text_bounds_passed": true,
+    "text_overflow_passed": true
+  },
+  "build": {
+    "slide_count": 3,
+    "picture_count": 0,
+    "chart_count": 1,
+    "table_count": 0,
+    "text_shape_count": 73,
+    "native_shape_count": 157,
+    "connector_count": 28,
+    "total_shape_count": 157,
+    "output": "./output/pmo-component-system-phase1.pptx",
+    "components": [
+      {
+        "component": "annotated_doughnut",
+        "layout_mode": "annotated",
+        "reason_codes": [],
+        "leader_count": 4,
+        "chart_first_slice_angle_deg": 0,
+        "endpoint_segment_alignment_passed": true
+      },
+      {
+        "component": "roadmap",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "phase_count": 4,
+        "gate_alignment_passed": true
+      },
+      {
+        "component": "gantt",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "row_count": 5,
+        "timeline_column_count": 13,
+        "week_label_count": 13,
+        "month_span_count": 3,
+        "month_spans_cover_timeline": true,
+        "legend_completeness": {
+          "passed": true,
+          "missing": [],
+          "extra": []
+        }
+      }
+    ],
+    "text_bounds": {
+      "passed": true,
+      "outside": []
+    },
+    "text_overflow": {
+      "passed": true,
+      "overflow": [],
+      "details": []
+    },
+    "native_editability": {
+      "message_objects_rasterized": false,
+      "whole_slide_pictures": 0,
+      "connector_endpoint_binding_verified": false
+    }
+  }
+}

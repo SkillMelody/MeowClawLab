@@ -1,0 +1,10 @@
+{
+  "criteria": [
+    {"id": "value", "weight": "1", "weight_source": "board", "direction": "higher", "anchors": {"worst": "0", "best": "100"}}
+  ],
+  "options": [
+    {"id": "mandatory", "scores": {"value": "100"}, "cost": "12", "capacity": {"team": "5"}, "must_do": true}
+  ],
+  "budget": "10",
+  "capacity": {"team": "4"}
+}

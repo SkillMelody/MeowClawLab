@@ -1,0 +1,17 @@
+{
+  "id": "schedule-resource-conflict",
+  "project_start": "2026-08-03",
+  "data_date": "2026-08-03",
+  "calendar": {"working_weekdays": [0, 1, 2, 3, 4], "holidays": [], "unit": "working_day"},
+  "tasks": [
+    {"id": "A", "duration": 3, "resources": {"engineer": 1}},
+    {"id": "B", "duration": 2, "resources": {"engineer": 1}},
+    {"id": "C", "duration": 1, "resources": {"engineer": 1}}
+  ],
+  "dependencies": [
+    {"id": "ac", "predecessor": "A", "successor": "C", "type": "FS", "lag": 0},
+    {"id": "bc", "predecessor": "B", "successor": "C", "type": "FS", "lag": 0}
+  ],
+  "resource_capacities": {"engineer": 1},
+  "capacity_scenarios": [{"id": "finite-engineer", "capacities": {"engineer": 1}}]
+}

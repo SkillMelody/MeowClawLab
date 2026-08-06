@@ -1,0 +1,19 @@
+{
+  "id": "risk-transfer",
+  "question": "Should the programme transfer the vendor failure risk?",
+  "horizon": "FY2027",
+  "risk_treatment": {
+    "probability": {"low": 0.20, "central": 0.25, "high": 0.30, "horizon": "FY2027"},
+    "consequences": [{"name": "replacement and delay", "amount": {"low": 800000, "central": 1000000, "high": 1200000}}],
+    "mitigation": {
+      "option_id": "transfer",
+      "success_residual_probability": 0.05,
+      "failure_probability": 0,
+      "residual_impact_fraction": 1,
+      "one_time_cost": 0,
+      "recurring_cost": 40000,
+      "recurring_periods": 3
+    },
+    "risk_tolerance": 75000
+  }
+}

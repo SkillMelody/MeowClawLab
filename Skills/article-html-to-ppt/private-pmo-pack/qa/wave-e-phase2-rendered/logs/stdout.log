@@ -1,0 +1,1 @@
+convert ./output/pmo-component-system-phase2-p0.pptx as a Impress document -> ./qa/wave-e-phase2-rendered/pmo-component-system-phase2-p0.pdf using filter : impress_pdf_Export

@@ -1,0 +1,14 @@
+{
+  "type": "annotated_doughnut",
+  "title": "Crowded category mix",
+  "center_metric": "100%",
+  "center_caption": "portfolio",
+  "categories": [
+    {"label": "Core platform modernization", "value": 42, "color_role": "sequence.phase_1"},
+    {"label": "Data products and governance", "value": 24, "color_role": "sequence.phase_2"},
+    {"label": "Change adoption", "value": 14, "color_role": "sequence.phase_3"},
+    {"label": "Security readiness", "value": 9, "color_role": "sequence.phase_4"},
+    {"label": "Commercial validation", "value": 6, "color_role": "state.watch"},
+    {"label": "Other small initiatives", "value": 5, "color_role": "state.neutral"}
+  ]
+}

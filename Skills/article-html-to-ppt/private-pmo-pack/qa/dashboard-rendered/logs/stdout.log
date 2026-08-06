@@ -1,0 +1,1 @@
+convert ./output/dashboard-auto-selection-validation.pptx as a Impress document -> ./qa/dashboard-rendered/dashboard-auto-selection-validation.pdf using filter : impress_pdf_Export

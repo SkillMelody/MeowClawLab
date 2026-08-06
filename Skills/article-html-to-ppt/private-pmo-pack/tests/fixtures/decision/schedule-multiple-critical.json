@@ -1,0 +1,18 @@
+{
+  "id": "schedule-multiple-critical",
+  "project_start": "2026-08-03",
+  "data_date": "2026-08-03",
+  "calendar": {"working_weekdays": [0, 1, 2, 3, 4], "holidays": [], "unit": "working_day"},
+  "tasks": [
+    {"id": "A", "duration": 2}, {"id": "B", "duration": 3},
+    {"id": "C", "duration": 2}, {"id": "D", "duration": 3},
+    {"id": "E", "duration": 1}, {"id": "N", "duration": 4}
+  ],
+  "dependencies": [
+    {"id": "ab", "predecessor": "A", "successor": "B", "type": "FS", "lag": 0},
+    {"id": "cd", "predecessor": "C", "successor": "D", "type": "FS", "lag": 0},
+    {"id": "be", "predecessor": "B", "successor": "E", "type": "FS", "lag": 0},
+    {"id": "de", "predecessor": "D", "successor": "E", "type": "FS", "lag": 0}
+  ],
+  "near_critical_threshold": 2
+}

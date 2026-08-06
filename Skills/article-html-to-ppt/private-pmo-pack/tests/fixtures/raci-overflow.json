@@ -1,0 +1,19 @@
+{
+  "type": "raci",
+  "title": "Nine roles and eleven activities split deterministically",
+  "roles": ["Role 1", "Role 2", "Role 3", "Role 4", "Role 5", "Role 6", "Role 7", "Role 8", "Role 9"],
+  "activities": ["Activity 1", "Activity 2", "Activity 3", "Activity 4", "Activity 5", "Activity 6", "Activity 7", "Activity 8", "Activity 9", "Activity 10", "Activity 11"],
+  "assignments": [
+    {"activity": "Activity 1", "role": "Role 1", "code": "A"}, {"activity": "Activity 1", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 2", "role": "Role 1", "code": "A"}, {"activity": "Activity 2", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 3", "role": "Role 1", "code": "A"}, {"activity": "Activity 3", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 4", "role": "Role 1", "code": "A"}, {"activity": "Activity 4", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 5", "role": "Role 1", "code": "A"}, {"activity": "Activity 5", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 6", "role": "Role 1", "code": "A"}, {"activity": "Activity 6", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 7", "role": "Role 1", "code": "A"}, {"activity": "Activity 7", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 8", "role": "Role 1", "code": "A"}, {"activity": "Activity 8", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 9", "role": "Role 1", "code": "A"}, {"activity": "Activity 9", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 10", "role": "Role 1", "code": "A"}, {"activity": "Activity 10", "role": "Role 2", "code": "R"},
+    {"activity": "Activity 11", "role": "Role 1", "code": "A"}, {"activity": "Activity 11", "role": "Role 2", "code": "R"}
+  ]
+}

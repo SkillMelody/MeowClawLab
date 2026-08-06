@@ -1,0 +1,11 @@
+{
+  "id": "schedule-cycle",
+  "project_start": "2026-08-03",
+  "data_date": "2026-08-03",
+  "calendar": {"working_weekdays": [0, 1, 2, 3, 4], "holidays": [], "unit": "working_day"},
+  "tasks": [{"id": "A", "duration": 1}, {"id": "B", "duration": 1}],
+  "dependencies": [
+    {"id": "ab", "predecessor": "A", "successor": "B", "type": "FS", "lag": 0},
+    {"id": "ba", "predecessor": "B", "successor": "A", "type": "FS", "lag": 0}
+  ]
+}

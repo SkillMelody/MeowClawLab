@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "passed": true,
+  "pages": [
+    {
+      "page_id": "P01",
+      "evidence_id": "E1",
+      "intent": "summarize_single_project_health",
+      "page_family": "single_project_health_dashboard",
+      "primary_visual": "executive_dashboard",
+      "supporting_visuals": [
+        "status_kpis",
+        "risk_issue_panel",
+        "delivery_timeline"
+      ],
+      "selection_reason_codes": [
+        "single_project_health"
+      ],
+      "layout_qa": {
+        "passed": true,
+        "page_family": "single_project_health_dashboard",
+        "reason_codes": [],
+        "limits": {
+          "supporting": 3,
+          "characters": 160
+        },
+        "observed": {
+          "supporting_visual_count": 3,
+          "body_character_count": 105
+        }
+      }
+    },
+    {
+      "page_id": "P02",
+      "evidence_id": "E2",
+      "intent": "compare_project_portfolio",
+      "page_family": "portfolio_dashboard",
+      "primary_visual": "portfolio_health_matrix",
+      "supporting_visuals": [
+        "project_comparison_table",
+        "portfolio_mix_chart",
+        "priority_callout"
+      ],
+      "selection_reason_codes": [
+        "cross_project_comparison"
+      ],
+      "layout_qa": {
+        "passed": true,
+        "page_family": "portfolio_dashboard",
+        "reason_codes": [],
+        "limits": {
+          "supporting": 3,
+          "characters": 150
+        },
+        "observed": {
+          "supporting_visual_count": 3,
+          "body_character_count": 92
+        }
+      }
+    },
+    {
+      "page_id": "P03",
+      "evidence_id": "E3",
+      "intent": "explain_resource_capacity",
+      "page_family": "time_resource_dashboard",
+      "primary_visual": "resource_allocation_bars",
+      "supporting_visuals": [
+        "capacity_heatmap",
+        "task_timeline",
+        "budget_consumption"
+      ],
+      "selection_reason_codes": [
+        "resource_capacity_question"
+      ],
+      "layout_qa": {
+        "passed": true,
+        "page_family": "time_resource_dashboard",
+        "reason_codes": [],
+        "limits": {
+          "supporting": 3,
+          "characters": 140
+        },
+        "observed": {
+          "supporting_visual_count": 3,
+          "body_character_count": 86
+        }
+      }
+    },
+    {
+      "page_id": "P04",
+      "evidence_id": "E4",
+      "intent": "monitor_pmo_control_tower",
+      "page_family": "pmo_control_tower",
+      "primary_visual": "pmo_health_overview",
+      "supporting_visuals": [
+        "milestone_trend",
+        "risk_compliance_panel",
+        "budget_variance",
+        "decision_queue"
+      ],
+      "selection_reason_codes": [
+        "enterprise_pmo_monitoring"
+      ],
+      "layout_qa": {
+        "passed": true,
+        "page_family": "pmo_control_tower",
+        "reason_codes": [],
+        "limits": {
+          "supporting": 4,
+          "characters": 170
+        },
+        "observed": {
+          "supporting_visual_count": 4,
+          "body_character_count": 118
+        }
+      }
+    },
+    {
+      "page_id": "P05",
+      "evidence_id": "E5",
+      "intent": "weekly_executive_status",
+      "page_family": "executive_status_one_pager",
+      "primary_visual": "status_narrative_grid",
+      "supporting_visuals": [
+        "project_health_table",
+        "milestone_timeline",
+        "top_risks"
+      ],
+      "selection_reason_codes": [
+        "weekly_status_material"
+      ],
+      "layout_qa": {
+        "passed": true,
+        "page_family": "executive_status_one_pager",
+        "reason_codes": [],
+        "limits": {
+          "supporting": 4,
+          "characters": 190
+        },
+        "observed": {
+          "supporting_visual_count": 3,
+          "body_character_count": 146
+        }
+      }
+    }
+  ]
+}

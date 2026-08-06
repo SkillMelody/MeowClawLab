@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "pptx": "./output/pmo-component-system-phase2-p0.pptx",
+  "engine": "libreoffice",
+  "engine_version": "LibreOffice 26.2.4.2 0229ac93fcf0d7cbc6376066c6f35021cef002dc",
+  "started_at": "2026-07-25T08:52:51+08:00",
+  "finished_at": "2026-07-25T08:53:00+08:00",
+  "duration_seconds": 9.352,
+  "status": "passed",
+  "slide_count_expected": 4,
+  "slide_count_rendered": 4,
+  "pdf": "./qa/component-system-phase2-p0-rendered/deck.pdf",
+  "slides": [
+    {
+      "slide_index": 1,
+      "image": "./qa/component-system-phase2-p0-rendered/slides/slide-001.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.829574,
+      "status": "passed"
+    },
+    {
+      "slide_index": 2,
+      "image": "./qa/component-system-phase2-p0-rendered/slides/slide-002.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.880655,
+      "status": "passed"
+    },
+    {
+      "slide_index": 3,
+      "image": "./qa/component-system-phase2-p0-rendered/slides/slide-003.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.768197,
+      "status": "passed"
+    },
+    {
+      "slide_index": 4,
+      "image": "./qa/component-system-phase2-p0-rendered/slides/slide-004.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.603373,
+      "status": "passed"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}

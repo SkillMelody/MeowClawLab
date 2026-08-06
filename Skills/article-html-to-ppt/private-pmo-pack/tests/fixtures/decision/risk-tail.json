@@ -1,0 +1,12 @@
+{
+  "id": "risk-tail",
+  "question": "Can a simple ROI justify treatment of correlated tail risks?",
+  "horizon": "FY2027",
+  "risk_treatment": {
+    "probability": {"low": 0.01, "central": 0.03, "high": 0.10, "horizon": "FY2027"},
+    "consequences": [{"name": "systemic interruption", "amount": {"low": 1000000, "central": 5000000, "high": 50000000}}],
+    "tail_risk": true,
+    "correlated_risk": true,
+    "risk_tolerance": 100000
+  }
+}

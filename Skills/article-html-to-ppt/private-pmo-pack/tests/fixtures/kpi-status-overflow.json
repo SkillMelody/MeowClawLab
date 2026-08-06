@@ -1,0 +1,13 @@
+{
+  "type": "kpi_status",
+  "title": "Seven metrics require a deterministic split",
+  "metrics": [
+    {"id": "K1", "label": "Metric 1", "value": 1, "unit": "%", "target": 1, "direction": "higher_is_better", "status": "healthy", "period": "Q3", "note": "Evidence 1"},
+    {"id": "K2", "label": "Metric 2", "value": 2, "unit": "%", "target": 2, "direction": "higher_is_better", "status": "healthy", "period": "Q3", "note": "Evidence 2"},
+    {"id": "K3", "label": "Metric 3", "value": 3, "unit": "%", "target": 3, "direction": "higher_is_better", "status": "watch", "period": "Q3", "note": "Evidence 3"},
+    {"id": "K4", "label": "Metric 4", "value": 4, "unit": "%", "target": 4, "direction": "higher_is_better", "status": "healthy", "period": "Q3", "note": "Evidence 4"},
+    {"id": "K5", "label": "Metric 5", "value": 5, "unit": "%", "target": 5, "direction": "higher_is_better", "status": "risk", "period": "Q3", "note": "Evidence 5"},
+    {"id": "K6", "label": "Metric 6", "value": 6, "unit": "%", "target": 6, "direction": "higher_is_better", "status": "neutral", "period": "Q3", "note": "Evidence 6"},
+    {"id": "K7", "label": "Metric 7", "value": 7, "unit": "%", "target": 7, "direction": "higher_is_better", "status": "healthy", "period": "Q3", "note": "Evidence 7"}
+  ]
+}

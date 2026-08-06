@@ -1,0 +1,12 @@
+{
+  "benefit": {"direction": "increase", "baseline": "100", "target": "140", "actual_to_date": "124", "planned_to_date": "120", "forecast": "145"},
+  "options": {
+    "continue": {"cash_flows": [{"period": -1, "benefit": "0", "cost": "90"}, {"period": 1, "benefit": "90", "cost": "25"}, {"period": 2, "benefit": "70", "cost": "20"}], "hard_constraints_met": true},
+    "pivot": {"cash_flows": [{"period": 1, "benefit": "75", "cost": "35"}, {"period": 2, "benefit": "65", "cost": "25"}], "hard_constraints_met": true},
+    "stop": {"cash_flows": [{"period": 1, "benefit": "0", "cost": "12"}], "hard_constraints_met": true}
+  },
+  "discount_rate": "0.10",
+  "policy": {"completeness_threshold": "0.8", "materiality_threshold": "5", "confidence_threshold": "medium"},
+  "completeness": "1", "confidence": "high",
+  "sensitivity": [{"name": "continue benefit realization", "option": "continue", "variable": "future_benefit", "low": "0.35", "high": "1.15"}]
+}

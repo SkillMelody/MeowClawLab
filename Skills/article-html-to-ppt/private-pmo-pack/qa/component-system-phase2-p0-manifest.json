@@ -1,0 +1,152 @@
+{
+  "status": "passed",
+  "phase": 2,
+  "priority": "P0",
+  "generated_at": "2026-07-25T00:37:43.087804+00:00",
+  "input": "./examples/pmo-component-system-phase2-p0.json",
+  "schema": "./schemas/pmo-component-ir.schema.json",
+  "legacy_style": "./contracts/mckinsey-pmo.style.json",
+  "token_system": {
+    "schema_version": "1.0",
+    "system_id": "boardroom-ink",
+    "display_name": "Boardroom Ink",
+    "skin": "default",
+    "legacy_style_id": "mckinsey-pmo",
+    "legacy_schema_version": "1.0"
+  },
+  "token_sha256": "1e45fb34d29b883d2d7482878ca4638554d165911feebce0bca75e1635bae623",
+  "output": "./output/pmo-component-system-phase2-p0.pptx",
+  "gates": {
+    "four_components": true,
+    "four_slides": true,
+    "zero_pictures": true,
+    "native_table_present": true,
+    "native_shapes_present": true,
+    "component_qa_passed": true,
+    "text_bounds_passed": true,
+    "text_overflow_passed": true
+  },
+  "build": {
+    "slide_count": 4,
+    "picture_count": 0,
+    "chart_count": 0,
+    "table_count": 1,
+    "text_shape_count": 103,
+    "native_shape_count": 215,
+    "connector_count": 25,
+    "total_shape_count": 215,
+    "output": "./output/pmo-component-system-phase2-p0.pptx",
+    "components": [
+      {
+        "component": "kpi_status",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "metric_count": 4,
+        "qa": {
+          "component": "kpi_status",
+          "passed": true,
+          "reason_codes": [],
+          "checks": {
+            "semantic_ir": {
+              "passed": true
+            },
+            "card_bounds": {
+              "passed": true,
+              "outside": []
+            },
+            "status_legend": {
+              "passed": true,
+              "missing": [],
+              "extra": [
+                "neutral"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "component": "milestone",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "milestone_count": 6,
+        "qa": {
+          "component": "milestone",
+          "passed": true,
+          "reason_codes": [],
+          "checks": {
+            "semantic_ir": {
+              "passed": true
+            },
+            "label_collision": {
+              "passed": true
+            }
+          }
+        }
+      },
+      {
+        "component": "risk_heat_map",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "risk_count": 6,
+        "qa": {
+          "component": "risk_heat_map",
+          "passed": true,
+          "reason_codes": [],
+          "checks": {
+            "semantic_ir": {
+              "passed": true
+            },
+            "status_legend": {
+              "passed": true,
+              "missing": [],
+              "extra": [
+                "healthy"
+              ]
+            },
+            "point_geometry": {
+              "passed": true
+            }
+          }
+        }
+      },
+      {
+        "component": "raci",
+        "layout_mode": "single",
+        "reason_codes": [],
+        "role_count": 5,
+        "activity_count": 5,
+        "qa": {
+          "component": "raci",
+          "passed": true,
+          "reason_codes": [],
+          "checks": {
+            "semantic_ir": {
+              "passed": true
+            },
+            "table_density": {
+              "passed": true
+            }
+          }
+        }
+      }
+    ],
+    "text_bounds": {
+      "passed": true,
+      "outside": []
+    },
+    "text_overflow": {
+      "passed": true,
+      "overflow": [],
+      "details": []
+    },
+    "component_qa": {
+      "passed": true,
+      "failures": []
+    },
+    "native_editability": {
+      "message_objects_rasterized": false,
+      "whole_slide_pictures": 0,
+      "package_media_files": 0
+    }
+  }
+}
