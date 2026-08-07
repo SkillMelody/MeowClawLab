@@ -497,12 +497,25 @@ class Pipeline:
             "--builder", self.args.builder,
             "--output", str(self.contracts / "delivery-plan.json"),
             "--strict",
-        ])
+        ], accepted={0, 1})
         plan = load_json(self.contracts / "delivery-plan.json")
         builder = plan.get("builder") if isinstance(plan.get("builder"), dict) else {}
         selected = str(builder.get("selected") or "unknown")
         errors = [str(item) for item in builder.get("errors", [])]
         unsupported = int((plan.get("summary") or {}).get("unsupported_count", 0))
+        # A forced Builder can be selected as the named candidate even when it
+        # is unavailable. Preserve that candidate's capability error instead
+        # of collapsing it to the generic delivery-plan error.
+        if not errors and self.args.builder != "auto":
+            for candidate in builder.get("candidates", []) or []:
+                if (
+                    isinstance(candidate, dict)
+                    and candidate.get("builder") == self.args.builder
+                    and (candidate.get("available") is False or unsupported)
+                ):
+                    errors = [str(item) for item in candidate.get("errors", [])]
+                    if errors:
+                        break
         if errors or selected not in {"python_pptx", "pptxgenjs"} or unsupported:
             codes = errors or (["BUILDER_SELECTION_UNKNOWN"] if selected == "unknown" else ["DELIVERY_PLAN_UNSUPPORTED"])
             raise StageFailure("resolve_delivery", ", ".join(codes))

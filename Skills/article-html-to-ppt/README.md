@@ -11,14 +11,14 @@
 - **公开品牌：** MeowClaw PPT Smith
 - **兼容安装名：** `article-html-to-ppt`
 - **兼容搜索词：** MeowClaw PPTSmith、MeowClaw 夜猫 PPT 工坊
-- **当前版本：** `2.1.2`（视觉叙事、布局可靠性、安全加固与可信交付）
+- **当前版本：** `3.0.0`（双路径生成、八条专业路线、视觉叙事与可信交付）
 - **开源定位：** 核心引擎、基础五风格、通用组件、可编辑对象、QA 与可信交付
 
 > PPTSmith 的 GitHub / ClawHub 开源版用于分发、获客与建立可信度。专业生产包、企业品牌适配、专属页面原型、定制组件和代生成/部署服务采用独立商业交付，不包含在本仓库与 ClawHub 包中。
 
-## v2.1 一眼看懂
+## v3.0 一眼看懂
 
-PPTSmith v2.1 不只是“把文字塞进模板”，而是一条从内容判断到可信交付的完整生产链：
+PPTSmith v3.0 不只是“把文字塞进模板”，而是一条从内容判断到可信交付的完整生产链：
 
 1. **先理解内容，再画页面**：内容分析、证据盘点、故事线、判断式标题与表达模式先行。
 2. **五套基础视觉系统**：咨询报告、产品汇报、技术蓝图、咨询 × 技术混合、编辑知识型。
@@ -31,7 +31,14 @@ PPTSmith v2.1 不只是“把文字塞进模板”，而是一条从内容判断
 9. **失败时诚实收口**：没有真实渲染器、证据绑定或评分不达标时，不伪造截图、不手写 `final`，而是明确降级或阻断。
 10. **多种交付出口**：本地 PPTX、原生渐进式动态 PPTX、HTML 预览，以及经用户明确授权后的飞书幻灯片路线。
 
-### 2.1.2 视觉叙事、布局可靠性与安全加固
+### 3.0.0：重新引入高保真代码路径，并保留可验证生产路径
+
+v3.0.0 将两条有明确边界的生成路径产品化：
+
+- **Path A（高定代码路径）**：LLM 直接使用 `python-pptx` 编写独立构建脚本，保留 v1.2.0 曾经展现的非对称构图、飞轮、复杂原生箭头与逐页精修能力。触发词包括「精细做」「高定模式」「手写代码生成」「和之前 State of AI 一样」「质量优先」。
+- **Path B（标准 IR / Pipeline 路径）**：以 PPT IR、Style Contract、组件路由、真实渲染与 QA 交付可追溯的稳定生产底线；适合批量、标准化、PMO/PRD/技术材料及需审计任务。
+
+两条路径不是优劣替代：Path A 追求模型能力所能达到的视觉上限，正式交付仍需真实渲染与人工视觉复核；Path B 追求可验证与可重复的生产下限。详见 [v3.0.0 发布说明、v1.2.0 对比与多模型试验](docs/v3.0.0-release-notes.md)。
 
 - 新增任务路由、Page Design Intent、Visual Planner、Deck Rhythm Gate 与受约束的二次精修请求。
 - 新增原生可编辑热力矩阵、分层架构、指标下钻阶梯和阶段路线图 Renderer。
@@ -40,7 +47,7 @@ PPTSmith v2.1 不只是“把文字塞进模板”，而是一条从内容判断
 - 保留 2.0.7 的原生连接器、端点绑定与图拓扑门禁；新版能力为增量升级。
 - Standard 已在 macOS + LibreOffice 验收环境验证；Premium 仍需每次运行完成真实渲染、零错误 QA、评分和人工视觉复核。
 
-![PPTSmith 2.1 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ### 2.0.7 连接器路由与图拓扑门禁
 
@@ -205,8 +212,9 @@ v2.0 已完成 Standard 生产验收；另有一条记录明确的 PptxGenJS 4.0
 
 - [OpenClaw 执行规范](./SKILL.md)
 - [英文 README](./README.en.md)
-- [v2.1 RC1 验收报告](docs/v2.1-rc1-acceptance-report.md)
-- [v2.1 发布说明](docs/v2.1-release-notes.md)
+- [v3.0.0 发布说明与 v1.2.0 对比](docs/v3.0.0-release-notes.md)
+- [v2.1 RC1 验收报告（历史基线）](docs/v2.1-rc1-acceptance-report.md)
+- [v2.1 发布说明（历史）](docs/v2.1-release-notes.md)
 - [v2.0 验收报告](docs/v2.0-acceptance-report.md)
 - [v1.5 → v2.0 收口清单](docs/v1.5-v2.0-closeout-checklist.md)
 - [生产配置说明](references/production-profiles.md)
