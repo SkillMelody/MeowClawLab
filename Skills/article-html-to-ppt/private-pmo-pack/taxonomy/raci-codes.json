@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "codes": {
+    "R": "Responsible",
+    "A": "Accountable",
+    "C": "Consulted",
+    "I": "Informed",
+    "-": "No formal role"
+  }
+}

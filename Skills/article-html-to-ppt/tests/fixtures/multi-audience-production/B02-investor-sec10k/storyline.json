@@ -1,0 +1,12 @@
+{
+  "title": "Duolingo 2025 Form 10-K：商业尽调读前材料",
+  "slides": [
+    {"id": "S01", "role": "cover", "narrative_stage": "market_and_thesis", "message": "历史披露读前材料：为是否继续尽调建立事实边界，而非形成投资结论。", "audience_question": "本材料的决策用途和边界是什么？", "evidence_refs": ["SEC 2025 Form 10-K"], "relationships": [], "priority": "supporting", "density": "low"},
+    {"id": "S02", "role": "data", "narrative_stage": "market_and_thesis", "message": "公开披露能验证历史经营表现；无法替代对持续性、客户质量或估值的判断。", "audience_question": "哪些结论可以从披露直接得到？", "evidence_refs": ["SEC 2025 Form 10-K", "SEC XBRL Company Facts"], "relationships": ["comparison"], "priority": "high", "density": "medium"},
+    {"id": "S03", "role": "data", "narrative_stage": "traction_and_economics", "message": "收入从 2023 年的 5.31 亿美元增至 2025 年的 10.38 亿美元；这是历史趋势，不是预测。", "audience_question": "公开财务披露显示了怎样的规模变化？", "evidence_refs": ["SEC XBRL Company Facts"], "relationships": ["trend"], "priority": "high", "density": "medium"},
+    {"id": "S04", "role": "kpi", "narrative_stage": "traction_and_economics", "message": "净利润连续三年为正并在 2025 年显著扩大；需要拆解其驱动和可重复性。", "audience_question": "利润历史支持什么，尚不足以支持什么？", "evidence_refs": ["SEC XBRL Company Facts"], "relationships": [], "priority": "supporting", "density": "medium"},
+    {"id": "S05", "role": "data", "narrative_stage": "traction_and_economics", "message": "经营披露提供了规模线索，但客户队列、留存和单位经济不是本材料可验证的事实。", "audience_question": "披露的证据覆盖到哪里为止？", "evidence_refs": ["SEC 2025 Form 10-K", "SEC XBRL Company Facts"], "relationships": ["comparison"], "priority": "supporting", "density": "medium"},
+    {"id": "S06", "role": "relationship", "narrative_stage": "ask_and_risks", "message": "风险披露应转化为尽调问题，而不能在缺少外部验证时被写成已发生事实。", "audience_question": "哪些披露风险需要进一步验证？", "evidence_refs": ["SEC 2025 Form 10-K Item 1A"], "relationships": ["risk_to_diligence"], "priority": "supporting", "density": "medium"},
+    {"id": "S07", "role": "roadmap", "narrative_stage": "ask_and_risks", "message": "若决定继续尽调，应先补齐客户、单位经济与市场证据，再讨论任何估值或投资结论。", "audience_question": "下一步应索取什么证据？", "evidence_refs": ["B02 diligence boundary"], "relationships": ["phase"], "priority": "supporting", "density": "low"}
+  ]
+}

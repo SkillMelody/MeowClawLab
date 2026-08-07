@@ -10,13 +10,22 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 
 `MeowClaw PPT Smith` is the public display name introduced in v2.0.6. `MeowClaw PPTSmith` and `MeowClaw 夜猫 PPT 工坊` remain compatibility and search aliases only. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for update continuity.
 
-**v2.1.2 readiness:** this release adds task routing, Page Design Intent, Visual Planner, Deck Rhythm, editable semantic renderers, and stronger overflow/contrast/arrow-safety gates. It preserves the v2.0.7 native connector and topology contract, passes macOS renderer paths as arguments, contains fixture cleanup, limits font disclosure to active style requirements, and avoids dynamic module execution in its safety tests. Standard is verified on macOS with LibreOffice; Premium remains run-specific and requires real rendering, zero-error QA, rubric scoring, and human visual review. See [the v2.1 acceptance report](docs/v2.1-rc1-acceptance-report.md).
+**v3.0.0 readiness:** this release adds task routing, Page Design Intent, Visual Planner, Deck Rhythm, editable semantic renderers, and stronger overflow/contrast/arrow-safety gates. It preserves the v2.0.7 native connector and topology contract, passes macOS renderer paths as arguments, contains fixture cleanup, limits font disclosure to active style requirements, and avoids dynamic module execution in its safety tests. Standard is verified on macOS with LibreOffice; Premium remains run-specific and requires real rendering, zero-error QA, rubric scoring, and human visual review. See [the v3.0.0 release notes and v1.2.0 comparison](docs/v3.0.0-release-notes.md).
 
-## v2.1 Hero Showcase
+## v3.0.0: Code Path and Verified Pipeline
+
+v3.0.0 productizes two bounded generation paths:
+
+- **Path A — Code Path**: an LLM writes a standalone `python-pptx` build script for bespoke composition, editable flywheels, complex native arrows, asymmetric layouts, and page-level refinement—the strengths demonstrated by the best v1.2.0 runs.
+- **Path B — IR / Pipeline Path**: PPT IR, Style Contract, component routing, real rendering, and QA produce traceable, repeatable standard output.
+
+They serve different needs, not different truth standards: Path A pursues the visual ceiling of a capable model and still needs real-render plus human review; Path B provides a verified production floor. See the [v3.0.0 release notes, v1.2.0 comparison, and multi-model evidence](docs/v3.0.0-release-notes.md).
+
+## v3.0 Hero Showcase
 
 The 12-slide *Future of Work 2030* showcase uses native editable objects and passed real rendering without whole-slide rasterization.
 
-![PPTSmith 2.1 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
 
 ## Sample Gallery
 
@@ -279,7 +288,7 @@ Before Feishu/Lark export, confirm that the user intended cloud delivery. Do not
 
 ## Version
 
-2.1.2
+3.0.0
 
 The version claim distinguishes three scopes: Standard production readiness on the verified environment; Premium final acceptance on the recorded LibreOffice route; and native Microsoft PowerPoint compatibility, which has not been verified.
 

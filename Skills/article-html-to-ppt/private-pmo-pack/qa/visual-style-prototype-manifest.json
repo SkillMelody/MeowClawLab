@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "pptsmith-pmo-consulting-pack",
+  "prototype_id": "pmo-reference-visual-styles",
+  "built_at": "2026-07-24T04:31:19.243931+00:00",
+  "status": "created",
+  "builder": "private-python-pptx-visual-style-renderer",
+  "outputs": {
+    "deck": "output/pmo-reference-visual-styles.pptx"
+  },
+  "style": "contracts/mckinsey-pmo.style.json",
+  "slide_count": 6,
+  "slides": [
+    {
+      "index": 1,
+      "page_type": "half_gauge_dashboard",
+      "title": "半圆仪表盘把状态、缺口和行动优先级压在同一视线内"
+    },
+    {
+      "index": 2,
+      "page_type": "basic_doughnut",
+      "title": "基础甜甜圈图适合表达预算或资源构成，中心只保留一个结论"
+    },
+    {
+      "index": 3,
+      "page_type": "callout_doughnut",
+      "title": "带外部标注的环形图适合让高管先看类别，再看原因"
+    },
+    {
+      "index": 4,
+      "page_type": "budget_kpi_rings",
+      "title": "预算 KPI 圆环组把金额、消耗率和风险灯号分开展示"
+    },
+    {
+      "index": 5,
+      "page_type": "gantt_timeline",
+      "title": "项目时间轴甘特图用月份网格、阶段条和门禁线控制复杂度"
+    },
+    {
+      "index": 6,
+      "page_type": "milestone_line",
+      "title": "项目里程碑折线图把进度曲线和阶段标签分层表达"
+    }
+  ],
+  "native_object_counts": {
+    "slides": 6,
+    "pictures": 0,
+    "shapes": 158,
+    "graphic_frames": 6,
+    "connectors": 11,
+    "charts": 6
+  },
+  "editable_core_expected": [
+    "native doughnut charts for ring and composition data",
+    "editable center values and callout labels",
+    "native leader lines and markers",
+    "native Gantt grid, phase bars, gate lines, and legend",
+    "native milestone axis, trend segments, markers, and phase bands"
+  ],
+  "known_limitations": [
+    "Half-gauge uses editable native ARC shapes rather than a data-bound PowerPoint chart.",
+    "Doughnut arc thickness and start angle remain governed by PowerPoint chart behavior; fine-grained segment geometry is a v0.2 component concern.",
+    "Milestone trend uses a native line chart plus separate native phase bands; phase bands are not data-bound to the chart series."
+  ]
+}

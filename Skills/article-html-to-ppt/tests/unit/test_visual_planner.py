@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 from jsonschema import Draft202012Validator
 
 
@@ -14,7 +15,7 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 from visual_narrative.intent import validate_page_design_intent
-from visual_narrative.planner import plan_visual_narrative
+from visual_narrative.planner import VisualPlanningError, plan_visual_narrative
 
 
 def relationship_storyline() -> dict:
@@ -95,6 +96,61 @@ def test_planner_preserves_structured_evidence_refs() -> None:
     assert plan["slides"][0]["evidence_refs"] == [
         {"source_id": "E03", "locator": "第 3 章"}
     ]
+
+
+def test_planner_carries_the_selected_professional_narrative_contract() -> None:
+    audience_route = {
+        "status": "ready",
+        "selected_route": "product_prd",
+        "narrative_contract": {
+            "sequence": [
+                "problem_and_scope",
+                "user_flow_and_rules",
+                "acceptance_and_open_questions",
+            ]
+        },
+    }
+
+    route_aware_storyline = relationship_storyline()
+    route_aware_storyline["slides"] = [
+        {**route_aware_storyline["slides"][0], "id": "S01", "narrative_stage": "problem_and_scope"},
+        {**route_aware_storyline["slides"][0], "id": "S02", "narrative_stage": "user_flow_and_rules"},
+        {**route_aware_storyline["slides"][0], "id": "S03", "narrative_stage": "acceptance_and_open_questions"},
+    ]
+
+    plan = plan_visual_narrative(
+        {"selected_route": "product_prd"},
+        route_aware_storyline,
+        "azure-insight-architecture",
+        audience_route=audience_route,
+    )
+
+    assert plan["professional_route"] == "product_prd"
+    assert plan["professional_narrative_contract"] == audience_route["narrative_contract"]
+
+
+def test_route_aware_planner_rejects_a_storyline_that_skips_required_narrative_stages() -> None:
+    audience_route = {
+        "status": "ready",
+        "selected_route": "product_prd",
+        "narrative_contract": {
+            "sequence": [
+                "problem_and_scope",
+                "user_flow_and_rules",
+                "acceptance_and_open_questions",
+            ]
+        },
+    }
+    incomplete_storyline = relationship_storyline()
+    incomplete_storyline["slides"][0]["narrative_stage"] = "problem_and_scope"
+
+    with pytest.raises(VisualPlanningError, match="PLANNER_NARRATIVE_STAGE_COVERAGE_INVALID"):
+        plan_visual_narrative(
+            {"selected_route": "product_prd"},
+            incomplete_storyline,
+            "azure-insight-architecture",
+            audience_route=audience_route,
+        )
 
 
 def test_cli_writes_schema_valid_chinese_visual_plan(tmp_path: Path) -> None:

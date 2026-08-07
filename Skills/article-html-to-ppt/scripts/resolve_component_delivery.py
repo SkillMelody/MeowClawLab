@@ -99,8 +99,11 @@ def builder_level(component: dict[str, Any], builder: str, capabilities: dict[st
         if not isinstance(cap, dict) or cap.get("available") is not True:
             return "unsupported"
         component_levels = cap.get("components", {}) if isinstance(cap, dict) else {}
-        if component.get("component_type") in component_levels:
-            return component_levels[component["component_type"]]
+        probe_level = component_levels.get(component.get("component_type"))
+        # Trust the probe if it returns a positive result; fall back to registry for "unsupported"/missing
+        if probe_level and probe_level != "unsupported":
+            return probe_level
+    # Registry fallback: use builder_support declared in the component registry
     support = component.get("builder_support", {})
     if builder in support:
         return support[builder].get("level", "unknown")
@@ -309,8 +312,14 @@ def resolve(ppt_ir: dict[str, Any], style_ref: str, registry_ref: str, registry:
         profile=profile,
         requested_builder=requested_builder,
     )
-    effective_builder = selection.selected if selection.selected != "unknown" else "unknown"
-    if selection.errors:
+    if selection.selected == "unknown" and requested_builder != "auto":
+        # User explicitly requested a builder; trust it over the auto-selector
+        effective_builder = requested_builder
+        # Clear auto-selector errors since user override is in effect
+        selection.errors.clear()
+    else:
+        effective_builder = selection.selected
+    if selection.errors and effective_builder == "unknown":
         risk_codes.extend(selection.errors)
     for slide in ppt_ir.get("slides", []):
         objects = slide.get("objects", []) or []
@@ -326,7 +335,7 @@ def resolve(ppt_ir: dict[str, Any], style_ref: str, registry_ref: str, registry:
             risk_codes.extend(plan["reason_codes"])
             object_plans.append(plan)
         slides_out.append({"slide_id": slide.get("id", "unknown-slide"), "objects": object_plans})
-    selected_builder = selection.selected
+    selected_builder = effective_builder
     return {
         "schema_version": "1.0",
         "ppt_ir_ref": ppt_ir_ref,

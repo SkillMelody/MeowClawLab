@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "components": [
+    {
+      "type": "kpi_status",
+      "title": "Transformation value is on plan while cycle time remains at risk",
+      "metrics": [
+        {"id": "K1", "label": "Run-rate value", "value": 8.4, "unit": "$m", "target": 8.0, "direction": "higher_is_better", "status": "healthy", "period": "Q3 2026", "note": "Validated by Finance", "trend_values": [6.1, 6.8, 7.4, 8.4]},
+        {"id": "K2", "label": "Adoption", "value": 74, "unit": "%", "target": 80, "direction": "higher_is_better", "status": "watch", "period": "Aug 2026", "note": "Six points below target", "trend_values": [51, 60, 68, 74]},
+        {"id": "K3", "label": "Cycle time", "value": 12.3, "unit": "days", "target": 10, "direction": "lower_is_better", "status": "risk", "period": "Aug 2026", "note": "Data handoffs are the constraint", "trend_values": [15.2, 14.1, 13.0, 12.3]},
+        {"id": "K4", "label": "Control pass rate", "value": 96, "unit": "%", "target": 95, "direction": "higher_is_better", "status": "healthy", "period": "Aug 2026", "note": "Sample size 412"}
+      ]
+    },
+    {
+      "type": "milestone",
+      "title": "Six evidence-backed milestones define the path to scale approval",
+      "start_date": "2026-07-01",
+      "end_date": "2026-12-15",
+      "milestones": [
+        {"id": "M1", "label": "Charter approved", "date": "2026-07-08", "owner": "PMO", "evidence": "Signed charter", "status": "healthy", "phase": "Discover"},
+        {"id": "M2", "label": "Blueprint signed", "date": "2026-08-05", "owner": "Architecture", "evidence": "Design authority minute", "status": "healthy", "phase": "Design"},
+        {"id": "M3", "label": "Data rehearsal", "date": "2026-09-02", "owner": "Data", "evidence": "Reconciliation pack", "status": "watch", "phase": "Pilot"},
+        {"id": "M4", "label": "Pilot release", "date": "2026-10-01", "owner": "Product", "evidence": "Release record", "status": "healthy", "phase": "Pilot"},
+        {"id": "M5", "label": "Adoption threshold", "date": "2026-11-05", "owner": "Change", "evidence": "Usage dashboard", "status": "watch", "phase": "Scale"},
+        {"id": "M6", "label": "Scale decision", "date": "2026-12-10", "owner": "SteerCo", "evidence": "Decision log", "status": "neutral", "phase": "Scale"}
+      ]
+    },
+    {
+      "type": "risk_heat_map",
+      "title": "Data readiness concentrates the critical exposure in two cells",
+      "risks": [
+        {"id": "R1", "label": "Source data quality", "likelihood": 5, "impact": 5, "owner": "Data", "status": "risk", "mitigation": "Daily cleanse burn-down"},
+        {"id": "R2", "label": "Interface latency", "likelihood": 4, "impact": 5, "owner": "Engineering", "status": "risk", "mitigation": "Performance war room"},
+        {"id": "R3", "label": "SME availability", "likelihood": 4, "impact": 4, "owner": "Operations", "status": "watch", "mitigation": "Named alternates"},
+        {"id": "R4", "label": "Training completion", "likelihood": 4, "impact": 4, "owner": "Change", "status": "watch", "mitigation": "Manager escalation"},
+        {"id": "R5", "label": "Vendor access", "likelihood": 4, "impact": 4, "owner": "Security", "status": "watch", "mitigation": "Pre-approved access window"},
+        {"id": "R6", "label": "Benefits attribution", "likelihood": 2, "impact": 3, "owner": "Finance", "status": "neutral", "mitigation": "Reconcile baseline monthly"}
+      ]
+    },
+    {
+      "type": "raci",
+      "title": "Single-point accountability is explicit across the pilot governance chain",
+      "roles": ["Sponsor", "PMO", "Product", "Data", "Change"],
+      "activities": ["Approve charter", "Sign blueprint", "Release pilot", "Validate benefits", "Approve scale"],
+      "assignments": [
+        {"activity": "Approve charter", "role": "Sponsor", "code": "A"},
+        {"activity": "Approve charter", "role": "PMO", "code": "R"},
+        {"activity": "Approve charter", "role": "Product", "code": "C"},
+        {"activity": "Sign blueprint", "role": "Sponsor", "code": "A"},
+        {"activity": "Sign blueprint", "role": "Product", "code": "R"},
+        {"activity": "Sign blueprint", "role": "Data", "code": "C"},
+        {"activity": "Release pilot", "role": "Sponsor", "code": "A"},
+        {"activity": "Release pilot", "role": "Product", "code": "R"},
+        {"activity": "Release pilot", "role": "Change", "code": "C"},
+        {"activity": "Validate benefits", "role": "Sponsor", "code": "A"},
+        {"activity": "Validate benefits", "role": "PMO", "code": "R"},
+        {"activity": "Validate benefits", "role": "Data", "code": "C"},
+        {"activity": "Approve scale", "role": "Sponsor", "code": "A"},
+        {"activity": "Approve scale", "role": "PMO", "code": "R"},
+        {"activity": "Approve scale", "role": "Product", "code": "C"},
+        {"activity": "Approve scale", "role": "Change", "code": "I"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2983 @@
+{
+  "schema_version": "1.0",
+  "pptx": "/Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/builds/final/deck.pptx",
+  "pptx_sha256": "sha256:1d0461af7cb162c065ec9535da42663e266d239d4ca99c54103b78069ba6a5d9",
+  "slide_count": 9,
+  "status": "passed",
+  "metrics": {
+    "native_text_character_count": 1968,
+    "expected_text_character_count": 839,
+    "native_text_ratio": 1.0,
+    "native_table_count": 1,
+    "native_chart_count": 1,
+    "native_connector_count": 6,
+    "rasterized_area_ratio": 0.0,
+    "whole_slide_raster_count": 0,
+    "average_object_count": 10.5556
+  },
+  "slides": [
+    {
+      "slide_index": 1,
+      "slide_id": "S01",
+      "objects": [
+        {
+          "object_id": "ppt-object-1-1",
+          "slide_id": "S01",
+          "shape_id": 2,
+          "shape_type": "shape",
+          "name": "Decoration:cover:accent",
+          "x_in": 0.55,
+          "y_in": 1.45,
+          "w_in": 0.12,
+          "h_in": 3.75,
+          "area_ratio": 0.0045,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#2B2621"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-1-2",
+          "slide_id": "S01",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.97,
+          "y_in": 2.0,
+          "w_in": 10.8,
+          "h_in": 1.65,
+          "area_ratio": 0.178204,
+          "text": "One IR, two real builders",
+          "font_sizes_pt": [
+            34.1
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-1-3",
+          "slide_id": "S01",
+          "shape_id": 4,
+          "shape_type": "text",
+          "name": "TextBox 3",
+          "x_in": 0.97,
+          "y_in": 4.0,
+          "w_in": 9.8,
+          "h_in": 0.75,
+          "area_ratio": 0.073502,
+          "text": "PPTSmith v2 shared builder acceptance deck.",
+          "font_sizes_pt": [
+            14.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-1-4",
+          "slide_id": "S01",
+          "shape_id": 5,
+          "shape_type": "shape",
+          "name": "Decoration:cover:rule",
+          "x_in": 0.97,
+          "y_in": 5.25,
+          "w_in": 4.0,
+          "h_in": 0.04,
+          "area_ratio": 0.0016,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 68,
+        "expected_text_character_count": 68,
+        "native_text_ratio": 1.0,
+        "text_box_count": 2,
+        "average_characters_per_text_box": 34.0,
+        "small_text_box_count": 0,
+        "font_family_count": 1,
+        "font_size_count": 2,
+        "object_count": 4,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 2.9412,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 2,
+      "slide_id": "S02",
+      "objects": [
+        {
+          "object_id": "ppt-object-2-1",
+          "slide_id": "S02",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "产品工作台 UI 总览",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-2",
+          "slide_id": "S02",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "真实应用截图缺失时，以可编辑占位框保留替换边界。\nCanvas 是核心工作区；真实应用截图待补。",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-3",
+          "slide_id": "S02",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-4",
+          "slide_id": "S02",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-5",
+          "slide_id": "S02",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "02",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-6",
+          "slide_id": "S02",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Label:product_ui_overview:derived",
+          "x_in": 0.8,
+          "y_in": 1.45,
+          "w_in": 1.45,
+          "h_in": 0.22,
+          "area_ratio": 0.00319,
+          "text": "PRD 派生示意",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-7",
+          "slide_id": "S02",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Source:product_ui_overview:0",
+          "x_in": 2.35,
+          "y_in": 1.45,
+          "w_in": 3.3833,
+          "h_in": 0.28,
+          "area_ratio": 0.009473,
+          "text": "来源：product-workbench-prd#5",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-8",
+          "slide_id": "S02",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Source:product_ui_overview:1",
+          "x_in": 5.7333,
+          "y_in": 1.45,
+          "w_in": 3.3833,
+          "h_in": 0.28,
+          "area_ratio": 0.009473,
+          "text": "来源：product-workbench-prd#5",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-9",
+          "slide_id": "S02",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Source:product_ui_overview:2",
+          "x_in": 9.1167,
+          "y_in": 1.45,
+          "w_in": 3.3833,
+          "h_in": 0.28,
+          "area_ratio": 0.009473,
+          "text": "来源：product-workbench-prd#3.1",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-10",
+          "slide_id": "S02",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Label:product_ui_overview:workspace_shell",
+          "x_in": 0.92,
+          "y_in": 1.77,
+          "w_in": 4.5,
+          "h_in": 0.22,
+          "area_ratio": 0.0099,
+          "text": "产品工作台 · 可编辑界面框架（非真实截图）",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-11",
+          "slide_id": "S02",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:topbar",
+          "x_in": 0.92,
+          "y_in": 1.87,
+          "w_in": 11.46,
+          "h_in": 0.42,
+          "area_ratio": 0.048133,
+          "text": "TopBar  ·  文件  编辑  视图  插入  帮助",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-12",
+          "slide_id": "S02",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Label:product_ui_overview:canvas_area",
+          "x_in": 1.02,
+          "y_in": 2.43,
+          "w_in": 2.6,
+          "h_in": 0.24,
+          "area_ratio": 0.00624,
+          "text": "Canvas  ·  可编辑工作区",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-13",
+          "slide_id": "S02",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:canvas_node:article",
+          "x_in": 1.12,
+          "y_in": 3.04,
+          "w_in": 1.55,
+          "h_in": 0.55,
+          "area_ratio": 0.008525,
+          "text": "文章节点",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-14",
+          "slide_id": "S02",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Annotation:product_ui_overview:canvas_label:article",
+          "x_in": 1.12,
+          "y_in": 3.65,
+          "w_in": 1.55,
+          "h_in": 0.22,
+          "area_ratio": 0.00341,
+          "text": "§5 内容",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-15",
+          "slide_id": "S02",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:canvas_node:ai-suggest",
+          "x_in": 4.6635,
+          "y_in": 3.04,
+          "w_in": 1.55,
+          "h_in": 0.55,
+          "area_ratio": 0.008525,
+          "text": "AI 建议",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-16",
+          "slide_id": "S02",
+          "shape_id": 17,
+          "shape_type": "shape",
+          "name": "Connector:product_ui_overview:canvas_edge:article_to_ai-suggest",
+          "x_in": 2.67,
+          "y_in": 3.309,
+          "w_in": 1.9935,
+          "h_in": 0.012,
+          "area_ratio": 0.000239,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#C65D3B"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-17",
+          "slide_id": "S02",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Annotation:product_ui_overview:canvas_label:ai-suggest",
+          "x_in": 4.6635,
+          "y_in": 3.65,
+          "w_in": 1.55,
+          "h_in": 0.22,
+          "area_ratio": 0.00341,
+          "text": "§8.2 触发",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-18",
+          "slide_id": "S02",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:canvas_node:export",
+          "x_in": 8.207,
+          "y_in": 3.04,
+          "w_in": 1.55,
+          "h_in": 0.55,
+          "area_ratio": 0.008525,
+          "text": "导出选区",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-19",
+          "slide_id": "S02",
+          "shape_id": 20,
+          "shape_type": "shape",
+          "name": "Connector:product_ui_overview:canvas_edge:ai-suggest_to_export",
+          "x_in": 6.2135,
+          "y_in": 3.309,
+          "w_in": 1.9935,
+          "h_in": 0.012,
+          "area_ratio": 0.000239,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#C65D3B"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-20",
+          "slide_id": "S02",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Annotation:product_ui_overview:canvas_label:export",
+          "x_in": 8.207,
+          "y_in": 3.65,
+          "w_in": 1.55,
+          "h_in": 0.22,
+          "area_ratio": 0.00341,
+          "text": "§11 导出",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-21",
+          "slide_id": "S02",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Placeholder:product_ui_overview:application_screenshot",
+          "x_in": 10.057,
+          "y_in": 2.39,
+          "w_in": 2.223,
+          "h_in": 2.392,
+          "area_ratio": 0.053175,
+          "text": "待替换：应用截图\n16:10 占位\n缺失",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-22",
+          "slide_id": "S02",
+          "shape_id": 23,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:inspector",
+          "x_in": 10.057,
+          "y_in": 4.862,
+          "w_in": 2.223,
+          "h_in": 1.208,
+          "area_ratio": 0.026855,
+          "text": "Inspector\n属性  ·  样式  ·  布局",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-23",
+          "slide_id": "S02",
+          "shape_id": 24,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:dock",
+          "x_in": 0.92,
+          "y_in": 6.15,
+          "w_in": 11.36,
+          "h_in": 0.38,
+          "area_ratio": 0.043169,
+          "text": "Dock  ·  资源库 | 模板 | 配色 | 预览 | 发布",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#E9DFD0"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-2-24",
+          "slide_id": "S02",
+          "shape_id": 25,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:space:ui_space-01",
+          "x_in": 1.04,
+          "y_in": 5.79,
+          "w_in": 1.4,
+          "h_in": 0.22,
+          "area_ratio": 0.00308,
+          "text": "Canvas",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-25",
+          "slide_id": "S02",
+          "shape_id": 26,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:space:ui_space-02",
+          "x_in": 1.04,
+          "y_in": 5.57,
+          "w_in": 1.4,
+          "h_in": 0.22,
+          "area_ratio": 0.00308,
+          "text": "Inspector",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-2-26",
+          "slide_id": "S02",
+          "shape_id": 27,
+          "shape_type": "text",
+          "name": "Component:product_ui_overview:space:ui_space-03",
+          "x_in": 1.04,
+          "y_in": 5.35,
+          "w_in": 1.4,
+          "h_in": 0.22,
+          "area_ratio": 0.00308,
+          "text": "Dock",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 387,
+        "expected_text_character_count": 34,
+        "native_text_ratio": 1.0,
+        "text_box_count": 23,
+        "average_characters_per_text_box": 16.8261,
+        "small_text_box_count": 11,
+        "font_family_count": 1,
+        "font_size_count": 4,
+        "object_count": 26,
+        "tiny_object_count": 3,
+        "text_boxes_per_100_characters": 5.9432,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 3,
+      "slide_id": "S03",
+      "objects": [
+        {
+          "object_id": "ppt-object-3-1",
+          "slide_id": "S03",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "工作台交互路径",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-2",
+          "slide_id": "S03",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "PRD 已明示的交互证据完整呈现。\n从节点选区到 AI 反馈、结果采纳及异常处理的完整路径。",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-3",
+          "slide_id": "S03",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-4",
+          "slide_id": "S03",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-5",
+          "slide_id": "S03",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "03",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-6",
+          "slide_id": "S03",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Label:interaction_storyboard:derived",
+          "x_in": 0.8,
+          "y_in": 1.45,
+          "w_in": 1.45,
+          "h_in": 0.22,
+          "area_ratio": 0.00319,
+          "text": "PRD 派生示意",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-7",
+          "slide_id": "S03",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Source:interaction_storyboard:0",
+          "x_in": 2.35,
+          "y_in": 1.45,
+          "w_in": 2.15,
+          "h_in": 0.28,
+          "area_ratio": 0.00602,
+          "text": "来源：product-workbench-prd#8.2",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-8",
+          "slide_id": "S03",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Source:interaction_storyboard:1",
+          "x_in": 4.5,
+          "y_in": 1.45,
+          "w_in": 2.15,
+          "h_in": 0.28,
+          "area_ratio": 0.00602,
+          "text": "来源：product-workbench-prd#8.3",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-9",
+          "slide_id": "S03",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Source:interaction_storyboard:2",
+          "x_in": 6.65,
+          "y_in": 1.45,
+          "w_in": 2.15,
+          "h_in": 0.28,
+          "area_ratio": 0.00602,
+          "text": "来源：product-workbench-prd#8.4",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-10",
+          "slide_id": "S03",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Source:interaction_storyboard:3",
+          "x_in": 8.8,
+          "y_in": 1.45,
+          "w_in": 2.15,
+          "h_in": 0.28,
+          "area_ratio": 0.00602,
+          "text": "来源：product-workbench-prd#8.5",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-11",
+          "slide_id": "S03",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Source:interaction_storyboard:4",
+          "x_in": 10.95,
+          "y_in": 1.45,
+          "w_in": 2.15,
+          "h_in": 0.28,
+          "area_ratio": 0.00602,
+          "text": "来源：product-workbench-prd#11",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-12",
+          "slide_id": "S03",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Component:interaction_storyboard:step:interaction-01",
+          "x_in": 1.25,
+          "y_in": 3.625,
+          "w_in": 2.0,
+          "h_in": 1.15,
+          "area_ratio": 0.023001,
+          "text": "action\nselect",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-13",
+          "slide_id": "S03",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "State:interaction_storyboard:interaction-01:entry_trigger",
+          "x_in": 1.35,
+          "y_in": 4.205,
+          "w_in": 1.8,
+          "h_in": 0.38,
+          "area_ratio": 0.00684,
+          "text": "选择节点 · 触发入口",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-14",
+          "slide_id": "S03",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Component:interaction_storyboard:step:interaction-02",
+          "x_in": 3.45,
+          "y_in": 3.625,
+          "w_in": 2.0,
+          "h_in": 1.15,
+          "area_ratio": 0.023001,
+          "text": "action\nstreaming",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-15",
+          "slide_id": "S03",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "State:interaction_storyboard:interaction-02:entry_trigger",
+          "x_in": 3.55,
+          "y_in": 4.205,
+          "w_in": 1.8,
+          "h_in": 0.38,
+          "area_ratio": 0.00684,
+          "text": "选择节点 · 触发入口",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-16",
+          "slide_id": "S03",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Component:interaction_storyboard:step:interaction-03",
+          "x_in": 5.65,
+          "y_in": 3.625,
+          "w_in": 2.0,
+          "h_in": 1.15,
+          "area_ratio": 0.023001,
+          "text": "action\ndiff",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-17",
+          "slide_id": "S03",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "State:interaction_storyboard:interaction-03:entry_trigger",
+          "x_in": 5.75,
+          "y_in": 4.205,
+          "w_in": 1.8,
+          "h_in": 0.38,
+          "area_ratio": 0.00684,
+          "text": "选择节点 · 触发入口",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-18",
+          "slide_id": "S03",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Component:interaction_storyboard:step:interaction-04",
+          "x_in": 7.85,
+          "y_in": 3.625,
+          "w_in": 2.0,
+          "h_in": 1.15,
+          "area_ratio": 0.023001,
+          "text": "action\nadopt",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-19",
+          "slide_id": "S03",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "State:interaction_storyboard:interaction-04:entry_trigger",
+          "x_in": 7.95,
+          "y_in": 4.205,
+          "w_in": 1.8,
+          "h_in": 0.38,
+          "area_ratio": 0.00684,
+          "text": "选择节点 · 触发入口",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-20",
+          "slide_id": "S03",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Component:interaction_storyboard:step:interaction-05",
+          "x_in": 10.05,
+          "y_in": 3.625,
+          "w_in": 2.0,
+          "h_in": 1.15,
+          "area_ratio": 0.023001,
+          "text": "action\napi_error",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-21",
+          "slide_id": "S03",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "State:interaction_storyboard:interaction-05:entry_trigger",
+          "x_in": 10.15,
+          "y_in": 4.205,
+          "w_in": 1.8,
+          "h_in": 0.38,
+          "area_ratio": 0.00684,
+          "text": "选择节点 · 触发入口",
+          "font_sizes_pt": [
+            10.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [
+            "#FBF8F1"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-3-22",
+          "slide_id": "S03",
+          "shape_id": 23,
+          "shape_type": "connector",
+          "name": "Connector:interaction_storyboard:transition:0",
+          "x_in": 3.25,
+          "y_in": 4.2,
+          "w_in": 0.2,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-23",
+          "slide_id": "S03",
+          "shape_id": 24,
+          "shape_type": "connector",
+          "name": "Connector:interaction_storyboard:transition:1",
+          "x_in": 5.45,
+          "y_in": 4.2,
+          "w_in": 0.2,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-24",
+          "slide_id": "S03",
+          "shape_id": 25,
+          "shape_type": "connector",
+          "name": "Connector:interaction_storyboard:transition:2",
+          "x_in": 7.65,
+          "y_in": 4.2,
+          "w_in": 0.2,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-3-25",
+          "slide_id": "S03",
+          "shape_id": 26,
+          "shape_type": "connector",
+          "name": "Connector:interaction_storyboard:transition:3",
+          "x_in": 9.85,
+          "y_in": 4.2,
+          "w_in": 0.2,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 367,
+        "expected_text_character_count": 35,
+        "native_text_ratio": 1.0,
+        "text_box_count": 20,
+        "average_characters_per_text_box": 18.35,
+        "small_text_box_count": 3,
+        "font_family_count": 1,
+        "font_size_count": 4,
+        "object_count": 25,
+        "tiny_object_count": 5,
+        "text_boxes_per_100_characters": 5.4496,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 4
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0001",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S03",
+          "object_id": "ppt-object-3-7",
+          "ppt_shape_id": 8,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2401
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0002",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S03",
+          "object_id": "ppt-object-3-8",
+          "ppt_shape_id": 9,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2401
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0003",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S03",
+          "object_id": "ppt-object-3-9",
+          "ppt_shape_id": 10,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2401
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0004",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S03",
+          "object_id": "ppt-object-3-10",
+          "ppt_shape_id": 11,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2401
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    },
+    {
+      "slide_index": 4,
+      "slide_id": "S04",
+      "objects": [
+        {
+          "object_id": "ppt-object-4-1",
+          "slide_id": "S04",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "Native tables remain editable",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-4-2",
+          "slide_id": "S04",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "The table is a native-required acceptance object.\nAcceptance evidence is explicit and inspectable.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-4-3",
+          "slide_id": "S04",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-4-4",
+          "slide_id": "S04",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-4-5",
+          "slide_id": "S04",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "04",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-4-6",
+          "slide_id": "S04",
+          "shape_id": 7,
+          "shape_type": "table",
+          "name": "Component:table:acceptance-table",
+          "x_in": 0.55,
+          "y_in": 1.85,
+          "w_in": 11.7,
+          "h_in": 4.65,
+          "area_ratio": 0.544064,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 171,
+        "expected_text_character_count": 77,
+        "native_text_ratio": 1.0,
+        "text_box_count": 4,
+        "average_characters_per_text_box": 42.75,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 3,
+        "object_count": 6,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 2.3392,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 1,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 5,
+      "slide_id": "S05",
+      "objects": [
+        {
+          "object_id": "ppt-object-5-1",
+          "slide_id": "S05",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "Builder coverage is measurable",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-5-2",
+          "slide_id": "S05",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "A native chart exposes route capability differences.\nAcceptance evidence is explicit and inspectable.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-5-3",
+          "slide_id": "S05",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-5-4",
+          "slide_id": "S05",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-5-5",
+          "slide_id": "S05",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "05",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-5-6",
+          "slide_id": "S05",
+          "shape_id": 7,
+          "shape_type": "chart",
+          "name": "Chart 6",
+          "x_in": 0.55,
+          "y_in": 1.85,
+          "w_in": 11.7,
+          "h_in": 4.65,
+          "area_ratio": 0.544064,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 175,
+        "expected_text_character_count": 78,
+        "native_text_ratio": 1.0,
+        "text_box_count": 4,
+        "average_characters_per_text_box": 43.75,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 3,
+        "object_count": 6,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 2.2857,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 1,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 6,
+      "slide_id": "S06",
+      "objects": [
+        {
+          "object_id": "ppt-object-6-1",
+          "slide_id": "S06",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "A simple process closes the evidence loop",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-6-2",
+          "slide_id": "S06",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "Plan, build, and inspect are all required.\nAcceptance evidence is explicit and inspectable.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-6-3",
+          "slide_id": "S06",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-6-4",
+          "slide_id": "S06",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-6-5",
+          "slide_id": "S06",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "06",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-6-6",
+          "slide_id": "S06",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Component:process:acceptance-process:node:01",
+          "x_in": 0.55,
+          "y_in": 3.075,
+          "w_in": 3.7133,
+          "h_in": 2.2,
+          "area_ratio": 0.081695,
+          "text": "Plan",
+          "font_sizes_pt": [
+            18.2
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-6-7",
+          "slide_id": "S06",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Component:process:acceptance-process:node:02",
+          "x_in": 4.5433,
+          "y_in": 3.075,
+          "w_in": 3.7133,
+          "h_in": 2.2,
+          "area_ratio": 0.081695,
+          "text": "Build",
+          "font_sizes_pt": [
+            18.2
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-6-8",
+          "slide_id": "S06",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Component:process:acceptance-process:node:03",
+          "x_in": 8.5367,
+          "y_in": 3.075,
+          "w_in": 3.7133,
+          "h_in": 2.2,
+          "area_ratio": 0.081695,
+          "text": "Inspect",
+          "font_sizes_pt": [
+            18.2
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-6-9",
+          "slide_id": "S06",
+          "shape_id": 10,
+          "shape_type": "connector",
+          "name": "Connector:straight",
+          "x_in": 4.2633,
+          "y_in": 4.175,
+          "w_in": 0.28,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-6-10",
+          "slide_id": "S06",
+          "shape_id": 11,
+          "shape_type": "connector",
+          "name": "Connector:straight",
+          "x_in": 8.2567,
+          "y_in": 4.175,
+          "w_in": 0.28,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 192,
+        "expected_text_character_count": 89,
+        "native_text_ratio": 1.0,
+        "text_box_count": 7,
+        "average_characters_per_text_box": 27.4286,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 4,
+        "object_count": 10,
+        "tiny_object_count": 3,
+        "text_boxes_per_100_characters": 3.6458,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 2
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 7,
+      "slide_id": "S07",
+      "objects": [
+        {
+          "object_id": "ppt-object-7-1",
+          "slide_id": "S07",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "Comparability does not require identical rendering",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-7-2",
+          "slide_id": "S07",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "Comparable evidence is stronger than pixel identity.\nAcceptance evidence is explicit and inspectable.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-7-3",
+          "slide_id": "S07",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-7-4",
+          "slide_id": "S07",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-7-5",
+          "slide_id": "S07",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "07",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-7-6",
+          "slide_id": "S07",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Component:card:comparison-semantics",
+          "x_in": 0.55,
+          "y_in": 1.85,
+          "w_in": 3.6,
+          "h_in": 1.35,
+          "area_ratio": 0.048601,
+          "text": "Equal semantics: Same IR and slide count",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-7-7",
+          "slide_id": "S07",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Component:card:comparison-truth",
+          "x_in": 4.31,
+          "y_in": 1.85,
+          "w_in": 3.6,
+          "h_in": 1.35,
+          "area_ratio": 0.048601,
+          "text": "Truthful evidence: Actual routes and fallbacks",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 281,
+        "expected_text_character_count": 184,
+        "native_text_ratio": 1.0,
+        "text_box_count": 6,
+        "average_characters_per_text_box": 46.8333,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 3,
+        "object_count": 7,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 2.1352,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 8,
+      "slide_id": "S08",
+      "objects": [
+        {
+          "object_id": "ppt-object-8-1",
+          "slide_id": "S08",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "Implementation is a repeatable three-step gate",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-8-2",
+          "slide_id": "S08",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "Acceptance evidence is explicit and inspectable.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-8-3",
+          "slide_id": "S08",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-8-4",
+          "slide_id": "S08",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：acceptance-source · acceptance-contract",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-8-5",
+          "slide_id": "S08",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "08",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-8-6",
+          "slide_id": "S08",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Component:card:implementation-plan",
+          "x_in": 0.55,
+          "y_in": 1.85,
+          "w_in": 11.7,
+          "h_in": 4.65,
+          "area_ratio": 0.544064,
+          "text": "Run the gate: Validate contracts, build both, inspect both",
+          "font_sizes_pt": [
+            20.8
+          ],
+          "font_colors": [
+            "#4A423A"
+          ],
+          "fill_colors": [
+            "#F2EADF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "ROUNDED_RECTANGLE"
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 196,
+        "expected_text_character_count": 152,
+        "native_text_ratio": 1.0,
+        "text_box_count": 5,
+        "average_characters_per_text_box": 39.2,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 4,
+        "object_count": 6,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 2.551,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 9,
+      "slide_id": "S09",
+      "objects": [
+        {
+          "object_id": "ppt-object-9-1",
+          "slide_id": "S09",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "TextBox 1",
+          "x_in": 0.55,
+          "y_in": 0.38,
+          "w_in": 12.2,
+          "h_in": 0.45,
+          "area_ratio": 0.054901,
+          "text": "Ship only what the packages prove",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "font_colors": [
+            "#2B2621"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-9-2",
+          "slide_id": "S09",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "TextBox 2",
+          "x_in": 0.55,
+          "y_in": 1.05,
+          "w_in": 11.7,
+          "h_in": 0.5,
+          "area_ratio": 0.058501,
+          "text": "Both builders must create nine-slide PPTX packages with complete native-required objects.",
+          "font_sizes_pt": [
+            13.0
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-9-3",
+          "slide_id": "S09",
+          "shape_id": 4,
+          "shape_type": "shape",
+          "name": "Decoration:footer:divider",
+          "x_in": 0.55,
+          "y_in": 6.91,
+          "w_in": 12.2,
+          "h_in": 0.012,
+          "area_ratio": 0.001464,
+          "text": "",
+          "font_sizes_pt": [],
+          "font_colors": [],
+          "fill_colors": [
+            "#E4DDCF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": "RECTANGLE"
+        },
+        {
+          "object_id": "ppt-object-9-4",
+          "slide_id": "S09",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "source_note",
+          "x_in": 0.55,
+          "y_in": 6.965,
+          "w_in": 10.8,
+          "h_in": 0.24,
+          "area_ratio": 0.025921,
+          "text": "来源：内部综合",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        },
+        {
+          "object_id": "ppt-object-9-5",
+          "slide_id": "S09",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "footer_page",
+          "x_in": 11.9,
+          "y_in": 6.965,
+          "w_in": 0.85,
+          "h_in": 0.24,
+          "area_ratio": 0.00204,
+          "text": "09",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "font_colors": [
+            "#857C70"
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Aptos"
+          ],
+          "image_ext": null,
+          "image_px": null,
+          "geometry_type": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 131,
+        "expected_text_character_count": 122,
+        "native_text_ratio": 1.0,
+        "text_box_count": 4,
+        "average_characters_per_text_box": 32.75,
+        "small_text_box_count": 2,
+        "font_family_count": 1,
+        "font_size_count": 3,
+        "object_count": 5,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 3.0534,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 0
+      },
+      "issues": []
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "QA-0001",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S03",
+      "object_id": "ppt-object-3-7",
+      "ppt_shape_id": 8,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2401
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0002",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S03",
+      "object_id": "ppt-object-3-8",
+      "ppt_shape_id": 9,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2401
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0003",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S03",
+      "object_id": "ppt-object-3-9",
+      "ppt_shape_id": 10,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2401
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0004",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S03",
+      "object_id": "ppt-object-3-10",
+      "ppt_shape_id": 11,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2401
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    }
+  ]
+}

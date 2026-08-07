@@ -1,0 +1,29 @@
+{
+  "id": "schedule-cpm",
+  "project_start": "2026-07-27",
+  "required_finish": "2026-08-05",
+  "near_critical_threshold": 2,
+  "data_date": "2026-07-27",
+  "calendar": {
+    "working_weekdays": [0, 1, 2, 3, 4],
+    "holidays": ["2026-07-31"],
+    "unit": "working_day"
+  },
+  "tasks": [
+    {"id": "A", "duration": 2},
+    {"id": "B", "duration": 3},
+    {"id": "C", "duration": 2},
+    {"id": "D", "duration": 1},
+    {"id": "E", "duration": 2},
+    {"id": "F", "duration": 1},
+    {"id": "G", "duration": 1}
+  ],
+  "dependencies": [
+    {"id": "ab", "predecessor": "A", "successor": "B", "type": "FS", "lag": 1},
+    {"id": "ac", "predecessor": "A", "successor": "C", "type": "SS", "lag": 1},
+    {"id": "bd", "predecessor": "B", "successor": "D", "type": "FF", "lag": 1},
+    {"id": "ce", "predecessor": "C", "successor": "E", "type": "SF", "lag": 3},
+    {"id": "df", "predecessor": "D", "successor": "F", "type": "FS", "lag": 0},
+    {"id": "eg", "predecessor": "E", "successor": "G", "type": "FS", "lag": 0}
+  ]
+}

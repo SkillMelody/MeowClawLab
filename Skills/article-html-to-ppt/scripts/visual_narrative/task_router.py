@@ -8,6 +8,7 @@ ROUTES = (
     "technical_architecture",
     "enterprise_proposal",
     "product_business_review",
+    "product_prd",
     "editorial_knowledge",
     "domain_adapter",
 )
@@ -25,6 +26,9 @@ def route_task(analysis: Any, explicit_route: str | None = None) -> dict[str, An
     if analysis_map is None:
         warnings.append("TASK_ROUTE_INVALID_ANALYSIS")
         analysis_map = {}
+
+    if explicit_route is None and analysis_map.get("requested_route") == "product_prd":
+        explicit_route = "product_prd"
 
     evidence = set(_string_list(analysis_map.get("evidence_types")))
     relationships = set(_string_list(analysis_map.get("relationship_types")))
@@ -45,7 +49,7 @@ def route_task(analysis: Any, explicit_route: str | None = None) -> dict[str, An
         scores["domain_adapter"] += 0.45
 
     if explicit_route in scores:
-        scores[explicit_route] += 0.4
+        scores[explicit_route] += 0.75 if explicit_route == "product_prd" else 0.4
 
     selected = max(scores, key=scores.get)
     confidence = scores[selected]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .common import RenderResult, add_box, add_text, blend, content_box, resolve_style
+from .common import RenderResult, add_box, add_text, content_box, resolve_style
 
 
 def render(
@@ -48,7 +48,7 @@ def render(
             w=cell_w,
             h=header_h,
             color=colors["slate_text"],
-            font_size=9.5,
+            font_size=10.5,
             bold=True,
         )
         names.append(name)
@@ -65,14 +65,14 @@ def render(
             w=label_w - 0.08,
             h=cell_h,
             color=colors["ink_navy"],
-            font_size=10,
+            font_size=10.5,
             bold=True,
         )
         names.append(label_name)
         for column_index, value in enumerate(values[row_index]):
             number = float(value)
             ratio = (number - minimum) / spread if spread else 0.5
-            fill = blend(colors["mist_blue"], colors["signal_blue"], 0.18 + ratio * 0.72)
+            fill = colors["signal_blue"] if ratio >= 0.52 else colors["mist_blue"]
             highlighted_cell = (row_index, column_index) in highlighted
             cell_name = f"Component:heat_matrix:cell:{row_index}:{column_index}"
             add_box(
@@ -87,7 +87,7 @@ def render(
                 line_width=2.0 if highlighted_cell else 0.7,
                 text=f"{_format_value(value)}{suffix}",
                 text_color=colors["paper_white"] if ratio >= 0.52 else colors["ink_navy"],
-                font_size=11,
+                font_size=10.5,
                 bold=highlighted_cell,
                 radius=False,
             )
@@ -109,7 +109,7 @@ def render(
             line=colors["hairline_grey"],
             text=label,
             text_color=colors["ink_navy"] if index == 0 else colors["paper_white"],
-            font_size=8,
+            font_size=10.5,
             radius=False,
         )
         names.append(legend_name)

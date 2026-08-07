@@ -1,0 +1,18 @@
+{
+  "criteria": [
+    {"id": "value", "weight": "1", "weight_source": "portfolio-board", "direction": "higher", "anchors": {"worst": "0", "best": "100"}}
+  ],
+  "options": [
+    {"id": "platform", "scores": {"value": "90"}, "cost": "7", "capacity": {"team": "3"}, "must_do": true, "dependencies": ["security"]},
+    {"id": "security", "scores": {"value": "40"}, "cost": "2", "capacity": {"team": "1"}},
+    {"id": "growth", "scores": {"value": "80"}, "cost": "5", "capacity": {"team": "2"}, "exclusions": ["migration"]},
+    {"id": "migration", "scores": {"value": "70"}, "cost": "4", "capacity": {"team": "2"}}
+  ],
+  "budget": "14",
+  "capacity": {"team": "6"},
+  "scenarios": {
+    "base": {},
+    "downside": {"budget": "11", "score_multipliers": {"value": "0.8"}},
+    "relief": {"budget": "18", "capacity": {"team": "8"}}
+  }
+}

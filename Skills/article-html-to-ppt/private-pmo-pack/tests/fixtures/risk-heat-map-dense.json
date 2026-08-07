@@ -1,0 +1,19 @@
+{
+  "type": "risk_heat_map",
+  "title": "Thirteen risks trigger the explicit table fallback",
+  "risks": [
+    {"id": "R1", "label": "Risk 1", "likelihood": 5, "impact": 5, "owner": "Owner 1", "status": "risk", "mitigation": "Mitigation 1"},
+    {"id": "R2", "label": "Risk 2", "likelihood": 5, "impact": 5, "owner": "Owner 2", "status": "risk", "mitigation": "Mitigation 2"},
+    {"id": "R3", "label": "Risk 3", "likelihood": 5, "impact": 5, "owner": "Owner 3", "status": "risk", "mitigation": "Mitigation 3"},
+    {"id": "R4", "label": "Risk 4", "likelihood": 4, "impact": 5, "owner": "Owner 4", "status": "risk", "mitigation": "Mitigation 4"},
+    {"id": "R5", "label": "Risk 5", "likelihood": 4, "impact": 4, "owner": "Owner 5", "status": "watch", "mitigation": "Mitigation 5"},
+    {"id": "R6", "label": "Risk 6", "likelihood": 4, "impact": 4, "owner": "Owner 6", "status": "watch", "mitigation": "Mitigation 6"},
+    {"id": "R7", "label": "Risk 7", "likelihood": 3, "impact": 4, "owner": "Owner 7", "status": "watch", "mitigation": "Mitigation 7"},
+    {"id": "R8", "label": "Risk 8", "likelihood": 3, "impact": 3, "owner": "Owner 8", "status": "watch", "mitigation": "Mitigation 8"},
+    {"id": "R9", "label": "Risk 9", "likelihood": 3, "impact": 3, "owner": "Owner 9", "status": "neutral", "mitigation": "Mitigation 9"},
+    {"id": "R10", "label": "Risk 10", "likelihood": 2, "impact": 3, "owner": "Owner 10", "status": "neutral", "mitigation": "Mitigation 10"},
+    {"id": "R11", "label": "Risk 11", "likelihood": 2, "impact": 2, "owner": "Owner 11", "status": "neutral", "mitigation": "Mitigation 11"},
+    {"id": "R12", "label": "Risk 12", "likelihood": 1, "impact": 2, "owner": "Owner 12", "status": "healthy", "mitigation": "Mitigation 12"},
+    {"id": "R13", "label": "Risk 13", "likelihood": 1, "impact": 1, "owner": "Owner 13", "status": "healthy", "mitigation": "Mitigation 13"}
+  ]
+}

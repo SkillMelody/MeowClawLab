@@ -1,0 +1,547 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-25T22:58:53+08:00",
+  "generated_by": "scripts/audit_bundle.py",
+  "bundle_root": "PPTSmith-PMO-Private-Skill-2.3.0",
+  "mode": "archive",
+  "status": "review",
+  "checks": [
+    {
+      "code": "BUNDLE_EXCLUDED_PATH_PRESENT",
+      "rules": 32,
+      "source": "packaging/bundle-exclude.txt"
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "text_files_scanned": 540
+    },
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "text_files_scanned": 540
+    },
+    {
+      "code": "BUNDLE_SECRET_SHAPED_FILE",
+      "patterns": 10
+    },
+    {
+      "code": "BUNDLE_HIGH_ENTROPY_STRING",
+      "text_files_scanned": 540
+    }
+  ],
+  "inventory": {
+    "file_count": 982,
+    "total_bytes": 20570884,
+    "largest_directories": [
+      {
+        "path": "private-pmo-pack",
+        "bytes": 11385174
+      },
+      {
+        "path": "runtime",
+        "bytes": 7022055
+      },
+      {
+        "path": "tests",
+        "bytes": 1276878
+      },
+      {
+        "path": "scripts",
+        "bytes": 289173
+      },
+      {
+        "path": "references",
+        "bytes": 186216
+      },
+      {
+        "path": "builders",
+        "bytes": 93690
+      },
+      {
+        "path": "ppt_qa",
+        "bytes": 87566
+      },
+      {
+        "path": "schemas",
+        "bytes": 72113
+      },
+      {
+        "path": ".",
+        "bytes": 53460
+      },
+      {
+        "path": "templates",
+        "bytes": 48857
+      }
+    ]
+  },
+  "findings": [
+    {
+      "code": "BUNDLE_EXCLUDED_PATH_PRESENT",
+      "severity": "warning",
+      "path": "runtime/pptxgenjs/node_modules",
+      "evidence": {
+        "rule": "runtime/pptxgenjs/node_modules/",
+        "matched_paths": 413,
+        "samples": [
+          "runtime/pptxgenjs/node_modules",
+          "runtime/pptxgenjs/node_modules/.bin",
+          "runtime/pptxgenjs/node_modules/.bin/image-size"
+        ]
+      },
+      "message": "Path is excluded by packaging/bundle-exclude.txt rule 'runtime/pptxgenjs/node_modules/' but is present in the bundle."
+    }
+  ],
+  "suppressed": [
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "severity": "error",
+      "path": "packaging/audit-allowlist.json",
+      "evidence": {
+        "line": 8,
+        "key": "api_key"
+      },
+      "message": "Line looks like a credential assignment with a plausible value."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "packaging/audit-allowlist.json",
+      "evidence": {
+        "line": 13,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 111,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 121,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 131,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 141,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 151,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 161,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 171,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 181,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 191,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 201,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 211,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 221,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 231,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 241,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 251,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 261,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 271,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 281,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 291,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 301,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 311,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 321,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 331,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 351,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 371,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 391,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 411,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 422,
+        "key": "api_key"
+      },
+      "message": "Line looks like a credential assignment with a plausible value."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.json",
+      "evidence": {
+        "line": 429,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.md",
+      "evidence": {
+        "line": 68,
+        "key": "api_key"
+      },
+      "message": "Line looks like a credential assignment with a plausible value."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "references/BUNDLE-AUDIT.md",
+      "evidence": {
+        "line": 69,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "severity": "error",
+      "path": "scripts/audit_bundle.py",
+      "evidence": {
+        "line": 232,
+        "key": "secret"
+      },
+      "message": "Line looks like a credential assignment with a plausible value."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "scripts/normalize_bundle_paths.py",
+      "evidence": {
+        "line": 43,
+        "sample": "/Users/alice/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    },
+    {
+      "code": "BUNDLE_SECRET_LEAK",
+      "severity": "error",
+      "path": "tests/integration/test_package_delivery.py",
+      "evidence": {
+        "line": 164,
+        "key": "api_key"
+      },
+      "message": "Line looks like a credential assignment with a plausible value."
+    },
+    {
+      "code": "BUNDLE_ABSOLUTE_PATH_LEAK",
+      "severity": "error",
+      "path": "tests/unit/test_rubric_scoring.py",
+      "evidence": {
+        "line": 257,
+        "sample": "/Users/reviewer/"
+      },
+      "message": "Text file records a local absolute home or workspace path. Run scripts/normalize_bundle_paths.py."
+    }
+  ],
+  "allowlist": [
+    {
+      "path": "tests/integration/test_package_delivery.py",
+      "codes": [
+        "BUNDLE_SECRET_LEAK"
+      ],
+      "reason": "Contains the literal fake value api_key=abcdefghijklmnop. The test deliberately creates a fake leak and asserts that the PPTSmith delivery packager rejects it. Removing it would remove the regression guard for DELIVERY_SECRET_LEAK."
+    },
+    {
+      "path": "tests/unit/test_rubric_scoring.py",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK"
+      ],
+      "reason": "Contains the literal string /Users/reviewer/private/slide.png as negative-test input; the test asserts the scorer strips it from its output."
+    },
+    {
+      "path": "scripts/package_delivery.py",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK"
+      ],
+      "reason": "Source of the DELIVERY_PRIVATE_PATH_LEAK detector; the absolute-path prefixes appear inside its regex, not as recorded paths."
+    },
+    {
+      "path": "scripts/score_deck.py",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK"
+      ],
+      "reason": "Source of the absolute-path detector used by rubric evidence sanitisation; prefixes appear inside its regex."
+    },
+    {
+      "path": "scripts/normalize_bundle_paths.py",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK"
+      ],
+      "reason": "The normalizer itself; workspace prefixes appear inside its rewrite patterns."
+    },
+    {
+      "path": "scripts/audit_bundle.py",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK",
+        "BUNDLE_SECRET_LEAK",
+        "BUNDLE_SECRET_SHAPED_FILE"
+      ],
+      "reason": "The auditor itself; all detector vocabulary appears inside its patterns."
+    },
+    {
+      "path": "packaging/audit-allowlist.json",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK",
+        "BUNDLE_SECRET_LEAK"
+      ],
+      "reason": "This allowlist quotes the suppressed values in its reason fields."
+    },
+    {
+      "path": "packaging/bundle-exclude.txt",
+      "codes": [
+        "BUNDLE_SECRET_SHAPED_FILE"
+      ],
+      "reason": "Lists secret-shaped filename patterns as exclusion rules."
+    },
+    {
+      "path": "references/BUNDLE-AUDIT.md",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK",
+        "BUNDLE_SECRET_LEAK",
+        "BUNDLE_SECRET_SHAPED_FILE",
+        "BUNDLE_HIGH_ENTROPY_STRING"
+      ],
+      "reason": "Generated audit report; it quotes its own findings and allowlist reasons."
+    },
+    {
+      "path": "references/BUNDLE-AUDIT.json",
+      "codes": [
+        "BUNDLE_ABSOLUTE_PATH_LEAK",
+        "BUNDLE_SECRET_LEAK",
+        "BUNDLE_SECRET_SHAPED_FILE",
+        "BUNDLE_HIGH_ENTROPY_STRING"
+      ],
+      "reason": "Generated audit report in machine-readable form. It records the evidence sample of every finding it suppresses, so re-scanning it rediscovers those samples. Suppressed here to keep the audit idempotent across consecutive runs."
+    }
+  ]
+}

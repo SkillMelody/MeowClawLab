@@ -33,6 +33,10 @@ _RENDERER_BINDINGS = {
         "handler": "builders.python_pptx_adapter._add_table",
         "schema_versions": {"1.0"},
     },
+    ("python_pptx", "causal_chain"): {
+        "handler": "scripts.visual_narrative.renderers.causal_chain.render",
+        "schema_versions": {"1.0"},
+    },
     ("python_pptx", "heat_matrix"): {
         "handler": "scripts.visual_narrative.renderers.heat_matrix.render",
         "schema_versions": {"1.0"},
@@ -47,6 +51,14 @@ _RENDERER_BINDINGS = {
     },
     ("python_pptx", "phase_roadmap"): {
         "handler": "scripts.visual_narrative.renderers.phase_roadmap.render",
+        "schema_versions": {"1.0"},
+    },
+    ("python_pptx", "product_ui_overview"): {
+        "handler": "scripts.visual_narrative.renderers.product_ui_overview.render",
+        "schema_versions": {"1.0"},
+    },
+    ("python_pptx", "interaction_storyboard"): {
+        "handler": "scripts.visual_narrative.renderers.interaction_storyboard.render",
         "schema_versions": {"1.0"},
     },
     **{
@@ -189,6 +201,13 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
             "nodes": [{"label": "Plan"}, {"label": "Build"}, {"label": "Verify"}],
         },
         "native_table": {"rows": [["smoke"]]},
+        "causal_chain": {
+            "nodes": [
+                {"label": "Cause", "role": "cause"},
+                {"label": "Mechanism", "role": "mechanism"},
+                {"label": "Effect", "role": "effect"},
+            ],
+        },
         "heat_matrix": {
             "rows": ["A", "B"],
             "columns": ["X", "Y"],
@@ -214,6 +233,14 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
             ],
             "milestones": [{"label": "Gate", "phase": 0}],
         },
+        "product_ui_overview": {
+            "spaces": [{"id": "canvas", "label": "Canvas"}],
+            "relationships": [],
+        },
+        "interaction_storyboard": {
+            "steps": [{"id": "select", "kind": "interaction", "label": "Select"}],
+            "transitions": [],
+        },
     }
     return {
         "id": f"smoke-{component_type}",
@@ -224,10 +251,13 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
 
 def _minimum_smoke_shape_count(component_type: str) -> int:
     return {
+        "causal_chain": 5,
         "heat_matrix": 10,
         "layered_architecture": 4,
         "drill_down_stair": 3,
         "phase_roadmap": 4,
+        "product_ui_overview": 2,
+        "interaction_storyboard": 2,
     }[component_type]
 
 

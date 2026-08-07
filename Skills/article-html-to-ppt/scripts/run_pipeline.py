@@ -21,9 +21,12 @@ OUTPUT_OWNERSHIP_MARKER = ".pptsmith-output"
 STAGES = [
     "prepare_inputs",
     "validate_inputs",
+    "route_audience",
     "route_task",
+    "design_evidence",
     "plan_visual_narrative",
     "validate_visual_plan",
+    "compile_visual_plan",
     "deck_rhythm",
     "resolve_profile",
     "capability_probe",
@@ -118,6 +121,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--assets", "--asset-manifest", dest="assets", type=Path)
     parser.add_argument("--content-analysis", type=Path)
     parser.add_argument("--storyline", type=Path)
+    parser.add_argument("--source-context-brief", type=Path)
     parser.add_argument("--visual-system", type=Path)
     parser.add_argument("--builder", choices=["auto", "python_pptx", "pptxgenjs"], default="auto")
     parser.add_argument("--profile", choices=["fast", "standard", "premium"], default="standard")
@@ -129,6 +133,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if bool(args.content_analysis) != bool(args.storyline):
         parser.error("--content-analysis and --storyline must be provided together")
+    if args.content_analysis and not args.source_context_brief:
+        parser.error("--source-context-brief is required when visual narrative inputs are provided")
     return args
 
 
@@ -155,6 +161,7 @@ class Pipeline:
             "asset_manifest": str(args.assets.resolve()) if args.assets else None,
             "content_analysis": str(args.content_analysis.resolve()) if args.content_analysis else None,
             "storyline": str(args.storyline.resolve()) if args.storyline else None,
+            "source_context_brief": str(args.source_context_brief.resolve()) if args.source_context_brief else None,
             "visual_system": str(args.visual_system.resolve()) if args.visual_system else None,
             "builder": args.builder,
             "profile": args.profile,
@@ -252,6 +259,8 @@ class Pipeline:
             sources["content_analysis"] = self.args.content_analysis
         if self.args.storyline:
             sources["storyline"] = self.args.storyline
+        if self.args.source_context_brief:
+            sources["source_context_brief"] = self.args.source_context_brief
         if self.args.visual_system:
             sources["visual_system"] = self.args.visual_system
         targets = {
@@ -261,6 +270,7 @@ class Pipeline:
             "asset_manifest": contract_stage / "asset-manifest.json",
             "content_analysis": contract_stage / "content-analysis.json",
             "storyline": contract_stage / "storyline.json",
+            "source_context_brief": contract_stage / "source-context-brief.json",
             "visual_system": contract_stage / "visual-system.json",
         }
         for name, source in sources.items():
@@ -283,6 +293,7 @@ class Pipeline:
             "asset_manifest": self.contracts / "asset-manifest.json",
             "content_analysis": self.contracts / "content-analysis.json",
             "storyline": self.contracts / "storyline.json",
+            "source_context_brief": self.contracts / "source-context-brief.json",
             "visual_system": self.contracts / "visual-system.json",
         }
         analysis = self.work / "analysis"
@@ -310,6 +321,51 @@ class Pipeline:
             ],
         )
 
+    def route_audience(self) -> None:
+        completed = self.run_command(
+            "route_audience",
+            [
+                sys.executable,
+                str(SCRIPTS / "route_audience.py"),
+                "--brief",
+                str(self.contracts / "source-context-brief.json"),
+                "--output",
+                str(self.contracts / "audience-route.json"),
+            ],
+            accepted={0, 2},
+        )
+        decision = load_json(self.contracts / "audience-route.json")
+        if completed.returncode != 0 or decision.get("status") != "ready":
+            codes = decision.get("blocking_codes", [])
+            raise StageFailure("route_audience", ", ".join(str(code) for code in codes) or "AUDIENCE_ROUTE_BLOCKED", completed.returncode or 2)
+
+    def design_evidence(self) -> None:
+        from visual_narrative.design_evidence import consume_design_evidence
+
+        task_route = load_json(self.contracts / "task-route.json")
+        if task_route.get("selected_route") != "product_prd":
+            return
+        output = self.contracts / "design-evidence.json"
+        self.run_command(
+            "design_evidence",
+            [
+                sys.executable,
+                str(SCRIPTS / "extract_design_evidence.py"),
+                "--analysis",
+                str(self.contracts / "content-analysis.json"),
+                "--output",
+                str(output),
+            ],
+        )
+        evidence = load_json(output)
+        ppt_ir_path = self.contracts / "ppt-ir.json"
+        evidence, ppt_ir = consume_design_evidence(evidence, load_json(ppt_ir_path))
+        write_json(output, evidence)
+        write_json(ppt_ir_path, ppt_ir)
+        codes = evidence.get("blocking_codes")
+        if evidence.get("status") == "blocked" and isinstance(codes, list):
+            raise StageFailure("design_evidence", ", ".join(str(code) for code in codes))
+
     def visual_style_id(self) -> str:
         path = self.contracts / "visual-system.json"
         if not path.is_file():
@@ -328,6 +384,8 @@ class Pipeline:
                 str(SCRIPTS / "plan_visual_narrative.py"),
                 "--task-route",
                 str(self.contracts / "task-route.json"),
+                "--audience-route",
+                str(self.contracts / "audience-route.json"),
                 "--storyline",
                 str(self.contracts / "storyline.json"),
                 "--style-id",
@@ -352,6 +410,23 @@ class Pipeline:
             ],
         )
 
+    def compile_visual_plan(self) -> None:
+        self.run_command(
+            "compile_visual_plan",
+            [
+                sys.executable,
+                str(SCRIPTS / "compile_visual_plan.py"),
+                "--ppt-ir",
+                str(self.contracts / "ppt-ir.json"),
+                "--visual-plan",
+                str(self.contracts / "visual-plan.json"),
+                "--output",
+                str(self.contracts / "ppt-ir.compiled.json"),
+            ],
+        )
+        compiled = self.contracts / "ppt-ir.compiled.json"
+        compiled.replace(self.contracts / "ppt-ir.json")
+
     def deck_rhythm(self) -> None:
         from visual_narrative.rhythm import evaluate_deck_rhythm
 
@@ -366,7 +441,17 @@ class Pipeline:
             raise StageFailure("deck_rhythm", ", ".join(codes) or "DECK_RHYTHM_FAILED")
 
     def validate(self, stage: str, *, include_delivery: bool = False, include_build: bool = False) -> None:
-        command = [sys.executable, str(SCRIPTS / "validate_contracts.py"), "--ppt-ir", str(self.contracts / "ppt-ir.json"), "--style", str(self.contracts / "style-contract.json")]
+        command = [sys.executable, str(SCRIPTS / "validate_contracts.py")]
+        # When visual narrative is enabled, skip ppt-ir validation before compile_visual_plan replaces it.
+        # The second validate_inputs after compile_visual_plan will validate the compiled ppt-ir.
+        ppt_ir_ready = (
+            not self.visual_enabled
+            or stage != "validate_inputs"
+            or (self.contracts / "visual-plan.json").exists()
+        )
+        if ppt_ir_ready:
+            command += ["--ppt-ir", str(self.contracts / "ppt-ir.json")]
+        command += ["--style", str(self.contracts / "style-contract.json")]
         if (self.contracts / "asset-manifest.json").exists():
             command += ["--assets", str(self.contracts / "asset-manifest.json")]
         if include_delivery:
@@ -412,12 +497,25 @@ class Pipeline:
             "--builder", self.args.builder,
             "--output", str(self.contracts / "delivery-plan.json"),
             "--strict",
-        ])
+        ], accepted={0, 1})
         plan = load_json(self.contracts / "delivery-plan.json")
         builder = plan.get("builder") if isinstance(plan.get("builder"), dict) else {}
         selected = str(builder.get("selected") or "unknown")
         errors = [str(item) for item in builder.get("errors", [])]
         unsupported = int((plan.get("summary") or {}).get("unsupported_count", 0))
+        # A forced Builder can be selected as the named candidate even when it
+        # is unavailable. Preserve that candidate's capability error instead
+        # of collapsing it to the generic delivery-plan error.
+        if not errors and self.args.builder != "auto":
+            for candidate in builder.get("candidates", []) or []:
+                if (
+                    isinstance(candidate, dict)
+                    and candidate.get("builder") == self.args.builder
+                    and (candidate.get("available") is False or unsupported)
+                ):
+                    errors = [str(item) for item in candidate.get("errors", [])]
+                    if errors:
+                        break
         if errors or selected not in {"python_pptx", "pptxgenjs"} or unsupported:
             codes = errors or (["BUILDER_SELECTION_UNKNOWN"] if selected == "unknown" else ["DELIVERY_PLAN_UNSUPPORTED"])
             raise StageFailure("resolve_delivery", ", ".join(codes))
@@ -429,7 +527,7 @@ class Pipeline:
 
     def build(self) -> None:
         self.build_dir.mkdir(parents=True, exist_ok=True)
-        self.run_command("build", [
+        cmd = [
             sys.executable, str(SCRIPTS / "build_deck.py"),
             "--ppt-ir", str(self.contracts / "ppt-ir.json"),
             "--style", str(self.contracts / "style-contract.json"),
@@ -437,7 +535,11 @@ class Pipeline:
             "--builder", self.approved_builder(),
             "--output-dir", str(self.build_dir),
             "--build-manifest", str(self.contracts / "build-manifest.json"),
-        ])
+        ]
+        visual_plan = self.contracts / "visual-plan.json"
+        if visual_plan.exists():
+            cmd += ["--visual-plan", str(visual_plan)]
+        self.run_command("build", cmd)
 
     def deck_path(self) -> Path:
         manifest = load_json(self.contracts / "build-manifest.json")
@@ -727,9 +829,12 @@ class Pipeline:
             self.stage("prepare_inputs", self.prepare_inputs)
             self.stage("validate_inputs", lambda: self.validate("validate_inputs"))
             if self.visual_enabled:
+                self.stage("route_audience", self.route_audience)
                 self.stage("route_task", self.route_task)
+                self.stage("design_evidence", self.design_evidence)
                 self.stage("plan_visual_narrative", self.plan_visual_narrative)
                 self.stage("validate_visual_plan", self.validate_visual_plan)
+                self.stage("compile_visual_plan", self.compile_visual_plan)
                 self.stage("deck_rhythm", self.deck_rhythm)
             self.stage("resolve_profile", self.resolve_profile)
             self.stage("capability_probe", self.capability_probe)

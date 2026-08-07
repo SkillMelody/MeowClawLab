@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PPTSmith PMO Visual System Comparison</title>
+  <style>
+    :root {
+      --bg: #eef1f5;
+      --ink: #182230;
+      --text: #344054;
+      --muted: #667085;
+      --line: #d0d5dd;
+      --blue: #2f6bff;
+      --navy: #17365d;
+      --green: #2e7d32;
+      --yellow: #f2c94c;
+      --red: #d92d20;
+      --orange: #f2994a;
+      --paper: #ffffff;
+      --soft: #f7f8fa;
+      font-family: Aptos, "SF Pro Display", "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.78), rgba(238,241,245,.92)),
+        radial-gradient(circle at 18% 4%, rgba(47,107,255,.12), transparent 34%),
+        radial-gradient(circle at 78% 0%, rgba(46,125,50,.10), transparent 30%),
+        var(--bg);
+    }
+
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 34px 34px 46px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(102,112,133,.26);
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 930px;
+      font-size: 34px;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    .note {
+      margin: 0;
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin: 22px 0 26px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      background: var(--c);
+      box-shadow: 0 2px 5px rgba(16,24,40,.18);
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .system {
+      min-width: 0;
+      border: 1px solid rgba(208,213,221,.82);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 16px 42px rgba(16,24,40,.10);
+      overflow: hidden;
+    }
+
+    .system.consulting { --accent: #17365d; --accent2: #2f6bff; --surface: #ffffff; --surface2: #f7f8fa; --r: 2px; }
+    .system.glass { --accent: #0f6fff; --accent2: #35c2ff; --surface: rgba(255,255,255,.56); --surface2: rgba(255,255,255,.38); --r: 18px; backdrop-filter: blur(16px); }
+    .system.material { --accent: #3157d5; --accent2: #19a974; --surface: #ffffff; --surface2: #f2f6ff; --r: 10px; }
+
+    .system-head {
+      min-height: 126px;
+      padding: 20px 20px 16px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, #000 8%), var(--accent2));
+    }
+
+    .system.glass .system-head {
+      color: #142033;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.72), rgba(255,255,255,.34)),
+        linear-gradient(135deg, rgba(15,111,255,.28), rgba(53,194,255,.24));
+    }
+
+    .system-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .system-sub {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      opacity: .9;
+    }
+
+    .tokens {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,.62);
+      border-bottom: 1px solid rgba(208,213,221,.7);
+    }
+
+    .swatch {
+      height: 28px;
+      border-radius: calc(var(--r) * .7);
+      background: var(--c);
+      border: 1px solid rgba(16,24,40,.08);
+    }
+
+    .module {
+      padding: 18px;
+      border-bottom: 1px solid rgba(208,213,221,.62);
+      background: color-mix(in srgb, var(--surface) 86%, transparent);
+    }
+
+    .module:last-child { border-bottom: 0; }
+
+    .module h3 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .canvas {
+      min-height: 245px;
+      border-radius: var(--r);
+      border: 1px solid rgba(208,213,221,.7);
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface2) 92%, transparent));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .system.glass .canvas {
+      border-color: rgba(255,255,255,.64);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 16px 34px rgba(16,24,40,.10);
+    }
+
+    .donut {
+      width: 138px;
+      height: 138px;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--accent) 0 34%, var(--blue) 34% 58%, var(--green) 58% 77%, var(--yellow) 77% 90%, var(--orange) 90% 100%);
+      position: absolute;
+      left: calc(50% - 69px);
+      top: 53px;
+      box-shadow: 0 12px 28px rgba(16,24,40,.16);
+    }
+
+    .donut::after {
+      content: "100%";
+      position: absolute;
+      inset: 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 21px;
+      font-weight: 850;
+    }
+
+    .callout {
+      position: absolute;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 8px;
+      width: 164px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .callout small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .callout .dot { width: 9px; height: 9px; }
+
+    .c1 { left: 18px; top: 34px; --c: var(--accent); }
+    .c2 { right: 14px; top: 36px; --c: var(--blue); }
+    .c3 { right: 16px; bottom: 36px; --c: var(--green); }
+    .c4 { left: 22px; bottom: 34px; --c: var(--yellow); }
+
+    .leader {
+      position: absolute;
+      height: 28px;
+      border-top: 2px solid rgba(102,112,133,.35);
+      border-right: 2px solid rgba(102,112,133,.35);
+      transform-origin: left top;
+    }
+
+    .l1 { width: 98px; left: 128px; top: 52px; transform: skewY(10deg); }
+    .l2 { width: 94px; right: 126px; top: 54px; transform: scaleX(-1) skewY(11deg); }
+    .l3 { width: 102px; right: 118px; bottom: 64px; transform: scaleX(-1) skewY(-12deg); }
+    .l4 { width: 94px; left: 130px; bottom: 62px; transform: skewY(-12deg); }
+
+    .roadmap {
+      padding: 28px 22px 20px;
+    }
+
+    .road {
+      position: relative;
+      height: 166px;
+    }
+
+    .road::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 72px;
+      height: 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 18%, #dfe7f2);
+    }
+
+    .phase {
+      position: absolute;
+      width: 112px;
+      min-height: 72px;
+      padding: 12px 12px 10px;
+      border-radius: var(--r);
+      background: var(--surface);
+      border: 1px solid rgba(208,213,221,.78);
+      box-shadow: 0 10px 24px rgba(16,24,40,.10);
+    }
+
+    .phase::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -24px;
+      width: 2px;
+      height: 24px;
+      background: rgba(102,112,133,.32);
+    }
+
+    .phase b {
+      display: block;
+      font-size: 13px;
+      line-height: 1.12;
+      margin-bottom: 6px;
+    }
+
+    .phase span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .p1 { left: 6px; top: 4px; }
+    .p2 { left: 29%; top: 58px; }
+    .p2::after { top: -22px; bottom: auto; }
+    .p3 { left: 55%; top: 4px; }
+    .p4 { right: 0; top: 58px; }
+    .p4::after { top: -22px; bottom: auto; }
+
+    .badge {
+      position: absolute;
+      top: 69px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+
+    .b1 { left: 44px; }
+    .b2 { left: calc(29% + 48px); }
+    .b3 { left: calc(55% + 48px); }
+    .b4 { right: 48px; }
+
+    .gantt {
+      padding: 24px 18px 20px;
+    }
+
+    .gantt-grid {
+      display: grid;
+      grid-template-columns: 86px repeat(6, 1fr);
+      grid-auto-rows: 34px;
+      align-items: center;
+      border: 1px solid rgba(208,213,221,.82);
+      background: var(--surface);
+      box-shadow: 0 10px 24px rgba(16,24,40,.08);
+    }
+
+    .cell {
+      height: 100%;
+      border-right: 1px solid rgba(208,213,221,.6);
+      border-bottom: 1px solid rgba(208,213,221,.55);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .head {
+      color: #fff;
+      background: var(--accent);
+      justify-content: center;
+    }
+
+    .lane {
+      color: var(--ink);
+      background: color-mix(in srgb, var(--surface2) 82%, #fff);
+    }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: var(--c);
+      box-shadow: 0 4px 10px rgba(16,24,40,.16);
+    }
+
+    .bar.wide { width: 200%; }
+    .bar.mid { width: 150%; }
+    .bar.short { width: 88%; }
+
+    .gate {
+      position: absolute;
+      top: 55px;
+      bottom: 25px;
+      width: 2px;
+      background: var(--red);
+      box-shadow: 0 0 0 3px rgba(217,45,32,.08);
+    }
+
+    .gantt .canvas { padding: 18px; }
+    .gantt-wrap { position: relative; }
+    .gate.g1 { left: 52%; }
+    .gate.g2 { left: 78%; }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .principle {
+      min-height: 86px;
+      padding: 14px;
+      border: 1px solid rgba(208,213,221,.72);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 8px 22px rgba(16,24,40,.06);
+    }
+
+    .principle b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+    }
+
+    .principle span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1180px) {
+      .comparison { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .principles { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 22px 14px 32px; }
+      h1 { font-size: 25px; }
+      .principles { grid-template-columns: 1fr; }
+      .tokens { grid-template-columns: repeat(5, minmax(28px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="topbar">
+      <div>
+        <p class="kicker">PPTSmith PMO visual language</p>
+        <h1>三套组件视觉系统方向：从单页复刻，升级为可复用的 PPT 原生组件语言</h1>
+      </div>
+      <p class="note">本稿用于方向判断：图 1 外标注改为折线引导，Roadmap 参考阶段路径，甘特图参考更清晰的月份网格和门禁线。下一步再把选定方向落入 PPTX 渲染器。</p>
+    </section>
+
+    <div class="legend" aria-label="semantic colors">
+      <span><i class="dot" style="--c: var(--blue)"></i>Primary</span>
+      <span><i class="dot" style="--c: var(--green)"></i>Healthy</span>
+      <span><i class="dot" style="--c: var(--yellow)"></i>Watch</span>
+      <span><i class="dot" style="--c: var(--red)"></i>Risk</span>
+      <span><i class="dot" style="--c: var(--orange)"></i>Decision</span>
+    </div>
+
+    <section class="comparison">
+      <article class="system consulting">
+        <header class="system-head">
+          <h2 class="system-title">A. Boardroom Ink</h2>
+          <p class="system-sub">麦肯锡式白底咨询系统。适合作为默认商业 PMO 组件：克制、正式、导出到 PPT 后兼容性最好。</p>
+        </header>
+        <div class="tokens">
+          <i class="swatch" style="--c:#17365d"></i>
+          <i class="swatch" style="--c:#2f6bff"></i>
+          <i class="swatch" style="--c:#2e7d32"></i>
+          <i class="swatch" style="--c:#f2c94c"></i>
+          <i class="swatch" style="--c:#d92d20"></i>
+        </div>
+        <section class="module">
+          <h3>折线标注环形图</h3>
+          <div class="canvas">
+            <div class="donut"></div>
+            <div class="leader l1"></div><div class="leader l2"></div><div class="leader l3"></div><div class="leader l4"></div>
+            <div class="callout c1"><i class="dot"></i><span>Core platform</span><small>35%</small></div>
+            <div class="callout c2"><i class="dot"></i><span>AI workflow</span><small>23%</small></div>
+            <div class="callout c3"><i class="dot"></i><span>Data migration</span><small>18%</small></div>
+            <div class="callout c4"><i class="dot"></i><span>Enablement</span><small>14%</small></div>
+          </div>
+        </section>
+        <section class="module roadmap">
+          <h3>Roadmap 阶段路径</h3>
+          <div class="canvas road">
+            <div class="badge b1"></div><div class="badge b2"></div><div class="badge b3"></div><div class="badge b4"></div>
+            <div class="phase p1"><b>Discover</b><span>problem framing</span></div>
+            <div class="phase p2"><b>Design</b><span>solution gate</span></div>
+            <div class="phase p3"><b>Build</b><span>pilot package</span></div>
+            <div class="phase p4"><b>Scale</b><span>operating model</span></div>
+          </div>
+        </section>
+        <section class="module gantt">
+          <h3>优化甘特图</h3>
+          <div class="canvas">
+            <div class="gantt-wrap">
+              <div class="gate g1"></div><div class="gate g2"></div>
+              <div class="gantt-grid">
+                <div class="cell head">Stream</div><div class="cell head">Jan</div><div class="cell head">Feb</div><div class="cell head">Mar</div><div class="cell head">Apr</div><div class="cell head">May</div><div class="cell head">Jun</div>
+                <div class="cell lane">Discovery</div><div class="cell"><i class="bar mid" style="--c:var(--blue)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Build</div><div class="cell"></div><div class="cell"><i class="bar wide" style="--c:var(--green)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Pilot</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar mid" style="--c:var(--yellow)"></i></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Launch</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar short" style="--c:var(--navy)"></i></div><div class="cell"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <article class="system glass">
+        <header class="system-head">
+          <h2 class="system-title">B. Liquid Glass PMO</h2>
+          <p class="system-sub">借鉴近两年苹果式液态玻璃，但压低装饰性。适合高价样稿、品牌演示、官网案例图。</p>
+        </header>
+        <div class="tokens">
+          <i class="swatch" style="--c:rgba(255,255,255,.68)"></i>
+          <i class="swatch" style="--c:#0f6fff"></i>
+          <i class="swatch" style="--c:#35c2ff"></i>
+          <i class="swatch" style="--c:#19a974"></i>
+          <i class="swatch" style="--c:#ff615c"></i>
+        </div>
+        <section class="module">
+          <h3>折线标注环形图</h3>
+          <div class="canvas">
+            <div class="donut"></div>
+            <div class="leader l1"></div><div class="leader l2"></div><div class="leader l3"></div><div class="leader l4"></div>
+            <div class="callout c1"><i class="dot"></i><span>Core platform</span><small>35%</small></div>
+            <div class="callout c2"><i class="dot"></i><span>AI workflow</span><small>23%</small></div>
+            <div class="callout c3"><i class="dot"></i><span>Data migration</span><small>18%</small></div>
+            <div class="callout c4"><i class="dot"></i><span>Enablement</span><small>14%</small></div>
+          </div>
+        </section>
+        <section class="module roadmap">
+          <h3>Roadmap 阶段路径</h3>
+          <div class="canvas road">
+            <div class="badge b1"></div><div class="badge b2"></div><div class="badge b3"></div><div class="badge b4"></div>
+            <div class="phase p1"><b>Discover</b><span>problem framing</span></div>
+            <div class="phase p2"><b>Design</b><span>solution gate</span></div>
+            <div class="phase p3"><b>Build</b><span>pilot package</span></div>
+            <div class="phase p4"><b>Scale</b><span>operating model</span></div>
+          </div>
+        </section>
+        <section class="module gantt">
+          <h3>优化甘特图</h3>
+          <div class="canvas">
+            <div class="gantt-wrap">
+              <div class="gate g1"></div><div class="gate g2"></div>
+              <div class="gantt-grid">
+                <div class="cell head">Stream</div><div class="cell head">Jan</div><div class="cell head">Feb</div><div class="cell head">Mar</div><div class="cell head">Apr</div><div class="cell head">May</div><div class="cell head">Jun</div>
+                <div class="cell lane">Discovery</div><div class="cell"><i class="bar mid" style="--c:var(--blue)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Build</div><div class="cell"></div><div class="cell"><i class="bar wide" style="--c:var(--green)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Pilot</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar mid" style="--c:var(--yellow)"></i></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Launch</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar short" style="--c:var(--navy)"></i></div><div class="cell"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <article class="system material">
+        <header class="system-head">
+          <h2 class="system-title">C. Material PMO</h2>
+          <p class="system-sub">借鉴 Material 的 token 化、状态层级和组件变体。适合规模化模板库、自动生成和 QA。</p>
+        </header>
+        <div class="tokens">
+          <i class="swatch" style="--c:#3157d5"></i>
+          <i class="swatch" style="--c:#19a974"></i>
+          <i class="swatch" style="--c:#ffcd3c"></i>
+          <i class="swatch" style="--c:#ef4444"></i>
+          <i class="swatch" style="--c:#f2f6ff"></i>
+        </div>
+        <section class="module">
+          <h3>折线标注环形图</h3>
+          <div class="canvas">
+            <div class="donut"></div>
+            <div class="leader l1"></div><div class="leader l2"></div><div class="leader l3"></div><div class="leader l4"></div>
+            <div class="callout c1"><i class="dot"></i><span>Core platform</span><small>35%</small></div>
+            <div class="callout c2"><i class="dot"></i><span>AI workflow</span><small>23%</small></div>
+            <div class="callout c3"><i class="dot"></i><span>Data migration</span><small>18%</small></div>
+            <div class="callout c4"><i class="dot"></i><span>Enablement</span><small>14%</small></div>
+          </div>
+        </section>
+        <section class="module roadmap">
+          <h3>Roadmap 阶段路径</h3>
+          <div class="canvas road">
+            <div class="badge b1"></div><div class="badge b2"></div><div class="badge b3"></div><div class="badge b4"></div>
+            <div class="phase p1"><b>Discover</b><span>problem framing</span></div>
+            <div class="phase p2"><b>Design</b><span>solution gate</span></div>
+            <div class="phase p3"><b>Build</b><span>pilot package</span></div>
+            <div class="phase p4"><b>Scale</b><span>operating model</span></div>
+          </div>
+        </section>
+        <section class="module gantt">
+          <h3>优化甘特图</h3>
+          <div class="canvas">
+            <div class="gantt-wrap">
+              <div class="gate g1"></div><div class="gate g2"></div>
+              <div class="gantt-grid">
+                <div class="cell head">Stream</div><div class="cell head">Jan</div><div class="cell head">Feb</div><div class="cell head">Mar</div><div class="cell head">Apr</div><div class="cell head">May</div><div class="cell head">Jun</div>
+                <div class="cell lane">Discovery</div><div class="cell"><i class="bar mid" style="--c:var(--blue)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Build</div><div class="cell"></div><div class="cell"><i class="bar wide" style="--c:var(--green)"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Pilot</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar mid" style="--c:var(--yellow)"></i></div><div class="cell"></div><div class="cell"></div>
+                <div class="cell lane">Launch</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar short" style="--c:var(--navy)"></i></div><div class="cell"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+    </section>
+
+    <section class="principles">
+      <div class="principle"><b>建议默认方向</b><span>Boardroom Ink 做商用默认，Material PMO 做组件规范底层，Liquid Glass 作为 premium skin。</span></div>
+      <div class="principle"><b>折线标注规则</b><span>外部标签统一使用短水平段 + 斜段，避免直线穿过主图或形成蛛网。</span></div>
+      <div class="principle"><b>Roadmap 规则</b><span>Roadmap 表达阶段门禁，不等同甘特；节点、阶段卡和路径必须分层。</span></div>
+      <div class="principle"><b>甘特图规则</b><span>月份网格、泳道、阶段条、门禁线各有专用 token，网格线不再伪装成 connector。</span></div>
+    </section>
+  </main>
+</body>
+</html>

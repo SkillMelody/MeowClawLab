@@ -10,7 +10,7 @@ article-html-to-ppt, meowclaw-decksmith <br>
 ## Description: <br>
 MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
-Version 2.1.2 is **Standard production-ready on the verified macOS + LibreOffice 26.2.4.2 acceptance environment** for commercial/non-commercial use. It hardens macOS renderer path handling, test-fixture cleanup containment, font-probe privacy, and safety-test module loading. `python_pptx` is the canonical Standard production Builder; PptxGenJS remains component-scoped portability evidence. Premium may be called final only when the target run completes real rendering, readback, zero-error QA, rubric scoring, and disclosed fallbacks. <br>
+Version 3.0.0 is **Standard production-ready on the verified macOS + LibreOffice 26.2.4.2 acceptance environment** for commercial/non-commercial use. It hardens macOS renderer path handling, test-fixture cleanup containment, font-probe privacy, and safety-test module loading. `python_pptx` is the canonical Standard production Builder; PptxGenJS remains component-scoped portability evidence. Premium may be called final only when the target run completes real rendering, readback, zero-error QA, rubric scoring, and disclosed fallbacks. <br>
 
 ## Owner
 SkillMelody <br>
@@ -52,8 +52,9 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [Export Pipelines Reference](references/export-pipelines.md) <br>
 - [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
 - [v2.0 Acceptance Report](docs/v2.0-acceptance-report.md) <br>
-- [v2.1 RC1 Acceptance Report](docs/v2.1-rc1-acceptance-report.md) <br>
-- [v2.1 Release Notes](docs/v2.1-release-notes.md) <br>
+- [v3.0.0 Release Notes and v1.2.0 Comparison](docs/v3.0.0-release-notes.md) <br>
+- [v2.1 RC1 Acceptance Report (historical baseline)](docs/v2.1-rc1-acceptance-report.md) <br>
+- [v2.1 Release Notes (historical)](docs/v2.1-release-notes.md) <br>
 - [Storyboard Template](templates/storyboard-template.md) <br>
 - [Content Lock Template](templates/content-lock-template.md) <br>
 - [Slide Manifest Template](templates/slide-manifest-template.json) <br>
@@ -75,7 +76,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-2.1.2 <br>
+3.0.0 <br>
 
 Readiness scope: Standard production on the verified macOS + LibreOffice acceptance environment. Premium readiness remains run- and environment-specific and requires real render/readback, zero-error QA, rubric, and fallback evidence. <br>
 

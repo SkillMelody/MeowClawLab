@@ -1,0 +1,1272 @@
+{
+  "analysis_results": [
+    {
+      "analysis_mode": "prescriptive",
+      "assumption_ids": [
+        "assumption-input-validity"
+      ],
+      "calculations": [
+        {
+          "assumption_ids": [],
+          "expression": "direction * (actual_to_date - baseline) / current_should_realize",
+          "id": "benefit_realization",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "1.2"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "direction * (forecast - target)",
+          "id": "forecast_gap",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "5"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum future (benefit - cost - non-duplicated cost_of_delay) / (1 + discount_rate)^period",
+          "id": "npv-continue",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "100.4132231404958677685950413"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "npv-continue - npv-stop",
+          "id": "npv-incremental-continue",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "111.3223140495867768595041322"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "(incremental future benefit - incremental future cost) / incremental future cost",
+          "id": "incremental_roi-continue",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "3.848484848484848484848484848"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum future (benefit - cost - non-duplicated cost_of_delay) / (1 + discount_rate)^period",
+          "id": "npv-pivot",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "69.42148760330578512396694215"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "npv-pivot - npv-stop",
+          "id": "npv-incremental-pivot",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "80.33057851239669421487603306"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "(incremental future benefit - incremental future cost) / incremental future cost",
+          "id": "incremental_roi-pivot",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "1.916666666666666666666666667"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum future (benefit - cost - non-duplicated cost_of_delay) / (1 + discount_rate)^period",
+          "id": "npv-stop",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "-10.90909090909090909090909091"
+        }
+      ],
+      "created_at": null,
+      "diagnostics": [
+        "gate_valid_question:pass",
+        "gate_hard_constraints:continue:pass",
+        "gate_hard_constraints:pivot:pass",
+        "gate_hard_constraints:stop:pass",
+        "sunk_cost_excluded:continue:90",
+        "gate_evidence_sufficiency:pass",
+        "gate_policy_completeness:pass",
+        "gate_policy_confidence:pass",
+        "gate_future_economics:pass",
+        "gate_sensitivity:pass"
+      ],
+      "evidence_ids": [
+        "ev-approved-input"
+      ],
+      "extensions": {
+        "benefit_series": {
+          "actual_to_date": "124",
+          "baseline": "100",
+          "forecast": "145",
+          "planned_to_date": "120",
+          "target": "140"
+        },
+        "discount_rate": "0.10"
+      },
+      "findings": [
+        {
+          "calculation_ids": [
+            "benefit_realization",
+            "forecast_gap",
+            "npv-continue",
+            "npv-incremental-continue",
+            "incremental_roi-continue",
+            "npv-pivot",
+            "npv-incremental-pivot",
+            "incremental_roi-pivot",
+            "npv-stop"
+          ],
+          "evidence_ids": [],
+          "id": "sequential-gates",
+          "statement": "Value decision evaluated in order: validity, hard constraints, sufficiency, future economics/executability, sensitivity."
+        }
+      ],
+      "framework_id": "value_gate",
+      "framework_version": "1.0.0",
+      "id": "value-gate-pmo-steerco-gold",
+      "input_snapshot_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+      "limitations": [
+        "Completeness, materiality, and confidence thresholds are configurable PPTSmith policy."
+      ],
+      "schema_version": "1.0.0",
+      "updated_at": null
+    },
+    {
+      "analysis_mode": "prescriptive",
+      "assumption_ids": [],
+      "calculations": [
+        {
+          "assumption_ids": [],
+          "expression": "sum(normalized criterion * approved weight)",
+          "id": "weighted-score:platform",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.9"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum(normalized criterion * approved weight)",
+          "id": "weighted-score:security",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.4"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum(normalized criterion * approved weight)",
+          "id": "weighted-score:growth",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.8"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum(normalized criterion * approved weight)",
+          "id": "weighted-score:migration",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.7"
+        }
+      ],
+      "created_at": null,
+      "diagnostics": [],
+      "evidence_ids": [],
+      "extensions": {
+        "binding_constraints": [
+          "budget",
+          "capacity:team"
+        ],
+        "budget_limits": {
+          "base": 14.0,
+          "downside": 11.0,
+          "relief": 18.0
+        },
+        "deferred_option_ids": [],
+        "dominance": {
+          "growth": [
+            "security",
+            "migration"
+          ],
+          "migration": [
+            "security"
+          ],
+          "platform": [
+            "security",
+            "growth",
+            "migration"
+          ],
+          "security": []
+        },
+        "feasible": true,
+        "method": "complete_enumeration",
+        "normalization": "fixed_anchors",
+        "objective": 2.1,
+        "opportunity_costs": {
+          "migration": 0.1
+        },
+        "optimal_within_declared_model": true,
+        "option_cost": {
+          "growth": 5.0,
+          "migration": 4.0,
+          "platform": 7.0,
+          "security": 2.0
+        },
+        "option_resource_demand": {
+          "growth": {
+            "team": 2.0
+          },
+          "migration": {
+            "team": 2.0
+          },
+          "platform": {
+            "team": 3.0
+          },
+          "security": {
+            "team": 1.0
+          }
+        },
+        "option_scores": {
+          "growth": {
+            "contributions": {
+              "value": 0.8
+            },
+            "normalized": {
+              "value": 0.8
+            },
+            "weighted_score": 0.8
+          },
+          "migration": {
+            "contributions": {
+              "value": 0.7
+            },
+            "normalized": {
+              "value": 0.7
+            },
+            "weighted_score": 0.7
+          },
+          "platform": {
+            "contributions": {
+              "value": 0.9
+            },
+            "normalized": {
+              "value": 0.9
+            },
+            "weighted_score": 0.9
+          },
+          "security": {
+            "contributions": {
+              "value": 0.4
+            },
+            "normalized": {
+              "value": 0.4
+            },
+            "weighted_score": 0.4
+          }
+        },
+        "ranking": [
+          "platform",
+          "growth",
+          "migration",
+          "security"
+        ],
+        "rejected_option_ids": [
+          "migration"
+        ],
+        "resource_limits": {
+          "base": {
+            "team": 6.0
+          },
+          "downside": {
+            "team": 6.0
+          },
+          "relief": {
+            "team": 8.0
+          }
+        },
+        "scenarios": {
+          "base": {
+            "feasible": true,
+            "method": "complete_enumeration",
+            "objective": 2.1,
+            "selected_option_ids": [
+              "growth",
+              "platform",
+              "security"
+            ]
+          },
+          "downside": {
+            "feasible": true,
+            "method": "complete_enumeration",
+            "objective": 1.04,
+            "selected_option_ids": [
+              "platform",
+              "security"
+            ]
+          },
+          "relief": {
+            "feasible": true,
+            "method": "complete_enumeration",
+            "objective": 2.1,
+            "selected_option_ids": [
+              "growth",
+              "platform",
+              "security"
+            ]
+          }
+        },
+        "selected_option_ids": [
+          "growth",
+          "platform",
+          "security"
+        ],
+        "weight_sources": {
+          "value": "portfolio-board"
+        }
+      },
+      "findings": [
+        {
+          "calculation_ids": [
+            "weighted-score:platform",
+            "weighted-score:security",
+            "weighted-score:growth",
+            "weighted-score:migration"
+          ],
+          "evidence_ids": [],
+          "id": "portfolio-selection",
+          "statement": "Selected feasible portfolio: growth, platform, security"
+        }
+      ],
+      "framework_id": "resource_allocation",
+      "framework_version": "1.0.0",
+      "id": "resource-allocation:pmo-steerco-gold",
+      "input_snapshot_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+      "limitations": [],
+      "schema_version": "1.0.0",
+      "updated_at": null
+    },
+    {
+      "analysis_mode": "prescriptive",
+      "assumption_ids": [],
+      "calculations": [],
+      "created_at": null,
+      "diagnostics": [],
+      "evidence_ids": [],
+      "extensions": {
+        "schedule": {
+          "calendar_contract": "discrete_working_day_boundaries_v1",
+          "capacity_scenarios": [],
+          "critical_subgraph": {
+            "dependency_ids": [
+              "ab",
+              "bd",
+              "df"
+            ],
+            "task_ids": [
+              "A",
+              "B",
+              "D",
+              "F"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "id": "ab",
+              "lag": 1,
+              "predecessor": "A",
+              "successor": "B",
+              "type": "FS"
+            },
+            {
+              "id": "ac",
+              "lag": 1,
+              "predecessor": "A",
+              "successor": "C",
+              "type": "SS"
+            },
+            {
+              "id": "bd",
+              "lag": 1,
+              "predecessor": "B",
+              "successor": "D",
+              "type": "FF"
+            },
+            {
+              "id": "ce",
+              "lag": 3,
+              "predecessor": "C",
+              "successor": "E",
+              "type": "SF"
+            },
+            {
+              "id": "df",
+              "lag": 0,
+              "predecessor": "D",
+              "successor": "F",
+              "type": "FS"
+            },
+            {
+              "id": "eg",
+              "lag": 0,
+              "predecessor": "E",
+              "successor": "G",
+              "type": "FS"
+            }
+          ],
+          "driving_dependencies": [
+            "ab",
+            "ac",
+            "bd",
+            "ce",
+            "df",
+            "eg"
+          ],
+          "finish_variance": -2,
+          "limitations": [
+            "PERT values are analytic task-level approximations; no Monte Carlo or project P80 is claimed.",
+            "Capacity scenarios are bounded heuristics, not global resource leveling or full Critical Chain."
+          ],
+          "near_critical_task_ids": [
+            "C",
+            "E",
+            "G"
+          ],
+          "near_critical_threshold": 2,
+          "overload_intervals": [],
+          "pert": {},
+          "project_finish": 8,
+          "required_finish": 6,
+          "status": "ok",
+          "tasks": {
+            "A": {
+              "ef": 2,
+              "ef_date": "2026-07-29",
+              "es": 0,
+              "es_date": "2026-07-27",
+              "lf": 0,
+              "lf_date": "2026-07-27",
+              "ls": -2,
+              "ls_date": "2026-07-23",
+              "total_float": -2
+            },
+            "B": {
+              "ef": 6,
+              "ef_date": "2026-08-05",
+              "es": 3,
+              "es_date": "2026-07-30",
+              "lf": 4,
+              "lf_date": "2026-08-03",
+              "ls": 1,
+              "ls_date": "2026-07-28",
+              "total_float": -2
+            },
+            "C": {
+              "ef": 3,
+              "ef_date": "2026-07-30",
+              "es": 1,
+              "es_date": "2026-07-28",
+              "lf": 4,
+              "lf_date": "2026-08-03",
+              "ls": 2,
+              "ls_date": "2026-07-29",
+              "total_float": 1
+            },
+            "D": {
+              "ef": 7,
+              "ef_date": "2026-08-06",
+              "es": 6,
+              "es_date": "2026-08-05",
+              "lf": 5,
+              "lf_date": "2026-08-04",
+              "ls": 4,
+              "ls_date": "2026-08-03",
+              "total_float": -2
+            },
+            "E": {
+              "ef": 4,
+              "ef_date": "2026-08-03",
+              "es": 2,
+              "es_date": "2026-07-29",
+              "lf": 5,
+              "lf_date": "2026-08-04",
+              "ls": 3,
+              "ls_date": "2026-07-30",
+              "total_float": 1
+            },
+            "F": {
+              "ef": 8,
+              "ef_date": "2026-08-07",
+              "es": 7,
+              "es_date": "2026-08-06",
+              "lf": 6,
+              "lf_date": "2026-08-05",
+              "ls": 5,
+              "ls_date": "2026-08-04",
+              "total_float": -2
+            },
+            "G": {
+              "ef": 5,
+              "ef_date": "2026-08-04",
+              "es": 4,
+              "es_date": "2026-08-03",
+              "lf": 6,
+              "lf_date": "2026-08-05",
+              "ls": 5,
+              "ls_date": "2026-08-04",
+              "total_float": 1
+            }
+          }
+        }
+      },
+      "findings": [
+        {
+          "calculation_ids": [],
+          "evidence_ids": [],
+          "id": "schedule-finish",
+          "statement": "Calculated finish is working-time unit 8."
+        }
+      ],
+      "framework_id": "schedule_analysis",
+      "framework_version": "1.0.0",
+      "id": "pmo-steerco-gold-schedule",
+      "input_snapshot_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+      "limitations": [
+        "PERT values are analytic task-level approximations; no Monte Carlo or project P80 is claimed.",
+        "Capacity scenarios are bounded heuristics, not global resource leveling or full Critical Chain."
+      ],
+      "schema_version": "1.0.0",
+      "updated_at": null
+    },
+    {
+      "analysis_mode": "prescriptive",
+      "assumption_ids": [],
+      "calculations": [
+        {
+          "assumption_ids": [],
+          "expression": "calibrated event probability (low)",
+          "id": "probability_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.20"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum of consequence amounts (low)",
+          "id": "consequence_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "1100000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "probability_low * consequence_low",
+          "id": "baseline_exposure_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "220000.00"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "calibrated event probability (central)",
+          "id": "probability_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.30"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum of consequence amounts (central)",
+          "id": "consequence_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "1500000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "probability_central * consequence_central",
+          "id": "baseline_exposure_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "450000.00"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "calibrated event probability (high)",
+          "id": "probability_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.40"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "sum of consequence amounts (high)",
+          "id": "consequence_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "2000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "probability_high * consequence_high",
+          "id": "baseline_exposure_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "800000.00"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "success residual probability * success chance + baseline probability * failure chance",
+          "id": "adjusted_residual_probability_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.10000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "adjusted_residual_probability_low * consequence_low * residual impact fraction",
+          "id": "adjusted_residual_exposure_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "82500.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "baseline_exposure_low - adjusted_residual_exposure_low",
+          "id": "exposure_reduction_low",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "137500.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "success residual probability * success chance + baseline probability * failure chance",
+          "id": "adjusted_residual_probability_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.12000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "adjusted_residual_probability_central * consequence_central * residual impact fraction",
+          "id": "adjusted_residual_exposure_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "135000.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "baseline_exposure_central - adjusted_residual_exposure_central",
+          "id": "exposure_reduction_central",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "315000.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "success residual probability * success chance + baseline probability * failure chance",
+          "id": "adjusted_residual_probability_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "0.14000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "adjusted_residual_probability_high * consequence_high * residual impact fraction",
+          "id": "adjusted_residual_exposure_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "210000.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "baseline_exposure_high - adjusted_residual_exposure_high",
+          "id": "exposure_reduction_high",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "590000.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "one-time cost + recurring cost * recurring periods",
+          "id": "full_life_mitigation_cost",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "150000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "exposure_reduction_central - full_life_mitigation_cost",
+          "id": "net_benefit",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "165000.0000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "net_benefit / full_life_mitigation_cost",
+          "id": "roi",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "1.1000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "exposure_reduction_central / full_life_mitigation_cost",
+          "id": "benefit_cost_ratio",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "2.1000000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "declared risk tolerance",
+          "id": "risk_tolerance",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "100000"
+        },
+        {
+          "assumption_ids": [],
+          "expression": "adjusted_residual_exposure_central - risk_tolerance",
+          "id": "tolerance_gap",
+          "input_evidence_ids": [],
+          "unit": null,
+          "value": "35000.0000000"
+        }
+      ],
+      "created_at": null,
+      "diagnostics": [
+        "probability horizon: FY2027"
+      ],
+      "evidence_ids": [],
+      "extensions": {},
+      "findings": [
+        {
+          "calculation_ids": [],
+          "evidence_ids": [],
+          "id": "pmo-steerco-gold-baseline",
+          "statement": "Central baseline exposure is 450000.00"
+        }
+      ],
+      "framework_id": "risk_treatment",
+      "framework_version": "1.0.0",
+      "id": "pmo-steerco-gold-risk-analysis",
+      "input_snapshot_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+      "limitations": [],
+      "schema_version": "1.0.0",
+      "updated_at": null
+    }
+  ],
+  "audit": {
+    "analysis_run_id": "decision-pipeline-f885d13be2f9d088",
+    "framework_order": [
+      "value_gate",
+      "resource_allocation",
+      "schedule_analysis",
+      "risk_treatment"
+    ],
+    "input_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+    "route_action": "route"
+  },
+  "explanation_trace": [
+    {
+      "steps": [
+        "gate_valid_question:pass",
+        "gate_hard_constraints:continue:pass",
+        "gate_hard_constraints:pivot:pass",
+        "gate_hard_constraints:stop:pass",
+        "gate_evidence_sufficiency:pass",
+        "gate_policy_completeness:pass",
+        "gate_policy_confidence:pass",
+        "gate_future_economics:pass",
+        "gate_sensitivity:pass"
+      ],
+      "summary": "Value realization and Continue/Pivot/Stop analysis"
+    },
+    {
+      "steps": [
+        "Validate weights, anchors, and scores.",
+        "Apply must-do dependency closure and exclusions.",
+        "Enforce budget and capacity.",
+        "Select portfolio and calculate opportunity costs.",
+        "Test scenarios and sensitivity."
+      ],
+      "summary": "Hard constraints were applied before fixed-anchor weighted scoring and portfolio selection."
+    },
+    {
+      "steps": [
+        "Validate graph and calendar.",
+        "Run forward and backward passes.",
+        "Trace driving dependencies and bounded constraints."
+      ],
+      "summary": "CPM using declared working-time calendar and precedence constraints."
+    },
+    {
+      "steps": [
+        "Validate probability range and horizon.",
+        "Aggregate separately calibrated consequences and calculate baseline EMV.",
+        "Adjust residual exposure for treatment failure and full-life cost.",
+        "Apply tolerance and mandatory escalation before recommending treatment.",
+        "Report named switching points and model limitations."
+      ],
+      "summary": "Risk treatment separates calibrated exposure screening from bounded treatment economics."
+    }
+  ],
+  "framework_recommendations": [
+    {
+      "framework_id": "value_gate",
+      "readiness": {
+        "ready": true,
+        "reason_codes": []
+      },
+      "recommendation": {
+        "analysis_run_id": "value-gate-pmo-steerco-gold",
+        "assumption_ids": [
+          "assumption-input-validity"
+        ],
+        "binding_constraints": [],
+        "calculation_ids": [
+          "benefit_realization",
+          "forecast_gap",
+          "npv-continue",
+          "npv-incremental-continue",
+          "incremental_roi-continue",
+          "npv-pivot",
+          "npv-incremental-pivot",
+          "incremental_roi-pivot",
+          "npv-stop"
+        ],
+        "conditions": [
+          "PPTSmith policy thresholds remain satisfied.",
+          "No hard constraint becomes binding."
+        ],
+        "confidence": "high",
+        "confidence_basis": "Evidence quality only; not probability of outcome.",
+        "counterarguments": [
+          {
+            "evidence_ids": [],
+            "id": "counterargument-value",
+            "response": "Use named sensitivity and review triggers.",
+            "statement": "Forecast benefits may not materialize."
+          }
+        ],
+        "created_at": null,
+        "deferred_option_ids": [],
+        "evidence_ids": [
+          "ev-approved-input"
+        ],
+        "extensions": {},
+        "id": "recommendation-value-gate-pmo-steerco-gold",
+        "model_version": "1.0.0",
+        "owner": "Programme Sponsor",
+        "rejected_option_ids": [
+          "pivot",
+          "stop"
+        ],
+        "review_date": "2026-08-31",
+        "schema_version": "1.0.0",
+        "selected_option_ids": [
+          "continue"
+        ],
+        "sensitivity_summary": [
+          "one-way named sensitivity; flip threshold=0.7781065088757396449704142016"
+        ],
+        "statement": "Select continue based on sequential gates and future incremental economics.",
+        "status": "recommend",
+        "trade_offs": [],
+        "triggers": [
+          {
+            "action": "Re-run sequential gates",
+            "condition": "Forecast or constraint status changes materially",
+            "id": "value-review"
+          }
+        ],
+        "updated_at": null
+      }
+    },
+    {
+      "framework_id": "resource_allocation",
+      "readiness": {
+        "ready": false,
+        "reason_codes": [
+          "recommendation_evidence_trace_missing",
+          "recommendation_assumption_trace_missing"
+        ]
+      },
+      "recommendation": {
+        "analysis_run_id": "resource-allocation:pmo-steerco-gold",
+        "assumption_ids": [],
+        "binding_constraints": [
+          "budget",
+          "capacity:team"
+        ],
+        "calculation_ids": [
+          "weighted-score:platform",
+          "weighted-score:security",
+          "weighted-score:growth",
+          "weighted-score:migration"
+        ],
+        "conditions": [
+          "Weights retain their named approval source.",
+          "Hard constraints and option evidence remain current."
+        ],
+        "confidence": "medium",
+        "confidence_basis": "Fixed anchors and named weight sources; confidence is evidence quality, not probability.",
+        "counterarguments": [
+          {
+            "evidence_ids": [],
+            "id": "resource-counterargument:pmo-steerco-gold",
+            "response": "Retain fixed anchors and rerun the declared scenarios and sensitivity before review.",
+            "statement": "A rejected option may outperform if approved weights, scores, or constraints change."
+          }
+        ],
+        "created_at": null,
+        "deferred_option_ids": [],
+        "evidence_ids": [],
+        "extensions": {
+          "method": "complete_enumeration"
+        },
+        "id": "resource-recommendation:pmo-steerco-gold",
+        "model_version": "1.0.0",
+        "owner": "Programme Sponsor",
+        "rejected_option_ids": [
+          "migration"
+        ],
+        "review_date": "2026-08-01",
+        "schema_version": "1.0.0",
+        "selected_option_ids": [],
+        "sensitivity_summary": [
+          "ranking changes within tested weight range",
+          "bounded score range declared; rerun required for changed evidence",
+          "bounded score range declared; rerun required for changed evidence",
+          "bounded score range declared; rerun required for changed evidence",
+          "bounded score range declared; rerun required for changed evidence"
+        ],
+        "statement": "No recommendation: shared prescriptive readiness failed (recommendation_evidence_trace_missing, recommendation_assumption_trace_missing).",
+        "status": "no_recommendation",
+        "trade_offs": [
+          "Opportunity cost for migration: 0.1"
+        ],
+        "triggers": [
+          {
+            "action": "Rerun feasibility, portfolio selection, scenarios, and sensitivity.",
+            "condition": "Budget, capacity, option score, dependency, exclusion, or approved weight changes.",
+            "id": "resource-review-trigger:pmo-steerco-gold"
+          }
+        ],
+        "updated_at": null
+      }
+    },
+    {
+      "framework_id": "schedule_analysis",
+      "readiness": {
+        "ready": false,
+        "reason_codes": [
+          "recommendation_evidence_trace_missing",
+          "recommendation_assumption_trace_missing",
+          "recommendation_calculation_trace_missing",
+          "sensitivity_missing",
+          "counterargument_missing",
+          "review_date_missing",
+          "review_trigger_missing",
+          "recommendation_conditions_missing"
+        ]
+      },
+      "recommendation": {
+        "analysis_run_id": "pmo-steerco-gold-schedule",
+        "assumption_ids": [],
+        "binding_constraints": [],
+        "calculation_ids": [],
+        "conditions": [],
+        "confidence": "low",
+        "confidence_basis": "",
+        "counterarguments": [],
+        "created_at": null,
+        "deferred_option_ids": [],
+        "evidence_ids": [],
+        "extensions": {},
+        "id": "pmo-steerco-gold-schedule-recommendation",
+        "model_version": "1.0.0",
+        "owner": "Programme Sponsor",
+        "rejected_option_ids": [],
+        "review_date": null,
+        "schema_version": "1.0.0",
+        "selected_option_ids": [],
+        "sensitivity_summary": [],
+        "statement": "Schedule analysis is diagnostic; no action is selected.",
+        "status": "no_recommendation",
+        "trade_offs": [],
+        "triggers": [],
+        "updated_at": null
+      }
+    },
+    {
+      "framework_id": "risk_treatment",
+      "readiness": {
+        "ready": false,
+        "reason_codes": [
+          "recommendation_evidence_trace_missing",
+          "recommendation_assumption_trace_missing"
+        ]
+      },
+      "recommendation": {
+        "analysis_run_id": "pmo-steerco-gold-risk-analysis",
+        "assumption_ids": [],
+        "binding_constraints": [],
+        "calculation_ids": [
+          "probability_low",
+          "consequence_low",
+          "baseline_exposure_low",
+          "probability_central",
+          "consequence_central",
+          "baseline_exposure_central",
+          "probability_high",
+          "consequence_high",
+          "baseline_exposure_high",
+          "adjusted_residual_probability_low",
+          "adjusted_residual_exposure_low",
+          "exposure_reduction_low",
+          "adjusted_residual_probability_central",
+          "adjusted_residual_exposure_central",
+          "exposure_reduction_central",
+          "adjusted_residual_probability_high",
+          "adjusted_residual_exposure_high",
+          "exposure_reduction_high",
+          "full_life_mitigation_cost",
+          "net_benefit",
+          "roi",
+          "benefit_cost_ratio",
+          "risk_tolerance",
+          "tolerance_gap"
+        ],
+        "conditions": [
+          "Residual exposure must be accepted or reduced to the declared risk tolerance."
+        ],
+        "confidence": "low",
+        "confidence_basis": "Confidence reflects evidence quality, not event probability.",
+        "counterarguments": [
+          {
+            "evidence_ids": [],
+            "id": "pmo-steerco-gold-risk-analysis-counterargument",
+            "response": "Escalation guardrails and named sensitivity prevent economics from overriding those limits.",
+            "statement": "Expected monetary value can understate distribution shape, dependence, and non-monetary harm."
+          }
+        ],
+        "created_at": null,
+        "deferred_option_ids": [],
+        "evidence_ids": [],
+        "extensions": {},
+        "id": "pmo-steerco-gold-risk-analysis-recommendation",
+        "model_version": "1.0.0",
+        "owner": "Programme Sponsor",
+        "rejected_option_ids": [],
+        "review_date": "2026-10-30",
+        "schema_version": "1.0.0",
+        "selected_option_ids": [],
+        "sensitivity_summary": [
+          "Net benefit switches at event probability 0.1705882352941176470588235294",
+          "Net benefit switches at mitigation failure probability 0.8518518518518518518518518519",
+          "Net benefit switches at full-life mitigation cost 315000.0000000",
+          "Tolerance status switches at residual exposure 135000.0000000"
+        ],
+        "statement": "No recommendation: shared prescriptive readiness failed (recommendation_evidence_trace_missing, recommendation_assumption_trace_missing).",
+        "status": "no_recommendation",
+        "trade_offs": [],
+        "triggers": [
+          {
+            "action": "Re-run treatment decision",
+            "condition": "Probability, consequence, cost, or tolerance crosses a named switching point",
+            "id": "pmo-steerco-gold-risk-analysis-trigger"
+          }
+        ],
+        "updated_at": null
+      }
+    }
+  ],
+  "input_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+  "recommendation": {
+    "analysis_run_id": "decision-pipeline-f885d13be2f9d088",
+    "assumption_ids": [],
+    "binding_constraints": [],
+    "calculation_ids": [],
+    "conditions": [],
+    "confidence": "low",
+    "confidence_basis": "",
+    "counterarguments": [],
+    "created_at": null,
+    "deferred_option_ids": [],
+    "evidence_ids": [],
+    "extensions": {},
+    "id": "pipeline-no-recommendation-pmo-steerco-gold-f885d13be2f9",
+    "model_version": "decision-pipeline-1.0.0",
+    "owner": "Programme Sponsor",
+    "rejected_option_ids": [],
+    "review_date": null,
+    "schema_version": "1.0.0",
+    "selected_option_ids": [],
+    "sensitivity_summary": [],
+    "statement": "No aggregate recommendation: review the ordered framework recommendations without combining them into an opaque score.",
+    "status": "no_recommendation",
+    "trade_offs": [],
+    "triggers": [],
+    "updated_at": null
+  },
+  "route": {
+    "candidate_framework_ids": [
+      "value_gate",
+      "resource_allocation",
+      "schedule_analysis",
+      "risk_treatment"
+    ],
+    "reason_codes": [],
+    "requested_evidence_fields": [],
+    "route_action": "route",
+    "selected_framework_ids": [
+      "value_gate",
+      "resource_allocation",
+      "schedule_analysis",
+      "risk_treatment"
+    ],
+    "sufficiency_report": {
+      "missing_fields": [],
+      "reason_codes": [],
+      "sufficient": true
+    }
+  },
+  "sensitivity": [
+    [
+      {
+        "calculation_ids": [
+          "npv-continue"
+        ],
+        "conclusion": "one-way named sensitivity; flip threshold=0.7781065088757396449704142016",
+        "high_case": "1.15: continue",
+        "id": "value-sensitivity-0",
+        "low_case": "0.35: pivot",
+        "variable": "continue benefit realization"
+      }
+    ],
+    [
+      {
+        "calculation_ids": [
+          "weighted-score:platform",
+          "weighted-score:security",
+          "weighted-score:growth",
+          "weighted-score:migration"
+        ],
+        "conclusion": "ranking changes within tested weight range",
+        "high_case": "1",
+        "id": "weight-sensitivity:value",
+        "low_case": "0",
+        "variable": "weight:value"
+      },
+      {
+        "calculation_ids": [
+          "weighted-score:platform"
+        ],
+        "conclusion": "bounded score range declared; rerun required for changed evidence",
+        "high_case": "fixed-anchor best",
+        "id": "score-sensitivity:platform",
+        "low_case": "fixed-anchor worst",
+        "variable": "score:platform"
+      },
+      {
+        "calculation_ids": [
+          "weighted-score:growth"
+        ],
+        "conclusion": "bounded score range declared; rerun required for changed evidence",
+        "high_case": "fixed-anchor best",
+        "id": "score-sensitivity:growth",
+        "low_case": "fixed-anchor worst",
+        "variable": "score:growth"
+      },
+      {
+        "calculation_ids": [
+          "weighted-score:migration"
+        ],
+        "conclusion": "bounded score range declared; rerun required for changed evidence",
+        "high_case": "fixed-anchor best",
+        "id": "score-sensitivity:migration",
+        "low_case": "fixed-anchor worst",
+        "variable": "score:migration"
+      },
+      {
+        "calculation_ids": [
+          "weighted-score:security"
+        ],
+        "conclusion": "bounded score range declared; rerun required for changed evidence",
+        "high_case": "fixed-anchor best",
+        "id": "score-sensitivity:security",
+        "low_case": "fixed-anchor worst",
+        "variable": "score:security"
+      }
+    ],
+    [],
+    [
+      {
+        "calculation_ids": [
+          "net_benefit"
+        ],
+        "conclusion": "Net benefit switches at event probability 0.1705882352941176470588235294",
+        "high_case": "0.40",
+        "id": "risk-switch-event-probability",
+        "low_case": "0.20",
+        "variable": "event_probability"
+      },
+      {
+        "calculation_ids": [
+          "net_benefit"
+        ],
+        "conclusion": "Net benefit switches at mitigation failure probability 0.8518518518518518518518518519",
+        "high_case": "1",
+        "id": "risk-switch-mitigation-failure",
+        "low_case": "0",
+        "variable": "mitigation_failure_probability"
+      },
+      {
+        "calculation_ids": [
+          "full_life_mitigation_cost",
+          "net_benefit"
+        ],
+        "conclusion": "Net benefit switches at full-life mitigation cost 315000.0000000",
+        "high_case": "225000.0",
+        "id": "risk-switch-mitigation-cost",
+        "low_case": "0",
+        "variable": "mitigation_cost"
+      },
+      {
+        "calculation_ids": [
+          "tolerance_gap"
+        ],
+        "conclusion": "Tolerance status switches at residual exposure 135000.0000000",
+        "high_case": "200000",
+        "id": "risk-switch-tolerance",
+        "low_case": "50000",
+        "variable": "risk_tolerance"
+      }
+    ]
+  ],
+  "validations": [
+    {
+      "issues": [],
+      "valid": true
+    },
+    {
+      "issues": [],
+      "valid": true
+    },
+    {
+      "issues": [],
+      "valid": true
+    },
+    {
+      "issues": [],
+      "valid": true
+    },
+    {
+      "issues": [],
+      "valid": true
+    }
+  ]
+}

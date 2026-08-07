@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meowclaw.local/pptsmith/pmo-input.schema.json",
+  "title": "PPTSmith PMO Consulting Pack Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "executive_dashboard",
+    "roadmap",
+    "milestones",
+    "raid_log",
+    "workstreams",
+    "raci",
+    "risk_heat_map",
+    "decision",
+    "kpis",
+    "actions"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "client", "period", "headline", "decision_ask"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "client": { "type": "string", "minLength": 1 },
+        "period": { "type": "string", "minLength": 1 },
+        "headline": { "type": "string", "minLength": 1 },
+        "decision_ask": { "type": "string", "minLength": 1 }
+      }
+    },
+    "executive_dashboard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall_status", "summary", "metrics", "top_risks", "next_actions"],
+      "properties": {
+        "overall_status": { "$ref": "#/$defs/status" },
+        "summary": { "type": "string", "minLength": 1 },
+        "metrics": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 6,
+          "items": { "$ref": "#/$defs/metric" }
+        },
+        "top_risks": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/risk" }
+        },
+        "next_actions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "roadmap": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/phase" }
+    },
+    "milestones": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/milestone" }
+    },
+    "raid_log": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/raid" }
+    },
+    "workstreams": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/workstream" }
+    },
+    "raci": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roles", "tasks"],
+      "properties": {
+        "roles": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 6,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "tasks": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["task", "assignments"],
+            "properties": {
+              "task": { "type": "string", "minLength": 1 },
+              "assignments": {
+                "type": "array",
+                "minItems": 3,
+                "items": { "enum": ["R", "A", "C", "I", "-"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "risk_heat_map": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "impact", "likelihood", "owner"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "impact": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "likelihood": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "owner": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "options", "recommendation"],
+      "properties": {
+        "question": { "type": "string", "minLength": 1 },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "pros", "cons", "score"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "pros": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "cons": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "score": { "type": "integer", "minimum": 1, "maximum": 5 }
+            }
+          }
+        },
+        "recommendation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "kpis": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/metric" }
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["owner", "action", "deadline", "status"],
+        "properties": {
+          "owner": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "minLength": 1 },
+          "deadline": { "type": "string", "minLength": 1 },
+          "status": { "$ref": "#/$defs/status" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "status": { "enum": ["green", "yellow", "red", "gray"] },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "value", "status", "note"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "value": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk", "impact", "owner", "mitigation", "status"],
+      "properties": {
+        "risk": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "mitigation": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "period", "objective", "status"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "period": { "type": "string", "minLength": 1 },
+        "objective": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "name", "status", "evidence"],
+      "properties": {
+        "date": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "evidence": { "type": "string", "minLength": 1 }
+      }
+    },
+    "raid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "item", "impact", "owner", "mitigation", "status"],
+      "properties": {
+        "type": { "enum": ["Risk", "Assumption", "Issue", "Dependency"] },
+        "item": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "mitigation": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "workstream": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "owner", "status", "deliverables"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "deliverables": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

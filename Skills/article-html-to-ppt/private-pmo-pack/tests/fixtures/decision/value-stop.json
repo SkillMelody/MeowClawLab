@@ -1,0 +1,11 @@
+{
+  "benefit": {"direction": "increase", "baseline": "50", "target": "80", "actual_to_date": "55", "planned_to_date": "70", "forecast": "60"},
+  "options": {
+    "continue": {"cash_flows": [{"period": 1, "benefit": "15", "cost": "45"}], "hard_constraints_met": true},
+    "pivot": {"cash_flows": [{"period": 1, "benefit": "20", "cost": "50"}], "hard_constraints_met": false, "constraint_ids": ["funding-cap"]},
+    "stop": {"cash_flows": [{"period": 1, "benefit": "0", "cost": "5"}], "hard_constraints_met": true}
+  },
+  "discount_rate": "0", "completeness": "1", "confidence": "high",
+  "policy": {"completeness_threshold": "0.8", "materiality_threshold": "5", "confidence_threshold": "medium"},
+  "sensitivity": [{"name": "continue upside", "option": "continue", "variable": "future_benefit", "low": "0.8", "high": "3"}]
+}

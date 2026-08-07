@@ -5,7 +5,7 @@ metadata:
   display_name: "MeowClaw PPT Smith"
   english_alias: "MeowClaw PPT Smith"
   public_slug: "meowclaw-pptsmith"
-  version: "2.1.2"
+  version: "3.0.0"
   compatibility_aliases: ["article-html-to-ppt", "meowclaw-decksmith"]
 ---
 
@@ -22,7 +22,7 @@ Public identity:
 
 Keep the OpenClaw skill route and directory name as `article-html-to-ppt` until all installed clients, ClawHub versions, GitHub paths, and historical workflows have migrated. Treat `article-html-to-ppt` and `meowclaw-decksmith` as backward-compatible aliases, not as the primary public name.
 
-Version `2.1.2` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. The canonical `python_pptx` route now performs representative real rendering for Standard, promotes a successful render to the preview PDF, blocks stale render evidence on resumed runs, and enforces structural checks for severe overflow, low text/background contrast, arrow text safety, semantic footnotes, and editable-content coverage. It also adds presentation-scale covers, full-canvas single charts/tables, editable metric walls, and native source footers. Version 2.1.2 additionally passes macOS renderer paths through `osascript` arguments, contains fixture cleanup to its fixed test directory, discloses only required-font availability, and loads fixture safety checks through a normal static import. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v2.1-rc1-acceptance-report.md`.
+Version `3.0.0` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. The canonical `python_pptx` route now performs representative real rendering for Standard, promotes a successful render to the preview PDF, blocks stale render evidence on resumed runs, and enforces structural checks for severe overflow, low text/background contrast, arrow text safety, semantic footnotes, and editable-content coverage. It also adds presentation-scale covers, full-canvas single charts/tables, editable metric walls, and native source footers. Version 3.0.0 additionally passes macOS renderer paths through `osascript` arguments, contains fixture cleanup to its fixed test directory, discloses only required-font availability, and loads fixture safety checks through a normal static import. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v3.0.0-release-notes.md` for the v1.2.0-to-v3.0.0 architecture boundary and model/path evidence.
 
 ### Capability and Permission Boundary
 
@@ -88,6 +88,217 @@ source/article/design brief
 -> revision loop
 -> package user-facing delivery + delivery-manifest.json
 ```
+
+## Generation Path: Code vs IR (User Choice)
+
+Two paths, one decision. The user controls which path is used.
+
+### Path A: Code Path（精细化 / 高定模式）
+
+LLM writes a standalone Python build script (`build_deck.py`) using python-pptx directly.
+Best for: important presentations, board decks, investor pitches, anything where visual
+refinement matters more than reproducibility.
+
+**Trigger**: User says 「精细做」「高定模式」「手写代码生成」「和之前 State of AI 一样」「质量优先」
+
+**Execution**:
+```bash
+python3 build_deck.py
+```
+
+**Quality**: Highest visual quality — full control over spacing, colors, positioning.
+No pipeline overhead. But: one-shot execution, no QA gate, no fallback.
+
+**Template**: Use the consulting-light palette (`#051C2C` primary, `#2251FF` accent, white bg).
+Slide dimensions: 13.333×7.5 inches (16:9). Reference patterns:
+- Cover: dark navy bg + accent bar + title/subtitle/meta
+- Data slide: action title + left chart + right insight callout
+- KPI cards: large number + label + trend arrow
+- Every slide: source footnote + page number
+- Chart: data labels on bars, no unnecessary axis clutter
+- Table: dark header + zebra stripes
+
+### Path B: IR Path（标准路径 / Pipeline）
+
+LLM generates `ppt-ir.json`, then `run_pipeline.py` builds, validates, and delivers.
+Best for: batch generation, complex components (diagrams, PMO, PRD), standardized output,
+scenarios requiring QA traceability.
+
+**Trigger**: Default path. User says 「快速生成」「标准模式」「流水线模式」
+
+**Execution**:
+```bash
+python3 scripts/run_pipeline.py --ppt-ir ppt-ir.json --style style-contract.json \
+  --profile standard --builder python_pptx --work-dir .ppt-work --output-dir final/
+```
+
+**Quality**: Structurally guaranteed (contract validation, QA gates, fallback chains).
+Visual quality limited by builder's rendering capabilities.
+
+### Selection Rule
+
+- User explicitly says 「精细/手写/高定/代码」→ Path A
+- User explicitly says 「快速/标准/流水线」→ Path B
+- Default → Path B (IR Path)
+- When Path A: do NOT ask for confirmation, just generate the code and execute
+- When Path B: relay the `PPTSMITH_PROFILE_NOTICE`, continue without waiting
+
+## Layered Quality Guarantee 分层质量保障
+
+高配模型走 Path A（代码路径），低配模型走 Path B（IR 路径）。两路径都有 builder 保障底线质量。
+
+| 层级 | 保障内容 | 高配模型 | 低配模型 |
+|---|---|---|---|
+| **LLM 层** | 内容规划、数据密度、叙事结构 | 模型能力强 → 质量上限高 | 模型能力弱 → IR 密度可能不足 |
+| **Builder 层** | 封面、图表、表格、卡片渲染 | 代码直接控制 → 精细排版 | IR → builder 动态布局 → 稳定质量 |
+| **Pipeline 层** | 合约校验、QA 门禁、渲染回读 | 无（代码路径跳过） | 全量 QA + 视觉修订 |
+
+**核心保障**：即使低配模型生成的 IR 数据密度不足，builder 的渲染质量（配色、斑马纹、数据标签、自适应字号）确保输出不低于专业底线。封面根据 visual plan 的 professional_route 自动选择风格（战略决策→navy hero，研究报告→minimal light）。尾页自动生成感谢页。
+
+## PMO Production Route (Auto-Routing)
+
+When the user's request matches PMO/governance signals, **automatically route to the PMO builder** (`private-pmo-pack/scripts/build_pmo_deck.py`) instead of the generic pipeline.
+
+### Trigger Signals (LLM-level): match ≥2 to auto-route
+
+| Category | Signals |
+|---|---|
+| **Keywords** | 周报、月报、项目状态、里程碑、RAID、RACI、风险矩阵、决策记录、指导委员会、SteerCo、干系人、燃尽图、Sprint Review、站会、项目治理、项目管理、PMO |
+| **Material type** | 项目计划、RAID log、状态报告、Sprint 数据、里程碑清单 |
+| **User intent** | 「帮我做个项目周报」「生成 PMO dashboard」「项目管理汇报」 |
+| **Audience** | 项目赞助人、PMO、指导委员会、项目经理 |
+
+### Override
+
+- User says 「用 PMO 格式」→ force PMO
+- User says 「做咨询风格」「不要 PMO」「通用格式」→ force generic
+- User says nothing → LLM auto-judges based on signals above
+
+### PMO Input
+
+Generate a PMO domain JSON conforming to `private-pmo-pack/schemas/pmo-input.schema.json`, then run:
+```bash
+python3 private-pmo-pack/scripts/build_pmo_deck.py --input pmo-input.json --output deck.pptx
+```
+
+The PMO builder produces 11 standard page types: Cover, Executive Dashboard, Roadmap, Milestones, RAID Log, Workstreams, RACI Matrix, Risk Heat Map, Decision Page, KPI Dashboard, Action Tracker.
+
+### Quality Disclaimer (ALL routes)
+
+Every generated deck MUST include a final quality-disclaimer page as the last slide. This page must contain:
+
+- **Title**: 「关于本报告」或「质量声明」
+- **Body**: 说明本 PPT 由 MeowClaw PPT Smith 自动生成，因源文档质量差异可能导致内容不完整或数据提取不足
+- **Feedback channels**:
+  - GitHub Issues: `github.com/MeowClawLab` （技术问题/功能请求）
+  - 公众号「夜猫子弦月」留言（内容建议/商务合作）
+
+This page should be auto-appended by the builder; the LLM must not generate it as part of the IR.
+
+## Visual Narrative Pipeline (Recommended Path)
+
+**DO NOT directly generate ppt-ir.json.** Instead, generate content-analysis + storyline, then let the visual narrative pipeline plan the IR.
+
+### Step 1: Analyze the document → `content-analysis.json`
+
+```json
+{
+  "title": "文档标题",
+  "summary": "一句话摘要",
+  "evidence_types": ["statistics", "comparison", "trend", "case_study"],
+  "relationship_types": ["adoption_gap", "cause_effect", "heatmap"],
+  "project_governance_terms": [],
+  "audience": "目标受众描述",
+  "key_findings": ["发现1", "发现2", ...]
+}
+```
+
+- `evidence_types`: pick from statistics, comparison, trend, case_study, forecast, benchmark, survey
+- `relationship_types`: pick from adoption_gap, cause_effect, heatmap, capability_maturity, system_boundary, data_flow, dependency, layer, comparison, trend
+- `project_governance_terms`: non-empty triggers PMO route; typical values: ["steering committee", "milestone", "RAID", "RACI", "workstream"]
+- `key_findings`: 3-8 items; the most important conclusions from the document
+
+### Step 2: Plan the story → `storyline.json`
+
+```json
+{
+  "title": "PPT 标题",
+  "slides": [
+    {
+      "id": "S01",
+      "role": "cover",
+      "message": "核心信息或标题",
+      "audience_question": "这页回答受众的什么问题？",
+      "evidence_refs": ["src-K1"],
+      "priority": "key"
+    },
+    ...
+  ]
+}
+```
+
+**Page count rule**: information density × audience context = page count. Not fixed at 12.
+- Light doc (2-3 key findings, simple data): 6-8 pages
+- Medium doc (5-8 findings, multi-dimension): 10-14 pages  
+- Dense doc (10+ findings, complex relationships): 15-20 pages
+
+**Slide roles** (pick the most specific that fits):
+- `cover` — title + subtitle + date/source
+- `data` — chart, table, or data visualization
+- `judgment` — key insight or management conclusion
+- `comparison` — side-by-side or before/after
+- `evidence` — supporting proof or case study
+- `roadmap` — timeline, phases, or sequence
+- `decision` — options + recommendation
+- `closing` — summary + next steps
+
+**priority**: `key` for critical slides, `supporting` for supplementary
+
+### Step 3: Generate source-context-brief → `source-context-brief.json`
+
+```json
+{
+  "schema_version": "1.0",
+  "source_id": "简短标识",
+  "primary_audience": ["executive", "management"],
+  "delivery_objective": "decide",
+  "source_material_type": "research_report",
+  "evidence_profile": ["statistics", "trend"],
+  "delivery_scenario": "strategy_review"
+}
+```
+
+- `primary_audience`: executive, management, analyst, investor, engineer, public
+- `delivery_objective`: decide, inform, recommend, align, teach
+- `source_material_type`: research_report, strategy_memo, project_plan, prd, pitch_deck, article
+- `delivery_scenario`: strategy_review, board_meeting, client_pitch, status_review, training
+
+### Step 4: Run the pipeline
+
+```bash
+python3 scripts/run_pipeline.py \
+  --requirements requirements.json \
+  --ppt-ir ppt-ir.json \
+  --style style-contract.json \
+  --content-analysis content-analysis.json \
+  --storyline storyline.json \
+  --source-context-brief source-context-brief.json \
+  --profile standard \
+  --builder python_pptx \
+  --work-dir .ppt-work \
+  --output-dir final/
+```
+
+The pipeline will:
+1. Route audience → select professional route (strategic_decision, research_insight, etc.)
+2. Route task → determine task type
+3. Plan visual narrative → generate visual-plan.json with page intents, expressions, layouts
+4. Compile visual plan → merge into final ppt-ir.json
+5. Build → verify → deliver
+
+### Fallback: Direct IR
+
+If visual narrative pipeline is not available or the topic is too simple, fall back to directly generating `ppt-ir.json` with the generic cover/data/judgment/closing structure. But always prefer the visual narrative path for professional-quality output.
 
 The critical rules are:
 

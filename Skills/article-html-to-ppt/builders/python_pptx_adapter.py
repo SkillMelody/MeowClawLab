@@ -31,10 +31,13 @@ class PythonPptxAdapter:
                 "readback": True,
             },
             components={
+                "causal_chain": "full",
                 "heat_matrix": "full",
                 "layered_architecture": "full",
                 "drill_down_stair": "full",
                 "phase_roadmap": "full",
+                "product_ui_overview": "full",
+                "interaction_storyboard": "full",
             } if available else {},
             warnings=[] if available else ["python-pptx package is not importable."],
         )
@@ -43,10 +46,13 @@ class PythonPptxAdapter:
         if (
             component_type
             in {
+                "causal_chain",
                 "heat_matrix",
                 "layered_architecture",
                 "drill_down_stair",
                 "phase_roadmap",
+                "product_ui_overview",
+                "interaction_storyboard",
             }
             and delivery_route == "native_diagram"
         ):
@@ -78,7 +84,7 @@ class PythonPptxAdapter:
         warnings = _unsupported_style_warnings(style_contract)
         return BuildPlan(builder=self.name, slides=slides, style_contract=dict(style_contract), warnings=warnings)
 
-    def build(self, build_plan: BuildPlan, output_dir: Path) -> BuildResult:
+    def build(self, build_plan: BuildPlan, output_dir: Path, *, visual_plan: dict[str, Any] | None = None) -> BuildResult:
         try:
             from pptx import Presentation
             from pptx.dml.color import RGBColor
@@ -95,6 +101,13 @@ class PythonPptxAdapter:
         presentation.slide_height = Inches(7.5)
         blank_layout = presentation.slide_layouts[6]
 
+        # Index visual plan slides by id for layout hints
+        vp_slides: dict[str, dict[str, Any]] = {}
+        if isinstance(visual_plan, dict):
+            for vs in visual_plan.get("slides", []) or []:
+                if isinstance(vs, dict) and vs.get("slide_id"):
+                    vp_slides[vs["slide_id"]] = vs
+
         object_results: list[dict[str, Any]] = []
         fallbacks: list[dict[str, Any]] = []
         warnings: list[str] = list(build_plan.warnings)
@@ -103,22 +116,40 @@ class PythonPptxAdapter:
             slide = presentation.slides.add_slide(blank_layout)
             slide.background.fill.solid()
             slide.background.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+            # --- visual-plan-driven layout hints ---
+            vp = vp_slides.get(slide_plan.get("id", "")) or {}
+            vp_layout = vp.get("layout") if isinstance(vp.get("layout"), dict) else {}
+            vp_density = vp.get("density") if isinstance(vp.get("density"), dict) else {}
+            primary_zone_ratio = float(vp_layout.get("primary_zone_ratio", 0.56))
+            density_level = str(vp_density.get("level", "medium"))
+            page_archetype = str(vp.get("page_archetype", ""))
             if slide_plan.get("slide_role") == "cover":
-                _add_cover(slide, slide_plan, style)
+                _add_cover(slide, slide_plan, style, vp)
+                if not (slide_plan.get("objects") or []):
+                    continue
+            elif slide_plan.get("slide_role") == "closing":
+                _add_closing(slide, slide_plan, style, slide_number)
                 if not (slide_plan.get("objects") or []):
                     continue
             else:
+                title = str(slide_plan.get("title") or "Untitled")
+                cjk_chars = sum(1 for c in title if '\u4e00' <= c <= '\u9fff')
+                # Allow up to 2 lines; shrink if text overflows
+                title_h = 0.82 if len(title) > 28 else 0.62
+                title_size = style["title_size"] if len(title) <= 28 else style["title_size"] - 2.0
                 _add_textbox(
                     slide,
-                    slide_plan.get("title") or "Untitled",
+                    title,
                     x=style["margin_left"],
                     y=style["margin_top"],
                     w=12.2,
-                    h=0.45,
-                    font_size=style["title_size"],
+                    h=title_h,
+                    font_size=title_size,
                     bold=True,
                     color=style["primary"],
                     font_name=style["font_name"],
+                    shrink=True,
+                    min_size=max(14.0, style["body_size"]),
                 )
             body_parts: list[str] = []
             seen_text = {
@@ -134,12 +165,29 @@ class PythonPptxAdapter:
                 seen_text.add(normalized)
             body = "\n".join(body_parts)
             if body and slide_plan.get("slide_role") != "cover":
-                _add_textbox(slide, body, x=style["margin_left"], y=1.05, w=11.7, h=0.5, font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"])
+                _add_textbox(slide, body, x=style["margin_left"], y=1.05, w=11.7, h=0.45, font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"], shrink=True, min_size=max(8.0, style["body_size"] - 3))
             if slide_plan.get("slide_role") != "cover":
                 _add_footer(slide, slide_plan, style, slide_number)
             objects = slide_plan.get("objects", []) or []
             if not objects:
                 continue
+            # --- visual-plan-driven layout: dynamic position & height ---
+            title_zone_h = 0.58 if len(title) <= 28 else 0.78
+            content_top = style["margin_top"] + title_zone_h
+            if body and slide_plan.get("slide_role") != "cover":
+                content_top += 0.4  # body text zone
+            footer_h = 0.35 if style["footer_enabled"] else 0.0
+            available_h = 7.5 - content_top - style["margin_bottom"] - footer_h - 0.3
+            if vp:
+                # Visual-plan-driven: use primary_zone_ratio and density from the plan
+                content_height = available_h * primary_zone_ratio
+                dens_scale = {"high": 1.0, "medium": 0.92, "low": 0.82}.get(density_level, 0.88)
+                content_height *= dens_scale
+                y = content_top + 0.15
+            else:
+                # No visual plan: use classic hardcoded layout
+                y = 1.85
+                content_height = 4.65
             card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
             for index, obj in enumerate(objects):
                 route = ((obj.get("delivery_plan") or {}).get("selected_route") or obj.get("delivery_preferences", {}).get("preferred_route") or "native_ppt")
@@ -149,25 +197,19 @@ class PythonPptxAdapter:
                     rendered = renderer(
                         slide,
                         obj,
-                        slide_plan.get("page_design_intent")
-                        if isinstance(slide_plan.get("page_design_intent"), dict)
-                        else {},
-                        slide_plan.get("style_contract")
-                        if isinstance(slide_plan.get("style_contract"), dict)
-                        else {},
+                        slide_plan.get("page_design_intent") if isinstance(slide_plan.get("page_design_intent"), dict) else {},
+                        slide_plan.get("style_contract") if isinstance(slide_plan.get("style_contract"), dict) else {},
                     )
                     warnings.extend(rendered.get("warnings", []))
-                    object_results.append(
-                        {
-                            "slide_id": slide_plan.get("id"),
-                            "object_id": obj.get("id"),
-                            "component_type": component_type,
-                            "planned_route": route,
-                            "actual_route": rendered["actual_route"],
-                            "status": "created",
-                            "object_names": rendered.get("object_names", []),
-                        }
-                    )
+                    object_results.append({
+                        "slide_id": slide_plan.get("id"),
+                        "object_id": obj.get("id"),
+                        "component_type": component_type,
+                        "planned_route": route,
+                        "actual_route": rendered["actual_route"],
+                        "status": "created",
+                        "object_names": rendered.get("object_names", []),
+                    })
                     continue
                 actual_route = route
                 component_type = obj.get("component_type") or obj.get("type")
@@ -175,26 +217,18 @@ class PythonPptxAdapter:
                 is_process = route == "native_diagram" and component_type == "process"
                 if route in {"hybrid_overlay", "svg_component", "generated_image", "background_image"}:
                     actual_route = "native_ppt"
-                    fallbacks.append(
-                        {
-                            "slide_id": slide_plan.get("id"),
-                            "object_id": obj.get("id"),
-                            "component_type": component_type,
-                            "planned_route": route,
-                            "actual_route": actual_route,
-                            "reason_codes": ["PYTHON_PPTX_MINIMAL_NATIVE_FALLBACK"],
-                            "editable_core_preserved": obj.get("editability") != "native_required",
-                        }
-                    )
+                    fallbacks.append({
+                        "slide_id": slide_plan.get("id"),
+                        "object_id": obj.get("id"),
+                        "component_type": component_type,
+                        "planned_route": route,
+                        "actual_route": actual_route,
+                        "reason_codes": ["PYTHON_PPTX_MINIMAL_NATIVE_FALLBACK"],
+                        "editable_core_preserved": obj.get("editability") != "native_required",
+                    })
                 single_object = len(objects) == 1
-                x = (
-                    style["margin_left"]
-                    if single_object
-                    else style["margin_left"] + index * (card_width + style["card_gap"])
-                )
-                y = 1.85
+                x = (style["margin_left"] if single_object else style["margin_left"] + index * (card_width + style["card_gap"]))
                 object_width = 11.7 if single_object else card_width
-                content_height = 4.65
                 if route == "native_table" or obj.get("type") == "table":
                     _add_table(
                         slide,
@@ -231,7 +265,7 @@ class PythonPptxAdapter:
                         h=process_height,
                         style=style,
                     )
-                elif component_type == "metric_card":
+                elif component_type == "metric_card" or (isinstance(obj.get("content"), dict) and obj["content"].get("cards")):
                     _add_metric_wall(
                         slide,
                         obj,
@@ -261,6 +295,9 @@ class PythonPptxAdapter:
                         "status": "created",
                     }
                 )
+
+        # --- quality disclaimer (final slide) ---
+        _add_disclaimer_page(presentation, style)
 
         presentation.save(deck_path)
         return BuildResult(builder=self.name, status="created", pptx=str(deck_path), object_results=object_results, fallbacks=fallbacks, warnings=warnings)
@@ -293,75 +330,174 @@ def _semantic_renderer(component_type: str) -> Any:
     return get_renderer(component_type)
 
 
-def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: float, font_size: float, color: str, bold: bool = False, font_name: str | None = None) -> None:
+def _text_metrics(text: str, font_size_pt: float) -> tuple[float, float]:
+    """Estimate rendered text extent: (width_inches, lines_if_wrapped_at_12in)"""
+    if not text:
+        return 0.0, 0.0
+    cjk = sum(1 for c in text if '\u4e00' <= c <= '\u9fff' or '\u3000' <= c <= '\u303f' or '\uff00' <= c <= '\uffef')
+    latin = len(text) - cjk
+    width_pt = (cjk * 1.0 + latin * 0.55) * font_size_pt
+    return width_pt / 72.0, font_size_pt * 1.35 / 72.0
+
+
+def _fit_text_size(text: str, max_w_in: float, max_h_in: float, start_pt: float, min_pt: float = 8.0) -> float:
+    """Return the largest font size ≤ start_pt that fits within max_w × max_h."""
+    if not text or max_w_in <= 0 or max_h_in <= 0:
+        return max(start_pt, min_pt)
+    size = start_pt
+    while size > min_pt:
+        est_w, line_h = _text_metrics(text, size)
+        lines = max(1, round(est_w / max_w_in))
+        if lines * line_h <= max_h_in:
+            return size
+        size -= 1.0
+    return max(min_pt, size)
+
+
+def _add_textbox(slide: Any, text: str, *, x: float, y: float, w: float, h: float, font_size: float, color: str, bold: bool = False, font_name: str | None = None, shrink: bool = False, min_size: float = 8.0) -> Any:
     from pptx.dml.color import RGBColor
+    from pptx.enum.text import MSO_AUTO_SIZE
     from pptx.util import Inches, Pt
 
+    if shrink:
+        font_size = _fit_text_size(str(text), w, h, font_size, min_size)
     box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     frame = box.text_frame
     frame.clear()
+    frame.auto_size = MSO_AUTO_SIZE.NONE
+    frame.word_wrap = True
     paragraph = frame.paragraphs[0]
     run = paragraph.add_run()
     run.text = str(text)
     run.font.size = Pt(font_size)
     run.font.bold = bold
-    run.font.name = font_name
+    run.font.name = "PingFang SC" if any("\u4e00" <= char <= "\u9fff" for char in str(text)) else font_name
     run.font.color.rgb = RGBColor.from_string(color)
     return box
 
 
-def _add_cover(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any]) -> None:
+def _add_cover(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any], vp: dict[str, Any] | None = None) -> None:
+    """Render cover slide with style determined by visual plan or data."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.util import Inches
+
+    title = str(slide_plan.get("title") or "Untitled")
+    subtitle = str(slide_plan.get("message") or "").strip()
+    if subtitle == title:
+        subtitle = ""
+    # Determine cover style from visual plan, page_design_intent, or fallback to title length
+    route = (vp or {}).get("professional_route", "")
+    archetype = (vp or {}).get("page_archetype", "")
+    # navy_hero: dark bg for decision/investor decks; minimal_light for reports/research
+    if route in {"strategic_decision", "investor_commercial"} or archetype == "navy_hero":
+        _cover_navy_hero(slide, title, subtitle, style)
+    else:
+        _cover_minimal_light(slide, title, subtitle, style)
+
+
+def _cover_navy_hero(slide: Any, title: str, subtitle: str, style: dict[str, Any]) -> None:
+    """Dark navy background cover — McKinsey board-deck style."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.util import Inches
+
+    # Full-slide dark background
+    bg = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5)
+    )
+    bg.name = "Decoration:cover:bg"
+    bg.fill.solid()
+    bg.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
+    bg.line.fill.background()
+    # Accent bar
+    bar = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE, Inches(0.8), Inches(2.0), Inches(0.08), Inches(2.8)
+    )
+    bar.name = "Decoration:cover:bar"
+    bar.fill.solid()
+    bar.fill.fore_color.rgb = RGBColor.from_string((style.get("data_series", ["2251FF"])[0] if style.get("data_series") else "2251FF").lstrip("#"))
+    bar.line.fill.background()
+    # Title
+    _add_textbox(slide, title, x=1.1, y=2.2, w=11.2, h=1.6,
+        font_size=min(38.0, style["title_size"] * 1.6), bold=True,
+        color=style["background"], font_name=style["font_name"], shrink=True, min_size=22)
+    if subtitle:
+        _add_textbox(slide, subtitle, x=1.1, y=4.0, w=10.0, h=0.7,
+            font_size=max(14.0, style["body_size"]), color=style.get("text_secondary", "8899AA"),
+            font_name=style["font_name"])
+    # Meta line
+    _add_textbox(slide, "—— MeowClaw PPT Smith 自动生成 ——",
+        x=0.8, y=6.6, w=8.0, h=0.3,
+        font_size=style["footnote_size"], color=style.get("text_secondary", "8899AA"), font_name=style["font_name"])
+
+
+def _cover_minimal_light(slide: Any, title: str, subtitle: str, style: dict[str, Any]) -> None:
+    """Clean light-background cover — research report / internal style."""
     from pptx.dml.color import RGBColor
     from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
     from pptx.util import Inches
 
     accent = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-        Inches(style["margin_left"]),
-        Inches(1.45),
-        Inches(0.12),
-        Inches(3.75),
+        Inches(style["margin_left"]), Inches(1.45), Inches(0.12), Inches(3.75),
     )
     accent.name = "Decoration:cover:accent"
     accent.fill.solid()
     accent.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
     accent.line.fill.background()
-    _add_textbox(
-        slide,
-        str(slide_plan.get("title") or "Untitled"),
-        x=style["margin_left"] + 0.42,
-        y=2.0,
-        w=10.8,
-        h=1.65,
-        font_size=max(32.0, style["title_size"] * 1.55),
-        bold=True,
-        color=style["primary"],
-        font_name=style["font_name"],
-    )
-    subtitle = str(slide_plan.get("message") or "").strip()
-    if subtitle and subtitle != str(slide_plan.get("title") or "").strip():
-        _add_textbox(
-            slide,
-            subtitle,
-            x=style["margin_left"] + 0.42,
-            y=4.0,
-            w=9.8,
-            h=0.75,
-            font_size=max(14.0, style["body_size"]),
-            color=style["text_secondary"],
-            font_name=style["font_name"],
-        )
+    _add_textbox(slide, title, x=style["margin_left"] + 0.42, y=2.0, w=10.8, h=1.65,
+        font_size=max(32.0, style["title_size"] * 1.55), bold=True,
+        color=style["primary"], font_name=style["font_name"], shrink=True, min_size=20)
+    if subtitle:
+        _add_textbox(slide, subtitle, x=style["margin_left"] + 0.42, y=4.0, w=9.8, h=0.75,
+            font_size=max(14.0, style["body_size"]), color=style["text_secondary"], font_name=style["font_name"])
     rule = slide.shapes.add_shape(
         MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-        Inches(style["margin_left"] + 0.42),
-        Inches(5.25),
-        Inches(4.0),
-        Inches(0.04),
+        Inches(style["margin_left"] + 0.42), Inches(5.25), Inches(4.0), Inches(0.04),
     )
     rule.name = "Decoration:cover:rule"
     rule.fill.solid()
     rule.fill.fore_color.rgb = RGBColor.from_string(style["border"])
     rule.line.fill.background()
+
+
+def _add_closing(slide: Any, slide_plan: dict[str, Any], style: dict[str, Any], slide_number: int) -> None:
+    """Render professional closing/thank-you slide."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    from pptx.enum.text import PP_ALIGN
+    from pptx.util import Inches, Pt
+
+    title = str(slide_plan.get("title") or "Thank You / 谢谢")
+    message = str(slide_plan.get("message") or "").strip()
+    if message == title:
+        message = ""
+    # Thank you in large text
+    _add_textbox(slide, title, x=style["margin_left"], y=2.0, w=12.2, h=1.2,
+        font_size=max(36.0, style["title_size"] * 1.5), bold=True,
+        color=style["primary"], font_name=style["font_name"], shrink=True, min_size=22)
+    # Accent bar
+    bar = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
+        Inches(style["margin_left"]), Inches(3.4), Inches(2.5), Inches(0.06),
+    )
+    bar.fill.solid()
+    accent_color = style["primary"]
+    ds = style.get("data_series")
+    if isinstance(ds, list) and ds and isinstance(ds[0], str) and len(ds[0].lstrip("#")) >= 6:
+        accent_color = ds[0]
+    bar.fill.fore_color.rgb = RGBColor.from_string(accent_color.lstrip("#"))
+    bar.line.fill.background()
+    if message:
+        _add_textbox(slide, message, x=style["margin_left"], y=3.8, w=11.0, h=0.6,
+            font_size=style["body_size"] + 2, color=style["text_secondary"], font_name=style["font_name"])
+    # Contact / feedback line
+    _add_textbox(slide, "如有问题或建议，欢迎通过 GitHub Issues 或公众号留言反馈",
+        x=style["margin_left"], y=5.0, w=11.0, h=0.35,
+        font_size=style["body_size"], color=style["text_secondary"], font_name=style["font_name"])
+    # Footer
+    _add_footer(slide, slide_plan, style, slide_number)
 
 
 def _add_footer(
@@ -434,9 +570,41 @@ def _metric_entries(obj: dict[str, Any]) -> list[dict[str, str]]:
     content = obj.get("content")
     if not isinstance(content, dict):
         return []
+    # content.cards[] — shape/card-based IR (most common)
+    cards = content.get("cards")
+    if isinstance(cards, list):
+        entries: list[dict[str, str]] = []
+        for index, item in enumerate(cards, start=1):
+            if not isinstance(item, dict):
+                continue
+            value = item.get("value")
+            title = item.get("title") or item.get("label")
+            detail = item.get("detail") or item.get("description")
+            if value is not None:
+                entries.append({
+                    "label": str(title or f"指标 {index:02d}"),
+                    "value": (
+                        f"{item.get('prefix') or ''}"
+                        f"{value}"
+                        f"{item.get('suffix') or ''}"
+                    ),
+                })
+            elif title:
+                # Action card: title only, no metric value
+                num = item.get("num")
+                prefix = f"{num}. " if num is not None else ""
+                display_value = prefix + str(title)
+                detail_text = str(detail) if detail else ""
+                entries.append({
+                    "label": detail_text[:60] if detail_text else display_value,
+                    "value": display_value,
+                })
+        if entries:
+            return entries
+    # content.metrics[] — metric_wall IR
     metrics = content.get("metrics")
     if isinstance(metrics, list):
-        entries: list[dict[str, str]] = []
+        entries = []
         for index, item in enumerate(metrics, start=1):
             if not isinstance(item, dict):
                 continue
@@ -558,6 +726,8 @@ def _object_text(obj: dict[str, Any]) -> str:
     if isinstance(content, str) and content.strip():
         return content.strip()
     if isinstance(content, dict):
+        if all(isinstance(content.get(key), str) and content[key].strip() for key in ("title", "claim")):
+            return f"{content['title'].strip()}\n{content['claim'].strip()}"
         for key in ("title", "label", "claim", "text", "value"):
             value = content.get(key)
             if isinstance(value, str) and value.strip():
@@ -644,7 +814,8 @@ def _chart_data(obj: dict[str, Any]) -> tuple[list[str], list[tuple[str, list[fl
 
 def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
     from pptx.chart.data import ChartData
-    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+    from pptx.dml.color import RGBColor
+    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
     from pptx.util import Inches, Pt
 
     categories, series = _chart_data(obj)
@@ -652,16 +823,47 @@ def _add_chart(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
     data.categories = categories
     for name, values in series:
         data.add_series(name, values)
-    chart = slide.shapes.add_chart(
-        XL_CHART_TYPE.BAR_CLUSTERED, Inches(x), Inches(y), Inches(max(w, 5.8)), Inches(h), data
-    ).chart
-    chart.has_legend = True
-    chart.legend.position = XL_LEGEND_POSITION.BOTTOM
-    chart.legend.font.name = style["font_name"]
-    chart.legend.font.size = Pt(style["table_size"])
+    # Choose horizontal bars for many categories, vertical columns for few
+    chart_type = XL_CHART_TYPE.BAR_CLUSTERED if len(categories) > 5 else XL_CHART_TYPE.COLUMN_CLUSTERED
+    chart_frame = slide.shapes.add_chart(
+        chart_type, Inches(x), Inches(y), Inches(max(w, 5.8)), Inches(h), data
+    )
+    chart = chart_frame.chart
+    chart.has_legend = len(series) > 1
+    if chart.has_legend:
+        chart.legend.position = XL_LEGEND_POSITION.BOTTOM
+        chart.legend.font.name = style["font_name"]
+        chart.legend.font.size = Pt(style["table_size"])
     chart.value_axis.has_major_gridlines = True
+    # Scale axis labels: narrower when many categories
+    axis_label_size = max(7.0, style["table_size"] - (len(categories) - 5) * 0.8 if len(categories) > 5 else style["table_size"])
     chart.category_axis.tick_labels.font.name = style["font_name"]
-    chart.category_axis.tick_labels.font.size = Pt(style["table_size"])
+    chart.category_axis.tick_labels.font.size = Pt(axis_label_size)
+    # --- data series colour injection ---
+    data_series_colors = style.get("data_series")
+    if isinstance(data_series_colors, list) and data_series_colors:
+        try:
+            plot = chart.plots[0]
+            for i, s in enumerate(plot.series):
+                color_hex = data_series_colors[i % len(data_series_colors)]
+                if isinstance(color_hex, str):
+                    s.format.fill.solid()
+                    s.format.fill.fore_color.rgb = RGBColor.from_string(color_hex)
+        except Exception:
+            pass
+    # --- data labels ---
+    try:
+        plot = chart.plots[0]
+        plot.has_data_labels = True
+        data_labels = plot.data_labels
+        data_labels.font.size = Pt(max(8, style["table_size"] - 1))
+        data_labels.font.name = style["font_name"]
+        data_labels.number_format = "0"
+        data_labels.show_value = True
+        if chart_type == XL_CHART_TYPE.BAR_CLUSTERED:
+            data_labels.position = XL_LABEL_POSITION.OUTSIDE_END
+    except Exception:
+        pass
 
 
 def _process_labels(obj: dict[str, Any]) -> list[str]:
@@ -773,6 +975,7 @@ def _add_process(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: floa
 
 def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float, h: float, style: dict[str, Any]) -> None:
     from pptx.dml.color import RGBColor
+    from pptx.oxml.ns import qn
     from pptx.util import Inches, Pt
 
     data = _table_data(obj)
@@ -791,27 +994,143 @@ def _add_table(slide: Any, obj: dict[str, Any], *, x: float, y: float, w: float,
     )
     table_shape.name = f"Component:table:{obj.get('id') or 'primary'}"
     table = table_shape.table
-    for row_index, row in enumerate(data):
+    # Proportional column widths based on content length
+    col_max_len: list[int] = [0] * cols
+    for row_data in data:
+        for ci in range(min(cols, len(row_data))):
+            col_max_len[ci] = max(col_max_len[ci], len(str(row_data[ci])))
+    total_len = sum(col_max_len) or 1
+    col_widths = [max(0.12, (cl / total_len) * w) for cl in col_max_len]
+    for ci, cw in enumerate(col_widths):
+        table.columns[ci].width = Inches(cw)
+    # Stripe colours
+    surface2 = style.get("surface_2", "EBEDF0")
+    border_color = style.get("border", "D1D5DB")
+    for row_index, row_data in enumerate(data):
+        is_header = row_index == 0
         for col_index in range(cols):
             cell = table.cell(row_index, col_index)
-            cell.text = row[col_index] if col_index < len(row) else ""
+            cell.text = row_data[col_index] if col_index < len(row_data) else ""
+            # Fill
             cell.fill.solid()
-            cell.fill.fore_color.rgb = RGBColor.from_string(style["primary"] if row_index == 0 else style["background"])
+            if is_header:
+                cell.fill.fore_color.rgb = RGBColor.from_string(style["primary"])
+            elif row_index % 2 == 0:
+                cell.fill.fore_color.rgb = RGBColor.from_string(surface2)
+            else:
+                cell.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+            # Thin inner border via XML (python-pptx doesn't expose per-cell borders easily)
+            try:
+                tc_pr = cell._tc.get_or_add_tcPr()
+                for border_tag, border_attr in [("a:lnL", "w"), ("a:lnR", "w"), ("a:lnT", "w"), ("a:lnB", "w")]:
+                    existing = tc_pr.find(qn(border_tag))
+                    if existing is None:
+                        from lxml import etree
+                        el = etree.SubElement(tc_pr, qn(border_tag))
+                        el.set(border_attr, "6350")
+                        solid = etree.SubElement(el, qn("a:solidFill"))
+                        srgb = etree.SubElement(solid, qn("a:srgbClr"))
+                        srgb.set("val", border_color.lstrip("#"))
+            except Exception:
+                pass
+            # Typography — shrink long cell text to fit
+            cell_text = row_data[col_index] if col_index < len(row_data) else ""
+            cell_w_in = col_widths[col_index] if col_index < len(col_widths) else w / cols
+            text_len = len(str(cell_text))
+            base_size = max(13.0, style["table_size"]) if compact else style["table_size"]
+            # Scale down for overflowing cells, but keep compact tables crisp
+            if not compact and (text_len > 20 or (text_len > 12 and cell_w_in < 1.5)):
+                cell_size = max(8.0, base_size - 2.0)
+            elif not compact and text_len > 35:
+                cell_size = max(7.0, base_size - 3.0)
+            else:
+                cell_size = base_size
             for paragraph in cell.text_frame.paragraphs:
+                paragraph.space_before = Pt(2)
+                paragraph.space_after = Pt(2)
                 for run in paragraph.runs:
-                    run.font.size = Pt(
-                        max(13.0, style["table_size"])
-                        if compact
-                        else style["table_size"]
-                    )
+                    run.font.size = Pt(cell_size)
                     run.font.name = style["font_name"]
-                    run.font.color.rgb = RGBColor.from_string(style["background"] if row_index == 0 else style["text_primary"])
+                    run.font.color.rgb = RGBColor.from_string(
+                        style["background"] if is_header else style["text_primary"]
+                    )
 
 
 def _hex(value: Any, default: str) -> str:
     if isinstance(value, str) and len(value.lstrip("#")) == 6:
         return value.lstrip("#").upper()
     return default
+
+
+def _add_disclaimer_page(presentation: Any, style: dict[str, Any]) -> None:
+    """Append a quality-disclaimer slide as the final page."""
+    from pptx.dml.color import RGBColor
+    from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+    from pptx.util import Inches, Pt
+
+    blank_layout = presentation.slide_layouts[6]
+    slide = presentation.slides.add_slide(blank_layout)
+    slide.background.fill.solid()
+    slide.background.fill.fore_color.rgb = RGBColor.from_string(style["background"])
+
+    # Title
+    title_box = _add_textbox(
+        slide, "关于本报告",
+        x=style["margin_left"], y=1.5, w=12.2, h=0.7,
+        font_size=style["title_size"], bold=True,
+        color=style["primary"], font_name=style["font_name"],
+    )
+    title_box.name = "text:disclaimer:title"
+    # Body
+    body_lines = [
+        "本 PPT 由 MeowClaw PPT Smith 自动生成。",
+        "因源文档质量差异，可能导致内容不完整、数据提取不足或表述偏差。",
+        "建议在正式使用前对关键数据和结论进行人工复核。",
+    ]
+    for i, line in enumerate(body_lines):
+        body_box = _add_textbox(
+            slide, line,
+            x=style["margin_left"], y=2.35 + i * 0.35, w=11.5, h=0.35,
+            font_size=style["body_size"], color=style["text_secondary"],
+            font_name=style["font_name"],
+        )
+        body_box.name = f"text:disclaimer:body:{i + 1:02d}"
+    # Feedback channels
+    feedback_box = _add_textbox(
+        slide, "📮 反馈与建议",
+        x=style["margin_left"], y=3.8, w=11.5, h=0.4,
+        font_size=style["body_size"] + 1, bold=True,
+        color=style["primary"], font_name=style["font_name"],
+    )
+    feedback_box.name = "text:disclaimer:feedback"
+    channels = [
+        "GitHub Issues：github.com/MeowClawLab（技术问题 / 功能请求）",
+        "公众号「夜猫子弦月」留言（内容建议 / 商务合作）",
+    ]
+    for i, ch in enumerate(channels):
+        channel_box = _add_textbox(
+            slide, ch,
+            x=style["margin_left"], y=4.35 + i * 0.35, w=11.5, h=0.35,
+            font_size=style["table_size"], color=style["text_secondary"],
+            font_name=style["font_name"],
+        )
+        channel_box.name = f"text:disclaimer:channel:{i + 1:02d}"
+    # Footer line
+    from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
+    divider = slide.shapes.add_shape(
+        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
+        Inches(style["margin_left"]), Inches(5.3), Inches(4.0), Inches(0.02),
+    )
+    divider.fill.solid()
+    divider.fill.fore_color.rgb = RGBColor.from_string(style["border"])
+    divider.line.fill.background()
+    footer_box = _add_textbox(
+        slide, "MeowClaw Lab · 用 AI 做好每一页",
+        x=style["margin_left"], y=5.5, w=6.0, h=0.3,
+        font_size=style["footnote_size"], color=style["text_secondary"],
+        font_name=style["font_name"],
+    )
+    footer_box.name = "footer:disclaimer:brand"
 
 
 def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
@@ -822,9 +1141,16 @@ def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
     body_sizes = typography.get("body_sizes_pt") if isinstance(typography.get("body_sizes_pt"), dict) else {}
     footer_tokens = contract.get("footer_tokens") if isinstance(contract.get("footer_tokens"), dict) else {}
     fonts = typography.get("font_primary") if isinstance(typography.get("font_primary"), list) else []
+    data_series = colors.get("data_series")
+    ds_colors: list[str] = []
+    if isinstance(data_series, list):
+        ds_colors = [c.lstrip("#") for c in data_series if isinstance(c, str)]
+    if not ds_colors:
+        ds_colors = ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F"]
     return {
         "background": _hex(colors.get("background"), "FFFFFF"), "primary": _hex(colors.get("primary"), "2D3340"),
-        "surface": _hex(colors.get("surface_1"), "F4F1EA"), "border": _hex(colors.get("border"), "E4E0D7"),
+        "surface": _hex(colors.get("surface_1"), "F4F1EA"), "surface_2": _hex(colors.get("surface_2", colors.get("surface_1")), "EBEDF0"),
+        "border": _hex(colors.get("border"), "E4E0D7"),
         "text_primary": _hex(colors.get("text_primary"), "2D3340"), "text_secondary": _hex(colors.get("text_secondary"), "6E6A60"),
         "font_name": next((font for font in fonts if isinstance(font, str) and font not in {"sans-serif", "serif", "monospace"}), "Aptos"),
         "title_size": float(title_sizes.get("slide", 22)), "body_size": float(body_sizes.get("normal", 13)),
@@ -835,6 +1161,7 @@ def _resolve_style(contract: dict[str, Any]) -> dict[str, Any]:
         "footer_enabled": bool(footer_tokens.get("enabled", False)),
         "footer_height": float(footer_tokens.get("height_in", 0.24)),
         "card_gap": _spacing_value(contract, "card_gap", 0.16),
+        "data_series": ds_colors,
     }
 
 

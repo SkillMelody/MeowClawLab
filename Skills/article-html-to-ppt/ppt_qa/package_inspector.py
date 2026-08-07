@@ -200,14 +200,24 @@ def _check_slide_count(
     expected = _load_json_count(ppt_ir, ["deck", "logical_slide_count"])
     physical = _load_json_count(ppt_ir, ["deck", "physical_slide_count"])
     build_count = _load_json_count(build_manifest, ["slide_count"])
+    # The python_pptx builder auto-appends a quality-disclaimer page as the final
+    # slide (documented in SKILL.md). Logical/build counts therefore allow a +1
+    # offset for that builder; physical_slide_count, when declared, stays exact.
+    disclaimer_offset = 0
+    builder = (build_manifest or {}).get("builder") or {}
+    if isinstance(builder, dict) and builder.get("selected") == "python_pptx":
+        disclaimer_offset = 1
     for label, count in [("ppt_ir.logical_slide_count", expected), ("ppt_ir.physical_slide_count", physical), ("build_manifest.slide_count", build_count)]:
-        if count is not None and count != inspection.slide_count:
+        if count is None:
+            continue
+        expected_count = count if label == "ppt_ir.physical_slide_count" else count + disclaimer_offset
+        if expected_count != inspection.slide_count:
             inspection.issues.append(
                 factory.create(
                     "PPTX_SLIDE_COUNT_MISMATCH",
                     "error",
                     "package",
                     f"Slide count mismatch against {label}.",
-                    evidence={"actual_slide_count": inspection.slide_count, "expected_slide_count": count, "source": label},
+                    evidence={"actual_slide_count": inspection.slide_count, "expected_slide_count": expected_count, "source": label},
                 )
             )

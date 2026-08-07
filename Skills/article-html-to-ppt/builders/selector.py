@@ -114,6 +114,7 @@ def route_support_ok(route: str, level: SupportLevel, editability: str | None, p
     if profile == "premium" and level == "unknown":
         reasons.append("BUILDER_UNKNOWN_SUPPORT_REJECTED")
     if level in {"unsupported", "unknown"}:
+        reasons.append("BUILDER_COMPONENT_UNSUPPORTED")
         reasons.append("BUILDER_ROUTE_UNSUPPORTED")
     if editability == "native_required":
         if route not in NATIVE_ROUTES:

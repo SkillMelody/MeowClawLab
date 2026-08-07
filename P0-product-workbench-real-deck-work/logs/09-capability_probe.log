@@ -1,0 +1,6 @@
+$ /Library/Developer/CommandLineTools/usr/bin/python3 /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/scripts/capability_probe.py --style /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/style-contract.json --registry /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/references/component-registry.json --output /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/capability-report.json
+
+STDOUT
+capability report written: /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/capability-report.json
+
+STDERR

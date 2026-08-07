@@ -1,0 +1,9 @@
+{
+  "id": "risk-ordinal-only",
+  "question": "What treatment is supported by the heat-map score?",
+  "risk_treatment": {
+    "ordinal_likelihood": 4,
+    "ordinal_impact": 5,
+    "risk_tolerance": 100000
+  }
+}

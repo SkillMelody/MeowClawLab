@@ -111,6 +111,8 @@ def test_forced_missing_runtime_failure_is_named(tmp_path: Path) -> None:
     result = adapter.build(two_slide_plan(), tmp_path / "out")
     assert result.status == "failed"
     assert result.errors[0]["code"] == "PPTXGENJS_RUNTIME_UNAVAILABLE"
+    assert "scripts/bootstrap_pptxgenjs_runtime.py" in result.errors[0]["message"]
+    assert "npm ci" in result.errors[0]["message"]
 
 
 def test_builds_nonempty_two_slide_pptx_and_runtime_result(tmp_path: Path) -> None:

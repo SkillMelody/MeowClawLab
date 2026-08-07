@@ -102,7 +102,18 @@ class PptxGenJsAdapter:
             slides.append(slide_plan)
         return BuildPlan(builder=self.name, slides=slides, style_contract=dict(style_contract))
 
-    def build(self, build_plan: BuildPlan, output_dir: Path) -> BuildResult:
+    def build(
+        self,
+        build_plan: BuildPlan,
+        output_dir: Path,
+        *,
+        visual_plan: dict[str, Any] | None = None,
+    ) -> BuildResult:
+        # The pipeline compiles the visual plan into PPT IR before Builder
+        # planning. Accept the common Builder interface so PptxGenJS consumes
+        # the same invocation contract as python-pptx without duplicating it
+        # in the runtime payload.
+        del visual_plan
         capability = self.probe()
         if not capability.available or capability.command is None:
             return BuildResult(
@@ -110,7 +121,7 @@ class PptxGenJsAdapter:
                 status="failed",
                 errors=[{
                     "code": "PPTXGENJS_RUNTIME_UNAVAILABLE",
-                    "message": "PptxGenJS requires Node, the local module, and build-deck.mjs.",
+                    "message": "PptxGenJS requires Node, the local module, and build-deck.mjs. Run `python3 scripts/bootstrap_pptxgenjs_runtime.py` (which executes lockfile-pinned `npm ci`) from the article-html-to-ppt root, then retry.",
                     "details": capability.errors,
                 }],
             )

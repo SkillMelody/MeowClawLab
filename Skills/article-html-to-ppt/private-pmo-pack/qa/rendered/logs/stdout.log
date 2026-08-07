@@ -1,0 +1,1 @@
+convert ./output/ai-platform-project-pmo.pptx as a Impress document -> ./qa/rendered/ai-platform-project-pmo.pdf using filter : impress_pdf_Export

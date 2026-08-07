@@ -1,0 +1,4487 @@
+{
+  "schema_version": "1.0",
+  "pptx": "private-artifacts/pptsmith-pmo-consulting-pack/output/pmo-reference-visual-styles.pptx",
+  "pptx_sha256": "sha256:fb329265a35be211d1a0e54002ff2207bfb8fa2f4bdb5f72ea6f742f3480ef54",
+  "slide_count": 6,
+  "status": "passed",
+  "metrics": {
+    "native_text_character_count": 1229,
+    "expected_text_character_count": 0,
+    "native_text_ratio": null,
+    "native_table_count": 0,
+    "native_chart_count": 6,
+    "native_connector_count": 11,
+    "rasterized_area_ratio": 0.0,
+    "whole_slide_raster_count": 0,
+    "average_object_count": 29.1667
+  },
+  "slides": [
+    {
+      "slide_index": 1,
+      "slide_id": "S01",
+      "objects": [
+        {
+          "object_id": "ppt-object-1-1",
+          "slide_id": "S01",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: DASHBOARD GAUGE",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "DASHBOARD GAUGE",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-2",
+          "slide_id": "S01",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 半圆仪表盘把状态、缺口和行动优先级压在同一视线内",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "半圆仪表盘把状态、缺口和行动优先级压在同一视线内",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-3",
+          "slide_id": "S01",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-4",
+          "slide_id": "S01",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 01",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 01",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-5",
+          "slide_id": "S01",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "Material: gauge base arc",
+          "x_in": 1.1,
+          "y_in": 1.95,
+          "w_in": 3.95,
+          "h_in": 3.2,
+          "area_ratio": 0.126403,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-6",
+          "slide_id": "S01",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Material: gauge status arc",
+          "x_in": 1.1,
+          "y_in": 1.95,
+          "w_in": 3.95,
+          "h_in": 3.2,
+          "area_ratio": 0.126403,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-7",
+          "slide_id": "S01",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: 74",
+          "x_in": 2.5,
+          "y_in": 3.22,
+          "w_in": 1.05,
+          "h_in": 0.38,
+          "area_ratio": 0.00399,
+          "text": "74",
+          "font_sizes_pt": [
+            31.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-8",
+          "slide_id": "S01",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Text: Readiness index",
+          "x_in": 2.2,
+          "y_in": 3.72,
+          "w_in": 1.66,
+          "h_in": 0.18,
+          "area_ratio": 0.002988,
+          "text": "Readiness index",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-9",
+          "slide_id": "S01",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 1.25,
+          "y_in": 4.85,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D92D20"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-10",
+          "slide_id": "S01",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Text: Risk zone",
+          "x_in": 1.43,
+          "y_in": 4.8,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Risk zone",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-11",
+          "slide_id": "S01",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Text: 0-55",
+          "x_in": 2.25,
+          "y_in": 4.8,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "0-55",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-12",
+          "slide_id": "S01",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 3.12,
+          "y_in": 4.85,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-13",
+          "slide_id": "S01",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Text: Watch",
+          "x_in": 3.3,
+          "y_in": 4.8,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Watch",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-14",
+          "slide_id": "S01",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Text: 56-70",
+          "x_in": 4.12,
+          "y_in": 4.8,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "56-70",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-15",
+          "slide_id": "S01",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 4.78,
+          "y_in": 4.85,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-16",
+          "slide_id": "S01",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Text: Healthy",
+          "x_in": 4.96,
+          "y_in": 4.8,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Healthy",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-17",
+          "slide_id": "S01",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Text: 71-100",
+          "x_in": 5.78,
+          "y_in": 4.8,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "71-100",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-18",
+          "slide_id": "S01",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 6.55,
+          "y_in": 1.74,
+          "w_in": 1.45,
+          "h_in": 2.55,
+          "area_ratio": 0.036976,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-19",
+          "slide_id": "S01",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "Material: gauge mini bar",
+          "x_in": 6.9,
+          "y_in": 1.907,
+          "w_in": 0.75,
+          "h_in": 1.293,
+          "area_ratio": 0.009698,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-20",
+          "slide_id": "S01",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Text: 82",
+          "x_in": 6.8,
+          "y_in": 1.98,
+          "w_in": 0.95,
+          "h_in": 0.28,
+          "area_ratio": 0.00266,
+          "text": "82",
+          "font_sizes_pt": [
+            17.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-21",
+          "slide_id": "S01",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Text: Governance",
+          "x_in": 6.69,
+          "y_in": 3.62,
+          "w_in": 1.17,
+          "h_in": 0.18,
+          "area_ratio": 0.002106,
+          "text": "Governance",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-22",
+          "slide_id": "S01",
+          "shape_id": 23,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 8.45,
+          "y_in": 1.74,
+          "w_in": 1.45,
+          "h_in": 2.55,
+          "area_ratio": 0.036976,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-23",
+          "slide_id": "S01",
+          "shape_id": 24,
+          "shape_type": "text",
+          "name": "Material: gauge mini bar",
+          "x_in": 8.8,
+          "y_in": 2.0795,
+          "w_in": 0.75,
+          "h_in": 1.1205,
+          "area_ratio": 0.008404,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-24",
+          "slide_id": "S01",
+          "shape_id": 25,
+          "shape_type": "text",
+          "name": "Text: 67",
+          "x_in": 8.7,
+          "y_in": 1.98,
+          "w_in": 0.95,
+          "h_in": 0.28,
+          "area_ratio": 0.00266,
+          "text": "67",
+          "font_sizes_pt": [
+            17.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-25",
+          "slide_id": "S01",
+          "shape_id": 26,
+          "shape_type": "text",
+          "name": "Text: Evidence",
+          "x_in": 8.59,
+          "y_in": 3.62,
+          "w_in": 1.17,
+          "h_in": 0.18,
+          "area_ratio": 0.002106,
+          "text": "Evidence",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-26",
+          "slide_id": "S01",
+          "shape_id": 27,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 10.35,
+          "y_in": 1.74,
+          "w_in": 1.45,
+          "h_in": 2.55,
+          "area_ratio": 0.036976,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-27",
+          "slide_id": "S01",
+          "shape_id": 28,
+          "shape_type": "text",
+          "name": "Material: gauge mini bar",
+          "x_in": 10.7,
+          "y_in": 2.183,
+          "w_in": 0.75,
+          "h_in": 1.017,
+          "area_ratio": 0.007628,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D92D20"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-28",
+          "slide_id": "S01",
+          "shape_id": 29,
+          "shape_type": "text",
+          "name": "Text: 58",
+          "x_in": 10.6,
+          "y_in": 1.98,
+          "w_in": 0.95,
+          "h_in": 0.28,
+          "area_ratio": 0.00266,
+          "text": "58",
+          "font_sizes_pt": [
+            17.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-29",
+          "slide_id": "S01",
+          "shape_id": 30,
+          "shape_type": "text",
+          "name": "Text: Adoption",
+          "x_in": 10.49,
+          "y_in": 3.62,
+          "w_in": 1.17,
+          "h_in": 0.18,
+          "area_ratio": 0.002106,
+          "text": "Adoption",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-30",
+          "slide_id": "S01",
+          "shape_id": 31,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 0.82,
+          "y_in": 5.62,
+          "w_in": 11.4,
+          "h_in": 0.56,
+          "area_ratio": 0.063842,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#17365D"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-1-31",
+          "slide_id": "S01",
+          "shape_id": 32,
+          "shape_type": "text",
+          "name": "Text: Design rule: half ring for executive status; evi",
+          "x_in": 1.08,
+          "y_in": 5.8,
+          "w_in": 10.88,
+          "h_in": 0.2,
+          "area_ratio": 0.021761,
+          "text": "Design rule: half ring for executive status; evidence stays in editable labels and micro-bars.",
+          "font_sizes_pt": [
+            9.69
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 245,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 30,
+        "average_characters_per_text_box": 8.1667,
+        "small_text_box_count": 22,
+        "font_family_count": 1,
+        "font_size_count": 8,
+        "object_count": 31,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 12.2449,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 1
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0001",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S01",
+          "object_id": "ppt-object-1-7",
+          "ppt_shape_id": 8,
+          "evidence": {
+            "overflow_ratio_estimate": 1.4163
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    },
+    {
+      "slide_index": 2,
+      "slide_id": "S02",
+      "objects": [
+        {
+          "object_id": "ppt-object-2-1",
+          "slide_id": "S02",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: COMPOSITION CHART",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "COMPOSITION CHART",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-2",
+          "slide_id": "S02",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 基础甜甜圈图适合表达预算或资源构成，中心只保留一个结论",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "基础甜甜圈图适合表达预算或资源构成，中心只保留一个结论",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-3",
+          "slide_id": "S02",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-4",
+          "slide_id": "S02",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 02",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 02",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-5",
+          "slide_id": "S02",
+          "shape_id": 6,
+          "shape_type": "chart",
+          "name": "Native chart: editable budget doughnut",
+          "x_in": 1.0,
+          "y_in": 1.58,
+          "w_in": 4.7,
+          "h_in": 4.15,
+          "area_ratio": 0.195055,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-6",
+          "slide_id": "S02",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Text: $4.8M",
+          "x_in": 2.78,
+          "y_in": 3.12,
+          "w_in": 1.15,
+          "h_in": 0.34,
+          "area_ratio": 0.00391,
+          "text": "$4.8M",
+          "font_sizes_pt": [
+            22.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-7",
+          "slide_id": "S02",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: FY budget",
+          "x_in": 2.78,
+          "y_in": 3.5,
+          "w_in": 1.15,
+          "h_in": 0.16,
+          "area_ratio": 0.00184,
+          "text": "FY budget",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-8",
+          "slide_id": "S02",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 6.7,
+          "y_in": 1.77,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2F6BFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-9",
+          "slide_id": "S02",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Text: Build",
+          "x_in": 6.88,
+          "y_in": 1.72,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Build",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-10",
+          "slide_id": "S02",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Text: 38%",
+          "x_in": 7.7,
+          "y_in": 1.72,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "38%",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-11",
+          "slide_id": "S02",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 6.7,
+          "y_in": 2.39,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-12",
+          "slide_id": "S02",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Text: Data",
+          "x_in": 6.88,
+          "y_in": 2.34,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Data",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-13",
+          "slide_id": "S02",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Text: 24%",
+          "x_in": 7.7,
+          "y_in": 2.34,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "24%",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-14",
+          "slide_id": "S02",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 6.7,
+          "y_in": 3.01,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-15",
+          "slide_id": "S02",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Text: Change",
+          "x_in": 6.88,
+          "y_in": 2.96,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Change",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-16",
+          "slide_id": "S02",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Text: 21%",
+          "x_in": 7.7,
+          "y_in": 2.96,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "21%",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-17",
+          "slide_id": "S02",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 6.7,
+          "y_in": 3.63,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2994A"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-18",
+          "slide_id": "S02",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Text: Reserve",
+          "x_in": 6.88,
+          "y_in": 3.58,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Reserve",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-19",
+          "slide_id": "S02",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "Text: 17%",
+          "x_in": 7.7,
+          "y_in": 3.58,
+          "w_in": 0.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00108,
+          "text": "17%",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-20",
+          "slide_id": "S02",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 6.55,
+          "y_in": 4.82,
+          "w_in": 4.95,
+          "h_in": 0.74,
+          "area_ratio": 0.036631,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-2-21",
+          "slide_id": "S02",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Text: Editable-core: native chart data, center value, ",
+          "x_in": 6.78,
+          "y_in": 5.06,
+          "w_in": 4.5,
+          "h_in": 0.22,
+          "area_ratio": 0.0099,
+          "text": "Editable-core: native chart data, center value, legend, and interpretation remain separate.",
+          "font_sizes_pt": [
+            8.6
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 210,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 19,
+        "average_characters_per_text_box": 11.0526,
+        "small_text_box_count": 16,
+        "font_family_count": 1,
+        "font_size_count": 7,
+        "object_count": 21,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 9.0476,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 1,
+        "native_connector_count": 1
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0002",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S02",
+          "object_id": "ppt-object-2-21",
+          "ppt_shape_id": 22,
+          "evidence": {
+            "overflow_ratio_estimate": 1.3573
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    },
+    {
+      "slide_index": 3,
+      "slide_id": "S03",
+      "objects": [
+        {
+          "object_id": "ppt-object-3-1",
+          "slide_id": "S03",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: ANNOTATED COMPOSITION",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "ANNOTATED COMPOSITION",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-2",
+          "slide_id": "S03",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 带外部标注的环形图适合让高管先看类别，再看原因",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "带外部标注的环形图适合让高管先看类别，再看原因",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-3",
+          "slide_id": "S03",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-4",
+          "slide_id": "S03",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 03",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 03",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-5",
+          "slide_id": "S03",
+          "shape_id": 6,
+          "shape_type": "chart",
+          "name": "Native chart: annotated ring",
+          "x_in": 3.8,
+          "y_in": 1.42,
+          "w_in": 4.25,
+          "h_in": 4.25,
+          "area_ratio": 0.18063,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-6",
+          "slide_id": "S03",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Text: 100%",
+          "x_in": 5.22,
+          "y_in": 3.08,
+          "w_in": 1.35,
+          "h_in": 0.36,
+          "area_ratio": 0.00486,
+          "text": "100%",
+          "font_sizes_pt": [
+            20.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-7",
+          "slide_id": "S03",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: scope split",
+          "x_in": 5.18,
+          "y_in": 3.45,
+          "w_in": 1.45,
+          "h_in": 0.15,
+          "area_ratio": 0.002175,
+          "text": "scope split",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-8",
+          "slide_id": "S03",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Material: callout marker",
+          "x_in": 1.28,
+          "y_in": 1.81,
+          "w_in": 0.13,
+          "h_in": 0.13,
+          "area_ratio": 0.000169,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#17365D"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-9",
+          "slide_id": "S03",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Text: Core platform",
+          "x_in": 1.5,
+          "y_in": 1.74,
+          "w_in": 1.62,
+          "h_in": 0.18,
+          "area_ratio": 0.002916,
+          "text": "Core platform",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-10",
+          "slide_id": "S03",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Text: 35%",
+          "x_in": 2.7,
+          "y_in": 1.74,
+          "w_in": 0.52,
+          "h_in": 0.18,
+          "area_ratio": 0.000936,
+          "text": "35%",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-11",
+          "slide_id": "S03",
+          "shape_id": 12,
+          "shape_type": "connector",
+          "name": "Connector: callout leader",
+          "x_in": 1.36,
+          "y_in": 1.88,
+          "w_in": 2.99,
+          "h_in": 0.47,
+          "area_ratio": 0.014053,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-12",
+          "slide_id": "S03",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Material: callout marker",
+          "x_in": 8.18,
+          "y_in": 1.81,
+          "w_in": 0.13,
+          "h_in": 0.13,
+          "area_ratio": 0.000169,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2F6BFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-13",
+          "slide_id": "S03",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Text: AI workflow",
+          "x_in": 8.4,
+          "y_in": 1.74,
+          "w_in": 1.62,
+          "h_in": 0.18,
+          "area_ratio": 0.002916,
+          "text": "AI workflow",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-14",
+          "slide_id": "S03",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Text: 23%",
+          "x_in": 9.6,
+          "y_in": 1.74,
+          "w_in": 0.52,
+          "h_in": 0.18,
+          "area_ratio": 0.000936,
+          "text": "23%",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-15",
+          "slide_id": "S03",
+          "shape_id": 16,
+          "shape_type": "connector",
+          "name": "Connector: callout leader",
+          "x_in": 7.12,
+          "y_in": 1.88,
+          "w_in": 1.14,
+          "h_in": 0.44,
+          "area_ratio": 0.005016,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-16",
+          "slide_id": "S03",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Material: callout marker",
+          "x_in": 8.58,
+          "y_in": 4.89,
+          "w_in": 0.13,
+          "h_in": 0.13,
+          "area_ratio": 0.000169,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-17",
+          "slide_id": "S03",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Text: Data migration",
+          "x_in": 8.8,
+          "y_in": 4.82,
+          "w_in": 1.62,
+          "h_in": 0.18,
+          "area_ratio": 0.002916,
+          "text": "Data migration",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-18",
+          "slide_id": "S03",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Text: 18%",
+          "x_in": 10.0,
+          "y_in": 4.82,
+          "w_in": 0.52,
+          "h_in": 0.18,
+          "area_ratio": 0.000936,
+          "text": "18%",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-19",
+          "slide_id": "S03",
+          "shape_id": 20,
+          "shape_type": "connector",
+          "name": "Connector: callout leader",
+          "x_in": 7.12,
+          "y_in": 4.52,
+          "w_in": 1.54,
+          "h_in": 0.44,
+          "area_ratio": 0.006776,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-20",
+          "slide_id": "S03",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Material: callout marker",
+          "x_in": 1.22,
+          "y_in": 4.79,
+          "w_in": 0.13,
+          "h_in": 0.13,
+          "area_ratio": 0.000169,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-21",
+          "slide_id": "S03",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Text: Enablement",
+          "x_in": 1.44,
+          "y_in": 4.72,
+          "w_in": 1.62,
+          "h_in": 0.18,
+          "area_ratio": 0.002916,
+          "text": "Enablement",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-22",
+          "slide_id": "S03",
+          "shape_id": 23,
+          "shape_type": "text",
+          "name": "Text: 14%",
+          "x_in": 2.64,
+          "y_in": 4.72,
+          "w_in": 0.52,
+          "h_in": 0.18,
+          "area_ratio": 0.000936,
+          "text": "14%",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-23",
+          "slide_id": "S03",
+          "shape_id": 24,
+          "shape_type": "connector",
+          "name": "Connector: callout leader",
+          "x_in": 1.3,
+          "y_in": 4.35,
+          "w_in": 3.25,
+          "h_in": 0.51,
+          "area_ratio": 0.016575,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-24",
+          "slide_id": "S03",
+          "shape_id": 25,
+          "shape_type": "text",
+          "name": "Material: callout marker",
+          "x_in": 1.65,
+          "y_in": 3.23,
+          "w_in": 0.13,
+          "h_in": 0.13,
+          "area_ratio": 0.000169,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2994A"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-25",
+          "slide_id": "S03",
+          "shape_id": 26,
+          "shape_type": "text",
+          "name": "Text: Contingency",
+          "x_in": 1.87,
+          "y_in": 3.16,
+          "w_in": 1.62,
+          "h_in": 0.18,
+          "area_ratio": 0.002916,
+          "text": "Contingency",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-26",
+          "slide_id": "S03",
+          "shape_id": 27,
+          "shape_type": "text",
+          "name": "Text: 10%",
+          "x_in": 3.07,
+          "y_in": 3.16,
+          "w_in": 0.52,
+          "h_in": 0.18,
+          "area_ratio": 0.000936,
+          "text": "10%",
+          "font_sizes_pt": [
+            8.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-3-27",
+          "slide_id": "S03",
+          "shape_id": 28,
+          "shape_type": "connector",
+          "name": "Connector: callout leader",
+          "x_in": 1.73,
+          "y_in": 3.3,
+          "w_in": 2.52,
+          "h_in": 0.05,
+          "area_ratio": 0.00126,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 160,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 20,
+        "average_characters_per_text_box": 8.0,
+        "small_text_box_count": 18,
+        "font_family_count": 1,
+        "font_size_count": 6,
+        "object_count": 27,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 12.5,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 1,
+        "native_connector_count": 6
+      },
+      "issues": []
+    },
+    {
+      "slide_index": 4,
+      "slide_id": "S04",
+      "objects": [
+        {
+          "object_id": "ppt-object-4-1",
+          "slide_id": "S04",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: KPI RING GROUP",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "KPI RING GROUP",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-2",
+          "slide_id": "S04",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 预算 KPI 圆环组把金额、消耗率和风险灯号分开展示",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "预算 KPI 圆环组把金额、消耗率和风险灯号分开展示",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-3",
+          "slide_id": "S04",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-4",
+          "slide_id": "S04",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 04",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 04",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-5",
+          "slide_id": "S04",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 1.0,
+          "y_in": 1.56,
+          "w_in": 3.25,
+          "h_in": 4.38,
+          "area_ratio": 0.142354,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-6",
+          "slide_id": "S04",
+          "shape_id": 7,
+          "shape_type": "chart",
+          "name": "Native chart: Run-rate KPI ring",
+          "x_in": 1.54,
+          "y_in": 2.05,
+          "w_in": 2.12,
+          "h_in": 2.12,
+          "area_ratio": 0.044945,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-7",
+          "slide_id": "S04",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: 42%",
+          "x_in": 2.12,
+          "y_in": 2.86,
+          "w_in": 0.96,
+          "h_in": 0.26,
+          "area_ratio": 0.002496,
+          "text": "42%",
+          "font_sizes_pt": [
+            16.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-8",
+          "slide_id": "S04",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Material: KPI status dot",
+          "x_in": 1.22,
+          "y_in": 1.84,
+          "w_in": 0.14,
+          "h_in": 0.14,
+          "area_ratio": 0.000196,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-9",
+          "slide_id": "S04",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Text: Run-rate",
+          "x_in": 1.45,
+          "y_in": 1.8,
+          "w_in": 1.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00288,
+          "text": "Run-rate",
+          "font_sizes_pt": [
+            9.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-10",
+          "slide_id": "S04",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Text: $1.8M",
+          "x_in": 1.38,
+          "y_in": 4.42,
+          "w_in": 2.45,
+          "h_in": 0.3,
+          "area_ratio": 0.00735,
+          "text": "$1.8M",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-11",
+          "slide_id": "S04",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Text: native chart + center labels",
+          "x_in": 1.34,
+          "y_in": 4.88,
+          "w_in": 2.54,
+          "h_in": 0.18,
+          "area_ratio": 0.004572,
+          "text": "native chart + center labels",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-12",
+          "slide_id": "S04",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 5.0,
+          "y_in": 1.56,
+          "w_in": 3.25,
+          "h_in": 4.38,
+          "area_ratio": 0.142354,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-13",
+          "slide_id": "S04",
+          "shape_id": 14,
+          "shape_type": "chart",
+          "name": "Native chart: Committed KPI ring",
+          "x_in": 5.54,
+          "y_in": 2.05,
+          "w_in": 2.12,
+          "h_in": 2.12,
+          "area_ratio": 0.044945,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-14",
+          "slide_id": "S04",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Text: 63%",
+          "x_in": 6.12,
+          "y_in": 2.86,
+          "w_in": 0.96,
+          "h_in": 0.26,
+          "area_ratio": 0.002496,
+          "text": "63%",
+          "font_sizes_pt": [
+            16.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-15",
+          "slide_id": "S04",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Material: KPI status dot",
+          "x_in": 5.22,
+          "y_in": 1.84,
+          "w_in": 0.14,
+          "h_in": 0.14,
+          "area_ratio": 0.000196,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-16",
+          "slide_id": "S04",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Text: Committed",
+          "x_in": 5.45,
+          "y_in": 1.8,
+          "w_in": 1.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00288,
+          "text": "Committed",
+          "font_sizes_pt": [
+            9.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-17",
+          "slide_id": "S04",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Text: $2.7M",
+          "x_in": 5.38,
+          "y_in": 4.42,
+          "w_in": 2.45,
+          "h_in": 0.3,
+          "area_ratio": 0.00735,
+          "text": "$2.7M",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-18",
+          "slide_id": "S04",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Text: native chart + center labels",
+          "x_in": 5.34,
+          "y_in": 4.88,
+          "w_in": 2.54,
+          "h_in": 0.18,
+          "area_ratio": 0.004572,
+          "text": "native chart + center labels",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-19",
+          "slide_id": "S04",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 9.0,
+          "y_in": 1.56,
+          "w_in": 3.25,
+          "h_in": 4.38,
+          "area_ratio": 0.142354,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-20",
+          "slide_id": "S04",
+          "shape_id": 21,
+          "shape_type": "chart",
+          "name": "Native chart: At risk KPI ring",
+          "x_in": 9.54,
+          "y_in": 2.05,
+          "w_in": 2.12,
+          "h_in": 2.12,
+          "area_ratio": 0.044945,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-21",
+          "slide_id": "S04",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Text: 14%",
+          "x_in": 10.12,
+          "y_in": 2.86,
+          "w_in": 0.96,
+          "h_in": 0.26,
+          "area_ratio": 0.002496,
+          "text": "14%",
+          "font_sizes_pt": [
+            16.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-22",
+          "slide_id": "S04",
+          "shape_id": 23,
+          "shape_type": "text",
+          "name": "Material: KPI status dot",
+          "x_in": 9.22,
+          "y_in": 1.84,
+          "w_in": 0.14,
+          "h_in": 0.14,
+          "area_ratio": 0.000196,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D92D20"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-23",
+          "slide_id": "S04",
+          "shape_id": 24,
+          "shape_type": "text",
+          "name": "Text: At risk",
+          "x_in": 9.45,
+          "y_in": 1.8,
+          "w_in": 1.6,
+          "h_in": 0.18,
+          "area_ratio": 0.00288,
+          "text": "At risk",
+          "font_sizes_pt": [
+            9.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-24",
+          "slide_id": "S04",
+          "shape_id": 25,
+          "shape_type": "text",
+          "name": "Text: $0.6M",
+          "x_in": 9.38,
+          "y_in": 4.42,
+          "w_in": 2.45,
+          "h_in": 0.3,
+          "area_ratio": 0.00735,
+          "text": "$0.6M",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-25",
+          "slide_id": "S04",
+          "shape_id": 26,
+          "shape_type": "text",
+          "name": "Text: native chart + center labels",
+          "x_in": 9.34,
+          "y_in": 4.88,
+          "w_in": 2.54,
+          "h_in": 0.18,
+          "area_ratio": 0.004572,
+          "text": "native chart + center labels",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-4-26",
+          "slide_id": "S04",
+          "shape_id": 27,
+          "shape_type": "text",
+          "name": "Text: Use three rings only when the measures are peers",
+          "x_in": 1.3,
+          "y_in": 6.28,
+          "w_in": 10.7,
+          "h_in": 0.18,
+          "area_ratio": 0.01926,
+          "text": "Use three rings only when the measures are peers; otherwise promote the most decision-critical KPI.",
+          "font_sizes_pt": [
+            9.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 298,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 22,
+        "average_characters_per_text_box": 13.5455,
+        "small_text_box_count": 15,
+        "font_family_count": 1,
+        "font_size_count": 7,
+        "object_count": 26,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 7.3826,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 3,
+        "native_connector_count": 1
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0003",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S04",
+          "object_id": "ppt-object-4-10",
+          "ppt_shape_id": 11,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2153
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0004",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S04",
+          "object_id": "ppt-object-4-17",
+          "ppt_shape_id": 18,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2153
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0005",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S04",
+          "object_id": "ppt-object-4-24",
+          "ppt_shape_id": 25,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2153
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    },
+    {
+      "slide_index": 5,
+      "slide_id": "S05",
+      "objects": [
+        {
+          "object_id": "ppt-object-5-1",
+          "slide_id": "S05",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: ROADMAP GANTT",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "ROADMAP GANTT",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-2",
+          "slide_id": "S05",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 项目时间轴甘特图用月份网格、阶段条和门禁线控制复杂度",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "项目时间轴甘特图用月份网格、阶段条和门禁线控制复杂度",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-3",
+          "slide_id": "S05",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-4",
+          "slide_id": "S05",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 05",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 05",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-5",
+          "slide_id": "S05",
+          "shape_id": 6,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 0.75,
+          "y_in": 1.62,
+          "w_in": 10.98,
+          "h_in": 0.42,
+          "area_ratio": 0.046117,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#17365D"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-6",
+          "slide_id": "S05",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Text: Workstream",
+          "x_in": 0.95,
+          "y_in": 1.75,
+          "w_in": 0.9,
+          "h_in": 0.12,
+          "area_ratio": 0.00108,
+          "text": "Workstream",
+          "font_sizes_pt": [
+            8.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-7",
+          "slide_id": "S05",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: Jan",
+          "x_in": 2.43,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Jan",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-8",
+          "slide_id": "S05",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 2.15,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-9",
+          "slide_id": "S05",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Text: Feb",
+          "x_in": 3.61,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Feb",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-10",
+          "slide_id": "S05",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 3.33,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-11",
+          "slide_id": "S05",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Text: Mar",
+          "x_in": 4.79,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Mar",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-12",
+          "slide_id": "S05",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 4.51,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-13",
+          "slide_id": "S05",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Text: Apr",
+          "x_in": 5.97,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Apr",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-14",
+          "slide_id": "S05",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 5.69,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-15",
+          "slide_id": "S05",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Text: May",
+          "x_in": 7.15,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "May",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-16",
+          "slide_id": "S05",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 6.87,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-17",
+          "slide_id": "S05",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Text: Jun",
+          "x_in": 8.33,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Jun",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-18",
+          "slide_id": "S05",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 8.05,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-19",
+          "slide_id": "S05",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "Text: Jul",
+          "x_in": 9.51,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Jul",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-20",
+          "slide_id": "S05",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 9.23,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-21",
+          "slide_id": "S05",
+          "shape_id": 22,
+          "shape_type": "text",
+          "name": "Text: Aug",
+          "x_in": 10.69,
+          "y_in": 1.72,
+          "w_in": 0.58,
+          "h_in": 0.18,
+          "area_ratio": 0.001044,
+          "text": "Aug",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-22",
+          "slide_id": "S05",
+          "shape_id": 23,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 10.41,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-23",
+          "slide_id": "S05",
+          "shape_id": 24,
+          "shape_type": "text",
+          "name": "Material: month grid",
+          "x_in": 11.59,
+          "y_in": 2.04,
+          "w_in": 0.006,
+          "h_in": 4.23,
+          "area_ratio": 0.000254,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D0D5DD"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-24",
+          "slide_id": "S05",
+          "shape_id": 25,
+          "shape_type": "text",
+          "name": "Text: Discovery",
+          "x_in": 0.92,
+          "y_in": 2.44,
+          "w_in": 1.04,
+          "h_in": 0.16,
+          "area_ratio": 0.001664,
+          "text": "Discovery",
+          "font_sizes_pt": [
+            8.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-25",
+          "slide_id": "S05",
+          "shape_id": 26,
+          "shape_type": "text",
+          "name": "Material: gantt row",
+          "x_in": 0.75,
+          "y_in": 2.34,
+          "w_in": 10.98,
+          "h_in": 0.54,
+          "area_ratio": 0.059293,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-26",
+          "slide_id": "S05",
+          "shape_id": 27,
+          "shape_type": "text",
+          "name": "Material: gantt phase bar",
+          "x_in": 2.15,
+          "y_in": 2.46,
+          "w_in": 2.596,
+          "h_in": 0.25,
+          "area_ratio": 0.00649,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2F6BFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-27",
+          "slide_id": "S05",
+          "shape_id": 28,
+          "shape_type": "text",
+          "name": "Text: Platform build",
+          "x_in": 0.92,
+          "y_in": 2.98,
+          "w_in": 1.04,
+          "h_in": 0.16,
+          "area_ratio": 0.001664,
+          "text": "Platform build",
+          "font_sizes_pt": [
+            8.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-28",
+          "slide_id": "S05",
+          "shape_id": 29,
+          "shape_type": "text",
+          "name": "Material: gantt row",
+          "x_in": 0.75,
+          "y_in": 2.88,
+          "w_in": 10.98,
+          "h_in": 0.54,
+          "area_ratio": 0.059293,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-29",
+          "slide_id": "S05",
+          "shape_id": 30,
+          "shape_type": "text",
+          "name": "Material: gantt phase bar",
+          "x_in": 3.448,
+          "y_in": 3.0,
+          "w_in": 5.428,
+          "h_in": 0.25,
+          "area_ratio": 0.01357,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-30",
+          "slide_id": "S05",
+          "shape_id": 31,
+          "shape_type": "text",
+          "name": "Text: Data migration",
+          "x_in": 0.92,
+          "y_in": 3.52,
+          "w_in": 1.04,
+          "h_in": 0.16,
+          "area_ratio": 0.001664,
+          "text": "Data migration",
+          "font_sizes_pt": [
+            8.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-31",
+          "slide_id": "S05",
+          "shape_id": 32,
+          "shape_type": "text",
+          "name": "Material: gantt row",
+          "x_in": 0.75,
+          "y_in": 3.42,
+          "w_in": 10.98,
+          "h_in": 0.54,
+          "area_ratio": 0.059293,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-32",
+          "slide_id": "S05",
+          "shape_id": 33,
+          "shape_type": "text",
+          "name": "Material: gantt phase bar",
+          "x_in": 4.982,
+          "y_in": 3.54,
+          "w_in": 4.602,
+          "h_in": 0.25,
+          "area_ratio": 0.011505,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-33",
+          "slide_id": "S05",
+          "shape_id": 34,
+          "shape_type": "text",
+          "name": "Text: Pilot",
+          "x_in": 0.92,
+          "y_in": 4.06,
+          "w_in": 1.04,
+          "h_in": 0.16,
+          "area_ratio": 0.001664,
+          "text": "Pilot",
+          "font_sizes_pt": [
+            8.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-34",
+          "slide_id": "S05",
+          "shape_id": 35,
+          "shape_type": "text",
+          "name": "Material: gantt row",
+          "x_in": 0.75,
+          "y_in": 3.96,
+          "w_in": 10.98,
+          "h_in": 0.54,
+          "area_ratio": 0.059293,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-35",
+          "slide_id": "S05",
+          "shape_id": 36,
+          "shape_type": "text",
+          "name": "Material: gantt phase bar",
+          "x_in": 7.342,
+          "y_in": 4.08,
+          "w_in": 2.596,
+          "h_in": 0.25,
+          "area_ratio": 0.00649,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2994A"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-36",
+          "slide_id": "S05",
+          "shape_id": 37,
+          "shape_type": "text",
+          "name": "Text: Scale-up",
+          "x_in": 0.92,
+          "y_in": 4.6,
+          "w_in": 1.04,
+          "h_in": 0.16,
+          "area_ratio": 0.001664,
+          "text": "Scale-up",
+          "font_sizes_pt": [
+            8.4
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-37",
+          "slide_id": "S05",
+          "shape_id": 38,
+          "shape_type": "text",
+          "name": "Material: gantt row",
+          "x_in": 0.75,
+          "y_in": 4.5,
+          "w_in": 10.98,
+          "h_in": 0.54,
+          "area_ratio": 0.059293,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#FFFFFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-38",
+          "slide_id": "S05",
+          "shape_id": 39,
+          "shape_type": "text",
+          "name": "Material: gantt phase bar",
+          "x_in": 8.994,
+          "y_in": 4.62,
+          "w_in": 2.36,
+          "h_in": 0.25,
+          "area_ratio": 0.0059,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#17365D"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-39",
+          "slide_id": "S05",
+          "shape_id": 40,
+          "shape_type": "text",
+          "name": "Material: decision gate",
+          "x_in": 5.454,
+          "y_in": 2.1,
+          "w_in": 0.014,
+          "h_in": 5.3,
+          "area_ratio": 0.000742,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D92D20"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-40",
+          "slide_id": "S05",
+          "shape_id": 41,
+          "shape_type": "text",
+          "name": "Text: Gate 1",
+          "x_in": 5.074,
+          "y_in": 5.92,
+          "w_in": 0.76,
+          "h_in": 0.16,
+          "area_ratio": 0.001216,
+          "text": "Gate 1",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-41",
+          "slide_id": "S05",
+          "shape_id": 42,
+          "shape_type": "text",
+          "name": "Material: decision gate",
+          "x_in": 8.758,
+          "y_in": 2.1,
+          "w_in": 0.014,
+          "h_in": 5.3,
+          "area_ratio": 0.000742,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#D92D20"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-42",
+          "slide_id": "S05",
+          "shape_id": 43,
+          "shape_type": "text",
+          "name": "Text: Gate 2",
+          "x_in": 8.378,
+          "y_in": 5.92,
+          "w_in": 0.76,
+          "h_in": 0.16,
+          "area_ratio": 0.001216,
+          "text": "Gate 2",
+          "font_sizes_pt": [
+            7.7
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-43",
+          "slide_id": "S05",
+          "shape_id": 44,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 2.4,
+          "y_in": 6.4,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2F6BFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-44",
+          "slide_id": "S05",
+          "shape_id": 45,
+          "shape_type": "text",
+          "name": "Text: Discovery",
+          "x_in": 2.58,
+          "y_in": 6.35,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Discovery",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-45",
+          "slide_id": "S05",
+          "shape_id": 46,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 4.45,
+          "y_in": 6.4,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-46",
+          "slide_id": "S05",
+          "shape_id": 47,
+          "shape_type": "text",
+          "name": "Text: Platform build",
+          "x_in": 4.63,
+          "y_in": 6.35,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Platform build",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-47",
+          "slide_id": "S05",
+          "shape_id": 48,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 6.5,
+          "y_in": 6.4,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-48",
+          "slide_id": "S05",
+          "shape_id": 49,
+          "shape_type": "text",
+          "name": "Text: Data migration",
+          "x_in": 6.68,
+          "y_in": 6.35,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Data migration",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-49",
+          "slide_id": "S05",
+          "shape_id": 50,
+          "shape_type": "text",
+          "name": "Material: legend dot",
+          "x_in": 8.55,
+          "y_in": 6.4,
+          "w_in": 0.12,
+          "h_in": 0.12,
+          "area_ratio": 0.000144,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2994A"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-5-50",
+          "slide_id": "S05",
+          "shape_id": 51,
+          "shape_type": "text",
+          "name": "Text: Pilot",
+          "x_in": 8.73,
+          "y_in": 6.35,
+          "w_in": 1.2,
+          "h_in": 0.18,
+          "area_ratio": 0.00216,
+          "text": "Pilot",
+          "font_sizes_pt": [
+            8.19
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 204,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 49,
+        "average_characters_per_text_box": 4.1633,
+        "small_text_box_count": 37,
+        "font_family_count": 1,
+        "font_size_count": 7,
+        "object_count": 50,
+        "tiny_object_count": 12,
+        "text_boxes_per_100_characters": 24.0196,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 0,
+        "native_connector_count": 1
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0006",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S05",
+          "object_id": "ppt-object-5-6",
+          "ppt_shape_id": 7,
+          "evidence": {
+            "overflow_ratio_estimate": 1.1574
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0007",
+          "issue_code": "PPTX_TEXT_FRAGMENTATION",
+          "severity": "warning",
+          "category": "editability",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S05",
+          "object_id": null,
+          "ppt_shape_id": null,
+          "evidence": {
+            "text_boxes_per_100_characters": 24.0196
+          },
+          "message": "Text box fragmentation is high.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    },
+    {
+      "slide_index": 6,
+      "slide_id": "S06",
+      "objects": [
+        {
+          "object_id": "ppt-object-6-1",
+          "slide_id": "S06",
+          "shape_id": 2,
+          "shape_type": "text",
+          "name": "Text: MILESTONE TREND",
+          "x_in": 0.56,
+          "y_in": 0.25,
+          "w_in": 4.5,
+          "h_in": 0.2,
+          "area_ratio": 0.009,
+          "text": "MILESTONE TREND",
+          "font_sizes_pt": [
+            8.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-2",
+          "slide_id": "S06",
+          "shape_id": 3,
+          "shape_type": "text",
+          "name": "Text: 项目里程碑折线图把进度曲线和阶段标签分层表达",
+          "x_in": 0.56,
+          "y_in": 0.5,
+          "w_in": 12.0,
+          "h_in": 0.5,
+          "area_ratio": 0.060002,
+          "text": "项目里程碑折线图把进度曲线和阶段标签分层表达",
+          "font_sizes_pt": [
+            21.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-3",
+          "slide_id": "S06",
+          "shape_id": 4,
+          "shape_type": "connector",
+          "name": "Connector: native line",
+          "x_in": 0.56,
+          "y_in": 1.12,
+          "w_in": 12.22,
+          "h_in": 0.0,
+          "area_ratio": 0.0,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-4",
+          "slide_id": "S06",
+          "shape_id": 5,
+          "shape_type": "text",
+          "name": "Text: VISUAL STYLE PROTOTYPE / 06",
+          "x_in": 9.42,
+          "y_in": 7.12,
+          "w_in": 3.3,
+          "h_in": 0.18,
+          "area_ratio": 0.00594,
+          "text": "VISUAL STYLE PROTOTYPE / 06",
+          "font_sizes_pt": [
+            7.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-5",
+          "slide_id": "S06",
+          "shape_id": 6,
+          "shape_type": "chart",
+          "name": "Native chart: milestone readiness line",
+          "x_in": 1.12,
+          "y_in": 1.62,
+          "w_in": 9.85,
+          "h_in": 3.45,
+          "area_ratio": 0.339833,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-6",
+          "slide_id": "S06",
+          "shape_id": 7,
+          "shape_type": "text",
+          "name": "Text: M1",
+          "x_in": 2.5817,
+          "y_in": 3.764,
+          "w_in": 0.42,
+          "h_in": 0.18,
+          "area_ratio": 0.000756,
+          "text": "M1",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-7",
+          "slide_id": "S06",
+          "shape_id": 8,
+          "shape_type": "text",
+          "name": "Text: M3",
+          "x_in": 5.865,
+          "y_in": 2.867,
+          "w_in": 0.42,
+          "h_in": 0.18,
+          "area_ratio": 0.000756,
+          "text": "M3",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-8",
+          "slide_id": "S06",
+          "shape_id": 9,
+          "shape_type": "text",
+          "name": "Text: M5",
+          "x_in": 9.1483,
+          "y_in": 2.039,
+          "w_in": 0.42,
+          "h_in": 0.18,
+          "area_ratio": 0.000756,
+          "text": "M5",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-9",
+          "slide_id": "S06",
+          "shape_id": 10,
+          "shape_type": "text",
+          "name": "Text: M6",
+          "x_in": 10.79,
+          "y_in": 1.694,
+          "w_in": 0.42,
+          "h_in": 0.18,
+          "area_ratio": 0.000756,
+          "text": "M6",
+          "font_sizes_pt": [
+            7.2
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-10",
+          "slide_id": "S06",
+          "shape_id": 11,
+          "shape_type": "text",
+          "name": "Material: phase label band",
+          "x_in": 1.12,
+          "y_in": 5.98,
+          "w_in": 3.2833,
+          "h_in": 0.3,
+          "area_ratio": 0.00985,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2F6BFF"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-11",
+          "slide_id": "S06",
+          "shape_id": 12,
+          "shape_type": "text",
+          "name": "Text: Design",
+          "x_in": 1.15,
+          "y_in": 6.06,
+          "w_in": 3.2233,
+          "h_in": 0.16,
+          "area_ratio": 0.005157,
+          "text": "Design",
+          "font_sizes_pt": [
+            6.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-12",
+          "slide_id": "S06",
+          "shape_id": 13,
+          "shape_type": "text",
+          "name": "Material: phase label band",
+          "x_in": 4.4033,
+          "y_in": 5.98,
+          "w_in": 3.2833,
+          "h_in": 0.3,
+          "area_ratio": 0.00985,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#2E7D32"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-13",
+          "slide_id": "S06",
+          "shape_id": 14,
+          "shape_type": "text",
+          "name": "Text: Build",
+          "x_in": 4.4333,
+          "y_in": 6.06,
+          "w_in": 3.2233,
+          "h_in": 0.16,
+          "area_ratio": 0.005157,
+          "text": "Build",
+          "font_sizes_pt": [
+            6.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-14",
+          "slide_id": "S06",
+          "shape_id": 15,
+          "shape_type": "text",
+          "name": "Material: phase label band",
+          "x_in": 7.6867,
+          "y_in": 5.98,
+          "w_in": 2.6267,
+          "h_in": 0.3,
+          "area_ratio": 0.00788,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F2C94C"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-15",
+          "slide_id": "S06",
+          "shape_id": 16,
+          "shape_type": "text",
+          "name": "Text: Pilot",
+          "x_in": 7.7167,
+          "y_in": 6.06,
+          "w_in": 2.5667,
+          "h_in": 0.16,
+          "area_ratio": 0.004107,
+          "text": "Pilot",
+          "font_sizes_pt": [
+            6.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-16",
+          "slide_id": "S06",
+          "shape_id": 17,
+          "shape_type": "text",
+          "name": "Material: phase label band",
+          "x_in": 10.3133,
+          "y_in": 5.98,
+          "w_in": 0.6567,
+          "h_in": 0.3,
+          "area_ratio": 0.00197,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#17365D"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-17",
+          "slide_id": "S06",
+          "shape_id": 18,
+          "shape_type": "text",
+          "name": "Text: Scale",
+          "x_in": 10.3433,
+          "y_in": 6.06,
+          "w_in": 0.5967,
+          "h_in": 0.16,
+          "area_ratio": 0.000955,
+          "text": "Scale",
+          "font_sizes_pt": [
+            6.8
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-18",
+          "slide_id": "S06",
+          "shape_id": 19,
+          "shape_type": "text",
+          "name": "Material: native block",
+          "x_in": 11.05,
+          "y_in": 1.85,
+          "w_in": 1.35,
+          "h_in": 0.98,
+          "area_ratio": 0.01323,
+          "text": "",
+          "font_sizes_pt": [],
+          "fill_colors": [
+            "#F7F8FA"
+          ],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-19",
+          "slide_id": "S06",
+          "shape_id": 20,
+          "shape_type": "text",
+          "name": "Text: 88%",
+          "x_in": 11.25,
+          "y_in": 2.12,
+          "w_in": 0.92,
+          "h_in": 0.26,
+          "area_ratio": 0.002392,
+          "text": "88%",
+          "font_sizes_pt": [
+            18.0
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        },
+        {
+          "object_id": "ppt-object-6-20",
+          "slide_id": "S06",
+          "shape_id": 21,
+          "shape_type": "text",
+          "name": "Text: target readiness",
+          "x_in": 11.18,
+          "y_in": 2.48,
+          "w_in": 1.05,
+          "h_in": 0.14,
+          "area_ratio": 0.00147,
+          "text": "target readiness",
+          "font_sizes_pt": [
+            7.5
+          ],
+          "fill_colors": [],
+          "line_colors": [],
+          "source_relationship": null,
+          "font_families": [
+            "Microsoft YaHei"
+          ],
+          "image_ext": null,
+          "image_px": null
+        }
+      ],
+      "metrics": {
+        "native_text_character_count": 112,
+        "expected_text_character_count": 0,
+        "native_text_ratio": null,
+        "text_box_count": 18,
+        "average_characters_per_text_box": 6.2222,
+        "small_text_box_count": 13,
+        "font_family_count": 1,
+        "font_size_count": 7,
+        "object_count": 20,
+        "tiny_object_count": 1,
+        "text_boxes_per_100_characters": 16.0714,
+        "rasterized_area_ratio": 0.0,
+        "native_table_count": 0,
+        "native_chart_count": 1,
+        "native_connector_count": 1
+      },
+      "issues": [
+        {
+          "issue_id": "QA-0008",
+          "issue_code": "TEXT_OVERFLOW_RISK",
+          "severity": "warning",
+          "category": "text",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S06",
+          "object_id": "ppt-object-6-19",
+          "ppt_shape_id": 20,
+          "evidence": {
+            "overflow_ratio_estimate": 1.2019
+          },
+          "message": "Text box may overflow based on character count, font size, and box geometry.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        },
+        {
+          "issue_id": "QA-0009",
+          "issue_code": "PPTX_TEXT_FRAGMENTATION",
+          "severity": "warning",
+          "category": "editability",
+          "detector": "pptx-structural-inspector",
+          "slide_id": "S06",
+          "object_id": null,
+          "ppt_shape_id": null,
+          "evidence": {
+            "text_boxes_per_100_characters": 16.0714
+          },
+          "message": "Text box fragmentation is high.",
+          "repair_action": null,
+          "repair_status": "pending",
+          "verification": null
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "issue_id": "QA-0001",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S01",
+      "object_id": "ppt-object-1-7",
+      "ppt_shape_id": 8,
+      "evidence": {
+        "overflow_ratio_estimate": 1.4163
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0002",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S02",
+      "object_id": "ppt-object-2-21",
+      "ppt_shape_id": 22,
+      "evidence": {
+        "overflow_ratio_estimate": 1.3573
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0003",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S04",
+      "object_id": "ppt-object-4-10",
+      "ppt_shape_id": 11,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2153
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0004",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S04",
+      "object_id": "ppt-object-4-17",
+      "ppt_shape_id": 18,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2153
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0005",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S04",
+      "object_id": "ppt-object-4-24",
+      "ppt_shape_id": 25,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2153
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0006",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S05",
+      "object_id": "ppt-object-5-6",
+      "ppt_shape_id": 7,
+      "evidence": {
+        "overflow_ratio_estimate": 1.1574
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0007",
+      "issue_code": "PPTX_TEXT_FRAGMENTATION",
+      "severity": "warning",
+      "category": "editability",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S05",
+      "object_id": null,
+      "ppt_shape_id": null,
+      "evidence": {
+        "text_boxes_per_100_characters": 24.0196
+      },
+      "message": "Text box fragmentation is high.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0008",
+      "issue_code": "TEXT_OVERFLOW_RISK",
+      "severity": "warning",
+      "category": "text",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S06",
+      "object_id": "ppt-object-6-19",
+      "ppt_shape_id": 20,
+      "evidence": {
+        "overflow_ratio_estimate": 1.2019
+      },
+      "message": "Text box may overflow based on character count, font size, and box geometry.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    },
+    {
+      "issue_id": "QA-0009",
+      "issue_code": "PPTX_TEXT_FRAGMENTATION",
+      "severity": "warning",
+      "category": "editability",
+      "detector": "pptx-structural-inspector",
+      "slide_id": "S06",
+      "object_id": null,
+      "ppt_shape_id": null,
+      "evidence": {
+        "text_boxes_per_100_characters": 16.0714
+      },
+      "message": "Text box fragmentation is high.",
+      "repair_action": null,
+      "repair_status": "pending",
+      "verification": null
+    }
+  ]
+}

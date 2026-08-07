@@ -1,0 +1,6 @@
+$ /Library/Developer/CommandLineTools/usr/bin/python3 /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/scripts/resolve_component_delivery.py --ppt-ir /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/ppt-ir.json --style /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/style-contract.json --registry /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/references/component-registry.json --capabilities /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/capability-report.json --profile standard --builder auto --output /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/delivery-plan.json --strict
+
+STDOUT
+delivery plan written: /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/delivery-plan.json
+
+STDERR

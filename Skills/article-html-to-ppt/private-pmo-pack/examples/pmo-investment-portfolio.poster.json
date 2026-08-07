@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "components": [
+    {
+      "type": "annotated_doughnut",
+      "title": "62% of investment is concentrated in platform and migration — migration schedule risk needs attention",
+      "center_metric": "¥8.60M",
+      "center_caption": "Total project budget",
+      "budget_total": 8.6,
+      "amount_tolerance": 0.02,
+      "max_leaders": 4,
+      "categories": [
+        {
+          "label": "Core platform",
+          "value": 38,
+          "amount": 3.27,
+          "color_role": "sequence.phase_1",
+          "label_mode": "callout",
+          "status_role": "healthy",
+          "status_text": "On track"
+        },
+        {
+          "label": "Data migration",
+          "value": 24,
+          "amount": 2.06,
+          "color_role": "sequence.phase_2",
+          "label_mode": "callout",
+          "status_role": "watch",
+          "status_text": "Watch · schedule risk"
+        },
+        {
+          "label": "AI workflow",
+          "value": 18,
+          "amount": 1.55,
+          "color_role": "sequence.phase_3",
+          "label_mode": "callout",
+          "status_role": "neutral",
+          "status_text": "Pilot in progress"
+        },
+        {
+          "label": "Change enablement",
+          "value": 12,
+          "amount": 1.03,
+          "color_role": "sequence.phase_4",
+          "label_mode": "callout",
+          "status_role": "neutral",
+          "status_text": "Adoption 72%"
+        },
+        {
+          "label": "Risk reserve",
+          "value": 8,
+          "amount": 0.69,
+          "color_role": "sequence.phase_5",
+          "label_mode": "legend",
+          "status_role": "healthy",
+          "status_text": "16% consumed"
+        }
+      ],
+      "readouts": [
+        {
+          "headline": "Migration is the only schedule watch item",
+          "detail": "24% / ¥2.06M of the portfolio is exposed.",
+          "status_role": "watch"
+        },
+        {
+          "headline": "Reserve remains largely available",
+          "detail": "16% consumed, leaving 84% headroom.",
+          "status_role": "healthy"
+        },
+        {
+          "headline": "Adoption coverage is at 72%",
+          "detail": "Close the remaining 28% change gap before scale.",
+          "status_role": "neutral"
+        }
+      ]
+    }
+  ]
+}

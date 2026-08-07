@@ -1,0 +1,47 @@
+[
+  {
+    "id": "E1",
+    "intent": "summarize_single_project_health",
+    "project_count": 1,
+    "metrics": ["schedule", "budget", "risk", "quality"],
+    "has_timeline": true,
+    "decision_required": true,
+    "body_character_count": 105
+  },
+  {
+    "id": "E2",
+    "intent": "compare_project_portfolio",
+    "project_count": 6,
+    "metrics": ["health", "budget", "progress", "priority"],
+    "has_timeline": false,
+    "decision_required": true,
+    "body_character_count": 92
+  },
+  {
+    "id": "E3",
+    "intent": "explain_resource_capacity",
+    "project_count": 1,
+    "metrics": ["fte", "utilization", "hours", "budget"],
+    "has_timeline": true,
+    "decision_required": true,
+    "body_character_count": 86
+  },
+  {
+    "id": "E4",
+    "intent": "monitor_pmo_control_tower",
+    "project_count": 12,
+    "metrics": ["milestones", "risk", "compliance", "budget", "stakeholders"],
+    "has_timeline": true,
+    "decision_required": true,
+    "body_character_count": 118
+  },
+  {
+    "id": "E5",
+    "intent": "weekly_executive_status",
+    "project_count": 1,
+    "metrics": ["summary", "accomplishments", "next_steps", "risks", "milestones"],
+    "has_timeline": true,
+    "decision_required": false,
+    "body_character_count": 146
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "id": "risk-mitigation",
+  "question": "Should the programme mitigate the FY2027 service outage risk?",
+  "horizon": "FY2027",
+  "risk_treatment": {
+    "probability": {"low": 0.20, "central": 0.30, "high": 0.40, "horizon": "FY2027"},
+    "consequences": [
+      {"name": "service recovery", "amount": {"low": 800000, "central": 1000000, "high": 1300000}},
+      {"name": "customer credits", "amount": {"low": 300000, "central": 500000, "high": 700000}}
+    ],
+    "mitigation": {
+      "option_id": "mitigate",
+      "success_residual_probability": 0.075,
+      "failure_probability": 0.20,
+      "residual_impact_fraction": 0.75,
+      "one_time_cost": 90000,
+      "recurring_cost": 30000,
+      "recurring_periods": 2
+    },
+    "risk_tolerance": 100000
+  }
+}

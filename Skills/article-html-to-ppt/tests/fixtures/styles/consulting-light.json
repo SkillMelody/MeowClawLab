@@ -23,7 +23,7 @@
     "allowed_opacity": [0.08, 0.12, 0.18, 0.45, 1]
   },
   "typography": {
-    "font_primary": ["Aptos", "Noto Sans CJK SC", "Microsoft YaHei", "sans-serif"],
+    "font_primary": ["Aptos", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", "sans-serif"],
     "font_editorial": ["Source Han Serif SC", "Noto Serif CJK SC", "SimSun", "serif"],
     "font_mono": ["JetBrains Mono", "Consolas", "monospace"],
     "title_sizes_pt": {"cover": 34, "section": 28, "slide": 22},

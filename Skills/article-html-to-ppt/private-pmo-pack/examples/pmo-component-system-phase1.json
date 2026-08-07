@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "components": [
+    {
+      "type": "annotated_doughnut",
+      "title": "Investment mix is concentrated on platform and data foundations",
+      "center_metric": "100%",
+      "center_caption": "portfolio",
+      "categories": [
+        {"label": "Platform", "value": 38, "color_role": "sequence.phase_1"},
+        {"label": "Data", "value": 27, "color_role": "sequence.phase_2"},
+        {"label": "Adoption", "value": 21, "color_role": "sequence.phase_3"},
+        {"label": "Controls", "value": 14, "color_role": "sequence.phase_4"}
+      ]
+    },
+    {
+      "type": "roadmap",
+      "title": "Four gated phases convert strategy into an auditable scale decision",
+      "phases": [
+        {
+          "id": "P1",
+          "name": "Discover",
+          "period": "Jul 2026",
+          "objective": "Align value, scope, and governance.",
+          "outputs": ["Project charter", "Value baseline"],
+          "exit_condition": "Scope and value baseline signed",
+          "gate": "G1"
+        },
+        {
+          "id": "P2",
+          "name": "Design",
+          "period": "Aug 2026",
+          "objective": "Define target process and solution.",
+          "outputs": ["Solution blueprint", "Control design"],
+          "exit_condition": "Design authority approval",
+          "gate": "G2"
+        },
+        {
+          "id": "P3",
+          "name": "Pilot",
+          "period": "Sep-Oct 2026",
+          "objective": "Prove operational and commercial evidence.",
+          "outputs": ["Pilot release", "Adoption evidence"],
+          "exit_condition": "Pilot thresholds achieved",
+          "gate": "G3"
+        },
+        {
+          "id": "P4",
+          "name": "Scale",
+          "period": "Nov-Dec 2026",
+          "objective": "Industrialize delivery and benefits tracking.",
+          "outputs": ["Scale runbook", "Benefits dashboard"],
+          "exit_condition": "SteerCo scale decision",
+          "gate": "G4"
+        }
+      ]
+    },
+    {
+      "type": "gantt",
+      "title": "Pilot schedule remains on plan, with data migration on watch",
+      "start_date": "2026-07-01",
+      "end_date": "2026-09-30",
+      "reference_date": "2026-08-17",
+      "tasks": [
+        {
+          "id": "T1",
+          "label": "Governance setup",
+          "owner": "PMO",
+          "planned_intervals": [{"start": "2026-07-01", "end": "2026-07-24"}],
+          "actual_intervals": [{"start": "2026-07-01", "end": "2026-07-22"}],
+          "health": "healthy",
+          "milestones": [{"date": "2026-07-24", "label": "Charter"}]
+        },
+        {
+          "id": "T2",
+          "label": "Solution design",
+          "owner": "Architecture",
+          "planned_intervals": [{"start": "2026-07-13", "end": "2026-08-21"}],
+          "actual_intervals": [{"start": "2026-07-13", "end": "2026-08-14"}],
+          "health": "healthy",
+          "milestones": [{"date": "2026-08-21", "label": "Design"}]
+        },
+        {
+          "id": "T3",
+          "label": "Data migration",
+          "owner": "Data",
+          "planned_intervals": [{"start": "2026-07-27", "end": "2026-09-11"}],
+          "actual_intervals": [{"start": "2026-07-27", "end": "2026-08-12"}],
+          "health": "watch",
+          "milestones": []
+        },
+        {
+          "id": "T4",
+          "label": "Pilot build",
+          "owner": "Product",
+          "planned_intervals": [{"start": "2026-08-10", "end": "2026-09-18"}],
+          "actual_intervals": [{"start": "2026-08-10", "end": "2026-08-15"}],
+          "health": "healthy",
+          "milestones": [{"date": "2026-09-18", "label": "Release"}]
+        },
+        {
+          "id": "T5",
+          "label": "Adoption readiness",
+          "owner": "Change",
+          "planned_intervals": [{"start": "2026-08-24", "end": "2026-09-30"}],
+          "actual_intervals": [],
+          "health": "neutral",
+          "milestones": [{"date": "2026-09-30", "label": "Go-live"}]
+        }
+      ]
+    }
+  ]
+}

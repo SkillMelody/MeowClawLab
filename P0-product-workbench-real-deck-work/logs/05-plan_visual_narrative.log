@@ -1,0 +1,5 @@
+$ /Library/Developer/CommandLineTools/usr/bin/python3 /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/Skills/article-html-to-ppt/scripts/plan_visual_narrative.py --task-route /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/task-route.json --storyline /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/storyline.json --style-id azure-insight-architecture --output /Users/skillmelody/.openclaw/workspace/MeowClawLab/.worktrees/pptsmith-prd-p0-implementation/P0-product-workbench-real-deck-work/contracts/visual-plan.json
+
+STDOUT
+
+STDERR

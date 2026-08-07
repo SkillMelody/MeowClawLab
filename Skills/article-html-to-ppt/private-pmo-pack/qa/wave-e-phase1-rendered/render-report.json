@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "pptx": "output/pmo-component-system-phase1.pptx",
+  "engine": "libreoffice",
+  "engine_version": "LibreOffice 26.2.4.2 0229ac93fcf0d7cbc6376066c6f35021cef002dc",
+  "started_at": "2026-07-25T10:21:14+08:00",
+  "finished_at": "2026-07-25T10:21:34+08:00",
+  "duration_seconds": 19.699,
+  "status": "passed",
+  "slide_count_expected": 3,
+  "slide_count_rendered": 3,
+  "pdf": "qa/wave-e-phase1-rendered/deck.pdf",
+  "slides": [
+    {
+      "slide_index": 1,
+      "image": "qa/wave-e-phase1-rendered/slides/slide-001.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.842184,
+      "status": "passed"
+    },
+    {
+      "slide_index": 2,
+      "image": "qa/wave-e-phase1-rendered/slides/slide-002.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.647912,
+      "status": "passed"
+    },
+    {
+      "slide_index": 3,
+      "image": "qa/wave-e-phase1-rendered/slides/slide-003.png",
+      "width_px": 1920,
+      "height_px": 1080,
+      "blank_score": 0.793169,
+      "status": "passed"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}

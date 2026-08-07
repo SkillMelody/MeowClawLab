@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from builders.base import BuildPlan
 from builders.python_pptx_adapter import PythonPptxAdapter
 from ppt_qa.package_inspector import inspect_package
+from ppt_qa.slide_inspector import inspect_slides
 
 
 def build_layered_architecture_fixture(
@@ -69,10 +70,18 @@ def build_layered_architecture_fixture(
 def test_layered_architecture_preserves_layers_boundaries_and_main_flow(tmp_path: Path) -> None:
     deck_path = build_layered_architecture_fixture(tmp_path)
     inspection = inspect_package(deck_path)
+    slide_inspection = inspect_slides(deck_path, inspection, include_raw_xml=True)
     deck = Presentation(deck_path)
     shapes = list(deck.slides[0].shapes)
 
     assert inspection.status == "passed"
+    codes = {
+        issue.issue_code
+        for slide_result in slide_inspection.slides
+        for issue in slide_result.issues
+    }
+    assert "PPTX_FONT_SIZE_BELOW_MINIMUM" not in codes
+    assert "PPTX_CONNECTOR_THROUGH_NODE" not in codes
     with zipfile.ZipFile(deck_path) as package:
         assert not any(name.startswith("ppt/media/") for name in package.namelist())
     assert sum(shape.name.startswith("Component:layered_architecture:layer:") for shape in shapes) == 5

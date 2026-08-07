@@ -18,7 +18,35 @@ def write_json(path: Path, document: dict) -> None:
     )
 
 
-def storyline(*, request_revision: bool = False) -> dict:
+def write_source_context_brief(tmp_path: Path, route: str) -> Path:
+    if route == "product_prd":
+        document = {
+            "schema_version": "1.0",
+            "source_id": "prd-fixture",
+            "primary_audience": ["product_manager", "engineer", "designer", "tester"],
+            "delivery_objective": "review_and_align",
+            "source_material_type": "prd",
+            "evidence_profile": ["scope_boundary", "user_flow", "acceptance_criteria"],
+            "industry_compliance_context": ["consumer_software"],
+            "delivery_scenario": "prd_review",
+        }
+    else:
+        document = {
+            "schema_version": "1.0",
+            "source_id": "research-fixture",
+            "primary_audience": ["analyst"],
+            "delivery_objective": "communicate_findings",
+            "source_material_type": "research_report",
+            "evidence_profile": ["statistics", "comparison", "trend"],
+            "industry_compliance_context": [],
+            "delivery_scenario": "insight_briefing",
+        }
+    path = tmp_path / "source-context-brief.json"
+    write_json(path, document)
+    return path
+
+
+def storyline(*, request_revision: bool = False, professional_route: str = "research_insight") -> dict:
     slides = [
         ("S01", "cover", [], "supporting"),
         ("S02", "relationship", ["hierarchy", "drill_down"], "supporting"),
@@ -30,6 +58,11 @@ def storyline(*, request_revision: bool = False) -> dict:
         ("S08", "roadmap", ["phase", "roadmap"], "supporting"),
         ("S09", "closing", [], "supporting"),
     ]
+    sequences = {
+        "research_insight": ["research_question", "evidence_and_findings", "implications_and_actions"],
+        "product_prd": ["problem_and_scope", "user_flow_and_rules", "acceptance_and_open_questions"],
+    }
+    sequence = sequences[professional_route]
     document = {
         "title": "PPTSmith 视觉叙事验收",
         "slides": [
@@ -40,8 +73,9 @@ def storyline(*, request_revision: bool = False) -> dict:
                 "evidence_refs": [{"source_id": "src-001", "locator": slide_id}],
                 "relationships": relationships,
                 "priority": priority,
+                "narrative_stage": sequence[min(index * len(sequence) // len(slides), len(sequence) - 1)],
             }
-            for slide_id, role, relationships, priority in slides
+            for index, (slide_id, role, relationships, priority) in enumerate(slides)
         ],
     }
     if request_revision:
@@ -62,6 +96,7 @@ def run_phase1_pipeline(tmp_path: Path, *, request_revision: bool = False) -> su
         },
     )
     write_json(storyline_path, storyline(request_revision=request_revision))
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
     return subprocess.run(
         [
             sys.executable,
@@ -76,8 +111,10 @@ def run_phase1_pipeline(tmp_path: Path, *, request_revision: bool = False) -> su
             str(content_analysis),
             "--storyline",
             str(storyline_path),
+            "--source-context-brief",
+            str(brief_path),
             "--builder",
-            "pptxgenjs",
+            "auto",
             "--profile",
             "fast",
             "--work-dir",
@@ -119,6 +156,426 @@ def test_visual_narrative_stages_run_before_delivery_resolution(tmp_path: Path) 
         "visual-revision-request.json",
     ):
         assert (work / "contracts" / name).is_file()
+    task_route = load_json(work / "contracts" / "task-route.json")
+    assert task_route["selected_route"] == "research_report"
+    assert "product_prd" in task_route["rejected_routes"]
+
+
+def test_visual_plan_is_compiled_into_ppt_ir_before_delivery_resolution(
+    tmp_path: Path,
+) -> None:
+    completed = run_phase1_pipeline(tmp_path)
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    state = load_json(work / "state.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+
+    assert state["stage_order"].index("compile_visual_plan") < state["stage_order"].index(
+        "resolve_delivery"
+    )
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S06")
+    assert slide["primary_expression"] == "relationship_visual"
+    assert slide["objects"][0]["component_type"] == "phase_roadmap"
+    assert slide["objects"][0]["delivery_preferences"] == {
+        "preferred_route": "native_diagram",
+        "allowed_fallbacks": [],
+    }
+    planned = next(item for item in delivery["slides"] if item["slide_id"] == "S06")
+    assert planned["objects"][0]["component_type"] == "phase_roadmap"
+    assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_supported_relationship_components_are_compiled_to_verified_native_renderers(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["hierarchy", "drill_down"]
+    document["slides"][3]["relationships"] = ["layer", "system_boundary"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["hierarchy", "layer"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    for slide_id, component in (("S02", "drill_down_stair"), ("S04", "layered_architecture")):
+        slide = next(item for item in ppt_ir["slides"] if item["id"] == slide_id)
+        assert slide["objects"][0]["component_type"] == component
+        assert slide["objects"][0]["delivery_preferences"]["preferred_route"] == "native_diagram"
+        planned = next(item for item in delivery["slides"] if item["slide_id"] == slide_id)
+        assert planned["objects"][0]["component_type"] == component
+        assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_causal_chain_is_compiled_only_with_explicit_source_bound_data(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["cause_effect"]
+    document["slides"][1]["causal_data"] = {"nodes": [
+        {"label": "前置验证", "role": "原因"},
+        {"label": "减少返工", "role": "机制"},
+        {"label": "可靠交付", "role": "结果"},
+    ]}
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["cause_effect"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    assert slide["objects"][0]["component_type"] == "causal_chain"
+    assert [node["label"] for node in slide["objects"][0]["content"]["nodes"]] == ["前置验证", "减少返工", "可靠交付"]
+    planned = next(item for item in delivery["slides"] if item["slide_id"] == "S02")
+    assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_causal_chain_without_explicit_data_becomes_a_disclosed_placeholder(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["cause_effect"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["cause_effect"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    ppt_ir = load_json(tmp_path / ".ppt-work" / "contracts" / "ppt-ir.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    assert slide["objects"][0]["component_status"] == "unsupported_placeholder"
+
+
+def test_heat_matrix_is_compiled_only_with_explicit_source_bound_data(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][2]["relationships"] = ["heatmap", "matrix"]
+    document["slides"][2]["visual_data"] = {
+        "rows": ["技术", "运营"],
+        "columns": ["制造", "金融"],
+        "values": [[24, 18], [20, 16]],
+        "value_suffix": "%",
+        "highlighted_cells": [[0, 0]],
+    }
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["heatmap", "matrix"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S03")
+    assert slide["objects"][0]["component_type"] == "heat_matrix"
+    assert slide["objects"][0]["content"]["values"] == [[24, 18], [20, 16]]
+    planned = next(item for item in delivery["slides"] if item["slide_id"] == "S03")
+    assert planned["objects"][0]["selected_route"] == "native_diagram"
+
+
+def test_heat_matrix_without_explicit_data_is_not_compiled(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][2]["relationships"] = ["heatmap", "matrix"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": ["heatmap", "matrix"]})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    visual_plan = load_json(tmp_path / ".ppt-work" / "contracts" / "visual-plan.json")
+    intent = next(item for item in visual_plan["slides"] if item["slide_id"] == "S03")
+    assert intent["semantic_component"] == "data_comparison_bridge"
+    assert "visual_data" not in intent
+
+
+def test_unsupported_relationship_visual_becomes_a_disclosed_native_placeholder(
+    tmp_path: Path,
+) -> None:
+    document = storyline()
+    document["slides"][1]["relationships"] = ["feedback_loop"]
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"evidence_types": ["statistics"], "relationship_types": []})
+    write_json(storyline_path, document)
+    brief_path = write_source_context_brief(tmp_path, "research_insight")
+
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path), "--builder", "python_pptx", "--profile", "fast",
+            "--work-dir", str(tmp_path / ".ppt-work"), "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    build = load_json(work / "contracts" / "build-manifest.json")
+    slide = next(item for item in ppt_ir["slides"] if item["id"] == "S02")
+    placeholder = slide["objects"][0]
+    assert placeholder["component_type"] == "comparison_card"
+    assert placeholder["component_status"] == "unsupported_placeholder"
+    assert placeholder["content"]["title"] == "待补齐：关系图组件"
+    assert "原生可编辑关系图" in placeholder["content"]["claim"]
+    assert build["metrics"]["unsupported_placeholder_count"] == 1
+    assert build["status"] == "verified"
+
+
+def test_product_prd_evidence_is_consumed_before_delivery(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
+            "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    evidence = load_json(tmp_path / ".ppt-work" / "contracts" / "design-evidence.json")
+    assert evidence["status"] == "ready"
+    assert evidence["blocking_codes"] == []
+    assert evidence["coverage_matrix"]["product_ui_overview"]["consumed"] is True
+    assert evidence["coverage_matrix"]["interaction_storyboard"]["consumed"] is True
+
+
+def test_product_prd_evidence_is_injected_and_consumed_by_native_prototypes(
+    tmp_path: Path,
+) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
+            "--builder", "auto", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    evidence = load_json(work / "contracts" / "design-evidence.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    delivery = load_json(work / "contracts" / "delivery-plan.json")
+    assert delivery["builder"]["requested"] == "auto"
+    assert delivery["builder"]["selected"] == "python_pptx"
+    coverage = evidence["coverage_matrix"]
+    assert coverage["product_ui_overview"] == {
+        "required": True,
+        "evidence_ids": ["ui_space-01"],
+        "consumed": True,
+        "consumer_object_ids": ["prd-product-ui-overview"],
+    }
+    assert coverage["interaction_storyboard"] == {
+        "required": True,
+        "evidence_ids": ["interaction-01"],
+        "consumed": True,
+        "consumer_object_ids": ["prd-interaction-storyboard"],
+    }
+    assert coverage["application_screenshot"] == {
+        "required": True,
+        "asset_status": "missing",
+        "consumed": True,
+        "consumer_object_ids": ["prd-product-ui-overview"],
+        "placeholder": {
+            "aspect_ratio": "16:10",
+            "page_id": "S02",
+            "region": "product_ui_overview.primary_visual",
+        },
+    }
+    objects = [obj for slide in ppt_ir["slides"] for obj in slide.get("objects", [])]
+    assert {obj["component_type"] for obj in objects} >= {
+        "product_ui_overview",
+        "interaction_storyboard",
+    }
+    product_slides = {slide["id"]: slide for slide in ppt_ir["slides"]}
+    assert product_slides["S02"]["title"] == "产品工作台 UI 总览"
+    assert product_slides["S02"]["message"] == "Canvas 是核心工作区；真实应用截图待补。"
+    assert [obj["id"] for obj in product_slides["S02"]["objects"]] == ["prd-product-ui-overview"]
+    # S02 spaces from content-analysis (only Canvas is provided as ui_space)
+    s02_spaces = product_slides["S02"]["objects"][0]["content"]["spaces"]
+    s02_labels = {s["label"] for s in s02_spaces}
+    assert "Canvas" in s02_labels
+    assert len(s02_spaces) == 1
+    assert product_slides["S03"]["title"] == "工作台交互路径"
+    assert product_slides["S03"]["message"] == "从节点选区到 AI 反馈、结果采纳及异常处理的完整路径。"
+    assert [obj["id"] for obj in product_slides["S03"]["objects"]] == ["prd-interaction-storyboard"]
+    s03_steps = product_slides["S03"]["objects"][0]["content"]["steps"]
+    assert len(s03_steps) == 1
+    assert s03_steps[0]["kind"] == "action"
+
+
+def test_product_prd_forced_pptxgenjs_is_honestly_blocked(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(
+        content_analysis,
+        {
+            "requested_route": "product_prd",
+            "source_id": "prd-fixture",
+            "ui_spaces": [{"name": "Canvas", "locator": "5"}],
+            "interactions": [{"trigger": "select", "locator": "8.2"}],
+        },
+    )
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
+            "--builder", "pptxgenjs", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode != 0
+    assert "BUILDER_COMPONENT_UNSUPPORTED" in completed.stderr
+    state = load_json(tmp_path / ".ppt-work" / "state.json")
+    assert state["failed_stage"] == "resolve_delivery"
+
+
+def test_product_prd_without_design_evidence_does_not_inject_prototypes(tmp_path: Path) -> None:
+    content_analysis = tmp_path / "content-analysis.json"
+    storyline_path = tmp_path / "storyline.json"
+    write_json(content_analysis, {"requested_route": "product_prd", "source_id": "minimal-prd"})
+    write_json(storyline_path, storyline(professional_route="product_prd"))
+    brief_path = write_source_context_brief(tmp_path, "product_prd")
+    completed = subprocess.run(
+        [
+            sys.executable, str(PIPELINE), "--requirements", str(FIXTURES / "requirements-fast.json"),
+            "--ppt-ir", str(FIXTURES / "ppt-ir.json"), "--style", str(FIXTURES / "style-contract-editorial.json"),
+            "--content-analysis", str(content_analysis), "--storyline", str(storyline_path),
+            "--source-context-brief", str(brief_path),
+            "--builder", "python_pptx", "--profile", "fast", "--work-dir", str(tmp_path / ".ppt-work"),
+            "--output-dir", str(tmp_path / "delivery"),
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr or completed.stdout
+    work = tmp_path / ".ppt-work"
+    evidence = load_json(work / "contracts" / "design-evidence.json")
+    ppt_ir = load_json(work / "contracts" / "ppt-ir.json")
+    # product_ui_overview is always required and injected even without ui_space evidence
+    assert evidence["coverage_matrix"]["product_ui_overview"]["consumer_object_ids"] == ["prd-product-ui-overview"]
+    assert evidence["coverage_matrix"]["interaction_storyboard"]["consumer_object_ids"] == []
+    assert any(
+        obj.get("component_type") == "product_ui_overview"
+        for slide in ppt_ir["slides"]
+        for obj in slide.get("objects", [])
+    )
+    assert all(
+        obj.get("component_type") != "interaction_storyboard"
+        for slide in ppt_ir["slides"]
+        for obj in slide.get("objects", [])
+    )
 
 
 def test_visual_revision_is_applied_at_most_once_and_keeps_first_pass_evidence(

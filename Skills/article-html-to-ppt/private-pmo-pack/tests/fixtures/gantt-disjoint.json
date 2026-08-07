@@ -1,0 +1,24 @@
+{
+  "type": "gantt",
+  "title": "Schedule with declared pause",
+  "start_date": "2026-07-01",
+  "end_date": "2026-09-30",
+  "reference_date": "2026-08-15",
+  "tasks": [
+    {
+      "id": "T1",
+      "label": "Data migration",
+      "owner": "Data",
+      "planned_intervals": [
+        {"start": "2026-07-01", "end": "2026-07-18"},
+        {"start": "2026-08-03", "end": "2026-08-24"}
+      ],
+      "actual_intervals": [
+        {"start": "2026-07-01", "end": "2026-07-15"}
+      ],
+      "allow_disjoint": true,
+      "health": "watch",
+      "milestones": [{"date": "2026-08-24", "label": "Cutover"}]
+    }
+  ]
+}

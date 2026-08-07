@@ -1,0 +1,30 @@
+{
+  "analysis": "./output/pmo-decision-support-gold-analysis.json",
+  "case": "./examples/pmo-decision-support-gold.json",
+  "chart_count": 0,
+  "connector_count": 98,
+  "deck": "./output/pmo-decision-support-gold.pptx",
+  "input_hash": "f885d13be2f9d08860a4d371d6a1e4694437ac8febfab582a3caf6083e94abff",
+  "media_count": 0,
+  "native_shape_count": 482,
+  "out_of_bounds_text": [],
+  "page_types": [
+    "decision_brief",
+    "benefits_dashboard",
+    "business_case_gate",
+    "weighted_decision_matrix",
+    "capacity_scenario_allocation",
+    "critical_path_gantt",
+    "constraint_board",
+    "risk_exposure",
+    "mitigation_roi",
+    "recommendation_trace",
+    "decision_record"
+  ],
+  "picture_count": 0,
+  "recommendation_status": "no_recommendation",
+  "route_action": "route",
+  "slide_count": 11,
+  "table_count": 1,
+  "text_shape_count": 258
+}

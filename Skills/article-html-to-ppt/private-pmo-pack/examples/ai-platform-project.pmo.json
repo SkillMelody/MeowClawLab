@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "AI 内容交付平台验证项目",
+    "client": "MeowClawLab",
+    "period": "2026 Q3",
+    "headline": "项目按计划进入真实用户验证，但商业证据仍需在 6 周内补齐",
+    "decision_ask": "批准继续 6 周验证期，暂不进入规模化建设"
+  },
+  "executive_dashboard": {
+    "overall_status": "yellow",
+    "summary": "工程闭环已可运行；当前管理重点是用户成功率、付费意愿和范围控制。",
+    "metrics": [
+      { "label": "Schedule", "value": "88%", "status": "green", "note": "P0 工作流按计划推进" },
+      { "label": "Budget", "value": "+6%", "status": "yellow", "note": "渲染与媒体成本需监控" },
+      { "label": "Scope", "value": "Stable", "status": "green", "note": "暂不扩视频与团队协作" },
+      { "label": "Risk", "value": "Med", "status": "yellow", "note": "市场验证尚未完成" },
+      { "label": "Quality", "value": "92%", "status": "green", "note": "PPTX QA 与回读通过" }
+    ],
+    "top_risks": [
+      { "risk": "真实用户留存不足", "impact": "High", "owner": "PM", "mitigation": "每周 2 次真实任务回访", "status": "yellow" },
+      { "risk": "范围扩张过快", "impact": "High", "owner": "Product", "mitigation": "变更进入 Go/No-Go 会议", "status": "red" },
+      { "risk": "外部发布接口失败", "impact": "Medium", "owner": "Engineering", "mitigation": "保留人工交接与回执日志", "status": "yellow" }
+    ],
+    "next_actions": [
+      "锁定 10 位种子用户名单",
+      "建立每周真实交付回执表",
+      "完成付费意愿访谈脚本",
+      "冻结 P0 以外功能"
+    ]
+  },
+  "roadmap": [
+    { "name": "Discover", "period": "W1", "objective": "确认目标用户与核心场景", "status": "green" },
+    { "name": "Design", "period": "W2", "objective": "冻结 PMO 工作流与验证指标", "status": "green" },
+    { "name": "Build", "period": "W3-W4", "objective": "完成可编辑交付链路", "status": "yellow" },
+    { "name": "Pilot", "period": "W5", "objective": "5 位用户完成真实任务", "status": "yellow" },
+    { "name": "Scale Gate", "period": "W6", "objective": "依据 3+1 付费门槛做决策", "status": "gray" }
+  ],
+  "milestones": [
+    { "date": "07/23", "name": "PMO Pack v0.1", "status": "green", "evidence": "10 类页面可生成" },
+    { "date": "07/30", "name": "Seed Pilot", "status": "yellow", "evidence": "首批用户名单与任务池" },
+    { "date": "08/06", "name": "Workflow Evidence", "status": "yellow", "evidence": "真实回执与失败样本" },
+    { "date": "08/13", "name": "Payment Interview", "status": "gray", "evidence": "付费意愿访谈" },
+    { "date": "08/20", "name": "Go / No-Go", "status": "gray", "evidence": "3+1 门槛判断" }
+  ],
+  "raid_log": [
+    { "type": "Risk", "item": "P0 价值不够高频", "impact": "High", "owner": "PM", "mitigation": "只统计真实交付回执", "status": "yellow" },
+    { "type": "Assumption", "item": "AI 重度创作者愿为稳定交付付费", "impact": "High", "owner": "Growth", "mitigation": "第 4 周完成定价访谈", "status": "gray" },
+    { "type": "Issue", "item": "外部接口授权会中断自动化", "impact": "Medium", "owner": "Engineering", "mitigation": "建立人工接管 SOP", "status": "yellow" },
+    { "type": "Dependency", "item": "公众号草稿接口稳定性", "impact": "Medium", "owner": "Ops", "mitigation": "用本地稿件与回执兜底", "status": "green" }
+  ],
+  "workstreams": [
+    { "name": "Product", "owner": "PM", "status": "yellow", "deliverables": ["用户脚本", "Go/No-Go 指标", "回访记录"] },
+    { "name": "Engineering", "owner": "Engineer", "status": "green", "deliverables": ["PPTX renderer", "QA 脚本", "错误回放"] },
+    { "name": "Design", "owner": "Design", "status": "green", "deliverables": ["PMO 页面母版", "状态色规则", "咨询风图表"] },
+    { "name": "Ops", "owner": "Ops", "status": "yellow", "deliverables": ["用户名单", "任务排期", "交付回执"] }
+  ],
+  "raci": {
+    "roles": ["PM", "Eng", "Design", "Ops", "Sponsor"],
+    "tasks": [
+      { "task": "Define pilot scope", "assignments": ["A", "C", "C", "R", "I"] },
+      { "task": "Build editable deck pack", "assignments": ["C", "R", "A", "I", "I"] },
+      { "task": "Recruit seed users", "assignments": ["C", "I", "I", "R", "A"] },
+      { "task": "Run weekly review", "assignments": ["A", "C", "C", "R", "I"] },
+      { "task": "Go / No-Go decision", "assignments": ["R", "C", "C", "I", "A"] }
+    ]
+  },
+  "risk_heat_map": [
+    { "id": "R1", "label": "低频使用", "impact": 5, "likelihood": 4, "owner": "PM" },
+    { "id": "R2", "label": "范围失控", "impact": 5, "likelihood": 3, "owner": "PM" },
+    { "id": "R3", "label": "接口失败", "impact": 3, "likelihood": 3, "owner": "Eng" },
+    { "id": "R4", "label": "成本超标", "impact": 3, "likelihood": 2, "owner": "Ops" },
+    { "id": "R5", "label": "付费意愿弱", "impact": 5, "likelihood": 4, "owner": "Growth" }
+  ],
+  "decision": {
+    "question": "是否批准进入 6 周 PMO 专业包验证？",
+    "options": [
+      { "name": "A. 停止投入", "pros": ["节省短期资源"], "cons": ["错失付费生产包窗口", "无法验证真实客户需求"], "score": 2 },
+      { "name": "B. 有条件验证", "pros": ["控制范围", "获得真实数据", "保留商业化机会"], "cons": ["需要每周复盘", "短期仍有交付成本"], "score": 5 },
+      { "name": "C. 直接规模化", "pros": ["速度最快"], "cons": ["无留存与付费证据", "范围和成本风险高"], "score": 1 }
+    ],
+    "recommendation": "推荐 B：批准 6 周验证期，未达门槛则停止扩张。"
+  },
+  "kpis": [
+    { "label": "真实工作流", "value": "30", "status": "yellow", "note": "6 周目标" },
+    { "label": "成功率", "value": "≥80%", "status": "green", "note": "核心链路无人工救火" },
+    { "label": "留存", "value": "≥50%", "status": "yellow", "note": "第 4 周仍使用" },
+    { "label": "付费", "value": "3+1", "status": "red", "note": "3 个强意向 + 1 个成交" },
+    { "label": "范围变更", "value": "0 项 P0 外变更", "status": "green", "note": "冻结验证范围" }
+  ],
+  "actions": [
+    { "owner": "PM", "action": "确认 10 位种子用户与任务类型", "deadline": "07/26", "status": "yellow" },
+    { "owner": "Eng", "action": "完成 PMO renderer v0.1 验收", "deadline": "07/24", "status": "green" },
+    { "owner": "Design", "action": "定义 10 类页面视觉规格", "deadline": "07/25", "status": "yellow" },
+    { "owner": "Ops", "action": "建立真实交付回执表", "deadline": "07/27", "status": "gray" },
+    { "owner": "Sponsor", "action": "确认 6 周 Go/No-Go 门槛", "deadline": "07/28", "status": "yellow" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "protected_fields": [
+    "evidence_values",
+    "source_refs",
+    "message",
+    "editability_requirement"
+  ],
+  "schema_version": "1.0.0",
+  "slides": [],
+  "status": "no_revision"
+}

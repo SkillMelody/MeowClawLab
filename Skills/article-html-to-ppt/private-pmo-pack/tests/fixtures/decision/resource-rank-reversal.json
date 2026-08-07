@@ -1,0 +1,11 @@
+{
+  "criteria": [
+    {"id": "value", "weight": "0.5", "weight_source": "board", "direction": "higher", "anchors": {"worst": "0", "best": "100"}},
+    {"id": "ease", "weight": "0.5", "weight_source": "board", "direction": "higher", "anchors": {"worst": "0", "best": "10"}}
+  ],
+  "options": [
+    {"id": "a", "scores": {"value": "80", "ease": "4"}, "cost": "1"},
+    {"id": "b", "scores": {"value": "60", "ease": "8"}, "cost": "1"}
+  ],
+  "budget": "1"
+}

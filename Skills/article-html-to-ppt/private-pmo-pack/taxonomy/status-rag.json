@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "statuses": {
+    "green": {
+      "label": "Green",
+      "meaning": "On track or acceptable",
+      "color_token": "green"
+    },
+    "yellow": {
+      "label": "Yellow",
+      "meaning": "Watch item or managed risk",
+      "color_token": "yellow"
+    },
+    "red": {
+      "label": "Red",
+      "meaning": "Off track or decision required",
+      "color_token": "red"
+    },
+    "gray": {
+      "label": "Gray",
+      "meaning": "Not started, unknown, or pending evidence",
+      "color_token": "muted"
+    }
+  }
+}
