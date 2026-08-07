@@ -289,6 +289,14 @@ def validate_ppt_ir_semantics(file: Path, ppt_ir: dict[str, Any], assets: dict[s
         if slide.get("primary_expression") == "hybrid_panel":
             errors.append(issue(file, ptr + "/primary_expression", "HYBRID_PANEL_DEPRECATED", "hybrid_panel", sorted(PRIMARY_EXPRESSIONS), "Migrate to a true primary expression plus supporting_expressions."))
         errors.extend(validate_source_refs(file, ptr + "/source_refs", slide.get("source_refs"), declared_sources))
+        for evidence_idx, evidence in enumerate(slide.get("supporting_evidence", []) or []):
+            if isinstance(evidence, dict):
+                errors.extend(validate_source_refs(
+                    file,
+                    f"{ptr}/supporting_evidence/{evidence_idx}/source_refs",
+                    evidence.get("source_refs"),
+                    declared_sources,
+                ))
 
         delivery = slide.get("delivery_contract") if isinstance(slide.get("delivery_contract"), dict) else {}
         allowance = set(delivery.get("raster_allowance", []) or [])

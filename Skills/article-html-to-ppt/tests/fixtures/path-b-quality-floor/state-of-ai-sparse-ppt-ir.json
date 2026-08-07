@@ -1,0 +1,638 @@
+{
+  "schema_version": "2.0",
+  "deck": {
+    "id": "state-ai-2025-path-b-pptxgenjs",
+    "title": "AI 已普及，规模化价值仍在最后一公里",
+    "source_type": "report",
+    "audience": "企业管理层",
+    "purpose": "management briefing",
+    "language": "zh-CN",
+    "presentation_context": "internal",
+    "aspect_ratio": "16:9",
+    "production_profile": "standard",
+    "target_builder": "pptxgenjs",
+    "logical_slide_count": 9
+  },
+  "sources": [
+    {
+      "source_id": "mckinsey-state-ai-2025",
+      "type": "report",
+      "title": "The state of AI in 2025: Agents, innovation, and transformation"
+    }
+  ],
+  "style_contract_ref": "style-contract.json",
+  "slides": [
+    {
+      "id": "S01",
+      "index": 1,
+      "slide_role": "cover",
+      "title_role": "navigation",
+      "title": "AI 已普及，规模化价值仍在最后一公里",
+      "judgment": null,
+      "message": "McKinsey 全球调研中文管理层解读",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 1",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "conceptual_scene",
+      "supporting_expressions": [],
+      "primary_anchor": "title",
+      "objects": [],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title"
+        ]
+      }
+    },
+    {
+      "id": "S02",
+      "index": 2,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "核心判断：采用率已走高，但企业级价值仍未普遍兑现",
+      "judgment": "88% 已规律使用 AI；约三分之二仍在试验或试点，只有 39% 报告企业级 EBIT 影响。",
+      "message": "88% 已规律使用 AI；约三分之二仍在试验或试点，只有 39% 报告企业级 EBIT 影响。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 2",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "m1",
+      "objects": [
+        {
+          "id": "m1",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "88%\n至少一个职能规律使用 AI",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, m1",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "m2",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "约 2/3\n仍在试验或试点",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, m2",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "m3",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "39%\n报告企业级 EBIT 影响",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, m3",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "m1",
+          "m2",
+          "m3"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "m1",
+          "m2",
+          "m3"
+        ]
+      }
+    },
+    {
+      "id": "S03",
+      "index": 3,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "使用扩张明显，但规模化阶段只占约三分之一",
+      "judgment": "从“会用”到“规模化”之间仍存在显著价值落地缺口。",
+      "message": "从“会用”到“规模化”之间仍存在显著价值落地缺口。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 3",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "data_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "adoption",
+      "objects": [
+        {
+          "id": "adoption",
+          "type": "chart",
+          "component_type": "bar_chart",
+          "semantic_role": "evidence",
+          "content": {
+            "categories": [
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "series": [
+              {
+                "name": "规律使用 AI",
+                "values": [
+                  55,
+                  78,
+                  88
+                ]
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, adoption",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "stage",
+          "type": "table",
+          "component_type": "native_table",
+          "semantic_role": "evidence",
+          "content": {
+            "headers": [
+              "阶段",
+              "组织占比"
+            ],
+            "body": [
+              [
+                "试验",
+                "32%"
+              ],
+              [
+                "试点",
+                "30%"
+              ],
+              [
+                "规模化",
+                "31%"
+              ],
+              [
+                "全面规模化",
+                "7%"
+              ]
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, stage",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "adoption",
+          "stage"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "adoption",
+          "stage"
+        ]
+      }
+    },
+    {
+      "id": "S04",
+      "index": 4,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "Agentic AI：热度已起，单一职能内的规模化仍稀缺",
+      "judgment": "23% 正在某处规模化 Agentic AI，39% 正在试验；任一职能的规模化比例均不超过 10%。",
+      "message": "23% 正在某处规模化 Agentic AI，39% 正在试验；任一职能的规模化比例均不超过 10%。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 4",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "structured_cards",
+      "supporting_expressions": [],
+      "primary_anchor": "a1",
+      "objects": [
+        {
+          "id": "a1",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "23%\n正在规模化 Agentic AI",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, a1",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "a2",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "39%\n正在试验 Agentic AI",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, a2",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        },
+        {
+          "id": "a3",
+          "type": "shape",
+          "component_type": "metric_card",
+          "semantic_role": "evidence",
+          "content": "≤10%\n任一职能的规模化比例",
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, a3",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "a1",
+          "a2",
+          "a3"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "a1",
+          "a2",
+          "a3"
+        ]
+      }
+    },
+    {
+      "id": "S05",
+      "index": 5,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "创新是最常被感知的收益，EBIT 仍是更高门槛",
+      "judgment": "64% 认为 AI 促进创新；企业级 EBIT 影响仅为 39%，不能把局部收益直接等同于经营结果。",
+      "message": "64% 认为 AI 促进创新；企业级 EBIT 影响仅为 39%，不能把局部收益直接等同于经营结果。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 5",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "data_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "benefits",
+      "objects": [
+        {
+          "id": "benefits",
+          "type": "chart",
+          "component_type": "bar_chart",
+          "semantic_role": "evidence",
+          "content": {
+            "categories": [
+              "创新",
+              "员工满意度",
+              "客户满意度",
+              "竞争差异化",
+              "成本",
+              "盈利能力",
+              "营收增长"
+            ],
+            "series": [
+              {
+                "name": "改善",
+                "values": [
+                  64,
+                  45,
+                  45,
+                  45,
+                  38,
+                  36,
+                  33
+                ]
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, benefits",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "benefits"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "benefits"
+        ]
+      }
+    },
+    {
+      "id": "S06",
+      "index": 6,
+      "slide_role": "data",
+      "title_role": "judgment",
+      "title": "高绩效组织：把增长、创新与效率同时作为 AI 目标",
+      "judgment": "高绩效者约四分之三已规模化或正在规模化 AI；其他组织约三分之一。",
+      "message": "高绩效者约四分之三已规模化或正在规模化 AI；其他组织约三分之一。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 6",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "table_matrix",
+      "supporting_expressions": [],
+      "primary_anchor": "highperf",
+      "objects": [
+        {
+          "id": "highperf",
+          "type": "table",
+          "component_type": "native_table",
+          "semantic_role": "evidence",
+          "content": {
+            "headers": [
+              "指标",
+              "AI 高绩效者",
+              "其他组织"
+            ],
+            "body": [
+              [
+                "规模化或已规模化 AI",
+                "约 75%",
+                "约 33%"
+              ],
+              [
+                "数字预算投向 AI 超过 20%",
+                "35%",
+                "7%"
+              ]
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, highperf",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "highperf"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "highperf"
+        ]
+      }
+    },
+    {
+      "id": "S07",
+      "index": 7,
+      "slide_role": "diagram",
+      "title_role": "judgment",
+      "title": "工作流重构是从试点走向价值的核心杠杆",
+      "judgment": "高绩效者更倾向以 AI 转型业务并重构流程；工具叠加无法替代运营模式升级。",
+      "message": "高绩效者更倾向以 AI 转型业务并重构流程；工具叠加无法替代运营模式升级。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 7",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "relationship_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "workflow",
+      "objects": [
+        {
+          "id": "workflow",
+          "type": "shape",
+          "component_type": "process",
+          "semantic_role": "process",
+          "content": {
+            "nodes": [
+              {
+                "label": "选定价值链\n锁定可衡量场景"
+              },
+              {
+                "label": "重构工作流\n人机分工与例外"
+              },
+              {
+                "label": "规模化运行\n数据、治理、能力"
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, workflow",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "workflow"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "workflow"
+        ]
+      }
+    },
+    {
+      "id": "S08",
+      "index": 8,
+      "slide_role": "judgment",
+      "title_role": "judgment",
+      "title": "用工影响的预期分化，组织需要主动设计再配置路径",
+      "judgment": "32% 预计员工总量减少至少 3%，43% 基本不变，13% 预计增加至少 3%。",
+      "message": "32% 预计员工总量减少至少 3%，43% 基本不变，13% 预计增加至少 3%。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 8",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "data_visual",
+      "supporting_expressions": [],
+      "primary_anchor": "workforce",
+      "objects": [
+        {
+          "id": "workforce",
+          "type": "chart",
+          "component_type": "bar_chart",
+          "semantic_role": "evidence",
+          "content": {
+            "categories": [
+              "减少 ≥3%",
+              "基本不变",
+              "增加 ≥3%"
+            ],
+            "series": [
+              {
+                "name": "预期",
+                "values": [
+                  32,
+                  43,
+                  13
+                ]
+              }
+            ]
+          },
+          "source_refs": [
+            {
+              "source_id": "mckinsey-state-ai-2025",
+              "locator": "PDF, workforce",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "primary"
+        }
+      ],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title",
+          "workforce"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title",
+          "workforce"
+        ]
+      }
+    },
+    {
+      "id": "S09",
+      "index": 9,
+      "slide_role": "closing",
+      "title_role": "closing",
+      "title": "下一步：把“AI 使用”转成可复制的经营价值",
+      "judgment": null,
+      "message": "锁定价值链、重构工作流、建立采用—流程—客户—财务的经营闭环。",
+      "audience_question": "管理层此页需要理解什么？",
+      "source_refs": [
+        {
+          "source_id": "mckinsey-state-ai-2025",
+          "locator": "PDF page / exhibit 9",
+          "claim_type": "direct"
+        }
+      ],
+      "primary_expression": "textual_argument",
+      "supporting_expressions": [],
+      "primary_anchor": "title",
+      "objects": [],
+      "delivery_contract": {
+        "preferred_route": "native_ppt",
+        "editable_core": [
+          "title"
+        ],
+        "raster_allowance": [],
+        "forbidden_raster": [
+          "title"
+        ]
+      }
+    }
+  ],
+  "asset_manifest_ref": "asset-manifest.json"
+}

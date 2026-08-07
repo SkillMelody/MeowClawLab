@@ -188,7 +188,6 @@ class PythonPptxAdapter:
                 # No visual plan: use classic hardcoded layout
                 y = 1.85
                 content_height = 4.65
-            card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
             for index, obj in enumerate(objects):
                 route = ((obj.get("delivery_plan") or {}).get("selected_route") or obj.get("delivery_preferences", {}).get("preferred_route") or "native_ppt")
                 component_type = str(obj.get("component_type") or obj.get("type") or "")
@@ -227,16 +226,18 @@ class PythonPptxAdapter:
                         "editable_core_preserved": obj.get("editability") != "native_required",
                     })
                 single_object = len(objects) == 1
-                x = (style["margin_left"] if single_object else style["margin_left"] + index * (card_width + style["card_gap"]))
-                object_width = 11.7 if single_object else card_width
+                if single_object:
+                    x, object_y, object_width, object_height = style["margin_left"], y, 11.7, content_height
+                else:
+                    x, object_y, object_width, object_height = _object_frame(objects, index, y=y, content_height=content_height, style=style)
                 if route == "native_table" or obj.get("type") == "table":
                     _add_table(
                         slide,
                         obj,
                         x=x,
-                        y=y,
+                        y=object_y,
                         w=object_width,
-                        h=content_height if single_object else 2.3,
+                        h=object_height if single_object else max(object_height, 1.35),
                         style=style,
                     )
                 elif is_chart:
@@ -244,17 +245,17 @@ class PythonPptxAdapter:
                         slide,
                         obj,
                         x=x,
-                        y=y,
+                        y=object_y,
                         w=object_width,
-                        h=content_height if single_object else 3.4,
+                        h=object_height if single_object else max(object_height, 2.8),
                         style=style,
                     )
                 elif is_process:
                     process_height = 2.2 if single_object else 1.35
                     process_y = (
-                        y + (content_height - process_height) / 2
+                        object_y + (content_height - process_height) / 2
                         if single_object
-                        else y
+                        else object_y
                     )
                     _add_process(
                         slide,
@@ -270,9 +271,9 @@ class PythonPptxAdapter:
                         slide,
                         obj,
                         x=x,
-                        y=y,
+                        y=object_y,
                         w=object_width,
-                        h=content_height if single_object else 1.35,
+                        h=object_height if single_object else 1.35,
                         style=style,
                     )
                 else:
@@ -280,9 +281,9 @@ class PythonPptxAdapter:
                         slide,
                         obj,
                         x=x,
-                        y=y,
+                        y=object_y,
                         w=object_width,
-                        h=content_height if single_object else 1.35,
+                        h=object_height if single_object else 1.35,
                         style=style,
                     )
                 object_results.append(
@@ -328,6 +329,31 @@ def _semantic_renderer(component_type: str) -> Any:
     except ImportError:
         return None
     return get_renderer(component_type)
+
+
+def _object_frame(
+    objects: list[dict[str, Any]],
+    index: int,
+    *,
+    y: float,
+    content_height: float,
+    style: dict[str, Any],
+) -> tuple[float, float, float, float]:
+    """Allocate one dominant data object plus a readable support panel.
+
+    A single primary anchor is allowed to dominate the slide; supporting
+    evidence must remain visible rather than being squeezed into equal cards.
+    """
+    margin = float(style["margin_left"])
+    gap = float(style["card_gap"])
+    if len(objects) == 2:
+        primary_indexes = [i for i, obj in enumerate(objects) if obj.get("priority") == "primary"]
+        if len(primary_indexes) == 1 and index != primary_indexes[0]:
+            return (8.05, y, 4.7, 1.35)
+        if len(primary_indexes) == 1:
+            return (margin, y, 7.25, content_height)
+    card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
+    return (margin + index * (card_width + gap), y, card_width, 1.35)
 
 
 def _text_metrics(text: str, font_size_pt: float) -> tuple[float, float]:

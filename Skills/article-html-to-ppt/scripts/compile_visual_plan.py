@@ -270,7 +270,15 @@ def compile_visual_plan(ppt_ir: dict[str, Any], visual_plan: dict[str, Any]) -> 
                 "causal_chain": _causal_chain_object,
             }[component]
             slide["primary_expression"] = "relationship_visual"
-            slide["objects"] = [compiler(slide, intent)]
+            generated = compiler(slide, intent)
+            existing = [obj for obj in slide.get("objects", []) or [] if isinstance(obj, dict)]
+            # Visual planning may add the dominant semantic component, but it
+            # must never discard source-backed evidence or interpretation
+            # objects already present in the IR. One primary anchor is a
+            # composition rule, not a one-object page rule.
+            if not any(obj.get("id") == generated["id"] for obj in existing):
+                existing.append(generated)
+            slide["objects"] = existing
             bind_records.append({"slide_id": slide_id, "planned_component": component, "actual_component": component})
             continue
         if expression in RELATIONSHIP_EXPRESSIONS and component == "unsupported":

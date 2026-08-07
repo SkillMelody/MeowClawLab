@@ -44,6 +44,26 @@
             "EDITABLE_CORE"
           ],
           "fallback_chain": []
+        },
+        {
+          "slide_id": "S02",
+          "object_id": "S02-independent-evidence",
+          "component_type": "evidence_block",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
         }
       ]
     },
@@ -89,6 +109,26 @@
             "EDITABLE_CORE"
           ],
           "fallback_chain": []
+        },
+        {
+          "slide_id": "S03",
+          "object_id": "S03-independent-evidence",
+          "component_type": "evidence_block",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
         }
       ]
     },
@@ -114,6 +154,26 @@
             "EDITABLE_CORE"
           ],
           "fallback_chain": []
+        },
+        {
+          "slide_id": "S04",
+          "object_id": "S04-independent-evidence",
+          "component_type": "evidence_block",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
         }
       ]
     },
@@ -126,6 +186,26 @@
           "component_type": "bar_chart",
           "preferred_route": "native_chart",
           "selected_route": "native_chart",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
+        },
+        {
+          "slide_id": "S05",
+          "object_id": "S05-independent-evidence",
+          "component_type": "evidence_block",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
           "decision": "selected",
           "reason_codes": [],
           "editable_core": [
@@ -209,6 +289,26 @@
             "EDITABLE_CORE"
           ],
           "fallback_chain": []
+        },
+        {
+          "slide_id": "S07",
+          "object_id": "S07-independent-evidence",
+          "component_type": "evidence_block",
+          "preferred_route": "native_ppt",
+          "selected_route": "native_ppt",
+          "decision": "selected",
+          "reason_codes": [],
+          "editable_core": [
+            "content"
+          ],
+          "rasterized_parts": [],
+          "svg_parts": [],
+          "native_overlay_parts": [],
+          "qa_checks": [
+            "OBJECT_CREATED",
+            "EDITABLE_CORE"
+          ],
+          "fallback_chain": []
         }
       ]
     },
@@ -243,7 +343,7 @@
     }
   ],
   "summary": {
-    "total_objects": 9,
+    "total_objects": 14,
     "fallback_count": 0,
     "unsupported_count": 0,
     "risk_codes": []

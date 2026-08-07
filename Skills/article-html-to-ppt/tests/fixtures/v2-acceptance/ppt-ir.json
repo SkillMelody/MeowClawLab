@@ -83,6 +83,26 @@
           ],
           "editability": "native_required",
           "priority": "primary"
+        },
+        {
+          "id": "S02-independent-evidence",
+          "type": "shape",
+          "component_type": "evidence_block",
+          "semantic_role": "evidence",
+          "content": "验证证据：两个独立 Builder 的清单均保留原生文本和语义组件。",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "supporting",
+          "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": []
+          }
         }
       ],
       "delivery_contract": {
@@ -149,6 +169,26 @@
           ],
           "editability": "native_required",
           "priority": "primary"
+        },
+        {
+          "id": "S03-independent-evidence",
+          "type": "shape",
+          "component_type": "evidence_block",
+          "semantic_role": "evidence",
+          "content": "验证证据：每项能力矩阵都映射到可检查的 native route。",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "supporting",
+          "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": []
+          }
         }
       ],
       "delivery_contract": {
@@ -224,6 +264,26 @@
           ],
           "editability": "native_required",
           "priority": "primary"
+        },
+        {
+          "id": "S04-independent-evidence",
+          "type": "shape",
+          "component_type": "evidence_block",
+          "semantic_role": "evidence",
+          "content": "验证证据：交付清单中的结构检查独立于生成器运行。",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "supporting",
+          "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": []
+          }
         }
       ],
       "delivery_contract": {
@@ -292,6 +352,26 @@
           ],
           "editability": "native_required",
           "priority": "primary"
+        },
+        {
+          "id": "S05-independent-evidence",
+          "type": "shape",
+          "component_type": "evidence_block",
+          "semantic_role": "evidence",
+          "content": "验证证据：质量门禁将能力探测结果写入可审计 contract。",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "supporting",
+          "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": []
+          }
         }
       ],
       "delivery_contract": {
@@ -420,6 +500,26 @@
           ],
           "editability": "native_required",
           "priority": "primary"
+        },
+        {
+          "id": "S07-independent-evidence",
+          "type": "shape",
+          "component_type": "evidence_block",
+          "semantic_role": "evidence",
+          "content": "验证证据：回归用例覆盖两种 Builder 与不同生产档位。",
+          "source_refs": [
+            {
+              "source_id": "acceptance-source",
+              "locator": "acceptance-contract",
+              "claim_type": "direct"
+            }
+          ],
+          "editability": "native_required",
+          "priority": "supporting",
+          "delivery_preferences": {
+            "preferred_route": "native_ppt",
+            "allowed_fallbacks": []
+          }
         }
       ],
       "delivery_contract": {

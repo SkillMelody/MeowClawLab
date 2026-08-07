@@ -122,7 +122,7 @@ async function normalizeInternalRelationshipTargets(deckPath) {
 
 function validateNativeRequired(plan) {
   const supported = new Set([
-    "text", "shape", "card", "metric_card", "comparison_card",
+    "text", "shape", "card", "metric_card", "comparison_card", "evidence_block",
     "summary_action_card", "table", "native_table", "chart", "bar_chart",
     "column_chart", "line_chart", "pie_chart", "diagram", "process",
     "process_flow", "relationship",

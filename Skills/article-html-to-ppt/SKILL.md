@@ -132,8 +132,11 @@ python3 scripts/run_pipeline.py --ppt-ir ppt-ir.json --style style-contract.json
   --profile standard --builder python_pptx --work-dir .ppt-work --output-dir final/
 ```
 
-**Quality**: Structurally guaranteed (contract validation, QA gates, fallback chains).
-Visual quality limited by builder's rendering capabilities.
+**Quality**: Structurally guaranteed only after the IR completeness gate passes (contract validation, source traceability, QA gates, fallback chains). A sparse IR does **not** become professional merely by rendering: it must carry source-bound primary data and independently source-bound evidence, or pipeline delivery stops with named blockers.
+
+For each non-navigation data/judgment slide, write `supporting_evidence` explicitly in `ppt-ir.json`. Each item needs non-duplicate `content` plus its own non-empty `source_refs`; this is the only permitted deterministic enrichment input. Never turn `title`, `message`, or `judgment` into evidence automatically. Start from `templates/ppt-ir-source-bound-evidence-template.json` when authoring Path B IR for a lower-capability model.
+
+Visual quality remains limited by builder rendering capabilities.
 
 ### Selection Rule
 
@@ -153,7 +156,7 @@ Visual quality limited by builder's rendering capabilities.
 | **Builder 层** | 封面、图表、表格、卡片渲染 | 代码直接控制 → 精细排版 | IR → builder 动态布局 → 稳定质量 |
 | **Pipeline 层** | 合约校验、QA 门禁、渲染回读 | 无（代码路径跳过） | 全量 QA + 视觉修订 |
 
-**核心保障**：即使低配模型生成的 IR 数据密度不足，builder 的渲染质量（配色、斑马纹、数据标签、自适应字号）确保输出不低于专业底线。封面根据 visual plan 的 professional_route 自动选择风格（战略决策→navy hero，研究报告→minimal light）。尾页自动生成感谢页。
+**核心保障**：低配模型的稀疏 IR 不能被 Builder 的配色、斑马纹或字号调整“补救”为专业交付。数据页必须含来源绑定的主数据对象与独立证据；判断页必须含独立来源证据；图表类别与数列必须自洽。否则 Pipeline 在 `ir_quality_floor` 以命名 blocker 停止，绝不输出 `verified`。封面根据 visual plan 的 professional_route 自动选择风格（战略决策→navy hero，研究报告→minimal light）。尾页自动生成感谢页。
 
 ## PMO Production Route (Auto-Routing)
 

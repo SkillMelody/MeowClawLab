@@ -27,6 +27,8 @@ STAGES = [
     "plan_visual_narrative",
     "validate_visual_plan",
     "compile_visual_plan",
+    "enrich_ir",
+    "ir_quality_floor",
     "deck_rhythm",
     "resolve_profile",
     "capability_probe",
@@ -426,6 +428,26 @@ class Pipeline:
         )
         compiled = self.contracts / "ppt-ir.compiled.json"
         compiled.replace(self.contracts / "ppt-ir.json")
+
+    def ir_quality_floor(self) -> None:
+        self.run_command(
+            "ir_quality_floor",
+            [
+                sys.executable,
+                str(SCRIPTS / "ir_quality_floor.py"),
+                "--ppt-ir",
+                str(self.contracts / "ppt-ir.json"),
+                "--output",
+                str(self.contracts / "ir-quality-floor.json"),
+                "--strict",
+            ],
+        )
+
+    def enrich_ir(self) -> None:
+        from ir_enrichment import enrich_ppt_ir
+
+        path = self.contracts / "ppt-ir.json"
+        write_json(path, enrich_ppt_ir(load_json(path)))
 
     def deck_rhythm(self) -> None:
         from visual_narrative.rhythm import evaluate_deck_rhythm
@@ -835,6 +857,9 @@ class Pipeline:
                 self.stage("plan_visual_narrative", self.plan_visual_narrative)
                 self.stage("validate_visual_plan", self.validate_visual_plan)
                 self.stage("compile_visual_plan", self.compile_visual_plan)
+            self.stage("enrich_ir", self.enrich_ir)
+            self.stage("ir_quality_floor", self.ir_quality_floor)
+            if self.visual_enabled:
                 self.stage("deck_rhythm", self.deck_rhythm)
             self.stage("resolve_profile", self.resolve_profile)
             self.stage("capability_probe", self.capability_probe)
