@@ -7,12 +7,18 @@ import sys
 import zipfile
 from pathlib import Path
 
+from pptx import Presentation
+
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+SCRIPTS = ROOT / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
 from builders.base import BuildPlan
 from builders.pptxgenjs_adapter import PptxGenJsAdapter
+from ir_enrichment import enrich_ppt_ir
 from ppt_qa.package_inspector import inspect_package
 
 
@@ -66,6 +72,72 @@ def two_slide_plan() -> BuildPlan:
                 ],
             },
         ],
+    )
+
+
+def generated_support_plan() -> tuple[BuildPlan, str]:
+    enriched = enrich_ppt_ir(
+        {
+            "slides": [
+                {
+                    "id": "S01",
+                    "slide_role": "judgment",
+                    "primary_expression": "structured_cards",
+                    "title": "采用扩张明显，但规模化仍少",
+                    "judgment": "规模化价值兑现落后于使用扩张。",
+                    "message": "同页两个主对象共同支持这一判断。",
+                    "objects": [
+                        {
+                            "id": "metric-1",
+                            "type": "shape",
+                            "component_type": "metric_card",
+                            "priority": "primary",
+                            "content": "88%\n规律使用 AI",
+                            "source_refs": [{"source_id": "report", "locator": "m1", "claim_type": "direct"}],
+                            "editability": "native_required",
+                        },
+                        {
+                            "id": "metric-2",
+                            "type": "shape",
+                            "component_type": "metric_card",
+                            "priority": "primary",
+                            "content": "31%\n完成企业级规模化",
+                            "source_refs": [{"source_id": "report", "locator": "m2", "claim_type": "direct"}],
+                            "editability": "native_required",
+                        },
+                    ],
+                }
+            ]
+        }
+    )
+    slide = enriched["slides"][0]
+    support_text = next(
+        obj["content"]
+        for obj in slide["objects"]
+        if obj["id"] == "S01-same-slide-evidence-comparison"
+    )
+    return (
+        BuildPlan(
+            builder="pptxgenjs",
+            slides=[
+                {
+                    "id": slide["id"],
+                    "title": slide["title"],
+                    "judgment": slide["judgment"],
+                    "message": slide["message"],
+                    "objects": [
+                        {
+                            **obj,
+                            "delivery_plan": {
+                                "selected_route": "native_ppt",
+                            },
+                        }
+                        for obj in slide["objects"]
+                    ],
+                }
+            ],
+        ),
+        support_text,
     )
 
 
@@ -273,3 +345,23 @@ def test_unknown_non_required_object_discloses_semantic_card_fallback(tmp_path: 
     assert result.status == "created", result.errors
     assert result.fallbacks[0]["reason_codes"] == ["PPTXGENJS_SEMANTIC_CARD_FALLBACK"]
     assert any("mystery_widget" in warning for warning in result.warnings)
+
+
+def test_generated_same_slide_support_renders_native_text_without_semantic_fallback(tmp_path: Path) -> None:
+    plan, support_text = generated_support_plan()
+
+    result = PptxGenJsAdapter().build(plan, tmp_path)
+
+    assert result.status == "created", result.errors
+    deck = Presentation(result.pptx)
+    native_text = {
+        shape.text.strip()
+        for shape in deck.slides[0].shapes
+        if shape.has_text_frame and shape.text.strip()
+    }
+    assert support_text in native_text
+    assert not any(
+        fallback.get("object_id") == "S01-same-slide-evidence-comparison"
+        and fallback.get("reason_codes") == ["PPTXGENJS_SEMANTIC_CARD_FALLBACK"]
+        for fallback in result.fallbacks
+    )

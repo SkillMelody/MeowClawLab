@@ -26,7 +26,7 @@ def test_enrichment_does_not_treat_repeated_slide_message_as_evidence() -> None:
 
     objects = enriched["slides"][0]["objects"]
     assert len(objects) == 1
-    assert objects[0]["source_refs"] == ppt_ir["slides"][0]["source_refs"]
+    assert objects[0].get("source_refs") in (None, [])
     assert assess_ir_quality_floor(enriched)["status"] == "blocked"
 
 
@@ -56,12 +56,13 @@ def test_enrichment_builds_same_slide_support_from_two_source_bound_primary_obje
 
     support = enriched["slides"][0]["objects"][-1]
     assert support["id"] == "S03-same-slide-evidence-comparison"
-    assert support["component_type"] == "comparison_card"
-    assert support["content"]["title"] == "同页来源证据对照"
-    assert [item["object_id"] for item in support["content"]["items"]] == ["adoption", "stage"]
+    assert support["component_type"] == "evidence_block"
+    assert "规律使用 AI: 2023=55, 2024=78, 2025=88" in support["content"]
+    assert "阶段 / 组织占比: 试验=32%; 试点=30%; 规模化=31%; 全面规模化=7%" in support["content"]
     assert {ref["locator"] for ref in support["source_refs"]} == {"Exhibit adoption", "Exhibit stage"}
     assert "slide-level" not in {ref["locator"] for ref in support["source_refs"]}
     assert support["provenance"]["derived_from_object_ids"] == ["adoption", "stage"]
+    assert support["provenance"]["source_ref_scope"] == "object_level_only"
     assert assess_ir_quality_floor(enriched)["status"] == "passed"
 
 
@@ -75,7 +76,7 @@ def test_enrichment_compiles_explicit_independent_source_bound_evidence() -> Non
                 "content": "只有约三分之一组织完成企业级扩展，采用与规模化之间存在缺口。",
                 "source_refs": [{"source_id": "report", "locator": "Exhibit 2", "claim_type": "direct"}],
             }],
-            "objects": [{"id": "chart", "type": "chart", "component_type": "bar_chart", "priority": "primary", "content": {"categories": ["2025"], "series": [{"name": "采用率", "values": [88]}]}}],
+            "objects": [{"id": "chart", "type": "chart", "component_type": "bar_chart", "priority": "primary", "content": {"categories": ["2025"], "series": [{"name": "采用率", "values": [88]}]}, "source_refs": [{"source_id": "report", "locator": "Exhibit 1", "claim_type": "direct"}]}],
         }]
     }
 
@@ -107,6 +108,64 @@ def test_enrichment_does_not_build_same_slide_support_from_only_one_primary_obje
 
     assert [obj["id"] for obj in enriched["slides"][0]["objects"]] == ["benefits"]
     assert assess_ir_quality_floor(enriched)["status"] == "blocked"
+
+
+def test_enrichment_suppresses_generated_support_that_only_repeats_slide_claims() -> None:
+    ppt_ir = {
+        "slides": [{
+            "id": "S06", "slide_role": "judgment", "primary_expression": "structured_cards",
+            "title": "88% 已规律使用 AI，31% 完成企业级规模化",
+            "message": "88% 已规律使用 AI，31% 完成企业级规模化。",
+            "objects": [
+                {
+                    "id": "m1", "type": "shape", "component_type": "metric_card", "priority": "primary",
+                    "content": "88%\n已规律使用 AI",
+                    "source_refs": [{"source_id": "report", "locator": "PDF, repeat-1", "claim_type": "direct"}],
+                },
+                {
+                    "id": "m2", "type": "shape", "component_type": "metric_card", "priority": "primary",
+                    "content": "31%\n完成企业级规模化",
+                    "source_refs": [{"source_id": "report", "locator": "PDF, repeat-2", "claim_type": "direct"}],
+                },
+            ],
+        }]
+    }
+
+    enriched = enrich_ppt_ir(ppt_ir)
+
+    assert [obj["id"] for obj in enriched["slides"][0]["objects"]] == ["m1", "m2"]
+    assert assess_ir_quality_floor(enriched)["status"] == "blocked"
+
+
+def test_enrichment_never_uses_slide_level_refs_to_qualify_source_less_primary_objects() -> None:
+    ppt_ir = {
+        "slides": [{
+            "id": "S07", "slide_role": "data", "primary_expression": "data_visual",
+            "title": "会用的人多，但规模化的人少",
+            "message": "同页有两个主对象，但都只有页级来源。",
+            "source_refs": [{"source_id": "report", "locator": "slide-level", "claim_type": "direct"}],
+            "objects": [
+                {
+                    "id": "adoption", "type": "chart", "component_type": "bar_chart", "priority": "primary",
+                    "content": {"categories": ["2025"], "series": [{"name": "规律使用 AI", "values": [88]}]},
+                },
+                {
+                    "id": "stage", "type": "table", "component_type": "native_table", "priority": "primary",
+                    "content": {"headers": ["阶段", "组织占比"], "body": [["规模化", "31%"]]},
+                },
+            ],
+        }]
+    }
+
+    enriched = enrich_ppt_ir(ppt_ir)
+    report = assess_ir_quality_floor(enriched)
+
+    assert [obj["id"] for obj in enriched["slides"][0]["objects"]] == ["adoption", "stage"]
+    assert report["status"] == "blocked"
+    assert {issue["code"] for issue in report["issues"]} == {
+        "IR_DATA_OBJECT_SOURCE_REQUIRED",
+        "IR_SUPPORTING_EVIDENCE_REQUIRED",
+    }
 
 
 def test_enrichment_is_idempotent_for_generated_same_slide_support() -> None:

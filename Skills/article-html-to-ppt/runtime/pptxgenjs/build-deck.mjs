@@ -169,7 +169,7 @@ function renderObject(pptx, slide, obj, index, count, style, y) {
   }
   renderCard(pptx, slide, obj, x, y, colWidth, style);
   const knownCard = [
-    "text", "shape", "card", "metric_card", "comparison_card",
+    "text", "shape", "card", "metric_card", "comparison_card", "evidence_block",
     "summary_action_card",
   ].includes(kind);
   return { route: "native_ppt", semanticFallback: !knownCard };

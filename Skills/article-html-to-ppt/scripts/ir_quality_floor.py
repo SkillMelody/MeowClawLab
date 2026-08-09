@@ -25,8 +25,47 @@ def _is_near_duplicate(value: str, baseline: str) -> bool:
     return len(candidate & existing) / len(candidate | existing) >= 0.75
 
 
+def _repeats_claim(value: str, claim: str) -> bool:
+    candidate, baseline = _content_tokens(value), _content_tokens(claim)
+    if not candidate or not baseline:
+        return False
+    overlap = len(candidate & baseline)
+    return (
+        overlap / len(candidate | baseline) >= 0.75
+        or overlap / len(candidate) >= 0.9
+    )
+
+
+def _normalize_text(value: str) -> str:
+    return " ".join(value.replace("\n", " ").split())
+
+
 def _component_type(obj: dict[str, Any]) -> str:
     return str(obj.get("component_type") or obj.get("type") or "")
+
+
+def _content_text(content: Any) -> str:
+    if isinstance(content, str):
+        return _normalize_text(content)
+    if isinstance(content, dict):
+        title = content.get("title")
+        claim = content.get("claim")
+        if isinstance(title, str) and title.strip() and isinstance(claim, str) and claim.strip():
+            return _normalize_text(f"{title}\n{claim}")
+        items = content.get("items")
+        if isinstance(title, str) and title.strip() and isinstance(items, list):
+            summaries = [
+                _normalize_text(str(item.get("summary") or ""))
+                for item in items
+                if isinstance(item, dict) and str(item.get("summary") or "").strip()
+            ]
+            if summaries:
+                return _normalize_text(f"{title}\n" + "\n".join(summaries))
+        for key in ("title", "label", "claim", "text", "value"):
+            value = content.get(key)
+            if isinstance(value, str) and value.strip():
+                return _normalize_text(value)
+    return ""
 
 
 def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[str, Any]]) -> bool:
@@ -35,6 +74,8 @@ def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[
     provenance = obj.get("provenance")
     if not isinstance(provenance, dict) or provenance.get("derivation") != GENERATED_SUPPORT_DERIVATION:
         return True
+    if provenance.get("source_ref_scope") != "object_level_only":
+        return False
     derived_ids = [item for item in provenance.get("derived_from_object_ids", []) if isinstance(item, str) and item.strip()]
     unique_ids = set(derived_ids)
     if len(unique_ids) < 2:
@@ -69,8 +110,8 @@ def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
         if role in {"data", "judgment"}:
             slide_claims = [str(slide.get(key) or "") for key in ("title", "judgment", "message")]
             for obj in support_objects:
-                content = obj.get("content")
-                if isinstance(content, str) and any(_is_near_duplicate(content, claim) for claim in slide_claims):
+                content = _content_text(obj.get("content"))
+                if content and any(_repeats_claim(content, claim) for claim in slide_claims):
                     issues.append(_issue(slide_id, "IR_SUPPORTING_EVIDENCE_DUPLICATES_SLIDE_CLAIM", "Supporting evidence must add independently sourced information, not repeat the slide claim."))
         if role == "closing":
 

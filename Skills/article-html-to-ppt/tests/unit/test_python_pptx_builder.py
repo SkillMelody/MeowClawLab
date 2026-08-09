@@ -11,9 +11,13 @@ from pptx import Presentation
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+SCRIPTS = ROOT / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
 from builders.python_pptx_adapter import PythonPptxAdapter
 from ppt_qa.package_inspector import inspect_package
+from ir_enrichment import enrich_ppt_ir
 
 STYLE = ROOT / "tests" / "fixtures" / "styles" / "consulting-light.json"
 EDITORIAL_STYLE = ROOT / "tests" / "fixtures" / "v2-acceptance" / "style-contract-editorial.json"
@@ -123,6 +127,66 @@ def sample_delivery_plan() -> dict:
 
 def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def generated_support_plan() -> tuple[dict, dict, str]:
+    ppt_ir = sample_ppt_ir()
+    slide = ppt_ir["slides"][1]
+    slide["slide_role"] = "judgment"
+    slide["title"] = "采用扩张明显，但规模化仍少"
+    slide["judgment"] = "规模化价值兑现落后于使用扩张。"
+    slide["message"] = "同页两个主对象共同支持这一判断。"
+    slide["primary_expression"] = "structured_cards"
+    slide["primary_anchor"] = "metric-card"
+    slide["objects"] = [
+        {
+            "id": "metric-1",
+            "type": "shape",
+            "component_type": "metric_card",
+            "semantic_role": "metric",
+            "priority": "primary",
+            "content": "88%\n规律使用 AI",
+            "source_refs": [{"source_id": "src-001", "locator": "m1", "claim_type": "direct"}],
+            "editability": "native_required",
+        },
+        {
+            "id": "metric-2",
+            "type": "shape",
+            "component_type": "metric_card",
+            "semantic_role": "metric",
+            "priority": "primary",
+            "content": "31%\n完成企业级规模化",
+            "source_refs": [{"source_id": "src-001", "locator": "m2", "claim_type": "direct"}],
+            "editability": "native_required",
+        },
+    ]
+    enriched = enrich_ppt_ir(ppt_ir)
+    support_text = next(
+        obj["content"]
+        for obj in enriched["slides"][1]["objects"]
+        if obj["id"] == "S02-same-slide-evidence-comparison"
+    )
+    delivery = sample_delivery_plan()
+    delivery["slides"][0]["objects"] = [
+        {
+            "slide_id": "S02",
+            "object_id": obj["id"],
+            "component_type": obj["component_type"],
+            "preferred_route": "native_ppt",
+            "selected_route": "native_ppt",
+            "decision": "selected",
+            "reason_codes": [],
+            "editable_core": ["claim", "evidence", "source_note"] if obj["component_type"] == "evidence_block" else ["number", "label", "trend", "source_note"],
+            "rasterized_parts": [],
+            "svg_parts": [],
+            "native_overlay_parts": [],
+            "qa_checks": [],
+            "fallback_chain": [],
+        }
+        for obj in enriched["slides"][1]["objects"]
+    ]
+    delivery["summary"]["total_objects"] = len(delivery["slides"][0]["objects"])
+    return enriched, delivery, support_text
 
 
 def test_python_pptx_adapter_builds_inspectable_deck(tmp_path: Path) -> None:
@@ -402,6 +466,27 @@ def test_single_card_uses_the_full_content_canvas(tmp_path: Path) -> None:
     assert card.width / 914400 >= 10
     assert card.height / 914400 >= 4
     assert card.text_frame.paragraphs[0].runs[0].font.size.pt >= 20
+
+
+def test_generated_same_slide_support_renders_native_text(tmp_path: Path) -> None:
+    plan, delivery, support_text = generated_support_plan()
+
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    native_text = {
+        shape.text.strip()
+        for shape in deck.slides[1].shapes
+        if shape.has_text_frame and shape.text.strip()
+    }
+    assert support_text in native_text
 
 
 def test_single_process_is_vertically_balanced_in_the_content_canvas(

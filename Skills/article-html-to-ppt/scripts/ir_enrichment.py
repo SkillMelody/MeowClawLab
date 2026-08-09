@@ -23,6 +23,17 @@ def _is_near_duplicate(value: str, existing: str) -> bool:
     return len(candidate & baseline) / len(candidate | baseline) >= 0.75
 
 
+def _repeats_claim(value: str, claim: str) -> bool:
+    candidate, baseline = _content_tokens(value), _content_tokens(claim)
+    if not candidate or not baseline:
+        return False
+    overlap = len(candidate & baseline)
+    return (
+        overlap / len(candidate | baseline) >= 0.75
+        or overlap / len(candidate) >= 0.9
+    )
+
+
 def _normalize_text(value: str) -> str:
     return " ".join(value.replace("\n", " ").split())
 
@@ -87,9 +98,22 @@ def _extract_object_summary(obj: dict[str, Any]) -> str | None:
     return None
 
 
+def _slide_claims(slide: dict[str, Any]) -> list[str]:
+    return [
+        normalized
+        for normalized in (_normalize_text(str(slide.get(key) or "")) for key in ("title", "judgment", "message"))
+        if normalized
+    ]
+
+
+def _generated_support_text(items: list[dict[str, Any]]) -> str:
+    return f"同页来源证据：{'；'.join(item['summary'] for item in items)}"
+
+
 def _build_same_slide_support(slide: dict[str, Any], objects: list[dict[str, Any]]) -> dict[str, Any] | None:
     used_objects: list[dict[str, Any]] = []
     seen_summaries: list[str] = []
+    slide_claims = _slide_claims(slide)
     for obj in objects:
         if obj.get("priority") != "primary" or not obj.get("source_refs"):
             continue
@@ -97,6 +121,8 @@ def _build_same_slide_support(slide: dict[str, Any], objects: list[dict[str, Any
             continue
         summary = _extract_object_summary(obj)
         if not summary:
+            continue
+        if any(_repeats_claim(summary, claim) for claim in slide_claims):
             continue
         if any(_is_near_duplicate(summary, existing) for existing in seen_summaries):
             continue
@@ -108,15 +134,16 @@ def _build_same_slide_support(slide: dict[str, Any], objects: list[dict[str, Any
     if len(used_objects) < 2:
         return None
 
+    content = _generated_support_text(used_objects)
+    if any(_repeats_claim(content, claim) for claim in slide_claims):
+        return None
+
     return {
         "id": f"{slide.get('id', 'slide')}-same-slide-evidence-comparison",
         "type": "shape",
-        "component_type": "comparison_card",
+        "component_type": "evidence_block",
         "semantic_role": "interpretation",
-        "content": {
-            "title": "同页来源证据对照",
-            "items": [{"object_id": item["id"], "summary": item["summary"]} for item in used_objects],
-        },
+        "content": content,
         "source_refs": _dedupe_source_refs([ref for item in used_objects for ref in item["source_refs"] if isinstance(ref, dict)]),
         "editability": "native_required",
         "priority": "supporting",
@@ -124,6 +151,7 @@ def _build_same_slide_support(slide: dict[str, Any], objects: list[dict[str, Any
         "provenance": {
             "derivation": GENERATED_SUPPORT_DERIVATION,
             "derived_from_object_ids": [item["id"] for item in used_objects],
+            "source_ref_scope": "object_level_only",
         },
     }
 
@@ -143,14 +171,6 @@ def enrich_ppt_ir(ppt_ir: dict[str, Any]) -> dict[str, Any]:
         role = str(slide.get("slide_role") or "")
         evidence = [item for item in slide.get("supporting_evidence", []) or [] if isinstance(item, dict)]
 
-        # Promote an existing slide-level citation to an existing data object
-        # only; this preserves provenance without inventing a source or claim.
-        if source_refs:
-            for obj in objects:
-                component = str(obj.get("component_type") or obj.get("type") or "")
-                if component in DATA_COMPONENTS and not obj.get("source_refs"):
-                    obj["source_refs"] = list(source_refs)
-
         # A slide's message/judgment is a conclusion, never independent evidence.
         # Only an explicitly supplied, separately source-bound evidence item may be
         # compiled into a supporting native object; no data or claims are inferred.
@@ -159,7 +179,7 @@ def enrich_ppt_ir(ppt_ir: dict[str, Any]) -> dict[str, Any]:
             candidate = next((item for item in evidence if str(item.get("content") or "").strip() and item.get("source_refs")), None)
             if candidate and (role == "judgment" or has_primary_data):
                 content = str(candidate["content"]).strip()
-                if not _is_near_duplicate(content, f"{title} {message}"):
+                if not _repeats_claim(content, f"{title} {message}"):
                     objects.append({
                         "id": f"{slide.get('id', 'slide')}-source-bound-interpretation",
                         "type": "shape",

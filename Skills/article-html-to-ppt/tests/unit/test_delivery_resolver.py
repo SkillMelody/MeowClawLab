@@ -60,6 +60,28 @@ def test_simple_chart_uses_native_chart(tmp_path: Path) -> None:
     assert obj["selected_route"] == "native_chart"
 
 
+def test_data_slide_evidence_block_uses_native_ppt_route(tmp_path: Path) -> None:
+    data = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    data["slides"][1]["objects"].append(
+        {
+            "id": "evidence-01",
+            "type": "shape",
+            "component_type": "evidence_block",
+            "semantic_role": "interpretation",
+            "content": "同页来源证据：88% 规律使用 AI；31% 完成企业级规模化",
+            "source_refs": [{"source_id": "src-001", "locator": "s2-note", "claim_type": "direct"}],
+            "editability": "native_required",
+            "complexity": {},
+        }
+    )
+    path = tmp_path / "data-evidence.json"
+    path.write_text(json.dumps(data), encoding="utf-8")
+
+    obj = plans_by_object(resolve(tmp_path, path))["evidence-01"]
+
+    assert obj["selected_route"] == "native_ppt"
+
+
 def test_simple_diagram_uses_native_diagram(tmp_path: Path) -> None:
     obj = plans_by_object(resolve(tmp_path))["diagram-01"]
     assert obj["selected_route"] == "native_diagram"

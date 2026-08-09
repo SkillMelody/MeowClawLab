@@ -76,11 +76,31 @@ def test_generated_support_must_point_back_to_multiple_same_slide_primary_object
         {"id": "m1", "component_type": "metric_card", "priority": "primary", "content": "88%\n已规律使用 AI", "source_refs": [{"source_id": "report", "locator": "p.4"}]},
         {
             "id": "derived",
-            "component_type": "comparison_card",
+            "component_type": "evidence_block",
             "priority": "supporting",
-            "content": {"title": "同页来源证据对照", "items": [{"object_id": "m1", "summary": "88% 已规律使用 AI"}]},
+            "content": "同页来源证据：88% 已规律使用 AI",
             "source_refs": [{"source_id": "report", "locator": "p.4"}],
-            "provenance": {"derivation": "same_slide_evidence_augmenter", "derived_from_object_ids": ["m1"]},
+            "provenance": {"derivation": "same_slide_evidence_augmenter", "derived_from_object_ids": ["m1"], "source_ref_scope": "object_level_only"},
+        },
+    ]
+
+    report = assess_ir_quality_floor({"slides": [_slide("judgment", "structured_cards", objects)]})
+
+    assert report["status"] == "blocked"
+    assert {issue["code"] for issue in report["issues"]} == {"IR_SUPPORTING_OBJECT_SOURCE_REQUIRED"}
+
+
+def test_generated_support_without_object_level_citation_scope_is_blocked() -> None:
+    objects = [
+        {"id": "m1", "component_type": "metric_card", "priority": "primary", "content": "88%\n已规律使用 AI", "source_refs": [{"source_id": "report", "locator": "p.4"}]},
+        {"id": "m2", "component_type": "metric_card", "priority": "primary", "content": "31%\n完成企业级规模化", "source_refs": [{"source_id": "report", "locator": "p.5"}]},
+        {
+            "id": "derived",
+            "component_type": "evidence_block",
+            "priority": "supporting",
+            "content": "同页来源证据：88% 已规律使用 AI；31% 完成企业级规模化",
+            "source_refs": [{"source_id": "report", "locator": "p.4"}, {"source_id": "report", "locator": "p.5"}],
+            "provenance": {"derivation": "same_slide_evidence_augmenter", "derived_from_object_ids": ["m1", "m2"], "source_ref_scope": "slide_level_inherited"},
         },
     ]
 
