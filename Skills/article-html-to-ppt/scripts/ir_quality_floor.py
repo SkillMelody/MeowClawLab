@@ -10,6 +10,8 @@ from typing import Any
 DATA_COMPONENTS = {"bar_chart", "line_chart", "pie_chart", "native_table", "heat_matrix", "kpi_dashboard", "metric_card"}
 SUPPORT_COMPONENTS = {"evidence_block", "metric_card", "comparison_card", "summary_action_card", "source_note"}
 NAVIGATION_ROLES = {"cover", "agenda", "section", "reference"}
+PRIMARY_EVIDENCE_COMPONENTS = DATA_COMPONENTS | {"metric_card"}
+GENERATED_SUPPORT_DERIVATION = "same_slide_evidence_augmenter"
 
 
 def _content_tokens(value: str) -> set[str]:
@@ -23,6 +25,32 @@ def _is_near_duplicate(value: str, baseline: str) -> bool:
     return len(candidate & existing) / len(candidate | existing) >= 0.75
 
 
+def _component_type(obj: dict[str, Any]) -> str:
+    return str(obj.get("component_type") or obj.get("type") or "")
+
+
+def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[str, Any]]) -> bool:
+    if not obj.get("source_refs"):
+        return False
+    provenance = obj.get("provenance")
+    if not isinstance(provenance, dict) or provenance.get("derivation") != GENERATED_SUPPORT_DERIVATION:
+        return True
+    derived_ids = [item for item in provenance.get("derived_from_object_ids", []) if isinstance(item, str) and item.strip()]
+    unique_ids = set(derived_ids)
+    if len(unique_ids) < 2:
+        return False
+    by_id = {str(item.get("id") or ""): item for item in objects if isinstance(item, dict)}
+    for derived_id in unique_ids:
+        source_obj = by_id.get(derived_id)
+        if not isinstance(source_obj, dict):
+            return False
+        if source_obj.get("priority") != "primary" or not source_obj.get("source_refs"):
+            return False
+        if _component_type(source_obj) not in PRIMARY_EVIDENCE_COMPONENTS:
+            return False
+    return True
+
+
 def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
     issues: list[dict[str, str]] = []
     for slide in ppt_ir.get("slides", []) or []:
@@ -32,8 +60,8 @@ def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
         role = str(slide.get("slide_role") or "")
         expression = str(slide.get("primary_expression") or "")
         objects = [obj for obj in slide.get("objects", []) or [] if isinstance(obj, dict)]
-        kinds = {str(obj.get("component_type") or obj.get("type") or "") for obj in objects}
-        support_objects = [obj for obj in objects if str(obj.get("component_type") or obj.get("type") or "") in SUPPORT_COMPONENTS and obj.get("priority") != "primary"]
+        kinds = {_component_type(obj) for obj in objects}
+        support_objects = [obj for obj in objects if _component_type(obj) in SUPPORT_COMPONENTS and obj.get("priority") != "primary"]
         support_count = len(support_objects)
 
         if role in NAVIGATION_ROLES:
@@ -51,7 +79,7 @@ def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
                 issues.append(_issue(slide_id, "IR_CLOSING_ACTIONS_INSUFFICIENT", "Closing slides require 2–4 actionable native objects."))
             continue
         if role == "data" or expression == "data_visual":
-            data_objects = [obj for obj in objects if str(obj.get("component_type") or obj.get("type") or "") in DATA_COMPONENTS]
+            data_objects = [obj for obj in objects if _component_type(obj) in DATA_COMPONENTS]
             if not data_objects:
                 issues.append(_issue(slide_id, "IR_PRIMARY_DATA_OBJECT_REQUIRED", "Data slides require a source-backed native chart, table, matrix, or KPI dashboard."))
             for obj in data_objects:
@@ -64,12 +92,12 @@ def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
                     issues.append(_issue(slide_id, "IR_CHART_SERIES_LENGTH_INVALID", "Each chart series must have exactly one value per category."))
             if support_count < 1:
                 issues.append(_issue(slide_id, "IR_SUPPORTING_EVIDENCE_REQUIRED", "Data slides require at least one supporting interpretation or evidence object."))
-            elif not any(obj.get("source_refs") for obj in support_objects):
+            elif not any(_support_has_independent_provenance(obj, objects) for obj in support_objects):
                 issues.append(_issue(slide_id, "IR_SUPPORTING_OBJECT_SOURCE_REQUIRED", "Supporting evidence must carry an independent source reference."))
         elif role == "judgment":
             if support_count < 1:
                 issues.append(_issue(slide_id, "IR_SUPPORTING_EVIDENCE_REQUIRED", "Judgment slides require at least one supporting evidence or interpretation object."))
-            elif not any(obj.get("source_refs") for obj in support_objects):
+            elif not any(_support_has_independent_provenance(obj, objects) for obj in support_objects):
                 issues.append(_issue(slide_id, "IR_SUPPORTING_OBJECT_SOURCE_REQUIRED", "Supporting evidence must carry an independent source reference."))
     return {"status": "blocked" if issues else "passed", "issues": issues}
 
