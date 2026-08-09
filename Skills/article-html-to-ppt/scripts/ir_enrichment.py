@@ -6,7 +6,7 @@ import json
 from typing import Any
 
 DATA_COMPONENTS = {"bar_chart", "line_chart", "pie_chart", "native_table", "heat_matrix", "kpi_dashboard", "metric_card"}
-SUPPORT_COMPONENTS = {"evidence_block", "metric_card", "comparison_card", "summary_action_card", "source_note"}
+SUBSTANTIVE_SUPPORT_COMPONENTS = {"evidence_block", "metric_card", "comparison_card", "summary_action_card"}
 PRIMARY_EVIDENCE_COMPONENTS = DATA_COMPONENTS | {"metric_card"}
 GENERATED_SUPPORT_DERIVATION = "same_slide_evidence_augmenter"
 
@@ -164,7 +164,11 @@ def enrich_ppt_ir(ppt_ir: dict[str, Any]) -> dict[str, Any]:
         objects = [obj for obj in slide.get("objects", []) or [] if isinstance(obj, dict)]
         slide["objects"] = objects
         kinds = {str(obj.get("component_type") or obj.get("type") or "") for obj in objects}
-        has_support = any(str(obj.get("component_type") or obj.get("type") or "") in SUPPORT_COMPONENTS and obj.get("priority") != "primary" for obj in objects)
+        has_support = any(
+            str(obj.get("component_type") or obj.get("type") or "") in SUBSTANTIVE_SUPPORT_COMPONENTS
+            and obj.get("priority") != "primary"
+            for obj in objects
+        )
         source_refs = list(slide.get("source_refs") or [])
         message = str(slide.get("judgment") or slide.get("message") or "").strip()
         title = str(slide.get("title") or "").strip()

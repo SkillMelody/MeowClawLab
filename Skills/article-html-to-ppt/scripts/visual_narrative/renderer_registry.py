@@ -17,6 +17,10 @@ _RENDERER_BINDINGS = {
         "handler": "builders.python_pptx_adapter._add_card",
         "schema_versions": {"1.0"},
     },
+    ("python_pptx", "evidence_block"): {
+        "handler": "builders.python_pptx_adapter._add_card",
+        "schema_versions": {"1.0"},
+    },
     ("python_pptx", "summary_action_card"): {
         "handler": "builders.python_pptx_adapter._add_card",
         "schema_versions": {"1.0"},
@@ -69,6 +73,7 @@ _RENDERER_BINDINGS = {
         for component_type in (
             "comparison_card",
             "metric_card",
+            "evidence_block",
             "summary_action_card",
             "bar_chart",
             "process_flow",
@@ -99,6 +104,7 @@ def smoke_test_renderer(builder: str, component_type: str, schema_version: str) 
         if component_type in {
             "comparison_card",
             "metric_card",
+            "evidence_block",
             "summary_action_card",
             "bar_chart",
             "process_flow",
@@ -140,7 +146,7 @@ def _smoke_test_python_renderer(slide: Any, component_type: str) -> bool:
     if component_type == "native_table":
         _add_table(slide, obj, x=0.5, y=0.5, w=2.0, h=1.0, style=style)
         return len(slide.shapes) == 1 and slide.shapes[0].has_table
-    if component_type in {"comparison_card", "metric_card", "summary_action_card"}:
+    if component_type in {"comparison_card", "metric_card", "evidence_block", "summary_action_card"}:
         _add_card(slide, obj, x=0.5, y=0.5, w=2.0, h=1.0, style=style)
         return len(slide.shapes) == 1 and bool(slide.shapes[0].has_text_frame)
     if component_type == "bar_chart":
@@ -192,6 +198,7 @@ def _smoke_object(component_type: str) -> dict[str, Any]:
     content_by_component: dict[str, dict[str, Any]] = {
         "comparison_card": {"title": "Before", "claim": "Editable comparison"},
         "metric_card": {"title": "Coverage", "value": "100%"},
+        "evidence_block": {"title": "Evidence", "claim": "Source-bound support"},
         "summary_action_card": {"title": "Next", "claim": "Ship verified output"},
         "bar_chart": {
             "categories": ["A", "B"],

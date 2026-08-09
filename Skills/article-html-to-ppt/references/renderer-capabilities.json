@@ -18,6 +18,14 @@
         ],
         "smoke_test": "passed"
       },
+      "evidence_block": {
+        "level": "full",
+        "handler": "builders.python_pptx_adapter._add_card",
+        "schema_versions": [
+          "1.0"
+        ],
+        "smoke_test": "passed"
+      },
       "summary_action_card": {
         "level": "full",
         "handler": "builders.python_pptx_adapter._add_card",
@@ -117,6 +125,14 @@
         "smoke_test": "passed"
       },
       "metric_card": {
+        "level": "full",
+        "handler": "builders.pptxgenjs_adapter.PptxGenJsAdapter.build",
+        "schema_versions": [
+          "1.0"
+        ],
+        "smoke_test": "passed"
+      },
+      "evidence_block": {
         "level": "full",
         "handler": "builders.pptxgenjs_adapter.PptxGenJsAdapter.build",
         "schema_versions": [

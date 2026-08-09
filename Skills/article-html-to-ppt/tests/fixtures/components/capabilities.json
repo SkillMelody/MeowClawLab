@@ -10,6 +10,7 @@
       "features": {"native_text": true, "native_table": true, "native_chart": true, "native_connector": true, "svg_embed": true, "speaker_notes": true, "theme": "partial", "slide_master": "partial", "readback": false},
       "components": {
         "metric_card": "full",
+        "evidence_block": "full",
         "bar_chart": "full",
         "process_flow": "full",
         "ecosystem_map": "partial",
@@ -25,7 +26,7 @@
       "version": "1.0.2",
       "command": "python",
       "features": {"native_text": true, "native_table": true, "native_chart": false, "native_connector": "partial", "svg_embed": false, "speaker_notes": false, "theme": "partial", "slide_master": "partial", "readback": true},
-      "components": {"metric_card": "full", "bar_chart": "partial", "process_flow": "partial", "ecosystem_map": "partial", "conceptual_scene": "visual_only", "native_table": "full"},
+      "components": {"metric_card": "full", "evidence_block": "full", "bar_chart": "partial", "process_flow": "partial", "ecosystem_map": "partial", "conceptual_scene": "visual_only", "native_table": "full"},
       "warnings": [],
       "errors": []
     },

@@ -206,11 +206,13 @@ def test_smoke_test_renderer_rejects_unbound_component() -> None:
     [
         ("python_pptx", "comparison_card"),
         ("python_pptx", "metric_card"),
+        ("python_pptx", "evidence_block"),
         ("python_pptx", "summary_action_card"),
         ("python_pptx", "bar_chart"),
         ("python_pptx", "process_flow"),
         ("pptxgenjs", "comparison_card"),
         ("pptxgenjs", "metric_card"),
+        ("pptxgenjs", "evidence_block"),
         ("pptxgenjs", "summary_action_card"),
         ("pptxgenjs", "bar_chart"),
         ("pptxgenjs", "process_flow"),
@@ -245,6 +247,7 @@ def test_renderer_capability_baseline_only_declares_truth_bound_handlers() -> No
     assert set(document["renderers"]["python_pptx"]) == {
         "comparison_card",
         "metric_card",
+        "evidence_block",
         "summary_action_card",
         "bar_chart",
         "process_flow",
@@ -260,6 +263,7 @@ def test_renderer_capability_baseline_only_declares_truth_bound_handlers() -> No
     assert set(document["renderers"]["pptxgenjs"]) == {
         "comparison_card",
         "metric_card",
+        "evidence_block",
         "summary_action_card",
         "bar_chart",
         "process_flow",
@@ -295,3 +299,16 @@ def test_priority_renderers_are_full_in_effective_component_registry() -> None:
         "drill_down_stair": "full",
         "phase_roadmap": "full",
     }
+
+
+def test_evidence_block_is_truthfully_supported_for_data_and_table_slides_in_both_builders() -> None:
+    registry = json.loads(COMPONENT_REGISTRY.read_text(encoding="utf-8"))
+    capabilities = load_renderer_capabilities(RENDERER_CAPABILITIES)
+
+    evidence = next(component for component in registry["components"] if component["component_type"] == "evidence_block")
+    python_support = effective_component_support(registry, capabilities, "python_pptx")
+    node_support = effective_component_support(registry, capabilities, "pptxgenjs")
+
+    assert {"data_visual", "table_matrix"} <= set(evidence["supported_primary_expressions"])
+    assert python_support["evidence_block"] == "full"
+    assert node_support["evidence_block"] == "full"

@@ -110,6 +110,34 @@ def test_enrichment_does_not_build_same_slide_support_from_only_one_primary_obje
     assert assess_ir_quality_floor(enriched)["status"] == "blocked"
 
 
+def test_enrichment_keeps_source_note_metadata_out_of_support_floor() -> None:
+    ppt_ir = {
+        "slides": [{
+            "id": "S05", "slide_role": "data", "primary_expression": "data_visual",
+            "title": "创新是最常被感知的收益，EBIT 仍是更高门槛",
+            "message": "64% 认为 AI 促进创新；企业级 EBIT 影响仅为 39%。",
+            "source_refs": [{"source_id": "report", "locator": "slide-level", "claim_type": "direct"}],
+            "objects": [
+                {
+                    "id": "benefits", "type": "chart", "component_type": "bar_chart", "priority": "primary",
+                    "content": {"categories": ["创新", "盈利能力"], "series": [{"name": "改善", "values": [64, 36]}]},
+                    "source_refs": [{"source_id": "report", "locator": "Exhibit 5", "claim_type": "direct"}],
+                },
+                {
+                    "id": "source-note", "type": "text", "component_type": "source_note", "priority": "supporting",
+                    "content": "来源：report · Exhibit 5",
+                    "source_refs": [{"source_id": "report", "locator": "Exhibit 5", "claim_type": "direct"}],
+                },
+            ],
+        }]
+    }
+
+    enriched = enrich_ppt_ir(ppt_ir)
+
+    assert [obj["id"] for obj in enriched["slides"][0]["objects"]] == ["benefits", "source-note"]
+    assert assess_ir_quality_floor(enriched)["status"] == "blocked"
+
+
 def test_enrichment_suppresses_generated_support_that_only_repeats_slide_claims() -> None:
     ppt_ir = {
         "slides": [{
@@ -231,6 +259,43 @@ def test_enrichment_preserves_authored_supporting_evidence_without_generated_dup
     object_ids = [obj["id"] for obj in enriched["slides"][0]["objects"]]
     assert "S04-source-bound-interpretation" in object_ids
     assert "S04-same-slide-evidence-comparison" not in object_ids
+    assert assess_ir_quality_floor(enriched)["status"] == "passed"
+
+
+def test_source_note_does_not_block_explicit_authored_support_compilation() -> None:
+    ppt_ir = {
+        "slides": [{
+            "id": "S04", "slide_role": "judgment", "primary_expression": "structured_cards",
+            "title": "Agentic AI：热度已起，单一职能内的规模化仍稀缺",
+            "message": "23% 正在某处规模化 Agentic AI，39% 正在试验；任一职能的规模化比例均不超过 10%。",
+            "supporting_evidence": [{
+                "content": "热度扩散快于单一职能的组织级落地。",
+                "source_refs": [{"source_id": "report", "locator": "Exhibit 4 note", "claim_type": "direct"}],
+            }],
+            "objects": [
+                {
+                    "id": "source-note", "type": "text", "component_type": "source_note", "priority": "supporting",
+                    "content": "来源：report · Exhibit 4",
+                    "source_refs": [{"source_id": "report", "locator": "Exhibit 4", "claim_type": "direct"}],
+                },
+                {
+                    "id": "a1", "type": "shape", "component_type": "metric_card", "priority": "primary",
+                    "content": "23%\n正在规模化 Agentic AI",
+                    "source_refs": [{"source_id": "report", "locator": "PDF, a1", "claim_type": "direct"}],
+                },
+                {
+                    "id": "a2", "type": "shape", "component_type": "metric_card", "priority": "primary",
+                    "content": "39%\n正在试验 Agentic AI",
+                    "source_refs": [{"source_id": "report", "locator": "PDF, a2", "claim_type": "direct"}],
+                },
+            ],
+        }]
+    }
+
+    enriched = enrich_ppt_ir(ppt_ir)
+
+    object_ids = [obj["id"] for obj in enriched["slides"][0]["objects"]]
+    assert object_ids == ["source-note", "a1", "a2", "S04-source-bound-interpretation"]
     assert assess_ir_quality_floor(enriched)["status"] == "passed"
 
 

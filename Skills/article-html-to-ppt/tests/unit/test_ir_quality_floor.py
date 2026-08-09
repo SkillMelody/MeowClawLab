@@ -110,6 +110,40 @@ def test_generated_support_without_object_level_citation_scope_is_blocked() -> N
     assert {issue["code"] for issue in report["issues"]} == {"IR_SUPPORTING_OBJECT_SOURCE_REQUIRED"}
 
 
+def test_generated_looking_support_without_required_provenance_fails_closed() -> None:
+    objects = [
+        {"id": "m1", "component_type": "metric_card", "priority": "primary", "content": "88%\n已规律使用 AI", "source_refs": [{"source_id": "report", "locator": "p.4"}]},
+        {"id": "m2", "component_type": "metric_card", "priority": "primary", "content": "31%\n完成企业级规模化", "source_refs": [{"source_id": "report", "locator": "p.5"}]},
+        {
+            "id": "S02-same-slide-evidence-comparison",
+            "component_type": "evidence_block",
+            "priority": "supporting",
+            "semantic_role": "interpretation",
+            "editability": "native_required",
+            "delivery_preferences": {"preferred_route": "native_ppt", "allowed_fallbacks": []},
+            "content": "同页来源证据：88% 已规律使用 AI；31% 完成企业级规模化",
+            "source_refs": [{"source_id": "report", "locator": "p.4"}, {"source_id": "report", "locator": "p.5"}],
+        },
+    ]
+
+    report = assess_ir_quality_floor({"slides": [_slide("judgment", "structured_cards", objects)]})
+
+    assert report["status"] == "blocked"
+    assert {issue["code"] for issue in report["issues"]} == {"IR_SUPPORTING_OBJECT_SOURCE_REQUIRED"}
+
+
+def test_source_note_does_not_count_as_supporting_evidence() -> None:
+    objects = [
+        {"id": "chart", "component_type": "bar_chart", "priority": "primary", "source_refs": [{"source_id": "report", "locator": "p.4"}], "content": {"categories": ["2025"], "series": [{"name": "采用率", "values": [88]}]}},
+        {"id": "footnote", "component_type": "source_note", "priority": "supporting", "content": "来源：report · p.4", "source_refs": [{"source_id": "report", "locator": "p.4"}]},
+    ]
+
+    report = assess_ir_quality_floor({"slides": [_slide("data", "data_visual", objects)]})
+
+    assert report["status"] == "blocked"
+    assert {issue["code"] for issue in report["issues"]} == {"IR_SUPPORTING_EVIDENCE_REQUIRED"}
+
+
 def test_supporting_evidence_must_not_repeat_slide_judgment() -> None:
     objects = [
         {"id": "chart", "component_type": "bar_chart", "priority": "primary", "source_refs": [{"source_id": "report", "locator": "p.4"}], "content": {"categories": ["2025"], "series": [{"name": "采用率", "values": [88]}]}},

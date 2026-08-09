@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 DATA_COMPONENTS = {"bar_chart", "line_chart", "pie_chart", "native_table", "heat_matrix", "kpi_dashboard", "metric_card"}
-SUPPORT_COMPONENTS = {"evidence_block", "metric_card", "comparison_card", "summary_action_card", "source_note"}
+SUBSTANTIVE_SUPPORT_COMPONENTS = {"evidence_block", "metric_card", "comparison_card", "summary_action_card"}
 NAVIGATION_ROLES = {"cover", "agenda", "section", "reference"}
 PRIMARY_EVIDENCE_COMPONENTS = DATA_COMPONENTS | {"metric_card"}
 GENERATED_SUPPORT_DERIVATION = "same_slide_evidence_augmenter"
@@ -68,12 +68,46 @@ def _content_text(content: Any) -> str:
     return ""
 
 
-def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[str, Any]]) -> bool:
-    if not obj.get("source_refs"):
+def _source_ref_markers(source_refs: Any) -> set[str]:
+    markers: set[str] = set()
+    for ref in source_refs or []:
+        if isinstance(ref, dict):
+            markers.add(json.dumps(ref, ensure_ascii=False, sort_keys=True))
+    return markers
+
+
+def _looks_like_generated_same_slide_support(obj: dict[str, Any]) -> bool:
+    provenance = obj.get("provenance")
+    if isinstance(provenance, dict) and provenance.get("derivation") == GENERATED_SUPPORT_DERIVATION:
+        return True
+    if _component_type(obj) != "evidence_block" or obj.get("priority") == "primary":
+        return False
+    score = 0
+    if str(obj.get("id") or "").endswith("-same-slide-evidence-comparison"):
+        score += 2
+    if _content_text(obj.get("content")).startswith("同页来源证据："):
+        score += 2
+    if str(obj.get("semantic_role") or "") == "interpretation":
+        score += 1
+    if str(obj.get("editability") or "") == "native_required":
+        score += 1
+    preferences = obj.get("delivery_preferences")
+    if (
+        isinstance(preferences, dict)
+        and preferences.get("preferred_route") == "native_ppt"
+        and list(preferences.get("allowed_fallbacks") or []) == []
+    ):
+        score += 1
+    return score >= 4
+
+
+def _generated_support_has_valid_provenance(obj: dict[str, Any], objects: list[dict[str, Any]]) -> bool:
+    support_markers = _source_ref_markers(obj.get("source_refs"))
+    if not support_markers:
         return False
     provenance = obj.get("provenance")
     if not isinstance(provenance, dict) or provenance.get("derivation") != GENERATED_SUPPORT_DERIVATION:
-        return True
+        return False
     if provenance.get("source_ref_scope") != "object_level_only":
         return False
     derived_ids = [item for item in provenance.get("derived_from_object_ids", []) if isinstance(item, str) and item.strip()]
@@ -81,15 +115,24 @@ def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[
     if len(unique_ids) < 2:
         return False
     by_id = {str(item.get("id") or ""): item for item in objects if isinstance(item, dict)}
+    expected_markers: set[str] = set()
     for derived_id in unique_ids:
         source_obj = by_id.get(derived_id)
         if not isinstance(source_obj, dict):
             return False
-        if source_obj.get("priority") != "primary" or not source_obj.get("source_refs"):
+        if source_obj.get("priority") != "primary" or _component_type(source_obj) not in PRIMARY_EVIDENCE_COMPONENTS:
             return False
-        if _component_type(source_obj) not in PRIMARY_EVIDENCE_COMPONENTS:
+        object_markers = _source_ref_markers(source_obj.get("source_refs"))
+        if not object_markers or not (support_markers & object_markers):
             return False
-    return True
+        expected_markers.update(object_markers)
+    return support_markers == expected_markers
+
+
+def _support_has_independent_provenance(obj: dict[str, Any], objects: list[dict[str, Any]]) -> bool:
+    if _looks_like_generated_same_slide_support(obj):
+        return _generated_support_has_valid_provenance(obj, objects)
+    return bool(_source_ref_markers(obj.get("source_refs")))
 
 
 def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
@@ -102,7 +145,7 @@ def assess_ir_quality_floor(ppt_ir: dict[str, Any]) -> dict[str, Any]:
         expression = str(slide.get("primary_expression") or "")
         objects = [obj for obj in slide.get("objects", []) or [] if isinstance(obj, dict)]
         kinds = {_component_type(obj) for obj in objects}
-        support_objects = [obj for obj in objects if _component_type(obj) in SUPPORT_COMPONENTS and obj.get("priority") != "primary"]
+        support_objects = [obj for obj in objects if _component_type(obj) in SUBSTANTIVE_SUPPORT_COMPONENTS and obj.get("priority") != "primary"]
         support_count = len(support_objects)
 
         if role in NAVIGATION_ROLES:
