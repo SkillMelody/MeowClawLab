@@ -7,6 +7,8 @@ from typing import Any
 
 from .base import BuildInspection, BuildPlan, BuildResult, BuilderCapability, SupportLevel
 
+GENERATED_SUPPORT_DERIVATION = "same_slide_evidence_augmenter"
+
 
 class PythonPptxAdapter:
     name = "python_pptx"
@@ -346,14 +348,74 @@ def _object_frame(
     """
     margin = float(style["margin_left"])
     gap = float(style["card_gap"])
-    if len(objects) == 2:
-        primary_indexes = [i for i, obj in enumerate(objects) if obj.get("priority") == "primary"]
-        if len(primary_indexes) == 1 and index != primary_indexes[0]:
-            return (8.05, y, 4.7, 1.35)
-        if len(primary_indexes) == 1:
-            return (margin, y, 7.25, content_height)
+    sidebar_layout = _secondary_support_sidebar_frame(
+        objects,
+        y=y,
+        content_height=content_height,
+        margin=margin,
+        gap=gap,
+    )
+    if sidebar_layout is not None:
+        return sidebar_layout[index]
     card_width = max(2.6, min(3.6, 10.8 / max(len(objects), 1)))
     return (margin + index * (card_width + gap), y, card_width, 1.35)
+
+
+def _component_type(obj: dict[str, Any]) -> str:
+    return str(obj.get("component_type") or obj.get("type") or "").lower()
+
+
+def _is_chart_like(obj: dict[str, Any]) -> bool:
+    route = str(
+        (obj.get("delivery_plan") or {}).get("selected_route")
+        or obj.get("delivery_preferences", {}).get("preferred_route")
+        or ""
+    ).lower()
+    component = _component_type(obj)
+    return "chart" in component or route == "native_chart"
+
+
+def _is_secondary_support(obj: dict[str, Any]) -> bool:
+    if obj.get("priority") == "primary":
+        return False
+    provenance = obj.get("provenance")
+    if isinstance(provenance, dict) and provenance.get("derivation") == GENERATED_SUPPORT_DERIVATION:
+        return True
+    return str(obj.get("semantic_role") or "").lower() == "interpretation"
+
+
+def _secondary_support_sidebar_frame(
+    objects: list[dict[str, Any]],
+    *,
+    y: float,
+    content_height: float,
+    margin: float,
+    gap: float,
+) -> list[tuple[float, float, float, float]] | None:
+    support_indexes = [i for i, obj in enumerate(objects) if _is_secondary_support(obj)]
+    primary_indexes = [i for i in range(len(objects)) if i not in support_indexes]
+    if len(support_indexes) != 1 or not primary_indexes or len(primary_indexes) > 2:
+        return None
+
+    sidebar_gap = max(0.24, gap)
+    main_width = 8.35
+    sidebar_width = 3.83
+    sidebar_x = margin + main_width + sidebar_gap
+    frames: list[tuple[float, float, float, float]] = [None] * len(objects)  # type: ignore[list-item]
+    frames[support_indexes[0]] = (sidebar_x, y, sidebar_width, content_height)
+
+    if len(primary_indexes) == 1:
+        frames[primary_indexes[0]] = (margin, y, main_width, content_height)
+        return frames
+
+    first_primary, second_primary = primary_indexes
+    stack_gap = 0.24
+    top_ratio = 0.58 if _is_chart_like(objects[first_primary]) else 0.52
+    top_height = max(1.9, content_height * top_ratio - stack_gap / 2)
+    bottom_height = max(1.35, content_height - top_height - stack_gap)
+    frames[first_primary] = (margin, y, main_width, top_height)
+    frames[second_primary] = (margin, y + top_height + stack_gap, main_width, bottom_height)
+    return frames
 
 
 def _text_metrics(text: str, font_size_pt: float) -> tuple[float, float]:
@@ -797,9 +859,10 @@ def _add_card(
     paragraph.alignment = PP_ALIGN.CENTER
     run = paragraph.add_run()
     run.text = _object_text(obj)
+    is_secondary_support = _is_secondary_support(obj)
     run.font.size = Pt(
         max(20.0, style["body_size"] * 1.6)
-        if h >= 3.0
+        if h >= 3.0 and not is_secondary_support
         else style["body_size"]
     )
     run.font.name = style["font_name"]

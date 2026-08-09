@@ -5,6 +5,8 @@ import process from "node:process";
 import PptxGenJS from "pptxgenjs";
 import JSZip from "jszip";
 
+const GENERATED_SUPPORT_DERIVATION = "same_slide_evidence_augmenter";
+
 const [inputPath, outputDir] = process.argv.slice(2);
 if (!inputPath || !outputDir) {
   console.error(JSON.stringify({ status: "failed", errors: [{ code: "INVALID_RUNTIME_ARGUMENTS", message: "Usage: build-deck.mjs <input.json> <output-dir>" }] }));
@@ -44,16 +46,46 @@ try {
   for (const [slideIndex, slidePlan] of (plan.slides || []).entries()) {
     const slide = pptx.addSlide();
     slide.background = { color: style.colors.background };
-    const contentWidth = style.pageWidth - style.grid.left - style.grid.right;
-    addText(slide, slidePlan.title || "Untitled", style.grid.left, style.grid.top, contentWidth, style.grid.titleHeight, { fontFace: style.titleFont, fontSize: style.titleSize, bold: true, color: style.colors.textPrimary });
-    const body = [slidePlan.judgment, slidePlan.message].filter((v) => typeof v === "string" && v.trim()).join("\n");
-    const objectY = style.grid.top + style.grid.titleHeight + style.spacing.titleToBody + 0.65;
-    if (body) addText(slide, body, style.grid.left, style.grid.top + style.grid.titleHeight + style.spacing.titleToBody, contentWidth, 0.55, { fontSize: style.bodySize, color: style.colors.textSecondary, breakLine: false });
-
     const objects = slidePlan.objects || [];
+    const contentWidth = style.pageWidth - style.grid.left - style.grid.right;
+    const isCoverSlide = slidePlan.slide_role === "cover";
+    const titleText = visibleSlideTitle(slidePlan);
+    const body = [slidePlan.judgment, slidePlan.message]
+      .filter((value) => typeof value === "string" && value.trim())
+      .join("\n");
+
+    if (isCoverSlide) {
+      renderCoverSlide(pptx, slide, slidePlan, style);
+    } else {
+      if (titleText) {
+        addText(slide, titleText, style.grid.left, style.grid.top, contentWidth, style.grid.titleHeight, {
+          objectName: `Title:${slidePlan.id || slidePlan.slide_id || `slide-${slideIndex + 1}`}`,
+          fontFace: style.titleFont,
+          fontSize: style.titleSize,
+          bold: true,
+          color: style.colors.textPrimary,
+        });
+      }
+      if (body) {
+        addText(slide, body, style.grid.left, style.grid.top + (titleText ? style.grid.titleHeight : 0.18) + style.spacing.titleToBody, contentWidth, 0.55, {
+          objectName: `Body:${slidePlan.id || slidePlan.slide_id || `slide-${slideIndex + 1}`}`,
+          fontSize: style.bodySize,
+          color: style.colors.textSecondary,
+          breakLine: false,
+        });
+      }
+    }
+
+    const contentRegion = resolveContentRegion({
+      isCoverSlide,
+      hasBody: Boolean(body && !isCoverSlide),
+      hasTitle: Boolean(titleText && !isCoverSlide),
+      style,
+    });
+    const frames = computeObjectFrames(slidePlan, objects, style, contentRegion);
     for (const [objectIndex, obj] of objects.entries()) {
       const plannedRoute = obj.delivery_plan?.selected_route || obj.delivery_preferences?.preferred_route || "native_ppt";
-      const rendered = renderObject(pptx, slide, obj, objectIndex, objects.length, style, objectY);
+      const rendered = renderObject(pptx, slide, obj, frames[objectIndex], style);
       const actualRoute = rendered.route;
       result.object_results.push({
         slide_id: slidePlan.id || slidePlan.slide_id || `S${String(slideIndex + 1).padStart(2, "0")}`,
@@ -145,29 +177,54 @@ function validateNativeRequired(plan) {
   }
 }
 
-function renderObject(pptx, slide, obj, index, count, style, y) {
+function renderObject(pptx, slide, obj, frame, style) {
   const kind = String(obj.component_type || obj.type || "").toLowerCase();
   const route = obj.delivery_plan?.selected_route || obj.delivery_preferences?.preferred_route || "native_ppt";
-  const availableWidth = style.pageWidth - style.grid.left - style.grid.right;
-  const colWidth = Math.max(1.8, Math.min(3.8, (availableWidth - style.spacing.cardGap * Math.max(count - 1, 0)) / Math.max(count, 1)));
-  const x = style.grid.left + index * (colWidth + style.spacing.cardGap);
+  const x = frame?.x ?? style.grid.left;
+  const y = frame?.y ?? style.grid.top + style.grid.titleHeight + style.spacing.titleToBody + 0.65;
+  const w = frame?.w ?? (style.pageWidth - style.grid.left - style.grid.right);
+  const h = frame?.h ?? 2.4;
 
   if (kind === "table" || kind === "native_table" || route === "native_table") {
     const rows = tableRows(obj);
-    slide.addTable(rows, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 2.3, border: { type: "solid", color: style.colors.border, pt: 1 }, fill: style.colors.background, color: style.colors.textPrimary, fontFace: style.bodyFont, fontSize: style.smallBodySize, margin: 0.08, rowH: 0.4, autoFit: false });
+    slide.addTable(rows, {
+      x,
+      y,
+      w,
+      h: Math.max(1.9, h),
+      border: { type: "solid", color: style.colors.border, pt: 1 },
+      fill: style.colors.background,
+      color: style.colors.textPrimary,
+      fontFace: style.bodyFont,
+      fontSize: style.smallBodySize,
+      margin: 0.08,
+      rowH: 0.4,
+      autoFit: false,
+    });
     return { route: "native_table" };
   }
   if (kind.includes("chart") || route === "native_chart") {
     const data = chartData(obj);
     const chartType = kind.includes("line") ? pptx.ChartType.line : kind.includes("pie") ? pptx.ChartType.pie : pptx.ChartType.bar;
-    slide.addChart(chartType, data, { x, y, w: Math.min(availableWidth, Math.max(colWidth, 4.2)), h: 2.8, showLegend: data.length > 1, showTitle: false, showValue: true, catAxisLabelFontSize: 10, valAxisLabelFontSize: 9, chartColors: style.colors.dataSeries });
+    slide.addChart(chartType, data, {
+      x,
+      y,
+      w,
+      h: Math.max(2.8, h),
+      showLegend: data.length > 1,
+      showTitle: false,
+      showValue: true,
+      catAxisLabelFontSize: 10,
+      valAxisLabelFontSize: 9,
+      chartColors: style.colors.dataSeries,
+    });
     return { route: "native_chart" };
   }
   if (["diagram", "process", "process_flow", "relationship"].includes(kind) || route === "native_diagram") {
-    renderProcess(pptx, slide, obj, x, y, colWidth, style);
+    renderProcess(pptx, slide, obj, x, y, w, h, style);
     return { route: "native_diagram" };
   }
-  renderCard(pptx, slide, obj, x, y, colWidth, style);
+  renderCard(pptx, slide, obj, x, y, w, h, style);
   const knownCard = [
     "text", "shape", "card", "metric_card", "comparison_card", "evidence_block",
     "summary_action_card",
@@ -175,23 +232,88 @@ function renderObject(pptx, slide, obj, index, count, style, y) {
   return { route: "native_ppt", semanticFallback: !knownCard };
 }
 
-function renderCard(pptx, slide, obj, x, y, w, style) {
-  slide.addShape(pptx.ShapeType.roundRect, { x, y, w, h: 1.35, objectName: `Material:card:${obj.id || "object"}`, rectRadius: 0.08, fill: { color: style.colors.surface1 }, line: { color: style.colors.border, pt: 1 } });
-  addText(slide, objectText(obj), x + style.spacing.padding, y + style.spacing.padding, w - 2 * style.spacing.padding, 1.0, { fontFace: style.bodyFont, fontSize: style.bodySize, bold: true, color: style.colors.textPrimary, valign: "mid" });
+function renderCard(pptx, slide, obj, x, y, w, h, style) {
+  slide.addShape(pptx.ShapeType.roundRect, {
+    x,
+    y,
+    w,
+    h,
+    objectName: `Material:card:${obj.id || "object"}`,
+    rectRadius: 0.08,
+    fill: { color: style.colors.surface1 },
+    line: { color: style.colors.border, pt: 1 },
+  });
+  addText(slide, objectText(obj), x + style.spacing.padding, y + style.spacing.padding, w - 2 * style.spacing.padding, Math.max(0.9, h - 2 * style.spacing.padding), {
+    objectName: `Label:${obj.id || "object"}`,
+    fontFace: style.bodyFont,
+    fontSize: style.bodySize,
+    bold: true,
+    color: style.colors.textPrimary,
+    valign: "mid",
+  });
 }
 
-function renderProcess(pptx, slide, obj, x, y, w, style) {
+function renderProcess(pptx, slide, obj, x, y, w, h, style) {
   const nodes = processNodes(obj);
   const nodeW = Math.min(1.65, (w - 0.3 * (nodes.length - 1)) / nodes.length);
   const route = String(obj.connector_route || obj.connectorRoute || "straight");
+  const nodeH = Math.max(1.15, Math.min(1.6, h));
+  const nodeY = y + Math.max(0, (h - nodeH) / 2);
   if (route !== "straight") {
     throw new Error(`PPTXGENJS_CONNECTOR_ROUTE_UNSUPPORTED:${route}`);
   }
   nodes.forEach((label, i) => {
     const nodeX = x + i * (nodeW + 0.3);
-    if (i > 0) slide.addShape(pptx.ShapeType.line, { x: nodeX - 0.28, y: y + 0.575, w: 0.23, h: 0, objectName: `Connector:${route}:process:${i}`, line: { color: style.colors.primary, pt: 1.5, beginArrowType: "none", endArrowType: "triangle" } });
-    slide.addShape(pptx.ShapeType.roundRect, { x: nodeX, y, w: nodeW, h: 1.15, objectName: `Material:process-node:${i}`, fill: { color: style.colors.surface2 }, line: { color: style.colors.primary, pt: 1.2 } });
-    addText(slide, label, nodeX + 0.08, y + 0.12, nodeW - 0.16, 0.9, { fontFace: style.bodyFont, fontSize: style.smallBodySize, bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
+    if (i > 0) slide.addShape(pptx.ShapeType.line, { x: nodeX - 0.28, y: nodeY + nodeH / 2, w: 0.23, h: 0, objectName: `Connector:${route}:process:${i}`, line: { color: style.colors.primary, pt: 1.5, beginArrowType: "none", endArrowType: "triangle" } });
+    slide.addShape(pptx.ShapeType.roundRect, { x: nodeX, y: nodeY, w: nodeW, h: nodeH, objectName: `Material:process-node:${i}`, fill: { color: style.colors.surface2 }, line: { color: style.colors.primary, pt: 1.2 } });
+    addText(slide, label, nodeX + 0.08, nodeY + 0.12, nodeW - 0.16, Math.max(0.7, nodeH - 0.24), { fontFace: style.bodyFont, fontSize: style.smallBodySize, bold: true, color: style.colors.textPrimary, align: "center", valign: "mid" });
+  });
+}
+
+function renderCoverSlide(pptx, slide, slidePlan, style) {
+  const title = visibleSlideTitle(slidePlan) || String(slidePlan.message || slidePlan.judgment || "Presentation");
+  const subtitle = normalizeSubtitle(slidePlan, title);
+  slide.addShape(pptx.ShapeType.rect, {
+    x: 0,
+    y: 0,
+    w: style.pageWidth,
+    h: style.pageHeight,
+    objectName: `Decoration:cover:bg:${slidePlan.id || slidePlan.slide_id || "cover"}`,
+    fill: { color: style.colors.background },
+    line: { color: style.colors.background, transparency: 100 },
+  });
+  slide.addShape(pptx.ShapeType.rect, {
+    x: style.grid.left + 0.1,
+    y: 1.35,
+    w: 0.12,
+    h: 3.95,
+    objectName: `Decoration:cover:accent:${slidePlan.id || slidePlan.slide_id || "cover"}`,
+    fill: { color: style.colors.primary },
+    line: { color: style.colors.primary, transparency: 100 },
+  });
+  addText(slide, title, style.grid.left + 0.55, 1.9, style.pageWidth - style.grid.left - style.grid.right - 0.7, 1.55, {
+    objectName: `Title:${slidePlan.id || slidePlan.slide_id || "cover"}`,
+    fontFace: style.titleFont,
+    fontSize: style.coverTitleSize,
+    bold: true,
+    color: style.colors.textPrimary,
+    valign: "mid",
+  });
+  if (subtitle) {
+    addText(slide, subtitle, style.grid.left + 0.55, 3.9, 9.3, 0.72, {
+      objectName: `Subtitle:${slidePlan.id || slidePlan.slide_id || "cover"}`,
+      fontFace: style.bodyFont,
+      fontSize: Math.max(style.bodySize, 14),
+      color: style.colors.textSecondary,
+    });
+  }
+  slide.addShape(pptx.ShapeType.line, {
+    x: style.grid.left + 0.55,
+    y: 5.25,
+    w: 3.9,
+    h: 0,
+    objectName: `Decoration:cover:rule:${slidePlan.id || slidePlan.slide_id || "cover"}`,
+    line: { color: style.colors.border, pt: 1.2 },
   });
 }
 
@@ -219,7 +341,7 @@ function resolveStyle(contract, warnings) {
     typography: {
       font_primary: true,
       font_editorial: true,
-      title_sizes_pt: { slide: true },
+      title_sizes_pt: { cover: true, slide: true },
       body_sizes_pt: { normal: true, small: true },
     },
     grid: {
@@ -236,11 +358,14 @@ function resolveStyle(contract, warnings) {
   const spacingRule = (name, fallback) => Number(scale[rules[name]]) || fallback;
   const aspectRatio = ["16:9", "4:3", "9:16"].includes(value.aspect_ratios?.[0]) ? value.aspect_ratios[0] : "16:9";
   const pageWidth = aspectRatio === "4:3" ? 10 : aspectRatio === "9:16" ? 7.5 : 13.333;
+  const pageHeight = aspectRatio === "9:16" ? 13.333 : 7.5;
   return {
     aspectRatio,
     pageWidth,
+    pageHeight,
     titleFont: value.typography?.font_editorial?.[0] || value.typography?.font_primary?.[0] || "Aptos Display",
     bodyFont: value.typography?.font_primary?.[0] || "Aptos",
+    coverTitleSize: Number(value.typography?.title_sizes_pt?.cover) || Math.max(34, (Number(value.typography?.title_sizes_pt?.slide) || 24) * 1.45),
     titleSize: Number(value.typography?.title_sizes_pt?.slide) || 24,
     bodySize: Number(value.typography?.body_sizes_pt?.normal) || 13,
     smallBodySize: Number(value.typography?.body_sizes_pt?.small) || 11,
@@ -252,10 +377,120 @@ function resolveStyle(contract, warnings) {
     },
     grid: {
       left: Number(value.grid?.margin_left_in) || 0.55, right: Number(value.grid?.margin_right_in) || 0.55,
-      top: Number(value.grid?.margin_top_in) || 0.3, titleHeight: Number(value.grid?.title_zone_height_in) || 0.5,
+      top: Number(value.grid?.margin_top_in) || 0.3, bottom: 0.45, titleHeight: Number(value.grid?.title_zone_height_in) || 0.5,
     },
     spacing: { cardGap: spacingRule("card_gap", Number(value.grid?.gutter_horizontal_in) || 0.2), titleToBody: spacingRule("title_to_body", 0.15), padding: Number(scale.md) || 0.16 },
   };
+}
+
+function resolveContentRegion({ isCoverSlide, hasBody, hasTitle, style }) {
+  if (isCoverSlide) {
+    return { x: style.grid.left, y: 5.65, w: style.pageWidth - style.grid.left - style.grid.right, h: Math.max(1.2, style.pageHeight - 6.05) };
+  }
+  const headerOffset = hasTitle ? style.grid.titleHeight : 0;
+  const bodyHeight = hasBody ? 0.72 : 0;
+  const y = style.grid.top + headerOffset + style.spacing.titleToBody + bodyHeight + 0.28;
+  const h = Math.max(1.8, style.pageHeight - y - style.grid.bottom);
+  return { x: style.grid.left, y, w: style.pageWidth - style.grid.left - style.grid.right, h };
+}
+
+function computeObjectFrames(slidePlan, objects, style, region) {
+  if (!objects.length) return [];
+  const sidebarFrames = computeSidebarFrames(objects, style, region);
+  if (sidebarFrames) return sidebarFrames;
+  if (objects.length === 1) {
+    return [{ x: region.x, y: region.y, w: region.w, h: region.h }];
+  }
+  if (objects.length === 2) {
+    const width = (region.w - style.spacing.cardGap) / 2;
+    return [0, 1].map((index) => ({
+      x: region.x + index * (width + style.spacing.cardGap),
+      y: region.y,
+      w: width,
+      h: region.h,
+    }));
+  }
+  const width = (region.w - style.spacing.cardGap * (objects.length - 1)) / objects.length;
+  const height = Math.max(2.2, Math.min(region.h, region.h * 0.72));
+  return objects.map((_, index) => ({
+    x: region.x + index * (width + style.spacing.cardGap),
+    y: region.y,
+    w: width,
+    h: height,
+  }));
+}
+
+function computeSidebarFrames(objects, style, region) {
+  const supportIndexes = objects
+    .map((obj, index) => [obj, index])
+    .filter(([obj]) => isSecondarySupportObject(obj))
+    .map(([, index]) => index);
+  const primaryIndexes = objects
+    .map((obj, index) => [obj, index])
+    .filter(([obj]) => !isSecondarySupportObject(obj))
+    .map(([, index]) => index);
+  if (supportIndexes.length !== 1 || !primaryIndexes.length || primaryIndexes.length > 2) {
+    return null;
+  }
+
+  const frames = new Array(objects.length);
+  const sidebarGap = Math.max(0.24, style.spacing.cardGap);
+  const mainWidth = Math.max(6.6, Math.min(region.w * 0.7, region.w - 3.0 - sidebarGap));
+  const sidebarWidth = region.w - mainWidth - sidebarGap;
+  if (sidebarWidth < 2.8) {
+    return null;
+  }
+
+  frames[supportIndexes[0]] = {
+    x: region.x + mainWidth + sidebarGap,
+    y: region.y,
+    w: sidebarWidth,
+    h: region.h,
+  };
+
+  if (primaryIndexes.length === 1) {
+    frames[primaryIndexes[0]] = { x: region.x, y: region.y, w: mainWidth, h: region.h };
+    return frames;
+  }
+
+  const [firstPrimary, secondPrimary] = primaryIndexes;
+  const stackGap = 0.24;
+  const topBias = isChartLike(objects[firstPrimary]) ? 0.58 : 0.52;
+  const topHeight = Math.max(1.9, region.h * topBias - stackGap / 2);
+  const bottomHeight = Math.max(1.35, region.h - topHeight - stackGap);
+  frames[firstPrimary] = { x: region.x, y: region.y, w: mainWidth, h: topHeight };
+  frames[secondPrimary] = { x: region.x, y: region.y + topHeight + stackGap, w: mainWidth, h: bottomHeight };
+  return frames;
+}
+
+function isSecondarySupportObject(obj) {
+  if (obj?.priority === "primary") return false;
+  return obj?.provenance?.derivation === GENERATED_SUPPORT_DERIVATION || String(obj?.semantic_role || "").toLowerCase() === "interpretation";
+}
+
+function isChartLike(obj) {
+  const component = String(obj?.component_type || obj?.type || "").toLowerCase();
+  const route = String(obj?.delivery_plan?.selected_route || obj?.delivery_preferences?.preferred_route || "").toLowerCase();
+  return component.includes("chart") || route === "native_chart";
+}
+
+function visibleSlideTitle(slidePlan) {
+  const title = typeof slidePlan?.title === "string" ? slidePlan.title.trim() : "";
+  if (!title) return "";
+  return isInternalSlideLabel(title, slidePlan) ? "" : title;
+}
+
+function isInternalSlideLabel(title, slidePlan) {
+  const normalized = String(title || "").trim();
+  if (!normalized) return false;
+  const lowered = normalized.toLowerCase();
+  const slideId = String(slidePlan?.id || slidePlan?.slide_id || "").trim().toLowerCase();
+  return lowered === slideId || /^slide[-_ ]?\d{1,3}$/i.test(normalized) || /^s\d{1,3}$/i.test(normalized);
+}
+
+function normalizeSubtitle(slidePlan, title) {
+  const subtitle = String(slidePlan?.message || slidePlan?.judgment || "").trim();
+  return subtitle && subtitle !== title ? subtitle : "";
 }
 
 function warnUnsupportedStylePaths(object, supportTree, prefix, warnings) {

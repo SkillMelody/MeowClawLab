@@ -189,6 +189,77 @@ def generated_support_plan() -> tuple[dict, dict, str]:
     return enriched, delivery, support_text
 
 
+def generated_data_support_plan() -> tuple[dict, dict, str]:
+    ppt_ir = sample_ppt_ir()
+    slide = ppt_ir["slides"][1]
+    slide["slide_role"] = "data"
+    slide["title"] = "使用扩张明显，但规模化阶段只占约三分之一"
+    slide["judgment"] = "从会用到规模化之间仍有显著落地缺口。"
+    slide["message"] = "图表与表格共同支持同页生成解读。"
+    slide["primary_expression"] = "data_visual"
+    slide["primary_anchor"] = "adoption"
+    slide["objects"] = [
+        {
+            "id": "adoption",
+            "type": "chart",
+            "component_type": "bar_chart",
+            "semantic_role": "evidence",
+            "priority": "primary",
+            "content": {
+                "categories": ["2023", "2024", "2025"],
+                "series": [{"name": "规律使用 AI", "values": [55, 78, 88]}],
+            },
+            "source_refs": [{"source_id": "src-001", "locator": "chart", "claim_type": "direct"}],
+            "editability": "native_required",
+        },
+        {
+            "id": "stage",
+            "type": "table",
+            "component_type": "native_table",
+            "semantic_role": "evidence",
+            "priority": "primary",
+            "content": {
+                "headers": ["阶段", "组织占比"],
+                "body": [["试验", "32%"], ["试点", "30%"], ["规模化", "31%"], ["全面规模化", "7%"]],
+            },
+            "source_refs": [{"source_id": "src-001", "locator": "table", "claim_type": "direct"}],
+            "editability": "native_required",
+        },
+    ]
+    enriched = enrich_ppt_ir(ppt_ir)
+    support_text = next(
+        obj["content"]
+        for obj in enriched["slides"][1]["objects"]
+        if obj["id"] == "S02-same-slide-evidence-comparison"
+    )
+    delivery = sample_delivery_plan()
+    route_by_id = {
+        "adoption": ("bar_chart", "native_chart", ["series", "categories"]),
+        "stage": ("native_table", "native_table", ["headers", "cells"]),
+        "S02-same-slide-evidence-comparison": ("evidence_block", "native_ppt", ["claim", "evidence", "source_note"]),
+    }
+    delivery["slides"][0]["objects"] = [
+        {
+            "slide_id": "S02",
+            "object_id": obj["id"],
+            "component_type": route_by_id[obj["id"]][0],
+            "preferred_route": route_by_id[obj["id"]][1],
+            "selected_route": route_by_id[obj["id"]][1],
+            "decision": "selected",
+            "reason_codes": [],
+            "editable_core": route_by_id[obj["id"]][2],
+            "rasterized_parts": [],
+            "svg_parts": [],
+            "native_overlay_parts": [],
+            "qa_checks": [],
+            "fallback_chain": [],
+        }
+        for obj in enriched["slides"][1]["objects"]
+    ]
+    delivery["summary"]["total_objects"] = len(delivery["slides"][0]["objects"])
+    return enriched, delivery, support_text
+
+
 def test_python_pptx_adapter_builds_inspectable_deck(tmp_path: Path) -> None:
     adapter = PythonPptxAdapter()
     plan = adapter.plan(sample_ppt_ir(), json.loads(STYLE.read_text(encoding="utf-8")), sample_delivery_plan())
@@ -487,6 +558,38 @@ def test_generated_same_slide_support_renders_native_text(tmp_path: Path) -> Non
         if shape.has_text_frame and shape.text.strip()
     }
     assert support_text in native_text
+
+
+def test_generated_same_slide_support_uses_sidebar_layout_for_data_slides(
+    tmp_path: Path,
+) -> None:
+    plan, delivery, support_text = generated_data_support_plan()
+
+    result = PythonPptxAdapter().build(
+        PythonPptxAdapter().plan(
+            plan,
+            json.loads(STYLE.read_text(encoding="utf-8")),
+            delivery,
+        ),
+        tmp_path,
+    )
+
+    deck = Presentation(result.pptx)
+    slide = deck.slides[1]
+    chart = next(shape for shape in slide.shapes if shape.has_chart)
+    table = next(shape for shape in slide.shapes if shape.has_table)
+    support = next(
+        shape
+        for shape in slide.shapes
+        if shape.has_text_frame and support_text in shape.text
+    )
+
+    assert chart.width / 914400 >= 8
+    assert table.width / 914400 >= 8
+    assert chart.left < support.left
+    assert table.left < support.left
+    assert support.left / 914400 >= 9
+    assert support.width / 914400 <= 4
 
 
 def test_single_process_is_vertically_balanced_in_the_content_canvas(

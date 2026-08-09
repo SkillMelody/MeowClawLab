@@ -141,6 +141,98 @@ def generated_support_plan() -> tuple[BuildPlan, str]:
     )
 
 
+def generated_data_support_plan() -> tuple[BuildPlan, str]:
+    enriched = enrich_ppt_ir(
+        {
+            "slides": [
+                {
+                    "id": "S01",
+                    "slide_role": "data",
+                    "title": "使用扩张明显，但规模化阶段只占约三分之一",
+                    "judgment": "从会用到规模化之间仍有显著落地缺口。",
+                    "message": "图表与表格共同支持同页生成解读。",
+                    "objects": [
+                        {
+                            "id": "adoption",
+                            "type": "chart",
+                            "component_type": "bar_chart",
+                            "priority": "primary",
+                            "content": {
+                                "categories": ["2023", "2024", "2025"],
+                                "series": [{"name": "规律使用 AI", "values": [55, 78, 88]}],
+                            },
+                            "source_refs": [{"source_id": "report", "locator": "chart", "claim_type": "direct"}],
+                            "editability": "native_required",
+                        },
+                        {
+                            "id": "stage",
+                            "type": "table",
+                            "component_type": "native_table",
+                            "priority": "primary",
+                            "content": {
+                                "headers": ["阶段", "组织占比"],
+                                "body": [["试验", "32%"], ["试点", "30%"], ["规模化", "31%"], ["全面规模化", "7%"]],
+                            },
+                            "source_refs": [{"source_id": "report", "locator": "table", "claim_type": "direct"}],
+                            "editability": "native_required",
+                        },
+                    ],
+                }
+            ]
+        }
+    )
+    slide = enriched["slides"][0]
+    support_text = next(
+        obj["content"]
+        for obj in slide["objects"]
+        if obj["id"] == "S01-same-slide-evidence-comparison"
+    )
+    route_by_id = {
+        "adoption": "native_chart",
+        "stage": "native_table",
+        "S01-same-slide-evidence-comparison": "native_ppt",
+    }
+    return (
+        BuildPlan(
+            builder="pptxgenjs",
+            slides=[
+                {
+                    "id": slide["id"],
+                    "slide_role": slide["slide_role"],
+                    "title": slide["title"],
+                    "judgment": slide["judgment"],
+                    "message": slide["message"],
+                    "objects": [
+                        {
+                            **obj,
+                            "delivery_plan": {
+                                "selected_route": route_by_id[obj["id"]],
+                            },
+                        }
+                        for obj in slide["objects"]
+                    ],
+                }
+            ],
+        ),
+        support_text,
+    )
+
+
+def cover_plan(title: str = "Path B quality floor") -> BuildPlan:
+    return BuildPlan(
+        builder="pptxgenjs",
+        slides=[
+            {
+                "id": "S01",
+                "slide_role": "cover",
+                "title": title,
+                "message": "Presentation-scale cover layout",
+                "objects": [],
+            }
+        ],
+    )
+
+
 def test_probe_availability_follows_node_and_local_module() -> None:
     adapter = PptxGenJsAdapter()
     capability = adapter.probe()
@@ -265,12 +357,13 @@ def test_plan_preserves_style_contract_and_runtime_applies_supported_style(tmp_p
     }
     assert {
         "shape_tokens",
-        "typography.title_sizes_pt.cover", "typography.title_sizes_pt.section",
+        "typography.title_sizes_pt.section",
         "typography.body_sizes_pt.large", "typography.body_sizes_pt.footnote",
         "spacing.rules.section_gap", "spacing.rules.icon_to_label",
         "spacing.rules.label_to_value", "spacing.rules.paragraph_gap",
         "spacing.scale.xs", "spacing.scale.sm", "spacing.scale.xl", "spacing.scale.xxl",
     } <= warned_paths
+    assert "typography.title_sizes_pt.cover" not in warned_paths
     assert "typography.title_sizes_pt.slide" not in warned_paths
     assert "typography.body_sizes_pt.normal" not in warned_paths
     assert "typography.body_sizes_pt.small" not in warned_paths
@@ -365,3 +458,55 @@ def test_generated_same_slide_support_renders_native_text_without_semantic_fallb
         and fallback.get("reason_codes") == ["PPTXGENJS_SEMANTIC_CARD_FALLBACK"]
         for fallback in result.fallbacks
     )
+
+
+def test_generated_same_slide_support_uses_sidebar_layout_for_data_slides(
+    tmp_path: Path,
+) -> None:
+    plan, support_text = generated_data_support_plan()
+
+    result = PptxGenJsAdapter().build(plan, tmp_path)
+
+    assert result.status == "created", result.errors
+    deck = Presentation(result.pptx)
+    slide = deck.slides[0]
+    chart = next(shape for shape in slide.shapes if shape.has_chart)
+    table = next(shape for shape in slide.shapes if shape.has_table)
+    support = next(
+        shape
+        for shape in slide.shapes
+        if shape.has_text_frame and support_text in shape.text
+    )
+    assert chart.width / 914400 >= 8
+    assert table.width / 914400 >= 8
+    assert support.left / 914400 >= 9
+    assert support.width / 914400 <= 4
+
+
+def test_cover_uses_presentation_scale_layout(tmp_path: Path) -> None:
+    result = PptxGenJsAdapter().build(cover_plan(), tmp_path)
+
+    assert result.status == "created", result.errors
+    deck = Presentation(result.pptx)
+    slide = deck.slides[0]
+    title = next(
+        shape
+        for shape in slide.shapes
+        if shape.has_text_frame and shape.text == "Path B quality floor"
+    )
+    assert title.top / 914400 >= 1.8
+    assert title.width / 914400 >= 10
+    assert len(slide.shapes) >= 3
+
+
+def test_internal_slide_id_is_not_rendered_as_visible_header_text(tmp_path: Path) -> None:
+    result = PptxGenJsAdapter().build(cover_plan("slide-001"), tmp_path)
+
+    assert result.status == "created", result.errors
+    deck = Presentation(result.pptx)
+    visible_text = {
+        shape.text.strip()
+        for shape in deck.slides[0].shapes
+        if shape.has_text_frame and shape.text.strip()
+    }
+    assert "slide-001" not in visible_text
