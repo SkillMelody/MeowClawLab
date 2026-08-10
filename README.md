@@ -1,4 +1,4 @@
-# MeowClaw Lab<img src="./Assets/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
+# MeowClaw Lab<img src="./Skills/article-html-to-ppt/assets/samples/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
 
 > English version: [README.en.md](./README.en.md)
 
@@ -9,7 +9,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 ## MeowClaw PPT Smith v3.0.0
 
 <p align="center">
-  <img src="./Assets/article-html-to-ppt/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
+  <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
 </p>
 
 [`MeowClaw PPT Smith`](./Skills/article-html-to-ppt/) 把文章、Markdown、HTML、公众号草稿、PRD、研究材料和设计说明转成**低返工、可编辑、可验证**的专业演示文稿。
@@ -43,7 +43,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 《未来工作 2030》展示稿由原生文本、形状、连接线、图表和表格构建，12/12 页真渲染通过，未整页图片化。它用于展示 v2.1 的视觉叙事上限，不代表每份材料都能一次自动达到同等完成度。
 
-![PPTSmith 3.0 Hero Showcase](./Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](./Skills/article-html-to-ppt/assets/samples/pptsmith-2.1-hero-showcase-overview.png)
 
 ## 真实 PPT 效果展示（保留样例）
 
@@ -54,11 +54,11 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 - **复杂关系图增强**：包含曲线箭头、虚线、折线、肘线和双箭头等图元。
 - **配色契约升级**：五套基础风格采用低饱和、有色温、克制的配色体系。
 
-![State of AI 2025 14-page PPT sample](./Assets/article-html-to-ppt/stateofai-2025-final-contact-sheet.png)
+![State of AI 2025 14-page PPT sample](./Skills/article-html-to-ppt/assets/samples/stateofai-2025-final-contact-sheet.png)
 
-![Palette upgrade overview](./Assets/article-html-to-ppt/palette-upgrade-overview.png)
+![Palette upgrade overview](./Skills/article-html-to-ppt/assets/samples/palette-upgrade-overview.png)
 
-![Native editable architecture diagram](./Assets/article-html-to-ppt/native-architecture-diagram.png)
+![Native editable architecture diagram](./Skills/article-html-to-ppt/assets/samples/native-architecture-diagram.png)
 
 ## OpenClaw Verified Upgrade
 

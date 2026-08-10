@@ -1,7 +1,7 @@
 # MeowClaw PPT Smith
 
 <p align="center">
-  <img src="../../Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPT Smith icon" width="836">
+  <img src="./assets/samples/pptsmith-github-en.png" alt="MeowClaw PPT Smith icon" width="836">
 </p>
 
 > 中文文档（默认）: [README.md](./README.md) · OpenClaw execution contract: [SKILL.md](./SKILL.md)
@@ -25,7 +25,7 @@ They serve different needs, not different truth standards: Path A pursues the vi
 
 The 12-slide *Future of Work 2030* showcase uses native editable objects and passed real rendering without whole-slide rasterization.
 
-![PPTSmith 3.0 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](./assets/samples/pptsmith-2.1-hero-showcase-overview.png)
 
 ## Sample Gallery
 

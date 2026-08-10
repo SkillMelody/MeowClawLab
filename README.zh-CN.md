@@ -1,4 +1,4 @@
-# MeowClaw Lab<img src="./Assets/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
+# MeowClaw Lab<img src="./Skills/article-html-to-ppt/assets/samples/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
 
 中文文档以 [`README.md`](./README.md) 为唯一维护入口，英文文档见 [`README.en.md`](./README.en.md)。
 

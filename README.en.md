@@ -1,4 +1,4 @@
-# MeowClaw Lab<img src="./Assets/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
+# MeowClaw Lab<img src="./Skills/article-html-to-ppt/assets/samples/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
 
 > 中文版本: [README.md](./README.md)
 
@@ -9,7 +9,7 @@ The repository goes beyond prompts that merely run. Its production workflows def
 ## MeowClaw PPT Smith v3.0.0
 
 <p align="center">
-  <img src="./Assets/article-html-to-ppt/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
+  <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
 </p>
 
 [`MeowClaw PPT Smith`](./Skills/article-html-to-ppt/) turns articles, Markdown, HTML, WeChat drafts, PRDs, research, and design specifications into **low-rework, editable, and verifiable** professional presentations.
@@ -43,7 +43,7 @@ See the [PPTSmith v3.0.0 release notes](./Skills/article-html-to-ppt/docs/v3.0.0
 
 The 12-slide *Future of Work 2030* showcase is built from native text, shapes, connectors, charts, and tables. It passed real rendering without whole-slide rasterization. It demonstrates the visual upper bound of v2.1, not a promise that every source reaches the same result in one automatic pass.
 
-![PPTSmith 3.0 Hero Showcase](./Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](./Skills/article-html-to-ppt/assets/samples/pptsmith-2.1-hero-showcase-overview.png)
 
 ## Real PPT Output Gallery (Preserved Sample)
 
@@ -54,11 +54,11 @@ These images come from the earlier 14-slide stress test based on McKinsey / Quan
 - **Richer relationship graphics** including curved arrows, dashed lines, polylines, elbow connectors, and double arrows.
 - **Upgraded palette contracts** across five low-chroma, warm-tempered foundational styles.
 
-![State of AI 2025 14-page PPT sample](./Assets/article-html-to-ppt/stateofai-2025-final-contact-sheet.png)
+![State of AI 2025 14-page PPT sample](./Skills/article-html-to-ppt/assets/samples/stateofai-2025-final-contact-sheet.png)
 
-![Palette upgrade overview](./Assets/article-html-to-ppt/palette-upgrade-overview.png)
+![Palette upgrade overview](./Skills/article-html-to-ppt/assets/samples/palette-upgrade-overview.png)
 
-![Native editable architecture diagram](./Assets/article-html-to-ppt/native-architecture-diagram.png)
+![Native editable architecture diagram](./Skills/article-html-to-ppt/assets/samples/native-architecture-diagram.png)
 
 ## OpenClaw Verified Upgrade
 

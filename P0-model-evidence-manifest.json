@@ -1,7 +1,0 @@
-{
-  "requested_model": "volcengine-agent-plan/deepseek-v4-pro",
-  "actual_model": "volcengine-agent-plan/deepseek-v4-pro",
-  "fallback_used": false,
-  "evidence_file": "P0-model-evidence.json",
-  "basis": "stdout.ok=true; provider=volcengine-agent-plan; model=deepseek-v4-pro; attempts=[]"
-}

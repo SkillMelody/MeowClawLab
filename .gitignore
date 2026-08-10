@@ -12,11 +12,16 @@ node_modules/
 # Local agent/tool state
 .superpowers/
 .worktrees/
+/.verification/
 
-# Generated PPT workspaces and delivery outputs
-.ppt-work/
-deliverables/
+# Root-level local development, test, and audit artifacts
+/P0-*
+/docs/superpowers/
+/implementation-audit/
 
-# Repository presentation media is maintained outside the source tree
-Assets/
-assets/
+# Root-level generated PPT workspaces, delivery outputs, and media.
+# Skill-owned assets remain trackable under Skills/<skill>/assets/.
+/.ppt-work/
+/deliverables/
+/Assets/
+/assets/

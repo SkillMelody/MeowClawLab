@@ -1,7 +1,7 @@
 # MeowClaw PPT Smith
 
 <p align="center">
-  <img src="../../Assets/article-html-to-ppt/pptsmith-github-zh.png" alt="MeowClaw PPT Smith 图标" width="836">
+  <img src="./assets/samples/pptsmith-github-zh.png" alt="MeowClaw PPT Smith 图标" width="836">
 </p>
 
 > English documentation: [README.en.md](./README.en.md) · OpenClaw 执行规范：[SKILL.md](./SKILL.md)
@@ -47,7 +47,7 @@ v3.0.0 将两条有明确边界的生成路径产品化：
 - 保留 2.0.7 的原生连接器、端点绑定与图拓扑门禁；新版能力为增量升级。
 - Standard 已在 macOS + LibreOffice 验收环境验证；Premium 仍需每次运行完成真实渲染、零错误 QA、评分和人工视觉复核。
 
-![PPTSmith 3.0 Hero Showcase](../../Assets/article-html-to-ppt/pptsmith-2.1-hero-showcase-overview.png)
+![PPTSmith 3.0 Hero Showcase](./assets/samples/pptsmith-2.1-hero-showcase-overview.png)
 
 ### 2.0.7 连接器路由与图拓扑门禁
 
