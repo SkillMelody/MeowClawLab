@@ -125,6 +125,9 @@ class PythonPptxAdapter:
             primary_zone_ratio = float(vp_layout.get("primary_zone_ratio", 0.56))
             density_level = str(vp_density.get("level", "medium"))
             page_archetype = str(vp.get("page_archetype", ""))
+            title = str(slide_plan.get("title") or "Untitled")
+            cjk_chars = sum(1 for char in title if "\u4e00" <= char <= "\u9fff")
+            is_long_title = len(title) > 28 or cjk_chars > 20
             if slide_plan.get("slide_role") == "cover":
                 _add_cover(slide, slide_plan, style, vp)
                 if not (slide_plan.get("objects") or []):
@@ -134,11 +137,9 @@ class PythonPptxAdapter:
                 if not (slide_plan.get("objects") or []):
                     continue
             else:
-                title = str(slide_plan.get("title") or "Untitled")
-                cjk_chars = sum(1 for c in title if '\u4e00' <= c <= '\u9fff')
                 # Allow up to 2 lines; shrink if text overflows
-                title_h = 0.82 if len(title) > 28 else 0.62
-                title_size = style["title_size"] if len(title) <= 28 else style["title_size"] - 2.0
+                title_h = 0.82 if is_long_title else 0.62
+                title_size = style["title_size"] if not is_long_title else style["title_size"] - 2.0
                 _add_textbox(
                     slide,
                     title,
@@ -174,7 +175,7 @@ class PythonPptxAdapter:
             if not objects:
                 continue
             # --- visual-plan-driven layout: dynamic position & height ---
-            title_zone_h = 0.58 if len(title) <= 28 else 0.78
+            title_zone_h = 0.78 if is_long_title else 0.58
             content_top = style["margin_top"] + title_zone_h
             if body and slide_plan.get("slide_role") != "cover":
                 content_top += 0.4  # body text zone

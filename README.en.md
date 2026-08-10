@@ -35,7 +35,7 @@ The repository goes beyond prompts that merely run. Its production workflows def
 ## v3.0.0: Bespoke Code and Verified Pipeline
 
 - **Path A — Code Path** lets an LLM write `python-pptx` directly for editable flywheels, complex native arrows, asymmetric composition, and high-value page-level craft—the capability boundary of the best v1.2.0 outputs.
-- **Path B — IR / Pipeline Path** supplies structured IR, visual narrative planning, component routing, and real-render QA for repeatable, auditable standard production.
+- **Path B — IR / Pipeline Path** supplies structured IR, visual narrative planning, component routing, and real-render QA for repeatable, auditable standard production. Its IR completeness and evidence-quality gate requires source-bound primary data and independent evidence; insufficient input stops delivery with named blockers instead of mislabeling a rendered deck as `verified`.
 
 See the [PPTSmith v3.0.0 release notes](./Skills/article-html-to-ppt/docs/v3.0.0-release-notes.md) for trade-offs, the v1.2.0 comparison, and fixed-material multi-model/path image evidence.
 

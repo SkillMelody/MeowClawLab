@@ -35,7 +35,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 ## v3.0.0：高定代码与可验证流水线并行
 
 - **Path A（高定代码）**：模型直接写 `python-pptx`，适合需要飞轮、复杂原生箭头、非对称布局与逐页构图的高价值材料；这条路恢复了 v1.2.0 最佳案例的能力边界。
-- **Path B（IR / Pipeline）**：以结构化 IR、视觉叙事、组件路由和真实渲染 QA 支持可重复、可审计的标准生产。
+- **Path B（IR / Pipeline）**：以结构化 IR、视觉叙事、组件路由和真实渲染 QA 支持可重复、可审计的标准生产；IR 完整性与证据质量门禁要求主数据和独立证据均绑定来源，信息不足时以命名 blocker 停止交付，而不把渲染成功误标为 `verified`。
 
 两者的取舍、v1.2.0 对比，以及同一 McKinsey 材料的四模型 × 双路径图像证据见：[PPTSmith v3.0.0 发布说明](./Skills/article-html-to-ppt/docs/v3.0.0-release-notes.md)。
 

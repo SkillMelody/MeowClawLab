@@ -17,7 +17,7 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 v3.0.0 productizes two bounded generation paths:
 
 - **Path A — Code Path**: an LLM writes a standalone `python-pptx` build script for bespoke composition, editable flywheels, complex native arrows, asymmetric layouts, and page-level refinement—the strengths demonstrated by the best v1.2.0 runs.
-- **Path B — IR / Pipeline Path**: PPT IR, Style Contract, component routing, real rendering, and QA produce traceable, repeatable standard output.
+- **Path B — IR / Pipeline Path**: PPT IR, Style Contract, component routing, real rendering, and QA produce traceable, repeatable standard output. Its IR completeness and evidence-quality gate requires source-bound primary data plus independent evidence; insufficient input stops with named blockers and never gains `verified` merely because it rendered.
 
 They serve different needs, not different truth standards: Path A pursues the visual ceiling of a capable model and still needs real-render plus human review; Path B provides a verified production floor. See the [v3.0.0 release notes, v1.2.0 comparison, and multi-model evidence](docs/v3.0.0-release-notes.md).
 
