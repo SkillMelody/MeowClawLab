@@ -98,6 +98,6 @@ Reasons, from `packaging/audit-allowlist.json`:
 
 ## Distribution boundary
 
-This archive contains private commercial PMO source assets under
+This archive contains public PMO production-runtime source assets under
 `private-pmo-pack/`. It is intended for the owner's private installation and
 must not be uploaded to a public Skill registry or source repository.

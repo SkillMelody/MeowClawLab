@@ -7,7 +7,7 @@
 
 ## Product objective and acceptance hierarchy
 
-PPTSmith is a private PMO commercial production pack. Its objective is not
+PPTSmith is a public PMO production runtime. Its objective is not
 merely to emit an editable, renderable, structurally compliant PPTX. It must
 automatically translate project-management and decision information into a
 consulting-grade visual narrative that is projection-readable, scan-readable,

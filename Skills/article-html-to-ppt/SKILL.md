@@ -1,11 +1,14 @@
 ---
 name: "article-html-to-ppt"
+slug: "article-html-to-ppt"
+displayName: "MeowClaw PPT Smith"
+version: "3.0.1"
 description: "Build and QA editable PPT decks locally; probes required tools/fonts, runs subprocess renderers in isolated work/output folders, and uses cloud export only with explicit consent."
 metadata:
   display_name: "MeowClaw PPT Smith"
   english_alias: "MeowClaw PPT Smith"
   public_slug: "meowclaw-pptsmith"
-  version: "3.0.0"
+  version: "3.0.1"
   compatibility_aliases: ["article-html-to-ppt", "meowclaw-decksmith"]
 ---
 
@@ -22,7 +25,7 @@ Public identity:
 
 Keep the OpenClaw skill route and directory name as `article-html-to-ppt` until all installed clients, ClawHub versions, GitHub paths, and historical workflows have migrated. Treat `article-html-to-ppt` and `meowclaw-decksmith` as backward-compatible aliases, not as the primary public name.
 
-Version `3.0.0` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. The canonical `python_pptx` route now performs representative real rendering for Standard, promotes a successful render to the preview PDF, blocks stale render evidence on resumed runs, and enforces structural checks for severe overflow, low text/background contrast, arrow text safety, semantic footnotes, and editable-content coverage. It also adds presentation-scale covers, full-canvas single charts/tables, editable metric walls, and native source footers. Version 3.0.0 additionally passes macOS renderer paths through `osascript` arguments, contains fixture cleanup to its fixed test directory, discloses only required-font availability, and loads fixture safety checks through a normal static import. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v3.0.0-release-notes.md` for the v1.2.0-to-v3.0.0 architecture boundary and model/path evidence.
+Version `3.0.1` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. It retains v3.0.0's dual-path generation, visual narrative, quality gates and verified Standard boundary, and makes the PMO production runtime public: routing, renderers, schemas, examples and quality rules are distributable. Registry packages exclude PMO tests, generated decks, rendered PDFs/images, QA logs and caches. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v3.0.1-release-notes.md` for the public PMO distribution boundary.
 
 ### Capability and Permission Boundary
 

@@ -6,7 +6,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `PPT Smith`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
 
-## MeowClaw PPT Smith v3.0.0
+## MeowClaw PPT Smith v3.0.1
 
 <p align="center">
   <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
@@ -30,14 +30,14 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 [查看 PPTSmith 中文说明与快速用法 →](./Skills/article-html-to-ppt/README.md)
 
-> v3.0.0 将 v1.2.0 的高保真直接代码路径重新纳入正式产品，同时保留 v2.x 的 IR/Pipeline 可追溯生产路径、八条专业路线和真实渲染 QA。Standard 已在 macOS + LibreOffice 验收环境通过真渲染、结构回读与回归测试；Path A 仍需按实际模型能力进行人工视觉复核，原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。
+> v3.0.1 保留 v3.0.0 的高保真直接代码路径、IR/Pipeline 可追溯生产、八条专业路线和真实渲染 QA，并公开 PMO 运行时的源码、schemas、路由、质量规则、示例与文档。注册表包不包含测试夹具、生成 PPTX/PDF、渲染图、QA 日志或缓存；Path A 仍需按实际模型能力进行人工视觉复核，原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。
 
-## v3.0.0：高定代码与可验证流水线并行
+## v3.0.1：公开 PMO 运行时，双路径生产仍并行
 
 - **Path A（高定代码）**：模型直接写 `python-pptx`，适合需要飞轮、复杂原生箭头、非对称布局与逐页构图的高价值材料；这条路恢复了 v1.2.0 最佳案例的能力边界。
 - **Path B（IR / Pipeline）**：以结构化 IR、视觉叙事、组件路由和真实渲染 QA 支持可重复、可审计的标准生产；IR 完整性与证据质量门禁要求主数据和独立证据均绑定来源，信息不足时以命名 blocker 停止交付，而不把渲染成功误标为 `verified`。
 
-两者的取舍、v1.2.0 对比，以及同一 McKinsey 材料的四模型 × 双路径图像证据见：[PPTSmith v3.0.0 发布说明](./Skills/article-html-to-ppt/docs/v3.0.0-release-notes.md)。
+两者的取舍、v1.2.0 对比，以及同一 McKinsey 材料的四模型 × 双路径图像证据见：[PPTSmith v3.0.0 发布说明](./Skills/article-html-to-ppt/docs/v3.0.0-release-notes.md)。PMO 公开发行边界见：[v3.0.1 说明](./Skills/article-html-to-ppt/docs/v3.0.1-release-notes.md)。
 
 ## v3.0 Hero Showcase
 
@@ -77,7 +77,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 | 技能 | 用途 | 状态 |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：Path A 高定代码、Path B 可验证流水线、八条专业路线、原生连接器路由与可信 QA。 | v3.0.0 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：Path A 高定代码、Path B 可验证流水线、公开 PMO 运行时、八条专业路线、原生连接器路由与可信 QA。 | v3.0.1 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | 带 Lite supervised 与 V2 managed 双运行档的 OpenClaw 安全升级事务。 | 已发布 |
 
 ## 设计原则

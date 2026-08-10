@@ -59,7 +59,7 @@ completion.
 - Known baseline limitation: native connector endpoint binding was not
   claimed.
 
-Acceptance boundary: Phase 0 proves the private PMO pack can generate native
+Acceptance boundary: Phase 0 proves the PMO runtime can generate native
 PPTX, but it does not provide the separated component IR/layout/token
 architecture delivered in Phase 1.
 

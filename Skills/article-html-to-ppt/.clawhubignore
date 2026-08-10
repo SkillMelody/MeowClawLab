@@ -1,6 +1,11 @@
-# ClawHub distribution excludes scanner-triggering test harness files.
-# Full source and tests remain available in the linked GitHub repository.
-tests/fixtures/benchmark/generate_fixtures.py
-tests/unit/test_pptx_inspector.py
-tests/unit/test_rubric_scoring.py
-tests/integration/test_package_delivery.py
+# Public registry packages include runtime source, schemas, examples and docs.
+# They never include local tests, generated decks/renders, QA logs or caches.
+tests/
+private-pmo-pack/tests/
+private-pmo-pack/output/
+private-pmo-pack/qa/
+private-pmo-pack/visual-system-comparison/
+**/__pycache__/
+**/.pytest_cache/
+**/node_modules/
+**/.verification/

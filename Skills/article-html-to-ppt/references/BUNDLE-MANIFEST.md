@@ -1,7 +1,7 @@
-# PPTSmith PMO Private Bundle
+# PPTSmith PMO Public Distribution Bundle
 
-This private delivery combines the current MeowClaw PPT Smith engine with the
-private PMO production pack.
+This public distribution combines the current MeowClaw PPT Smith engine with
+the PMO production runtime.
 
 ## Identity
 
@@ -12,9 +12,9 @@ and the check fails.
 
 - Root Skill: `article-html-to-ppt`
 - Display name: MeowClaw PPT Smith
-- Engine version: `2.3.0`
-- Private extension: `private-pmo-pack/`
-- Private PMO implementation status: Phase 2 P0 verified
+- Engine version: `3.0.1`
+- PMO runtime path: `private-pmo-pack/` (path retained for compatibility)
+- PMO implementation status: Phase 2 P0 verified
 
 ## Bundle hygiene and audit
 
@@ -54,7 +54,7 @@ Do not invent missing PMO facts. Extract evidence, identify missing dates,
 owners, targets, statuses, and decisions, then generate only components with
 sufficient support.
 
-## Verified private components
+## Public runtime components
 
 Phase 1:
 
@@ -102,16 +102,13 @@ Use `pytest`, not `unittest discover`, at the bundle root: the `tests/` tree has
 no `__init__.py`, so `unittest discover -s tests` collects zero tests there and
 reports a misleading `OK`.
 
-## Included evidence
+## Registry distribution contents
 
-- Phase 1 native editable PPTX and compact render PNG evidence.
-- Phase 2 P0 native editable PPTX and compact render PNG evidence.
-- PMO v0.1 sample PPTX and structural QA summaries.
-- Semantic schemas, examples, fixtures, tests, builders, verifiers, taxonomy,
-  routing, quality, and state files.
-
-Large duplicate PDFs, obsolete render caches, browser brainstorming sessions,
-Python caches, and temporary work directories are intentionally excluded.
+Registry packages include PMO runtime source, schemas, examples, documentation,
+taxonomy, routing, quality rules and state. They exclude all local tests,
+generated PPTX/PDF files, rendered images, QA reports/logs, caches and temporary
+work directories. The source repository may retain evidence for development,
+but a registry package is not an evidence archive.
 
 ## Delivery gates
 
@@ -129,13 +126,7 @@ Python caches, and temporary work directories are intentionally excluded.
   parity.
 - The strict complete PMO JSON schema is a renderer contract, not the only
   user intake method.
-- This bundle is private commercial material. Do not publish it to GitHub,
-  ClawHub, Xiaping, or another registry.
+- This public runtime may be published to GitHub, ClawHub and SkillHub. Each
+  registry package must still exclude the generated and local-only paths above.
 
-## Skill Workshop status
-
-A dedicated wrapper Skill proposal was created as
-`pptsmith-pmo-private-20260724-8caf7c18e5`. Its application approval timed out,
-so it remains pending and is not represented as installed in this archive.
-This archive is immediately usable through the verified root PPTSmith Skill and
-the bundled private PMO reference path above.
+The root PPTSmith Skill remains the canonical installation and routing entry.

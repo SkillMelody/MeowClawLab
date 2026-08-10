@@ -1,13 +1,12 @@
-# PPTSmith PMO Consulting Pack
+# PPTSmith PMO Production Pack
 
-Private production pack for McKinsey-style project management and PMO visualization decks.
+Public runtime pack for project-management and PMO visualization decks.
 
-This is a commercial-side pack, not part of the public `article-html-to-ppt` Skill. It keeps the PMO page families, style rules, sample data, and renderer in `private-artifacts/` while remaining compatible with the PPTSmith direction: editable PPTX, structured contracts, and evidence-backed QA.
+v3.0.1 makes this PMO runtime part of the public `article-html-to-ppt` Skill. It includes page families, style rules, schemas, examples, routing, quality rules and renderers while remaining compatible with the PPTSmith direction: editable PPTX, structured contracts, and evidence-backed QA. Registry packages deliberately exclude local tests, generated PPTX/PDF files, rendered images, QA logs and caches.
 
-## What v0.1 Proves
+## Runtime scope
 
-- Generates one 11-page editable PPTX sample from structured PMO domain JSON.
-- Covers the 10 requested PMO page families:
+- Supports structured PMO domain JSON and the following 10 page families:
   - Executive Dashboard
   - Project Roadmap
   - Milestone
@@ -19,34 +18,14 @@ This is a commercial-side pack, not part of the public `article-html-to-ppt` Ski
   - KPI Dashboard
   - Action Tracker
 - Uses PowerPoint-native text, shapes, tables, connectors, and chart objects.
-- Avoids screenshot-only delivery: the generated deck has `0` picture objects.
-- Renders successfully with LibreOffice in the current environment.
+- Requires the same target-environment render, readback, QA and human-review gates as the root Skill before a deck may be called final.
 
-## Main Outputs
+## Local validation boundary
 
-- PPTX: `output/ai-platform-project-pmo.pptx`
-- Build manifest: `qa/build-manifest.json`
-- Structural inspection: `qa/inspection.json`
-- Render report: `qa/rendered/render-report.json`
-- Rendered PDF: `qa/rendered/deck.pdf`
-- Contact sheet: `qa/rendered/contact-sheet.png`
-- Verification summary: `qa/verification-summary.md`
-
-## Current Verification
-
-Latest v0.1 run:
-
-- Status: `passed`
-- Slides: `11`
-- Native shapes: `274`
-- Native graphic frames: `6`
-- Native connectors: `23`
-- Native charts: `1`
-- Pictures / raster media objects: `0`
-- Render status: `passed`
-- Renderer: LibreOffice 26.2.4.2
-
-The raw generic PPTSmith inspection intentionally remains available. For v0.1, the private verifier allowlists:
+Generated decks, render PDFs/images, inspection reports, logs and test fixtures
+are intentionally not versioned or distributed. Run the supplied build and
+verification scripts against your own materials and target render environment.
+The PMO verifier allows:
 
 - `PPTX_ORPHAN_SOLID_COLOR_BLOCK`, because PMO status dots and heat-map cells are intended unlabeled indicator shapes.
 - `PPTX_TEXT_FRAGMENTATION` only on S08, because risk heat-map coordinate labels are intentionally split into small editable labels.
@@ -66,7 +45,7 @@ PMO domain JSON
   -> Inspect / Render / Verify
 ```
 
-This avoids forking the public PPTSmith engine and keeps commercial assets private. The public engine remains the lower-level contract and trusted delivery layer.
+This avoids forking the public PPTSmith engine. The public engine remains the lower-level contract and trusted delivery layer.
 
 ## Files
 
@@ -242,32 +221,9 @@ Latest Phase 2 P0 acceptance evidence:
 - Explicit rendered-slide review passed after KPI balance, heat-map jitter, and
   RACI title corrections.
 
-## Wave E Visual-Narrative-First Acceptance
+## Delivery limits
 
-Wave E was repeated after the original decision-support sample failed user
-visual review. The 11 decision pages were reconstructed as semantic visuals
-(decision funnel, bullet/bridge, ordered gate path, matrix/ranking,
-capacity stacks, dependency Gantt, constraint network, monetary waterfalls,
-swimlanes, and governance timeline), then the full 18-page acceptance set was
-freshly rendered and reviewed at 1920×1080.
-
-The product objective is a private PMO commercial production pack that
-translates project and decision information into a consulting-grade,
-projection-readable, scan-readable, editable visual narrative. Acceptance
-therefore evaluates audience judgment, core conclusion, and visual proof before
-native editability, structural inspection, and rendering checks.
-
-- Final QA report: `qa/wave-e-final-acceptance-report.md`
-- Decision-support sample: `output/pmo-decision-support-gold.pptx`
-- Decision-support structural inspection:
-  `qa/wave-e-decision-support-inspection.json`
-- Decision-support render evidence:
-  `qa/wave-e-decision-support-rendered/render-report.json`
-- Result: 18/18 rendered pages reviewed; 105/105 unittest tests and 114/114
-  pytest tests passed; decision-support Inspector passed with 0 issues.
-
-LibreOffice evidence verifies current-environment open/export behavior and does
-not claim Microsoft PowerPoint pixel parity.
-
-Phase 2 P1/P2 and Phase 3 must not be presented as implemented until their
-native renderers, fixtures, QA gates, sample PPTX, and render evidence exist.
+The PMO runtime translates project and decision information into structured,
+editable visual narratives. It does not claim Microsoft PowerPoint pixel parity
+or final quality without target-run evidence. Phase 2 P1/P2 and Phase 3 remain
+planned until their runtime implementations and target-run verification exist.

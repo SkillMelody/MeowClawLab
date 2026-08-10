@@ -7,7 +7,7 @@ not represented as a proprietary McKinsey methodology.
 
 ## 1. Goal
 
-Upgrade the private PMO pack from a visualization system into a bounded
+Upgrade the PMO runtime from a visualization system into a bounded
 decision-support system:
 
 ```text

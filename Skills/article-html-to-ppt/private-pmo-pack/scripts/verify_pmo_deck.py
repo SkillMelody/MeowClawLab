@@ -57,7 +57,7 @@ def count_package_objects(pptx: Path) -> dict[str, int]:
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Verify the private PMO pack sample deck.")
+    parser = argparse.ArgumentParser(description="Verify the PMO production-runtime sample deck.")
     parser.add_argument("--pptx", type=Path, default=DEFAULT_PPTX)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--inspection", type=Path, default=DEFAULT_INSPECTION)

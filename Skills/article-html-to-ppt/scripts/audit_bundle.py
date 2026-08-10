@@ -397,7 +397,7 @@ def render_markdown(report: dict[str, Any]) -> str:
 
     lines.append("## Distribution boundary")
     lines.append("")
-    lines.append("This archive contains private commercial PMO source assets under")
+    lines.append("This archive contains public PMO production-runtime source assets under")
     lines.append("`private-pmo-pack/`. It is intended for the owner's private installation and")
     lines.append("must not be uploaded to a public Skill registry or source repository.")
     lines.append("")
