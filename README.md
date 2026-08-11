@@ -6,7 +6,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 这里不只提供“能跑”的提示词，而是提供带能力探测、授权边界、失败处理和交付验证的生产级工作流。当前维护两个项目：专业 PPT 生产 Skill `PPT Smith`，以及 OpenClaw 安全升级 Skill `openclaw-verified-upgrade`。
 
-## MeowClaw PPT Smith v3.0.1
+## MeowClaw PPT Smith v3.0.2
 
 <p align="center">
   <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-zh.png" alt="MeowClaw PPTSmith" width="836">
@@ -30,7 +30,11 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 [查看 PPTSmith 中文说明与快速用法 →](./Skills/article-html-to-ppt/README.md)
 
-> v3.0.1 保留 v3.0.0 的高保真直接代码路径、IR/Pipeline 可追溯生产、八条专业路线和真实渲染 QA，并公开 PMO 运行时的源码、schemas、路由、质量规则、示例与文档。注册表包不包含测试夹具、生成 PPTX/PDF、渲染图、QA 日志或缓存；Path A 仍需按实际模型能力进行人工视觉复核，原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。
+> v3.0.2 保留 v3.0.1 的高保真直接代码路径、IR/Pipeline 可追溯生产、八条专业路线、真实渲染 QA 与公开 PMO 运行时。注册表包不包含测试夹具、生成 PPTX/PDF、渲染图、QA 日志或缓存；Path A 仍需按实际模型能力进行人工视觉复核，原生 Microsoft PowerPoint 兼容性仍需在目标环境单独验收。随仓库和发行包分发的 PPT Smith 适用 [MeowClaw Lab Non-Commercial Source License v1.0](./LICENSE)：第三方不可商用，作者及书面授权主体保留商业使用权。
+
+## v3.0.2：第三方非商用，作者保留商业权利
+
+本次只更新许可，不缩减公开 PMO 运行时或功能。个人学习、教育、研究、评估、公益及其他非商用用途可按许可使用；第三方商业使用（包括收费服务、SaaS/托管、咨询、培训、商业内部运营或营利性再分发）必须先取得 MeowClaw Lab 书面授权。完整条款见 [`LICENSE`](./LICENSE) 与 [v3.0.2 许可说明](./Skills/article-html-to-ppt/docs/v3.0.2-license-notice.md)。历史版本已发出的 Apache-2.0 / MIT-0 授权不能追溯撤销，仍按其原条款处理。
 
 ## v3.0.1：公开 PMO 运行时，双路径生产仍并行
 
@@ -77,7 +81,7 @@ MeowClaw Lab 是一个面向 OpenClaw 的可靠自动化实验室，沉淀可复
 
 | 技能 | 用途 | 状态 |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：Path A 高定代码、Path B 可验证流水线、公开 PMO 运行时、八条专业路线、原生连接器路由与可信 QA。 | v3.0.1 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith：Path A 高定代码、Path B 可验证流水线、公开 PMO 运行时、八条专业路线、原生连接器路由与可信 QA；第三方非商用。 | v3.0.2 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | 带 Lite supervised 与 V2 managed 双运行档的 OpenClaw 安全升级事务。 | 已发布 |
 
 ## 设计原则

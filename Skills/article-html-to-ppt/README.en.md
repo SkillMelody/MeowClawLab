@@ -10,7 +10,13 @@ Convert articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation p
 
 `MeowClaw PPT Smith` is the public display name introduced in v2.0.6. `MeowClaw PPTSmith` and `MeowClaw 夜猫 PPT 工坊` remain compatibility and search aliases only. The ClawHub slug and installed OpenClaw route remain `article-html-to-ppt` for update continuity.
 
-**v3.0.1 readiness:** the v3.0.0 task routing, Page Design Intent, Visual Planner, Deck Rhythm, editable semantic renderers, and overflow/contrast/arrow-safety gates remain. The PMO production runtime is public; registry packages include its runtime source and documentation but exclude local tests, generated decks, rendered files, QA logs, and caches. Standard is verified on macOS with LibreOffice; Premium remains run-specific and requires real rendering, zero-error QA, rubric scoring, and human visual review. See [the v3.0.1 public-PMO release notes](docs/v3.0.1-release-notes.md).
+**v3.0.2 readiness:** the v3.0.1 task routing, Page Design Intent, Visual Planner, Deck Rhythm, editable semantic renderers, PMO runtime, and overflow/contrast/arrow-safety gates remain. Registry packages include runtime source and documentation but exclude local tests, generated decks, rendered files, QA logs, and caches. Standard is verified on macOS with LibreOffice; Premium remains run-specific and requires real rendering, zero-error QA, rubric scoring, and human visual review. The distributed source is under the bundled [MeowClaw Lab Non-Commercial Source License v1.0](./LICENSE): third-party commercial use needs prior written permission, while MeowClaw Lab and its written designees retain commercial rights. See [the v3.0.2 license notice](docs/v3.0.2-license-notice.md).
+
+## v3.0.2: Third-Party Non-Commercial Use; Author Commercial Rights Retained
+
+v3.0.2 changes the distribution license only; it does not reduce the public PMO runtime or the feature boundary. Personal learning, education, research, evaluation, charitable work, and other non-commercial use are permitted under the bundled license. Third parties need MeowClaw Lab’s prior written permission for selling, paid delivery, SaaS/hosting, commercial internal operations, or any other commercial use. MeowClaw Lab, the copyright owner(s), and parties separately authorized by MeowClaw Lab retain unrestricted commercial rights.
+
+Read the complete [`LICENSE`](./LICENSE) and [v3.0.2 license notice](docs/v3.0.2-license-notice.md). Earlier Apache-2.0 / MIT-0 grants cannot be retroactively revoked; earlier releases remain governed by their original terms.
 
 ## v3.0.1: Public PMO Runtime, Code Path and Verified Pipeline
 

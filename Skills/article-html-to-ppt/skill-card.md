@@ -10,13 +10,13 @@ article-html-to-ppt, meowclaw-decksmith <br>
 ## Description: <br>
 MeowClaw PPTSmith converts articles, Markdown drafts, HTML pages, WeChat drafts, PRDs, automation plans, knowledge posts, and review-approved manuscripts into low-rework, persona-fit slide decks with direct PPTX, native dynamic PPTX, and Feishu Slides export routing. <br>
 
-Version 3.0.1 is **Standard production-ready on the verified macOS + LibreOffice 26.2.4.2 acceptance environment**. It publicly distributes the PMO runtime source, schemas, routing, quality rules, examples and documentation, while excluding local tests, generated decks, renders, QA logs and caches from registry packages. `python_pptx` is the canonical Standard production Builder; PptxGenJS remains component-scoped portability evidence. Premium may be called final only when the target run completes real rendering, readback, zero-error QA, rubric scoring, and disclosed fallbacks. <br>
+Version 3.0.2 is **Standard production-ready on the verified macOS + LibreOffice 26.2.4.2 acceptance environment**. It publicly distributes the PMO runtime source, schemas, routing, quality rules, examples and documentation, while excluding local tests, generated decks, renders, QA logs and caches from registry packages. `python_pptx` is the canonical Standard production Builder; PptxGenJS remains component-scoped portability evidence. Premium may be called final only when the target run completes real rendering, readback, zero-error QA, rubric scoring, and disclosed fallbacks. <br>
 
 ## Owner
 SkillMelody <br>
 
 ### License/Terms of Use: <br>
-MIT-0 <br>
+MeowClaw Lab Non-Commercial Source License v1.0 (`LicenseRef-MeowClaw-NC-1.0`): third-party commercial use requires prior written permission; MeowClaw Lab and its written designees retain commercial rights. See [`LICENSE`](./LICENSE). <br>
 
 ## Use Case: <br>
 Product owners, product reporters, Agent engineers, automation developers, self-media authors, knowledge bloggers, editors, educators, and content teams who need to turn source material into structured presentation decks without losing source boundaries, audience fit, editability, or verification discipline. <br>
@@ -53,6 +53,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - [v1.5 / v2.0 Closeout Checklist](docs/v1.5-v2.0-closeout-checklist.md) <br>
 - [v2.0 Acceptance Report](docs/v2.0-acceptance-report.md) <br>
 - [v3.0.0 Release Notes and v1.2.0 Comparison](docs/v3.0.0-release-notes.md) <br>
+- [v3.0.2 License Notice](docs/v3.0.2-license-notice.md) <br>
 - [v3.0.1 Public PMO Distribution Notes](docs/v3.0.1-release-notes.md) <br>
 - [v2.1 RC1 Acceptance Report (historical baseline)](docs/v2.1-rc1-acceptance-report.md) <br>
 - [v2.1 Release Notes (historical)](docs/v2.1-release-notes.md) <br>
@@ -77,7 +78,7 @@ Mitigation: The skill defaults sensitive work to local PPTX output and requires 
 - Verification honesty: Checks whether the final handoff clearly distinguishes generated, rendered, read-back, and final states. <br>
 
 ## Skill Version(s): <br>
-3.0.1 <br>
+3.0.2 <br>
 
 Readiness scope: Standard production on the verified macOS + LibreOffice acceptance environment. Premium readiness remains run- and environment-specific and requires real render/readback, zero-error QA, rubric, and fallback evidence. <br>
 

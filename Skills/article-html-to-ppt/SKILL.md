@@ -2,13 +2,13 @@
 name: "article-html-to-ppt"
 slug: "article-html-to-ppt"
 displayName: "MeowClaw PPT Smith"
-version: "3.0.1"
+version: "3.0.2"
 description: "Build and QA editable PPT decks locally; probes required tools/fonts, runs subprocess renderers in isolated work/output folders, and uses cloud export only with explicit consent."
 metadata:
   display_name: "MeowClaw PPT Smith"
   english_alias: "MeowClaw PPT Smith"
   public_slug: "meowclaw-pptsmith"
-  version: "3.0.1"
+  version: "3.0.2"
   compatibility_aliases: ["article-html-to-ppt", "meowclaw-decksmith"]
 ---
 
@@ -25,7 +25,7 @@ Public identity:
 
 Keep the OpenClaw skill route and directory name as `article-html-to-ppt` until all installed clients, ClawHub versions, GitHub paths, and historical workflows have migrated. Treat `article-html-to-ppt` and `meowclaw-decksmith` as backward-compatible aliases, not as the primary public name.
 
-Version `3.0.1` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. It retains v3.0.0's dual-path generation, visual narrative, quality gates and verified Standard boundary, and makes the PMO production runtime public: routing, renderers, schemas, examples and quality rules are distributable. Registry packages exclude PMO tests, generated decks, rendered PDFs/images, QA logs and caches. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v3.0.1-release-notes.md` for the public PMO distribution boundary.
+Version `3.0.2` is **Standard production-ready on the verified macOS + LibreOffice acceptance environment**. It retains v3.0.1's dual-path generation, visual narrative, quality gates, public PMO runtime, and verified Standard boundary. Registry packages exclude PMO tests, generated decks, rendered PDFs/images, QA logs and caches. The distributed source is subject to the bundled **MeowClaw Lab Non-Commercial Source License v1.0**: third-party commercial use requires prior written permission, while MeowClaw Lab and its written designees retain commercial rights. **Never present this as universal Premium final readiness:** Premium still requires a compatible real renderer, readback, zero QA errors, rubric pass, and disclosed fallbacks on the target environment. See `docs/v3.0.2-license-notice.md` for the license boundary.
 
 ### Capability and Permission Boundary
 

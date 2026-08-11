@@ -6,7 +6,7 @@ MeowClaw Lab is a reliability-first home for reusable OpenClaw skills, workflows
 
 The repository goes beyond prompts that merely run. Its production workflows define capability probes, consent boundaries, failure behavior, and evidence-based completion. It currently maintains two projects: the professional presentation skill `article-html-to-ppt` and the safe-upgrade skill `openclaw-verified-upgrade`.
 
-## MeowClaw PPT Smith v3.0.1
+## MeowClaw PPT Smith v3.0.2
 
 <p align="center">
   <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
@@ -30,7 +30,11 @@ The repository goes beyond prompts that merely run. Its production workflows def
 
 [Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
 
-> v3.0.1 retains v3.0.0’s high-fidelity Code Path, IR/Pipeline path, eight professional routes, and real-render QA. The PMO production runtime is public on GitHub and is included in registry packages; local tests, generated decks, rendered files, QA logs, and caches are excluded from registry uploads. Standard has passed real rendering and structural readback on the verified macOS + LibreOffice environment. Path A still requires model-appropriate human visual review; native Microsoft PowerPoint compatibility still requires target-environment validation.
+> v3.0.2 retains v3.0.1’s high-fidelity Code Path, IR/Pipeline path, eight professional routes, real-render QA, and public PMO production runtime. Local tests, generated decks, rendered files, QA logs, and caches are excluded from registry uploads. Standard has passed real rendering and structural readback on the verified macOS + LibreOffice environment. Path A still requires model-appropriate human visual review; native Microsoft PowerPoint compatibility still requires target-environment validation. PPT Smith is distributed under the [MeowClaw Lab Non-Commercial Source License v1.0](./LICENSE): third-party commercial use requires prior written permission, while the author and written designees retain commercial rights.
+
+## v3.0.2: Third-Party Non-Commercial Use; Author Commercial Rights Retained
+
+This release changes the license only; it does not reduce the public PMO runtime or feature boundary. Personal learning, education, research, evaluation, charitable work, and other non-commercial use are permitted under the license. Third-party commercial use—including paid services, SaaS/hosting, consulting, training, commercial internal operations, and for-profit redistribution—requires MeowClaw Lab’s prior written permission. Read the complete [`LICENSE`](./LICENSE) and [v3.0.2 license notice](./Skills/article-html-to-ppt/docs/v3.0.2-license-notice.md). Earlier Apache-2.0 / MIT-0 grants cannot be retroactively revoked and continue to govern earlier releases.
 
 ## v3.0.1: Public PMO Runtime, Bespoke Code, and Verified Pipeline
 
@@ -77,7 +81,7 @@ Both profiles enforce the same boundaries: a vague request authorizes planning o
 
 | Skill | Purpose | Status |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with public PMO runtime, Path A code generation, Path B verified pipeline, eight professional routes, native connector routing, and trusted QA. | v3.0.1 |
+| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with public PMO runtime, Path A code generation, Path B verified pipeline, eight professional routes, native connector routing, and trusted QA; third-party non-commercial use. | v3.0.2 |
 | [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A safe OpenClaw upgrade transaction with Lite supervised and V2 managed runtime profiles. | Published |
 
 ## Design Principles
