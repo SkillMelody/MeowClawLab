@@ -4,6 +4,7 @@ slug: "article-html-to-ppt"
 displayName: "MeowClaw PPT Smith"
 version: "3.0.2"
 description: "Build and QA editable PPT decks locally; probes required tools/fonts, runs subprocess renderers in isolated work/output folders, and uses cloud export only with explicit consent."
+license: "LicenseRef-MeowClaw-NC-1.0"
 metadata:
   display_name: "MeowClaw PPT Smith"
   english_alias: "MeowClaw PPT Smith"
