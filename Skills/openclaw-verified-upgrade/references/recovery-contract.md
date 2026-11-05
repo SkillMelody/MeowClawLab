@@ -1,17 +1,9 @@
-# Recovery Contract
+# Legacy recovery record compatibility
 
-## Taxonomy
+The old record-only guard classified failures with names such as CORE_APPLIED_WITH_POST_FAILURE, MIGRATION_LOCKED and SERVICE_DEFINITION_DRIFT. Preserve those records when diagnosing an interrupted historical operation.
 
-MIGRATION_NOTICE records only. MIGRATION_LOCKED, MIGRATION_BLOCKED, DUPLICATE_SOURCE_RECOVERABLE, UPDATE_COMPETITION, SERVICE_DEFINITION_DRIFT, GATEWAY_EXTERNAL_SIGTERM, READINESS_FAILED, STABILITY_FAILED, CORE_UPDATE_FAILED, CORE_APPLIED_WITH_POST_FAILURE, and MANUAL_INTERVENTION_REQUIRED freeze mutation.
+For current recovery decisions use [the current skill](../SKILL.md), [native semantics](native-updater.md) and [verification/retention](verification-and-retention.md). Do not mix old manual budgets with an active official transaction.
 
-A duplicate-source rename is never automatic. Propose one path-specific timestamped rename only after separate authorization, realpath containment, and backup verification. Never delete databases or use broad globs.
+Legacy classifications or a proposed rename are not authorization to act. A migration source, a case alias and a database-registry row are distinct. Inspect physical identity, constrain any requested repair, preserve evidence and honor the user's specific authority.
 
-## Resume Boundary
-
-resume can return VERIFY_BACKUP_AND_CONFIRM, RECORD_EXISTING_CORE_RESULT, RECONCILE_SERVICE_OR_OBSERVE, RECORD_EXISTING_SERVICE_RESULT, COLLECT_STABILITY_OBSERVATIONS, STOP_WITH_EVIDENCE, or NO_ACTION. These are decisions, not commands or approvals.
-
-## Deferred Automation
-
-This Skill intentionally does not embed a subprocess runner, temporary LaunchAgent, systemd unit, restart loop, migration renamer, installer, or rollback executor. Those host mutations require current command discovery, action-specific approval, bounded execution, and separate safety review.
-
-Do not claim a full unattended Harness. Use the transaction guard with supervised execution until an independently reviewed coordinator satisfies those controls.
+No lock removal, database overwrite, credential reset, plugin disable or broad cleanup is an automatic recovery shortcut. A package rollback cannot reverse a newer schema.

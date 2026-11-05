@@ -1,5 +1,7 @@
 # MeowClaw PPT Smith
 
+> **历史版本 3.0.2**：本目录保留既有代码和许可。PPT Smith 最新能力、作品、安装和后续更新请前往 [PPT-Smith 独立仓库](https://github.com/SkillMelody/PPT-Smith)；以下说明仅对应此历史副本。
+
 <p align="center">
   <img src="./assets/samples/pptsmith-github-zh.png" alt="MeowClaw PPT Smith 图标" width="836">
 </p>

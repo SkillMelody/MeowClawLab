@@ -1,142 +1,96 @@
-# MeowClaw Lab<img src="./Skills/article-html-to-ppt/assets/samples/meowclaw-logo.png" alt="MeowClaw PPTSmith" width="52">
+# MeowClaw Lab
 
-> 中文版本: [README.md](./README.md)
+[中文](README.md)
 
-MeowClaw Lab is a reliability-first home for reusable OpenClaw skills, workflows, and operational playbooks.
+Practical Agent workflows and reusable skills. This repository includes **PPT Smith**, for presentations you can keep editing, and **OpenClaw Verified Upgrade**, for upgrades backed by recovery materials, transaction tracking and runtime evidence.
 
-The repository goes beyond prompts that merely run. Its production workflows define capability probes, consent boundaries, failure behavior, and evidence-based completion. It currently maintains two projects: the professional presentation skill `article-html-to-ppt` and the safe-upgrade skill `openclaw-verified-upgrade`.
+> **For the latest PPT Smith source, installation, portfolio and updates, visit the [PPT-Smith repository →](https://github.com/SkillMelody/PPT-Smith).**
+> **Star / Watch that repository** to follow PPT Smith. The PPT skill retained here is the **historical 3.0.2 version**, not the current mainline.
 
-## MeowClaw PPT Smith v3.0.2
+## PPT Smith portfolio
 
-<p align="center">
-  <img src="./Skills/article-html-to-ppt/assets/samples/pptsmith-github-en.png" alt="MeowClaw PPTSmith" width="836">
-</p>
+These are real artifacts and rendered previews already published in the dedicated repository. Its current public mainline is **5.3.0**; each example retains its original version and validation scope.
 
-[`MeowClaw PPT Smith`](./Skills/article-html-to-ppt/) turns articles, Markdown, HTML, WeChat drafts, PRDs, research, and design specifications into **low-rework, editable, and verifiable** professional presentations.
+### Xiaomi 2025 Q2 and first-half business review · 36 slides
 
-**Core capabilities:**
+A complete business presentation spanning the executive summary, performance analysis, action schedule and management decisions. Click the overview to visit the full portfolio.
 
-- content analysis, evidence inventory, storyline, judgment titles, and expression planning before layout;
-- five foundational visual systems for consulting, product, technical, hybrid, and editorial decks;
-- Style Contract v2 to pin colors, typography, grid, spacing, cards, tables, charts, and diagram rules;
-- dual real Builders (`python_pptx` and PptxGenJS) with capability-aware routing;
-- PPT IR, Diagram IR, Component Registry, and Delivery Plan routing for editable and hybrid components;
-- task routing, Page Design Intent, Visual Planner, and Deck Rhythm gates for stronger visual narratives;
-- the v2.0.7 native straight, orthogonal/elbow, and curved connector contract remains supported; process arrows must be single connector objects with endpoints bound by a qualified Builder;
-- topology gates that reject lines through unrelated nodes or text, ambiguous crossings, unbound relationships, and undeclared blank solid-color blocks;
-- Fast / Standard / Premium production profiles;
-- capability probes, structural inspection, real rendering, enlarged single-slide review, readback, visual scoring, and trusted Delivery Manifests;
-- local PPTX, native progressive-build PPTX, HTML preview, and consent-gated Feishu Slides routes.
+[![Real rendered overview of a 36-slide business-review template artifact](https://raw.githubusercontent.com/SkillMelody/PPT-Smith/3d66f434001c544ff0ac79b7230586b3d0c1690a/assets/samples/v5.3-xiaomi-2025-q2-h1-template-36page-overview.jpg)](https://github.com/SkillMelody/PPT-Smith#作品展示)
 
-[Read the Chinese-first PPTSmith guide →](./Skills/article-html-to-ppt/README.md)
+<table>
+  <tr>
+    <td width="33%" valign="top"><a href="https://github.com/SkillMelody/PPT-Smith#作品展示"><img src="https://raw.githubusercontent.com/SkillMelody/PPT-Smith/3d66f434001c544ff0ac79b7230586b3d0c1690a/assets/samples/v5.2-xiaomi-q2-h1-22page-overview.png" alt="22-slide decorative business review overview" width="100%"></a><br><strong>22-slide business review</strong><br>Varied composition with deck-wide consistency</td>
+    <td width="33%" valign="top"><a href="https://github.com/SkillMelody/PPT-Smith#作品展示"><img src="https://raw.githubusercontent.com/SkillMelody/PPT-Smith/3d66f434001c544ff0ac79b7230586b3d0c1690a/assets/samples/v5.1-template-native-4page-2col-overview.png" alt="Four-slide native template component reuse comparison" width="100%"></a><br><strong>4-slide native template reuse</strong><br>Template language and native objects</td>
+    <td width="33%" valign="top"><a href="https://github.com/SkillMelody/PPT-Smith#作品展示"><img src="https://raw.githubusercontent.com/SkillMelody/PPT-Smith/3d66f434001c544ff0ac79b7230586b3d0c1690a/assets/samples/v5.1-no-image-policy-page-01.png" alt="Cover from a six-slide policy presentation without image generation" width="100%"></a><br><strong>6-slide policy explanation</strong><br>Native design and actual previews</td>
+  </tr>
+</table>
 
-> v3.0.2 retains v3.0.1’s high-fidelity Code Path, IR/Pipeline path, eight professional routes, real-render QA, and public PMO production runtime. Local tests, generated decks, rendered files, QA logs, and caches are excluded from registry uploads. Standard has passed real rendering and structural readback on the verified macOS + LibreOffice environment. Path A still requires model-appropriate human visual review; native Microsoft PowerPoint compatibility still requires target-environment validation. PPT Smith is distributed under the [MeowClaw Lab Non-Commercial Source License v1.0](./LICENSE): third-party commercial use requires prior written permission, while the author and written designees retain commercial rights.
+[Explore the full portfolio, representative slides and downloadable examples →](https://github.com/SkillMelody/PPT-Smith#作品展示)
 
-## v3.0.2: Third-Party Non-Commercial Use; Author Commercial Rights Retained
+<details>
+<summary>Provenance and validation limits</summary>
 
-This release changes the license only; it does not reduce the public PMO runtime or feature boundary. Personal learning, education, research, evaluation, charitable work, and other non-commercial use are permitted under the license. Third-party commercial use—including paid services, SaaS/hosting, consulting, training, commercial internal operations, and for-profit redistribution—requires MeowClaw Lab’s prior written permission. Read the complete [`LICENSE`](./LICENSE) and [v3.0.2 license notice](./Skills/article-html-to-ppt/docs/v3.0.2-license-notice.md). Earlier Apache-2.0 / MIT-0 grants cannot be retroactively revoked and continue to govern earlier releases.
+The 36-slide presentation is a user-provided template-route artifact. File inspection and real LibreOffice rendering passed for all 36 slides; this does not certify a new end-to-end generation run with 5.3.0. It contains native shapes, tables and images, with no native data charts. Shape-based data graphics must not be described as editable chart data. Financial facts were not reaudited, and PowerPoint/WPS edit-save-reopen was not tested.
 
-## v3.0.1: Public PMO Runtime, Bespoke Code, and Verified Pipeline
+The other examples come from earlier business, native-template and policy cases; they are not relabeled as 5.3.0 tests. Images reference a fixed public commit in the dedicated repository. Original inputs, the user's source deck and full run logs are not uploaded here. See that repository for evidence and case-specific limits.
 
-- **Path A — Code Path** lets an LLM write `python-pptx` directly for editable flywheels, complex native arrows, asymmetric composition, and high-value page-level craft—the capability boundary of the best v1.2.0 outputs.
-- **Path B — IR / Pipeline Path** supplies structured IR, visual narrative planning, component routing, and real-render QA for repeatable, auditable standard production. Its IR completeness and evidence-quality gate requires source-bound primary data and independent evidence; insufficient input stops delivery with named blockers instead of mislabeling a rendered deck as `verified`.
+</details>
 
-See the [v3.0.1 public-PMO release notes](./Skills/article-html-to-ppt/docs/v3.0.1-release-notes.md) and [v3.0.0 release notes](./Skills/article-html-to-ppt/docs/v3.0.0-release-notes.md) for distribution boundaries, trade-offs, the v1.2.0 comparison, and fixed-material multi-model/path image evidence.
+## PPT Smith: from materials to editable presentations
 
-## v3.0 Hero Showcase
+Use articles, research reports, PRDs, business data, approved designs or native corporate PPTX templates. The model interprets content and designs pages; fixed tools generate, edit and verify the files.
 
-The 12-slide *Future of Work 2030* showcase is built from native text, shapes, connectors, charts, and tables. It passed real rendering without whole-slide rasterization. It demonstrates the visual upper bound of v2.1, not a promise that every source reaches the same result in one automatic pass.
+| Task | Workflow |
+| --- | --- |
+| Design a presentation from source materials | **create**: plan the narrative, build native pages, render and review |
+| Rebuild an approved complete slide design | **recreate**: reconstruct native objects against a frozen design target |
+| Preserve an existing native PPTX template | **template**: select, clone and edit source pages while retaining template assets and relationships |
 
-![PPTSmith 3.0 Hero Showcase](./Skills/article-html-to-ppt/assets/samples/pptsmith-2.1-hero-showcase-overview.png)
+**What changed in 5.3.0:**
 
-## Real PPT Output Gallery (Preserved Sample)
+- **Edit actual template pages:** clone source layouts, masters and themes before updating text, supported charts/tables, notes and page order.
+- **Resume local revisions:** stable slide IDs, frozen templates and revision checks identify the current candidate.
+- **Bind evidence to the candidate:** check template preservation, real rendering and independent page review separately. Missing or stale evidence cannot establish final delivery.
+- **Keep existing workflows compatible:** retain create / recreate / template and the existing component workflow. Image generation remains optional.
 
-These images come from the earlier 14-slide stress test based on McKinsey / QuantumBlack’s public *The State of AI in 2025* report. They show actual generated output rather than conceptual placeholders:
+Supported objects, operating systems and target-application acceptance limits are documented in the dedicated repository. Native objects or a successful render alone do not prove every editing capability in the target application.
 
-- **No raster screenshots as body slides**: core text, cards, tables, nodes, arrows, and relationship diagrams are native PPT objects.
-- **302 editable text runs** for continued editing in PowerPoint, Keynote, or Feishu Slides.
-- **Richer relationship graphics** including curved arrows, dashed lines, polylines, elbow connectors, and double arrows.
-- **Upgraded palette contracts** across five low-chroma, warm-tempered foundational styles.
+[Get the latest Skill, examples and installation checks →](https://github.com/SkillMelody/PPT-Smith)
+[Read about the historical 3.0.2 copy in this Lab](Skills/article-html-to-ppt/README.en.md)
 
-![State of AI 2025 14-page PPT sample](./Skills/article-html-to-ppt/assets/samples/stateofai-2025-final-contact-sheet.png)
+## OpenClaw Verified Upgrade · 2.0.0
 
-![Palette upgrade overview](./Skills/article-html-to-ppt/assets/samples/palette-upgrade-overview.png)
+[`openclaw-verified-upgrade`](Skills/openclaw-verified-upgrade/README.md) assesses releases, executes authorized upgrades and preserves evidence to diagnose failures and recovery boundaries. Acceptance covers the actual Gateway, plugins, configuration and critical workflows.
 
-![Native editable architecture diagram](./Skills/article-html-to-ppt/assets/samples/native-architecture-diagram.png)
+**This release adds:**
 
-## OpenClaw Verified Upgrade
+- **Official durable transactions:** prefer the official updater and follow the original runId; distinguish core replacement from same-version plugin maintenance.
+- **Complete recovery coverage:** inventory config, credentials, shared/Agent databases, historical stores, related archives and recoverable old core/plugin payloads.
+- **Approved runtime phases:** prepare private Node, verify real process paths and use the documented external update path only when its conditions hold.
+- **Evidence from the intended route:** verify runtime plugin load, primary-model receipts, memory/Wiki and semantic changes in SQLite-backed jobs.
+- **Full observation and scoped cleanup:** preserve failures across the agreed interval; remove only authorized, proven-redundant run-owned objects after acceptance.
 
-[`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) treats an OpenClaw upgrade as a recoverable, auditable transaction rather than a one-shot update command. Completion requires verified agreement across the selected package, running Gateway, configuration, critical routes, and a bounded stability window.
+An upgrade does not implicitly enable automatic updates. Installation success is not runtime acceptance. The old transaction guard remains for historical compatibility; assessment, skill maintenance and host upgrades have distinct authority boundaries.
 
-It exposes two explicit runtime profiles:
+The local Skill name is `openclaw-verified-upgrade`. Both marketplaces use the installation slug `upgrade-openclaw-safely`:
 
-- **V2 managed:** enabled only when `openclaw_upgrade_harness` is available and its coordinator is ready and compatible with the running OpenClaw version. The coordinator owns package mutation, Gateway lifecycle, crash recovery, the transaction ledger, and stability observations.
-- **Lite supervised:** uses the bundled transaction guard and an operator-visible CLI workflow when the V2 plugin or coordinator is absent, incompatible, or unhealthy. It never claims autonomous continuity across a Gateway restart.
+```bash
+clawhub install upgrade-openclaw-safely
+skillhub install upgrade-openclaw-safely --namespace user_9c58aca4
+```
 
-Both profiles enforce the same boundaries: a vague request authorizes planning only, backup evidence is required before mutation, a transaction can begin the core update only once, recovery and rollback need separate approval, an already-installed target is never blindly reinstalled, and completion requires fresh evidence.
+[ClawHub listing](https://clawhub.ai/skillmelody/upgrade-openclaw-safely) · [Skill guide and offline scenarios](Skills/openclaw-verified-upgrade/README.md)
 
-[Read the OpenClaw Verified Upgrade guide →](./Skills/openclaw-verified-upgrade/README.md)
+Source and public marketplace versions are verified separately. An upload receipt is not review approval; check the actual version and review status before installing.
 
-## Skills
+## Project locations and licenses
 
-| Skill | Purpose | Status |
+| Content | Current location | License |
 | --- | --- | --- |
-| [`article-html-to-ppt`](./Skills/article-html-to-ppt/) | MeowClaw PPT Smith with public PMO runtime, Path A code generation, Path B verified pipeline, eight professional routes, native connector routing, and trusted QA; third-party non-commercial use. | v3.0.2 |
-| [`openclaw-verified-upgrade`](./Skills/openclaw-verified-upgrade/) | A safe OpenClaw upgrade transaction with Lite supervised and V2 managed runtime profiles. | Published |
+| PPT Smith mainline · 5.3.0 | [Dedicated PPT-Smith repository](https://github.com/SkillMelody/PPT-Smith) | Its own license applies; currently Apache-2.0 |
+| Historical Lab PPT skill · 3.0.2 | [Historical directory](Skills/article-html-to-ppt/) | Existing non-commercial terms retained |
+| OpenClaw Verified Upgrade · 2.0.0 | [Skill directory in this repository](Skills/openclaw-verified-upgrade/) | [MIT-0](Skills/openclaw-verified-upgrade/LICENSE.md) |
 
-## Design Principles
+Other project-owned repository content retains the [MeowClaw Lab Non-Commercial Source License](LICENSE). Only the upgrade skill directory is separately licensed under MIT-0. Third-party components retain their own licenses. The historical PPT directory and the dedicated repository do not replace each other's license terms.
 
-- **User-facing flow should be simple.** Users should state the goal, not wrestle with low-level commands, platform permissions, or export mechanics.
-- **Internal flow should be operationally strict.** Capability checks, risk review, backups when needed, controlled execution, and result verification should happen before completion is claimed.
-- **Latest is not automatically best.** For upgrade workflows, prefer a stable target unless the user explicitly asks for latest or latest fixes a relevant issue.
-- **Created does not mean final.** For docs, slides, videos, apps, and other deliverables, distinguish `Created`, `Rendered`, `Read back`, and `Final`.
-- **Source boundaries matter.** External articles, images, screenshots, reconstructed visuals, and quoted material must keep their usage boundaries; reference material should not be presented as owned evidence.
-- **Consent matters.** Installing, updating, overwriting, force-upgrading, restarting, rolling back, uploading, or publishing requires explicit authorization.
-
-## Repository Layout
-
-```text
-MeowClawLab/
-├── README.md
-├── README.en.md
-├── README.zh-CN.md
-├── LICENSE
-└── Skills/
-    ├── article-html-to-ppt/
-    │   ├── README.md
-    │   ├── README.en.md
-    │   ├── SKILL.md
-    │   ├── skill-card.md
-    │   ├── references/
-    │   └── templates/
-    └── openclaw-verified-upgrade/
-        ├── README.md
-        ├── README.zh-CN.md
-        ├── SKILL.md
-        └── test-prompts.json
-```
-
-## Using A Skill
-
-Copy or install the desired skill directory into your OpenClaw skills path, then ask your agent to use it for the matching task.
-
-For example, `openclaw-verified-upgrade` is intended for prompts like:
-
-```text
-Help me safely upgrade OpenClaw.
-Upgrade OpenClaw to a stable version and make sure Gateway still works.
-Upgrade OpenClaw to version 2026.x.x with backup and rollback planning.
-```
-
-`article-html-to-ppt` is intended for prompts like:
-
-```text
-Turn this WeChat article into Feishu Slides.
-Convert this Markdown draft into a formal brand-consistent PPT.
-Create the presentation storyboard and HTML preview before exporting to slides.
-Build an editable AI engineering project deck and verify connector topology and final rendering.
-```
-
-## Safety Note
-
-These skills may interact with a running OpenClaw Gateway, external platforms, document uploads, slide generation, or public publishing. Upgrades, restarts, rollbacks, config repairs, daemon edits, skill updates, Feishu uploads, and GitHub publishing are state-changing actions that require clear authorization and verification.
+Maintained by **MeowClaw Lab / SkillMelody**.

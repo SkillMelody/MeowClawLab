@@ -1,29 +1,9 @@
-# Transaction Contract
+# Legacy record-only transaction contract
 
-The guard records transaction intent, classifications, service-action budgets, observations, and recovery decisions. It never invokes OpenClaw, a service manager, or another program.
+This document describes the historical upgrade-transaction.mjs format. It is retained for interpreting old records, not for new upgrades. Start with [the current skill](../SKILL.md) and [native updater semantics](native-updater.md).
 
-## Nominal States
+The legacy PLAN_READY / CORE_UPDATE_RUNNING / CORE_APPLIED / SERVICE_ACTION_RUNNING / SERVICE_RECONCILED states were recorded by a local guard that never executed OpenClaw itself. Its run confirmations and supplied pass values were not independent backup or runtime proof.
 
-PLAN_READY -> CORE_UPDATE_RUNNING -> CORE_APPLIED -> SERVICE_ACTION_RUNNING -> SERVICE_RECONCILED -> COMPLETE
+Known limits: one service action for the entire run, fixed tag/no-restart command generation, fixed 120-second stability threshold and a rolling tail of 20 samples. These cannot represent an approved multi-stage runtime plan or prove a longer complete observation interval. Do not edit a ledger or reset counters to bypass a refusal, and do not use this guard for a new update.
 
-The service action is optional. CORE_APPLIED may proceed directly to observations and completion.
-
-## Core Attempt and Resume
-
-Plan fingerprints the verified CLI path, version, and capabilities. begin-core resamples them. The core counter increments before the command array is returned. A second begin fails without overwriting the prior state. Target present plus non-zero exit is CORE_APPLIED_WITH_POST_FAILURE, never permission for another full update.
-
-classify accepts the documented taxonomy. MIGRATION_NOTICE records evidence without freezing; every other classification freezes mutation. Evidence is a bounded reference, not raw logs or secrets.
-
-resume is read-only. It maps persisted state to a safe next decision, never resets budgets, and never authorizes mutation.
-
-## Service Budget
-
-begin-service requires matching run confirmation, CORE_APPLIED, and one of install, restart, force-install, or bootout. One run can arm one service action total. The agent executes the separately approved action using current help, then calls record-service.
-
-## Stability and Completion
-
-observe stores bounded samples. Completion requires at least three samples spanning 120 seconds, unchanged PID/path/inode, every readiness layer passing, no fatal or external SIGTERM, and no increase in source=update count.
-
-finish computes the stable gate; it does not accept a supplied stability verdict. COMPLETE also requires CLI, gateway, RPC, config, and channel gates.
-
-Store only structured state in the run directory. Keep logs, config content, chat text, and credentials outside it.
+An unresolved old run must first be classified from actual installed/runtime state and its original evidence. Do not treat a new native run or a fresh legacy ledger as recovery of that unknown operation.

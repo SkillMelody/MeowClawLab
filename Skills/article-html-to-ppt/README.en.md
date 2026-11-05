@@ -1,5 +1,7 @@
 # MeowClaw PPT Smith
 
+> **Historical version 3.0.2:** this directory retains its existing code and license. Visit the [PPT-Smith repository](https://github.com/SkillMelody/PPT-Smith) for current features, portfolio, installation and updates. The guide below describes this historical copy.
+
 <p align="center">
   <img src="./assets/samples/pptsmith-github-en.png" alt="MeowClaw PPT Smith icon" width="836">
 </p>

@@ -1,145 +1,47 @@
-# openclaw-verified-upgrade
+# OpenClaw Verified Upgrade
 
-A reliability-first OpenClaw upgrade skill with Lite supervised and V2 managed runtime profiles.
+Version **2.0.0**. This skill directory is separately licensed under [MIT-0](LICENSE.md).
 
-This skill treats an upgrade as one evidence-backed transaction, not as “run an update command and hope.” Its bundled guard records state and authorization boundaries but never invokes OpenClaw, a service manager, or another program.
+An OpenClaw upgrade workflow built around official durable update transactions, complete recovery coverage and fresh runtime evidence.
 
 ## Naming
 
-- ClawHub slug and install identifier: `upgrade-openclaw-safely`
-- Local OpenClaw skill key: `openclaw-verified-upgrade`
-- Display name: `OpenClaw Verified Upgrade`
+- ClawHub install identifier: upgrade-openclaw-safely
+- Local Skill key: openclaw-verified-upgrade
+- Display name: OpenClaw Verified Upgrade
 
-The public slug differs because the `openclaw-*` registry namespace is protected. This mapping is intentional and does not create a second local skill.
+The different public slug is intentional; it does not create a second local skill.
 
-## Runtime profiles
+## Workflow
 
-- **V2 managed** is available only when the installed `openclaw_upgrade_harness` tool reports a ready coordinator compatible with the running OpenClaw version. The coordinator owns package mutation, Gateway lifecycle, crash recovery, the transaction ledger, and bounded stability observations.
-- **Lite supervised** uses the bundled guard and an operator-visible CLI workflow when the plugin or coordinator is missing, disabled, incompatible, or unhealthy. Lite mode does not claim autonomous continuity across a Gateway restart.
+Resolve an exact target, inspect the installed and target contracts, inventory recovery sources, verify backup coverage, select one lifecycle owner, execute approved phases and follow the original operation to verified completion. Standard upgrade authorization is carried forward; new destructive or unrelated scope still needs its own authority.
 
-The skill does not install, enable, repair, or initialize the V2 coordinator merely because an upgrade was requested. If V2 becomes unavailable after apply, it preserves the existing run and stops mutation instead of falling back to an unguarded Lite update.
+Prefer the official managed updater. Where an old driver cannot safely complete a documented operation, a verified external operator may use the official exact-package procedure under an approved recovery/runtime plan. Do not install a custom coordinator, fabricate RPC parameters or detach a shell and claim restart survival.
 
-## When to use
+Core replacement and same-version official plugin maintenance are distinct. Private Node preparation may be a separately approved phase. Stability uses the agreed window and retains failures across that entire interval. Cleanup follows the authorized retention policy and removes only proved-redundant objects owned by this run.
 
-Use this skill when you want to:
+## Completion evidence
 
-- Upgrade OpenClaw safely.
-- Choose between latest, a specific version, or a recommended stable version.
-- Check release notes before upgrading.
-- Avoid breaking a running Gateway, channel, plugin, model, or agent route.
-- Recover from a partial or failed OpenClaw upgrade.
+- CLI/package and real Gateway build/path/runtime agree with the target.
+- Plugin contracts and critical runtime loads pass; independently versioned plugins retain their own compatibility rules.
+- Configuration, required databases, semantic automation changes, routes and authorized workflows are checked against baseline.
+- The intended model path is tested when authorized; connection status alone does not prove external delivery.
+- The full stability window passes and recovery material remains complete.
+- Any authorized cleanup is recorded and followed by another runtime/health check.
 
-## Core idea
+A successful updater response, port, ready line or CLI version alone is insufficient. Missing critical verification means acceptance is incomplete. A package rollback does not reverse database migration.
 
-**An OpenClaw upgrade is not complete until the running Gateway is verified healthy.**
+## Local maintenance and distribution
 
-The skill explicitly distinguishes:
+Maintain one reviewed source and deploy only validated bundles to local callers. Verify the resolved skill path; shared, Workshop and plugin copies can differ. Do not edit a generated plugin cache as the source of truth. For Codex, supported user skill discovery and per-skill configuration can select the reviewed local copy without changing the whole plugin.
 
-- CLI/package version
-- Running Gateway/runtime version
-- Service manager path, such as LaunchAgent/systemd/manual process
-- Config validity
-- Plugin/channel/agent availability
-- User-critical workflows
-
-This matters because the CLI can be upgraded while an existing Gateway process continues running an older version.
-
-## Transaction flow
-
-The user should only need to choose:
-
-```text
-1. Recommended stable version (default)
-2. Latest version
-3. Specific version
-```
-
-The selected runtime then follows a bounded transaction:
-
-1. Detect the current environment.
-2. Discover current OpenClaw commands and semantics.
-3. Pick or verify a target version.
-4. Review release notes and upgrade risks.
-5. Build a checklist of user-critical paths.
-6. Check pre-upgrade health.
-7. Create a verified local backup.
-8. Ask for final confirmation before mutation.
-9. Arm and execute the core update once.
-10. Record the observed package version even if the command exits non-zero.
-11. Classify failures and resume from persisted state instead of rerunning the update.
-12. Arm at most one separately approved service action.
-13. Collect repeated readiness observations and compute stability.
-14. Report evidence or stop safely with a recovery plan.
-
-In V2 managed mode, all transaction mutations go through `openclaw_upgrade_harness`; the skill does not invoke the package manager, `openclaw update`, or a service manager directly. In Lite supervised mode, the bundled guard records authorization and state but never executes external commands itself.
-
-## Key safeguards
-
-- Latest is not automatically best.
-- OpenClaw commands and flags are version-sensitive.
-- Command discovery must happen before command execution.
-- Command existence is not enough; command semantics must be confirmed.
-- Release notes and migration risks must be reviewed before upgrade.
-- Backup must be created and read-back verified before mutation.
-- One approval does not authorize every recovery action.
-- A transaction may begin the core update only once.
-- A transaction may arm only one service lifecycle action.
-- Target version already present means post-update recovery, never a second full update.
-- Retry logic must be failure-classified and capped.
-- Rollback requires prior explicit authorization unless already granted.
-- Success requires evidence, not just exit code 0.
-- Destructive cleanup, config overwrite, daemon edits, reinstall, downgrade, `sudo`, and stop+start each require separate explicit approval.
-
-## Backup requirements
-
-Before changing anything, the agent should create a timestamped local backup manifest containing at least:
-
-- OpenClaw config file.
-- Current CLI version/path.
-- Gateway/service status.
-- Service command/path and running process path when available.
-- Config validation result.
-- Install/package metadata.
-- Critical path baseline.
-- Target version and release-risk summary.
-
-If backup creation or read-back verification fails, the upgrade must stop.
-
-## Verification requirements
-
-After upgrade, the agent must verify:
-
-- CLI/package version equals the target.
-- Running Gateway/runtime version equals the target, or provide equivalent runtime evidence.
-- Running process path matches the upgraded installation.
-- Gateway status/connectivity is healthy.
-- Config validation or doctor-equivalent check passes.
-- Logs show no fresh fatal startup errors.
-- Important plugins/channels/agents/routes still work.
-- A minimal end-to-end check passes when safe and supported.
-- At least three samples span 120 seconds or more with unchanged PID, binary path, and inode.
-- Every service/port/RPC/application/channel layer passes, with no new fatal, external SIGTERM, or `source=update` delta.
-
-## Failure behavior
-
-If something fails, the skill requires the agent to:
-
-- Stop mutation immediately.
-- Classify the failure.
-- Refresh current state before retrying.
-- Retry only safe, bounded, recoverable steps.
-- Preserve logs and evidence.
-- Ask before rollback, config overwrite, daemon edits, reinstall, cleanup, sudo, or downgrade unless pre-authorized.
+Public releases are built from a verified GitHub commit and checked separately on each marketplace. An upload receipt does not establish public availability or review approval. Skill changes are validated offline, never by upgrading or restarting the host.
 
 ## Files
 
-- [`SKILL.md`](./SKILL.md) — the actual OpenClaw skill document.
-- [`scripts/upgrade-transaction.mjs`](./scripts/upgrade-transaction.mjs) — scanner-safe transaction state guard.
-- [`references/transaction-contract.md`](./references/transaction-contract.md) — state, attempt, and completion contract.
-- [`references/recovery-contract.md`](./references/recovery-contract.md) — failure taxonomy and recovery boundary.
-- [`examples/test-prompts.json`](./examples/test-prompts.json) — current pressure prompts.
-- [`test-prompts.json`](./test-prompts.json) — legacy compatibility prompts.
-
-## Publishing note
-
-This skill is intended to be reusable and GitHub-friendly. It should not contain local secrets, user-specific credentials, or hard-coded commands that imply universal compatibility across OpenClaw versions.
+- [SKILL.md](SKILL.md): current workflow.
+- [Native updater](references/native-updater.md): transport, exact targets, run results and plugin intent.
+- [Migration and runtime](references/migration-and-runtime.md): complete backup inventory, case identity, private Node, external fallback and budgets.
+- [Verification and retention](references/verification-and-retention.md): semantic checks, observation, cleanup and privacy.
+- [Acceptance scenarios](examples/acceptance-scenarios.md): offline behavioral review.
+- The older record-only guard and contracts remain solely for historical compatibility. They are not the current execution path; their old action counters/sample retention are not valid completion gates for a new upgrade.
